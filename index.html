@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles to extend Tailwind */
+        /* Custom styles for the dynamic version */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* A very light grey for the body */
-            color: #1e293b; /* Slate 800 */
+            background-color: #020617; /* Slate 950 - Dark Mode */
+            color: #e2e8f0; /* Slate 200 */
         }
         h1, h2, h3 {
             font-family: 'Inter', sans-serif;
@@ -23,39 +23,115 @@
             font-family: 'Fira Code', monospace;
         }
         .accent-color {
-            color: #facc15; /* Yellow 400 */
+            color: #fde047; /* Yellow 300 */
         }
         .bg-accent-color {
-            background-color: #facc15;
+            background-color: #fde047;
         }
         .border-accent-color {
-            border-color: #facc15;
+            border-color: #fde047;
         }
-        /* Subtle animation for the hero icon */
-        .gear-brain-icon:hover svg {
-            transform: scale(1.05) rotate(5deg);
+
+        /* Hero Video Background */
+        #hero {
+            position: relative;
+            overflow: hidden;
         }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translateX(-50%) translateY(-50%);
+        }
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(2, 6, 23, 0.7); /* Dark overlay */
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Card hover effect */
         .card {
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-color: #0f172a; /* Slate 900 */
+            border-color: #1e293b; /* Slate 800 */
         }
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 0 40px rgba(253, 224, 71, 0.1);
+            border-color: rgba(253, 224, 71, 0.3);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch:hover::before, .glitch:hover::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020617;
+            overflow: hidden;
+        }
+        .glitch:hover::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch:hover::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(15% 0 86% 0); } 100% { clip-path: inset(80% 0 1% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(46% 0 47% 0); } 100% { clip-path: inset(10% 0 81% 0); }
         }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Header & Navigation -->
-    <header class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 shadow-sm">
+    <header class="fixed top-0 left-0 right-0 bg-slate-950/80 backdrop-blur-sm z-50 shadow-md shadow-black/20">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold font-fira tracking-tighter">Hugo Luna</a>
-                <nav class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#philosophy" class="hover:text-yellow-500 transition-colors">Philosophy</a>
-                    <a href="#projects" class="hover:text-yellow-500 transition-colors">Projects</a>
-                    <a href="#about" class="hover:text-yellow-500 transition-colors">About</a>
-                    <a href="#contact" class="hover:text-yellow-500 transition-colors">Contact</a>
+                <a href="#hero" class="text-xl font-bold font-fira tracking-tighter glitch" data-text="Hugo Luna">Hugo Luna</a>
+                <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                    <a href="#philosophy" class="hover:text-yellow-300 transition-colors">Philosophy</a>
+                    <a href="#projects" class="hover:text-yellow-300 transition-colors">Projects</a>
+                    <a href="#ai-creations" class="hover:text-yellow-300 transition-colors">AI Creations</a>
+                    <a href="#about" class="hover:text-yellow-300 transition-colors">About</a>
+                    <a href="#contact" class="hover:text-yellow-300 transition-colors">Contact</a>
                 </nav>
             </div>
         </div>
@@ -63,18 +139,16 @@
 
     <main>
         <!-- Section 1: Hero -->
-        <section id="hero" class="min-h-screen flex items-center bg-white">
-            <div class="container mx-auto px-6 py-24 text-center">
-                <div class="gear-brain-icon w-24 h-24 mx-auto mb-8 transition-transform duration-300">
-                    <!-- Inline SVG for the 'Gear Brain' icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-full h-full text-slate-800">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M15.75 3v1.5m0 16.5v-1.5m3.75-12H21m-18 0h1.5M12 4.5V3m0 18v-1.5M12 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Zm-3.75 4.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z" />
-                    </svg>
-                </div>
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter">
+        <section id="hero" class="min-h-screen flex items-center">
+            <video autoplay loop muted playsinline id="hero-video">
+                <source src="hero-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="hero-content container mx-auto px-6 py-24 text-center">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
                     Creative Technologist & Systems Builder.
                 </h1>
-                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-600">
+                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-300">
                     I architect robust solutions at the intersection of technology, creativity, and AI.
                 </p>
             </div>
@@ -82,9 +156,9 @@
 
         <!-- Section 2: Philosophy -->
         <section id="philosophy" class="py-20 lg:py-32">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6 reveal">
                 <div class="max-w-4xl mx-auto text-center">
-                    <blockquote class="text-2xl md:text-4xl font-medium italic border-l-4 border-accent-color pl-6 md:pl-8">
+                    <blockquote class="text-2xl md:text-4xl font-medium italic border-l-4 border-accent-color pl-6 md:pl-8 text-slate-200">
                         "I don’t just solve problems; I build the systems that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way to do it exists, I find it or build it myself."
                     </blockquote>
                 </div>
@@ -92,87 +166,105 @@
         </section>
 
         <!-- Section 3: Projects -->
-        <section id="projects" class="py-20 lg:py-32 bg-white">
+        <section id="projects" class="py-20 lg:py-32 bg-slate-950/50">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter">Featured Projects</h2>
-                    <p class="mt-4 text-lg text-slate-600">A selection of case studies demonstrating my approach.</p>
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">Featured Projects</h2>
+                    <p class="mt-4 text-lg text-slate-400">A selection of case studies demonstrating my approach.</p>
                 </div>
                 <!-- Project Cards Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12">
                     
-                    <!-- Card 1: Systems Architecture -->
-                    <div class="card bg-slate-50 rounded-lg p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-2xl font-bold mb-3">Architecting a Digital Ecosystem</h3>
-                        <p class="text-slate-600 mb-6">Currently manage, troubleshoot, and create content for over 120 interactive digital systems at The Dallas World Aquarium, ensuring a seamless visitor experience.</p>
+                    <div class="card rounded-xl p-8 border reveal">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Architecting a Digital Ecosystem</h3>
+                        <p class="text-slate-400 mb-6">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Systems Management</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">A/V Tech</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Content Creation</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
                         </div>
                     </div>
 
-                    <!-- Card 2: Project Leadership -->
-                    <div class="card bg-slate-50 rounded-lg p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-2xl font-bold mb-3">Founding an Open-Source Legacy</h3>
-                        <p class="text-slate-600 mb-6">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
+                    <div class="card rounded-xl p-8 border reveal" style="transition-delay: 100ms;">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Founding an Open-Source Legacy</h3>
+                        <p class="text-slate-400 mb-6">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Project Management</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Founder</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Community Leadership</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Founder</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
                         </div>
                     </div>
 
-                    <!-- Card 3: AI & Automation -->
-                    <div class="card bg-slate-50 rounded-lg p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-2xl font-bold mb-3">The AI Force Multiplier</h3>
-                        <p class="text-slate-600 mb-6">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
+                    <div class="card rounded-xl p-8 border reveal" style="transition-delay: 200ms;">
+                        <h3 class="text-2xl font-bold mb-3 text-white">The AI Force Multiplier</h3>
+                        <p class="text-slate-400 mb-6">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">AI</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Prompt Engineering</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Automation</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">AI</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Automation</span>
                         </div>
                     </div>
 
-                    <!-- Card 4: Security & Telecom -->
-                    <div class="card bg-slate-50 rounded-lg p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-2xl font-bold mb-3">Uncovering a Zero-Day Exploit</h3>
-                        <p class="text-slate-600 mb-6">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
+                    <div class="card rounded-xl p-8 border reveal" style="transition-delay: 300ms;">
+                        <h3 class="text-2xl font-bold mb-3 text-white">Uncovering a Zero-Day Exploit</h3>
+                        <p class="text-slate-400 mb-6">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Cybersecurity</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">Vulnerability Assessment</span>
-                            <span class="font-fira text-xs bg-slate-200 text-slate-700 py-1 px-3 rounded-full">QPST</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
+                            <span class="font-fira text-xs bg-slate-700 text-slate-300 py-1 px-3 rounded-full">QPST</span>
                         </div>
                     </div>
-
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 4: AI & Generative Media -->
+        <section id="ai-creations" class="py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">AI & Generative Media</h2>
+                    <p class="mt-4 text-lg text-slate-400">Exploring the frontier of creation with tools like Google's Veo.</p>
+                </div>
+                <div class="max-w-4xl mx-auto reveal">
+                    <div class="bg-slate-900 rounded-xl overflow-hidden shadow-2xl shadow-black/30 border border-slate-800">
+                        <video controls class="w-full">
+                            <source src="hero-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="p-6">
+                            <p class="font-fira text-sm text-slate-400">
+                                <span class="text-yellow-300 font-semibold">Prompt:</span> "Hyperrealistic, ultradetailed 8-second 2025 concept hypercar driving on a futuristic highway, cinematic, 8k"
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 4: About -->
-        <section id="about" class="py-20 lg:py-32">
-            <div class="container mx-auto px-6">
+        <!-- Section 5: About -->
+        <section id="about" class="py-20 lg:py-32 bg-slate-950/50">
+            <div class="container mx-auto px-6 reveal">
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter">The "Who"</h2>
+                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">The "Who"</h2>
                     </div>
-                    <p class="text-lg text-slate-700 leading-relaxed">
+                    <p class="text-lg text-slate-300 leading-relaxed text-center">
                         I'm a neurodivergent creative technologist and problem-solver with 20+ years of unconventional, hands-on experience in everything from video production to systems architecture. I am driven by a relentless curiosity to understand *why* things work, which allows me to build better, more scalable solutions. I thrive under pressure and am fluent in both English and Spanish.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Section 5: Contact -->
-        <section id="contact" class="py-20 lg:py-32 bg-slate-800 text-white">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-black tracking-tighter">Let's build what's next.</h2>
-                <p class="mt-4 text-lg text-slate-300 max-w-xl mx-auto">Get in touch to discuss how we can bring your next project to life.</p>
+        <!-- Section 6: Contact -->
+        <section id="contact" class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">Let's build what's next.</h2>
+                <p class="mt-4 text-lg text-slate-400 max-w-xl mx-auto">Get in touch to discuss how we can bring your next project to life.</p>
                 <div class="mt-10 flex justify-center items-center gap-4">
-                    <a href="mailto:hugo.a.luna@icloud.com" class="bg-accent-color text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-300 transition-colors">
+                    <a href="mailto:hugo.a.luna@icloud.com" class="bg-accent-color text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105">
                         Email Me
                     </a>
-                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="border-2 border-slate-500 text-slate-300 font-bold py-3 px-8 rounded-lg hover:bg-slate-700 hover:border-slate-700 transition-colors">
+                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="border-2 border-slate-600 text-slate-300 font-bold py-3 px-8 rounded-lg hover:bg-slate-800 hover:border-slate-700 transition-all duration-300 transform hover:scale-105">
                         LinkedIn
                     </a>
                 </div>
@@ -182,12 +274,32 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-white">
-        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
+    <footer class="bg-slate-950 border-t border-slate-800">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
             <p>&copy; 2025 Hugo Luna. All rights reserved.</p>
             <p class="mt-2">Built with passion and a little bit of code.</p>
         </div>
     </footer>
+
+    <script>
+        // Simple Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const elementsToReveal = document.querySelectorAll('.reveal');
+            elementsToReveal.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 
 </body>
 </html>
