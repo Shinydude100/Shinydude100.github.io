@@ -26,6 +26,7 @@
                         'accent': '#fde047', // Yellow 300
                         'dark-bg': '#020617', // Slate 950
                         'card-bg': '#0f172a', // Slate 900
+                        'warning': '#f97316', // Orange 500 (Used for the disclaimer)
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -52,7 +53,7 @@
                         'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
                         'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
                     },
-                    // NEW: Background pattern utility for texture
+                    // Background pattern utility for texture
                     backgroundImage: {
                        'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
                     },
@@ -166,7 +167,7 @@
                 }
             }
 
-            /* NEW: Navigation Active State (ScrollSpy) */
+            /* Navigation Active State (ScrollSpy) */
             .nav-link {
                 @apply relative transition-colors duration-200 text-slate-300;
             }
@@ -196,6 +197,7 @@
                     <a href="#philosophy" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Philosophy</a>
                     <a href="#projects" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Projects</a>
                     <a href="#toolkit" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Toolkit</a>
+                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Tools</a>
                     <a href="#ai-creations" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">AI Creations</a>
                     <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
                     <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
@@ -214,6 +216,7 @@
                 <a href="#philosophy" class="mobile-link hover:text-accent transition-colors">Philosophy</a>
                 <a href="#projects" class="mobile-link hover:text-accent transition-colors">Projects</a>
                 <a href="#toolkit" class="mobile-link hover:text-accent transition-colors">Toolkit</a>
+                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Tools</a>
                 <a href="#ai-creations" class="mobile-link hover:text-accent transition-colors">AI Creations</a>
                 <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
                 <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
@@ -354,8 +357,58 @@
             </div>
         </section>
 
-        
-        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/70">
+        <section id="tools" class="py-20 lg:py-32 bg-slate-900/70">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">Free IT Tools</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Utilities I've developed and shared for the IT community.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto reveal">
+                    <div class="bg-card-bg p-8 lg:p-12 rounded-xl shadow-2xl border border-slate-800">
+                        <h3 class="text-3xl font-bold mb-4 text-white">Windows Maintenance Utility (v1.0)</h3>
+                        <p class="text-slate-300 mb-6 leading-relaxed">
+                            An all-in-one PowerShell utility designed for IT professionals to streamline essential Windows integrity checks and repairs. This script automates SFC (System File Checker), schedules a comprehensive CHKDSK upon the next boot, and executes DISM Restore Health, generating detailed logs for review.
+                        </p>
+
+                        <div class="mb-8">
+                            <h4 class="text-xl font-semibold mb-3 text-accent">Key Features:</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-400 ml-4">
+                                <li>Automated System File Checker (<code class="font-mono text-xs bg-slate-800 p-1 rounded">SFC /scannow</code>).</li>
+                                <li>Scheduled Disk Error Checking (<code class="font-mono text-xs bg-slate-800 p-1 rounded">CHKDSK C: /f /r</code>).</li>
+                                <li>Windows Image Repair (<code class="font-mono text-xs bg-slate-800 p-1 rounded">DISM RestoreHealth</code>).</li>
+                                <li>Automatic logging of all operations.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800/70 border-l-4 border-warning p-6 rounded-lg mb-8">
+                            <h4 class="text-xl font-semibold mb-3 text-warning flex items-center">
+                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                Requirements & Warnings
+                            </h4>
+                            <p class="text-slate-300">
+                                This utility **requires Administrator privileges** to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
+                            <a href="Maintenance.zip" download id="download-btn" onclick="handleDownloadClick()" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                                Download Maintenance.zip
+                            </a>
+                            <div class="text-sm font-mono text-slate-500">
+                                Total Downloads: <span id="download-counter">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
+                            <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16 reveal">
                     <h2 class="text-4xl md:text-5xl tracking-tighter text-white">AI & Generative Media</h2>
@@ -378,7 +431,7 @@
             </div>
         </section>
 
-        <section id="about" class="py-20 lg:py-32 bg-slate-900/70">
+        <section id="about" class="py-20 lg:py-32 bg-dark-bg">
             <div class="container mx-auto px-6 reveal">
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12">
@@ -396,7 +449,7 @@
             </div>
         </section>
 
-        <section id="contact" class="py-20 lg:py-32 bg-dark-bg bg-pattern bg-pattern">
+        <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
             <div class="container mx-auto px-6 text-center reveal">
                 <h2 class="text-5xl md:text-6xl tracking-tighter text-white">Let's build what's next.</h2>
                 <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto">Get in touch to discuss how we can bring your next project to life.</p>
@@ -421,9 +474,96 @@
     </footer>
 
     <script>
+
+        // =================================================================
+        // Download Counter Logic (Using CountAPI.xyz)
+        // =================================================================
+        
+        // Configuration for CountAPI
+        const COUNT_API_URL = 'https://api.countapi.xyz';
+        // Using your GitHub username/repo as the namespace
+        const NAMESPACE = 'Shinydude100.github.io'; 
+        // A unique key for this specific download file
+        const KEY = 'MaintenanceUtilityZipV1'; 
+
+        async function fetchDownloadCount() {
+            try {
+                const response = await fetch(`${COUNT_API_URL}/get/${NAMESPACE}/${KEY}`);
+                if (!response.ok) {
+                     // If the key doesn't exist yet (status 404), create it
+                    if (response.status === 404) {
+                        return createDownloadKey();
+                    }
+                    throw new Error('Failed to fetch count');
+                }
+                const data = await response.json();
+                return data.value || 0;
+            } catch (error) {
+                console.error("Error fetching download count:", error);
+                return 'N/A';
+            }
+        }
+
+        async function createDownloadKey() {
+             try {
+                // Create the key with an initial value of 0
+                const response = await fetch(`${COUNT_API_URL}/create?namespace=${NAMESPACE}&key=${KEY}&value=0`);
+                if (!response.ok) throw new Error('Failed to create key');
+                const data = await response.json();
+                return data.value;
+            } catch (error) {
+                console.error("Error creating download key:", error);
+                return 0;
+            }
+        }
+
+        async function incrementDownloadCount() {
+            try {
+                // Use the /hit endpoint to increment the count
+                const response = await fetch(`${COUNT_API_URL}/hit/${NAMESPACE}/${KEY}`);
+                if (!response.ok) throw new Error('Failed to increment count');
+                const data = await response.json();
+                return data.value;
+            } catch (error) {
+                console.error("Error incrementing download count:", error);
+                // Return the current displayed count if increment fails
+                return document.getElementById('download-counter').textContent;
+            }
+        }
+
+        // Function called by the download button's 'onclick' attribute
+        async function handleDownloadClick() {
+            // Prevent rapid clicking while the API call is in progress
+            const downloadBtn = document.getElementById('download-btn');
+            if (downloadBtn.disabled) return;
+
+            downloadBtn.disabled = true;
+            const newCount = await incrementDownloadCount();
+            document.getElementById('download-counter').textContent = newCount;
+            downloadBtn.disabled = false;
+
+            // The actual download is handled by the browser via the <a> tag's href attribute
+        }
+
+        // Initialize the counter display on page load
+        async function initializeDownloadCounter() {
+            const count = await fetchDownloadCount();
+            document.getElementById('download-counter').textContent = count;
+        }
+
+
+        // =================================================================
+        // Main Application Logic
+        // =================================================================
+
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Dynamic Year Update
+            // 1. Initialize Download Counter
+            if (document.getElementById('download-counter')) {
+                initializeDownloadCounter();
+            }
+
+            // 2. Dynamic Year Update
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 // Ensure the displayed year is accurate
@@ -431,7 +571,7 @@
                 yearSpan.textContent = currentYear;
             }
 
-            // 2. Intersection Observer for scroll animations (Optimized)
+            // 3. Intersection Observer for scroll animations (Optimized)
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -449,7 +589,7 @@
                 revealObserver.observe(el);
             });
 
-            // 3. Mobile Menu Toggle
+            // 4. Mobile Menu Toggle
             const menuBtn = document.getElementById('menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIconOpen = document.getElementById('menu-icon-open');
@@ -475,7 +615,7 @@
                 });
             });
 
-            // 4. Interactive Card Hover Effect (Mouse tracking spotlight)
+            // 5. Interactive Card Hover Effect (Mouse tracking spotlight)
             const cards = document.querySelectorAll('.card');
 
             cards.forEach(card => {
@@ -491,7 +631,7 @@
                 });
             });
 
-            // 5. Dynamic Header Shadow on Scroll
+            // 6. Dynamic Header Shadow on Scroll
             const header = document.getElementById('site-header');
             const handleHeaderScroll = () => {
                 if (window.scrollY > 50) {
@@ -504,7 +644,7 @@
             handleHeaderScroll(); // Run on load
 
 
-            // 6. NEW: Active Navigation Link Highlighting (Scroll Spy)
+            // 7. Active Navigation Link Highlighting (Scroll Spy)
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
 
