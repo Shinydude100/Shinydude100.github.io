@@ -392,7 +392,7 @@
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                             <a href="Maintenence.zip" download id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                            <a href="Maintenence.zip" download id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
                                 Download Maintenence.zip
                             </a>
                             <div class="text-sm font-mono text-slate-500">
@@ -494,15 +494,18 @@
             if (!counterElement || !downloadBtn) return;
 
             try {
-                // Fetch the list of releases for the repository
-                const response = await fetch(GITHUB_API_URL);
+                // Fetch the list of releases for the repository.
+                // IMPORTANT: Added { cache: 'no-store' } to bypass browser cache. 
+                // GitHub's server-side statistics processing delay will still cause updates to take time (minutes to hours).
+                const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
+                
                 if (!response.ok) {
                     throw new Error(`GitHub API request failed: ${response.status}`);
                 }
                 const releases = await response.json();
 
                 if (releases.length === 0) {
-                    console.warn("No releases found on GitHub. Counter will not work until a release is created.");
+                    console.warn("No releases found on GitHub.");
                     counterElement.textContent = 'N/A';
                     return;
                 }
@@ -511,15 +514,17 @@
                 let totalDownloads = 0;
                 let assetFound = false;
 
+                // GitHub API returns releases newest first.
                 for (const release of releases) {
                     const asset = release.assets.find(a => a.name === ASSET_NAME);
                     if (asset) {
                         totalDownloads += asset.download_count;
                         
-                        // Update the download button link to the official asset URL from the latest release containing the asset
-                        // This ensures GitHub tracks the download when clicked
+                        // Update the download button link to the official asset URL from the *latest* release containing the asset
                         if (!assetFound) {
                              downloadBtn.href = asset.browser_download_url;
+                             // When linking to the GitHub asset URL, we don't need the 'download' attribute.
+                             downloadBtn.removeAttribute('download'); 
                              assetFound = true;
                         }
                     }
@@ -535,7 +540,7 @@
             } catch (error) {
                 console.error("Error fetching download count from GitHub API:", error);
                 counterElement.textContent = 'N/A';
-                // The download button will retain its fallback href (Maintenence.zip in the root) if the API fails
+                // The download button retains its fallback href if the API fails
             }
         }
 
@@ -546,13 +551,12 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Initialize Download Counter (Switched to GitHub API)
+            // 1. Initialize Download Counter
             fetchGitHubReleaseData();
 
             // 2. Dynamic Year Update
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
-                // Ensure the displayed year is accurate
                 const currentYear = new Date().getFullYear();
                 // Ensure the year doesn't display a past date if the current year is ahead.
                 yearSpan.textContent = Math.max(2025, currentYear);
@@ -658,7 +662,6 @@
                 });
             }, {
                 // rootMargin configuration ensures the link highlights when the section is significantly in view
-                // This configuration means the intersection is checked within the middle 60% of the viewport height.
                 rootMargin: "-20% 0px -40% 0px",
                 threshold: 0.1
             });
