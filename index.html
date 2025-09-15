@@ -26,7 +26,7 @@
                         'accent': '#fde047', // Yellow 300
                         'dark-bg': '#020617', // Slate 950
                         'card-bg': '#0f172a', // Slate 900
-                        'warning': '#f97316', // Orange 500 (Used for the disclaimer)
+                        'warning': '#f97316', // Orange 500
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -73,6 +73,23 @@
             h1, h2, h3 {
                 @apply font-black;
             }
+
+            /* NEW: Custom Cursor (Desktop only) */
+            @media (pointer: fine) {
+                html {
+                    cursor: none;
+                }
+                .cursor-dot {
+                    @apply fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[10001] transition-opacity duration-300;
+                }
+                .cursor-aura {
+                    @apply fixed top-0 left-0 w-10 h-10 border border-accent/50 rounded-full pointer-events-none z-[10000] transition-transform duration-300 ease-out;
+                }
+                /* Hide cursor when hovering over elements that utilize custom interactions heavily */
+                a:hover, button:hover, [role="button"]:hover, .glitch:hover {
+                    cursor: none;
+                }
+            }
         }
 
         @layer components {
@@ -81,41 +98,58 @@
                 @apply transition-all duration-300 ease-in-out;
             }
             #site-header.scrolled {
-                @apply bg-slate-950/80 backdrop-blur-md shadow-lg shadow-black/30;
+                @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
             }
 
-            /* Hero Video Background */
+            /* Hero Background (Now Interactive Canvas) */
             #hero {
-                @apply relative overflow-hidden;
+                @apply relative overflow-hidden bg-dark-bg;
             }
-            #hero-video {
-                @apply absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto z-0 object-cover;
-                transform: translateX(-50%) translateY(-50%);
+            #hero-canvas {
+                @apply absolute inset-0 z-0;
             }
             #hero::before {
                 content: '';
-                @apply absolute inset-0 bg-dark-bg/80 z-10;
+                /* Slightly reduced opacity (0.85) to let the constellation show through clearly */
+                @apply absolute inset-0 bg-dark-bg/85 z-10;
             }
             .hero-content {
                 @apply relative z-20;
             }
 
-            /* Interactive Card Hover Effect (Mouse tracking spotlight) */
+            /* Interactive Card Hover Effect (Spotlight + NEW: 3D Tilt) */
+            .card-container {
+                /* Required for 3D effect */
+                perspective: 1000px; 
+            }
+
             .card {
-                @apply transition-transform duration-300 ease-in-out bg-card-bg border border-slate-800 rounded-xl relative;
-                /* CSS Variables --mouse-x and --mouse-y are updated by JavaScript */
+                /* Fast transition during interaction */
+                @apply transition-transform duration-100 ease-out bg-card-bg border border-slate-800 rounded-xl relative;
+                /* Ensure the card respects the 3D space of the container */
+                transform-style: preserve-3d;
+                /* Initial state */
+                transform: rotateX(0deg) rotateY(0deg);
+                will-change: transform;
             }
+
+            /* Smooth out the transition when the mouse leaves */
+            .card.resetting {
+                 @apply transition-transform duration-500 ease-in-out;
+            }
+
             .card:hover {
-                 @apply transform -translate-y-1 scale-[1.01] shadow-2xl shadow-accent/10 border-accent/30;
+                 @apply shadow-2xl shadow-accent/10 border-accent/30;
             }
+
             /* Pseudo-element for the spotlight effect */
             .card::before {
                 content: '';
                 @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
-                /* Radial gradient centered at the mouse position */
+                /* Radial gradient centered at the mouse position (CSS Variables updated by JS) */
                 background-image: radial-gradient(
-                    400px circle at var(--mouse-x) var(--mouse-y),
-                    rgba(253, 224, 71, 0.12),
+                    450px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(253, 224, 71, 0.15),
                     transparent 40%
                 );
                 z-index: 1;
@@ -124,8 +158,9 @@
                 @apply opacity-100;
             }
             .card-content {
-                /* Ensure content stays above the spotlight effect */
                 @apply relative z-10;
+                 /* Optional: Moves content slightly forward in 3D space on hover */
+                transform: translateZ(10px);
             }
 
             /* Scroll Animations */
@@ -133,21 +168,26 @@
                 opacity: 0;
                 transform: translateY(30px);
                 transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-                will-change: opacity, transform; /* Performance hint */
+                will-change: opacity, transform;
             }
             .reveal.visible {
                 opacity: 1;
                 transform: translateY(0);
             }
+            
+             /* NEW: Decrypting text effect initialization */
+             .decrypt {
+                /* Ensures the space is held while decrypting */
+                visibility: hidden; 
+             }
 
             /* Glitch Effect */
             .glitch {
                 @apply relative inline-block;
-                /* CSS Variable for background color, defaults to dark-bg */
                  --glitch-bg: theme('colors.dark-bg');
             }
             
-            /* Accessibility: Only apply animation if user prefers motion */
+            /* Accessibility: Reduce motion for users who prefer it */
             @media (prefers-reduced-motion: no-preference) {
                 .glitch:hover::before, .glitch:hover::after {
                     content: attr(data-text);
@@ -157,12 +197,12 @@
 
                 .glitch:hover::before {
                     left: 2px;
-                    text-shadow: -2px 0 #ff00c1; /* Cyberpunk Pink */
+                    text-shadow: -2px 0 #ff00c1;
                     @apply animate-glitch-1;
                 }
                 .glitch:hover::after {
                     left: -2px;
-                    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1; /* Cyberpunk Cyan/Pink */
+                    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
                     @apply animate-glitch-2;
                 }
             }
@@ -171,7 +211,6 @@
             .nav-link {
                 @apply relative transition-colors duration-200 text-slate-300;
             }
-            /* Underline effect */
             .nav-link::after {
                 content: '';
                 @apply absolute left-0 -bottom-1 w-full h-0.5 bg-accent transform scale-x-0 transition-transform duration-300 origin-center;
@@ -179,7 +218,6 @@
             .nav-link:hover, .nav-link.active {
                 @apply text-accent;
             }
-            /* Show underline when active */
             .nav-link.active::after {
                 @apply scale-x-100;
             }
@@ -187,6 +225,9 @@
     </style>
 </head>
 <body class="antialiased font-sans">
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-aura" data-cursor-aura></div>
 
     <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4">
@@ -226,10 +267,8 @@
 
     <main>
         <section id="hero" class="min-h-screen flex items-center">
-            <video autoplay loop muted playsinline id="hero-video" aria-label="Abstract technological background video" poster="hero-poster.jpg">
-                <source src="hero-video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+             <canvas id="hero-canvas" aria-label="Interactive network constellation background"></canvas>
+
             <div class="hero-content container mx-auto px-6 py-24 text-center">
                 <h1 class="text-5xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
                     Creative Technologist & Systems Builder.
@@ -255,56 +294,64 @@
 
         <section id="projects" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 reveal">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">Featured Projects</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">A selection of case studies demonstrating my approach.</p>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Featured Projects</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">A selection of case studies demonstrating my approach.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                     
-                    <div class="card reveal">
-                        <div class="card-content p-8">
-                            <h3 class="text-2xl font-bold mb-4 text-white">Architecting a Digital Ecosystem</h3>
-                            <p class="text-slate-400 mb-6 leading-relaxed">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
+                    <div class="card-container reveal">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Architecting a Digital Ecosystem</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card reveal" style="transition-delay: 100ms;">
-                        <div class="card-content p-8">
-                            <h3 class="text-2xl font-bold mb-4 text-white">Founding an Open-Source Legacy</h3>
-                            <p class="text-slate-400 mb-6 leading-relaxed">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Founder</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
+                    <div class="card-container reveal" style="transition-delay: 100ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Founding an Open-Source Legacy</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Founder</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card reveal" style="transition-delay: 200ms;">
-                        <div class="card-content p-8">
-                            <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
-                            <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Automation</span>
+                    <div class="card-container reveal" style="transition-delay: 200ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Automation</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card reveal" style="transition-delay: 300ms;">
-                        <div class="card-content p-8">
-                            <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
-                            <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
-                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">QPST</span>
+                    <div class="card-container reveal" style="transition-delay: 300ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">QPST</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -314,9 +361,9 @@
 
         <section id="toolkit" class="py-20 lg:py-32 bg-dark-bg">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 reveal">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">My Toolkit</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Technologies and methodologies I use to build robust systems.</p>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">My Toolkit</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Technologies and methodologies I use to build robust systems.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
                     
@@ -359,9 +406,9 @@
 
         <section id="tools" class="py-20 lg:py-32 bg-slate-900/70">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 reveal">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">Free IT Tools</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Utilities I've developed and shared for the IT community.</p>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Free IT Tools</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Utilities I've developed and shared for the IT community.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto reveal">
@@ -411,9 +458,9 @@
         
         <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16 reveal">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">AI & Generative Media</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Exploring the frontier of creation with tools like Google's Veo.</p>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">AI & Generative Media</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Exploring the frontier of creation with tools like Google's Veo.</p>
                 </div>
                 <div class="max-w-5xl mx-auto reveal">
                     <div class="bg-card-bg rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-slate-800 transition-shadow duration-300 hover:shadow-accent/10">
@@ -433,12 +480,12 @@
         </section>
 
         <section id="about" class="py-20 lg:py-32 bg-dark-bg">
-            <div class="container mx-auto px-6 reveal">
+            <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white">The "Who" Behind the Work</h2>
+                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">The "Who" Behind the Work</h2>
                     </div>
-                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left">
+                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left reveal">
                          <p>
                             I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
                         </p>
@@ -451,10 +498,10 @@
         </section>
 
         <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
-            <div class="container mx-auto px-6 text-center reveal">
-                <h2 class="text-5xl md:text-6xl tracking-tighter text-white">Let's build what's next.</h2>
-                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto">Get in touch to discuss how we can bring your next project to life.</p>
-                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Let's build what's next.</h2>
+                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Get in touch to discuss how we can bring your next project to life.</p>
+                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 reveal">
                     <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                         Email Me
                     </a>
@@ -477,14 +524,286 @@
     <script>
 
         // =================================================================
-        // Download Counter Logic (Using GitHub API)
+        // Feature: Interactive Constellation Background (Canvas)
+        // =================================================================
+        function initConstellation() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const heroSection = document.getElementById('hero');
+            let w, h;
+
+            // Check for reduced motion preference
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function resizeCanvas() {
+                w = canvas.width = heroSection.offsetWidth;
+                h = canvas.height = heroSection.offsetHeight;
+                initializeStars();
+            }
+
+            let stars = [];
+            // Adjust density based on screen size
+            const maxStars = window.innerWidth < 768 ? 80 : 150; 
+            const connectionDistance = 150;
+            const mouse = { x: null, y: null };
+            const interactionRadius = 100;
+            const baseSpeed = prefersReducedMotion ? 0.1 : 0.3;
+
+            class Star {
+                constructor(x, y) {
+                    this.x = x || Math.random() * w;
+                    this.y = y || Math.random() * h;
+                    this.vx = (Math.random() - 0.5) * baseSpeed;
+                    this.vy = (Math.random() - 0.5) * baseSpeed;
+                    this.radius = Math.random() * 1.5;
+                    this.color = `rgba(248, 250, 252, ${0.5 + Math.random() * 0.5})`; // Slate 50
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+
+                update() {
+                    // Boundary checks
+                    if (this.x < 0 || this.x > w) this.vx = -this.vx;
+                    if (this.y < 0 || this.y > h) this.vy = -this.vy;
+
+                    // Mouse interaction (subtle warping) - only if motion is allowed
+                    if (!prefersReducedMotion && mouse.x && mouse.y) {
+                        const dx = this.x - mouse.x;
+                        const dy = this.y - mouse.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < interactionRadius) {
+                            const angle = Math.atan2(dy, dx);
+                            const force = (interactionRadius - distance) / interactionRadius * 0.5;
+                            this.x += Math.cos(angle) * force;
+                            this.y += Math.sin(angle) * force;
+                        }
+                    }
+
+                    this.x += this.vx;
+                    this.y += this.vy;
+                }
+            }
+
+            function connectStars() {
+                for (let i = 0; i < stars.length; i++) {
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const star1 = stars[i];
+                        const star2 = stars[j];
+                        const distance = Math.sqrt(Math.pow(star1.x - star2.x, 2) + Math.pow(star1.y - star2.y, 2));
+
+                        if (distance < connectionDistance) {
+                            const opacity = 1 - distance / connectionDistance;
+                            ctx.beginPath();
+                            ctx.moveTo(star1.x, star1.y);
+                            ctx.lineTo(star2.x, star2.y);
+                            // Use a subtle color (Slate 400) for the lines
+                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.5})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+                connectStars();
+                requestAnimationFrame(animate);
+            }
+
+            // Initialize stars
+            function initializeStars() {
+                 stars = [];
+                for (let i = 0; i < maxStars; i++) {
+                    stars.push(new Star());
+                }
+            }
+            
+            resizeCanvas(); // Set initial size and create stars
+
+            // Event listeners
+            window.addEventListener('resize', resizeCanvas);
+
+            // Track mouse only within the hero section
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+
+            heroSection.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            animate();
+        }
+
+        // =================================================================
+        // Feature: Text Decryption Effect
+        // =================================================================
+        function initDecryption() {
+            const elements = document.querySelectorAll('.decrypt');
+            const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+            // Check if user prefers reduced motion
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const decryptText = (element) => {
+                // Skip animation if user prefers reduced motion
+                if (prefersReducedMotion) {
+                    element.style.visibility = 'visible';
+                    return;
+                }
+
+                const originalText = element.textContent.trim();
+                let iterations = 0;
+                const maxIterations = originalText.length;
+                
+                element.style.visibility = 'visible';
+
+                const interval = setInterval(() => {
+                    element.textContent = originalText.split('')
+                        .map((char, index) => {
+                            if (index < iterations) {
+                                return originalText[index];
+                            }
+                            if (char === " ") return " ";
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+
+                    if (iterations >= maxIterations) {
+                        clearInterval(interval);
+                        element.textContent = originalText; // Ensure final text is correct
+                    }
+                    
+                    iterations += 1/3; // Speed of decoding
+                }, 30);
+            };
+
+             const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        decryptText(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // =================================================================
+        // Feature: Smooth Custom Cursor
+        // =================================================================
+        function initCustomCursor() {
+            // Check if the device supports fine pointer (mouse/trackpad)
+            if (!window.matchMedia("(pointer: fine)").matches) return;
+
+            const cursorDot = document.querySelector("[data-cursor-dot]");
+            const cursorAura = document.querySelector("[data-cursor-aura]");
+            // Select elements that should trigger a cursor change
+            const interactiveElements = document.querySelectorAll("a, button, [role='button'], .glitch");
+
+            window.addEventListener("mousemove", function (e) {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                // Update the dot position instantly
+                if (cursorDot) {
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                }
+
+                // Update the aura position (using CSS transitions via transform for smooth lagging effect)
+                if (cursorAura) {
+                    // Center the aura (40px wide/high) around the cursor
+                    cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
+                }
+            });
+
+            // Add effects when hovering over interactive elements
+            interactiveElements.forEach(el => {
+                el.addEventListener("mouseenter", () => {
+                    if (cursorAura) cursorAura.style.transform += ' scale(1.5)';
+                    if (cursorDot) cursorDot.style.opacity = '0.5';
+                });
+                el.addEventListener("mouseleave", () => {
+                     // The CSS transition handles the smooth return to original state
+                    if (cursorDot) cursorDot.style.opacity = '1';
+                });
+            });
+        }
+
+        // =================================================================
+        // Feature: 3D Parallax Tilt Cards
+        // =================================================================
+        function init3DTiltCards() {
+             const cards = document.querySelectorAll('.card');
+            // Maximum tilt angle (degrees)
+            const MAX_TILT = 8; 
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // Remove the smooth reset class if the user re-enters quickly
+                    card.classList.remove('resetting');
+
+                    const rect = card.getBoundingClientRect();
+                    const width = rect.width;
+                    const height = rect.height;
+
+                    // Mouse position relative to the card element
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    // Calculate normalized position (-1 to 1) relative to the center
+                    const normalizedX = (mouseX / width) * 2 - 1;
+                    const normalizedY = (mouseY / height) * 2 - 1;
+
+                    // Calculate rotation angles. Y-axis rotation depends on X movement, and vice-versa.
+                    const rotateY = normalizedX * MAX_TILT;
+                    // Invert X rotation for natural feel
+                    const rotateX = normalizedY * -MAX_TILT; 
+
+                    // Update CSS variables for the spotlight position
+                    card.style.setProperty('--mouse-x', `${mouseX}px`);
+                    card.style.setProperty('--mouse-y', `${mouseY}px`);
+
+                    // Apply the 3D rotation transform
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                // Handle mouse leaving the card area
+                card.addEventListener('mouseleave', () => {
+                    // Add a class to enable smooth transition back to center
+                    card.classList.add('resetting');
+                    // Reset the transform
+                    card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                });
+            });
+        }
+
+
+        // =================================================================
+        // Feature: Download Counter Logic (Using GitHub API)
         // =================================================================
         
-        // Configuration for GitHub API
         const GITHUB_REPO_OWNER = 'Shinydude100';
         const GITHUB_REPO_NAME = 'Shinydude100.github.io';
         const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
-        // The exact filename of the asset uploaded to the release
         const ASSET_NAME = 'Maintenence.zip'; 
 
         async function fetchGitHubReleaseData() {
@@ -494,9 +813,8 @@
             if (!counterElement || !downloadBtn) return;
 
             try {
-                // Fetch the list of releases for the repository.
-                // IMPORTANT: Added { cache: 'no-store' } to bypass browser cache. 
-                // GitHub's server-side statistics processing delay will still cause updates to take time (minutes to hours).
+                // Fetch releases, forcing bypass of browser cache. 
+                // Note: GitHub's server-side statistics processing delay will still cause updates to take time.
                 const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
                 
                 if (!response.ok) {
@@ -510,7 +828,6 @@
                     return;
                 }
 
-                // Iterate through releases to find the asset and sum download counts
                 let totalDownloads = 0;
                 let assetFound = false;
 
@@ -520,10 +837,9 @@
                     if (asset) {
                         totalDownloads += asset.download_count;
                         
-                        // Update the download button link to the official asset URL from the *latest* release containing the asset
+                        // Update the download button link to the official asset URL from the *latest* release
                         if (!assetFound) {
                              downloadBtn.href = asset.browser_download_url;
-                             // When linking to the GitHub asset URL, we don't need the 'download' attribute.
                              downloadBtn.removeAttribute('download'); 
                              assetFound = true;
                         }
@@ -540,34 +856,38 @@
             } catch (error) {
                 console.error("Error fetching download count from GitHub API:", error);
                 counterElement.textContent = 'N/A';
-                // The download button retains its fallback href if the API fails
             }
         }
 
 
         // =================================================================
-        // Main Application Logic
+        // Main Application Logic & Initializations
         // =================================================================
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Initialize Download Counter
+            // Initialize Magical Features
+            initConstellation();
+            initDecryption();
+            initCustomCursor();
+            init3DTiltCards();
+
+            // Initialize Standard Features
             fetchGitHubReleaseData();
 
-            // 2. Dynamic Year Update
+            // Dynamic Year Update
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 const currentYear = new Date().getFullYear();
-                // Ensure the year doesn't display a past date if the current year is ahead.
+                // Ensure the year displays the current year if it's 2025 or later.
                 yearSpan.textContent = Math.max(2025, currentYear);
             }
 
-            // 3. Intersection Observer for scroll animations (Optimized)
+            // Intersection Observer for scroll animations (Optimized)
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optimization: Unobserve after it becomes visible
                         revealObserver.unobserve(entry.target);
                     }
                 });
@@ -580,7 +900,7 @@
                 revealObserver.observe(el);
             });
 
-            // 4. Mobile Menu Toggle
+            // Mobile Menu Toggle
             const menuBtn = document.getElementById('menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIconOpen = document.getElementById('menu-icon-open');
@@ -593,7 +913,6 @@
                 const isHidden = mobileMenu.classList.toggle('hidden');
                 menuIconOpen.classList.toggle('hidden', !isHidden);
                 menuIconClose.classList.toggle('hidden', isHidden);
-                // Update aria-expanded status
                 menuBtn.setAttribute('aria-expanded', !isHidden);
             };
 
@@ -601,7 +920,6 @@
                 menuBtn.addEventListener('click', toggleMenu);
             }
 
-            // Close menu when a mobile link is clicked
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
@@ -610,23 +928,7 @@
                 });
             });
 
-            // 5. Interactive Card Hover Effect (Mouse tracking spotlight)
-            const cards = document.querySelectorAll('.card');
-
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    // Calculate mouse position relative to the card element
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    // Update CSS variables for the gradient position (used by the ::before element)
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
-                });
-            });
-
-            // 6. Dynamic Header Shadow on Scroll
+            // Dynamic Header Shadow on Scroll
             const header = document.getElementById('site-header');
             const handleHeaderScroll = () => {
                 if (!header) return;
@@ -637,36 +939,31 @@
                 }
             };
             window.addEventListener('scroll', handleHeaderScroll);
-            handleHeaderScroll(); // Run on load
+            handleHeaderScroll(); 
 
 
-            // 7. Active Navigation Link Highlighting (Scroll Spy)
+            // Active Navigation Link Highlighting (Scroll Spy)
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
 
-            // Use IntersectionObserver for efficient scroll spying
             const navObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
                         const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
                         
-                        // Remove active class from all links
                         navLinks.forEach(link => link.classList.remove('active'));
 
                         if (activeLink) {
-                            // Add active class to the current link
                             activeLink.classList.add('active');
                         }
                     }
                 });
             }, {
-                // rootMargin configuration ensures the link highlights when the section is significantly in view
                 rootMargin: "-20% 0px -40% 0px",
                 threshold: 0.1
             });
 
-            // Observe all sections, including hero, for robustness
             sections.forEach(section => {
                 navObserver.observe(section);
             });
