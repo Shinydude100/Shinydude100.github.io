@@ -1,129 +1,542 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hugo Luna - Creative Technologist & Systems Builder</title>
-  <meta name="description" content="Hugo Luna: Architecting robust solutions at the intersection of technology, creativity, and AI.">
-  <meta property="og:title" content="Hugo Luna - Creative Technologist & Systems Builder">
-  <meta property="og:description" content="Architecting robust solutions at the intersection of technology, creativity, and AI.">
-  <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Hugo Luna - Creative Technologist & Systems Builder</title>
+    <meta name="description" content="Hugo Luna: Architecting robust solutions at the intersection of technology, creativity, and AI. Expert in systems management, open-source leadership, and AI integration.">
+    
+    <meta property="og:title" content="Hugo Luna - Creative Technologist & Systems Builder">
+    <meta property="og:description" content="Architecting robust solutions at the intersection of technology, creativity, and AI.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CDN for quick paste-and-go (replace with a build for production) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'accent': '#fde047',
-            'dark-bg': '#020617',
-            'card-bg': '#0f172a',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['Fira Code', 'monospace'],
-          },
-          keyframes: {
-            'glitch-1': {
-              '0%,100%': { clipPath: 'inset(15% 0 86% 0)' },
-              '20%': { clipPath: 'inset(50% 0 30% 0)' },
-              '40%': { clipPath: 'inset(10% 0 85% 0)' },
-              '60%': { clipPath: 'inset(75% 0 5% 0)' },
-              '80%': { clipPath: 'inset(20% 0 70% 0)' },
-            },
-            'glitch-2': {
-              '0%,100%': { clipPath: 'inset(46% 0 47% 0)' },
-              '20%': { clipPath: 'inset(15% 0 65% 0)' },
-              '40%': { clipPath: 'inset(60% 0 25% 0)' },
-              '60%': { clipPath: 'inset(30% 0 50% 0)' },
-              '80%': { clipPath: 'inset(85% 0 5% 0)' },
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'accent': '#fde047', // Yellow 300
+                        'dark-bg': '#020617', // Slate 950
+                        'card-bg': '#0f172a', // Slate 900
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    // Glitch Animations
+                    keyframes: {
+                        'glitch-1': {
+                            '0%, 100%': { clipPath: 'inset(15% 0 86% 0)' },
+                            '20%': { clipPath: 'inset(50% 0 30% 0)' },
+                            '40%': { clipPath: 'inset(10% 0 85% 0)' },
+                            '60%': { clipPath: 'inset(75% 0 5% 0)' },
+                            '80%': { clipPath: 'inset(20% 0 70% 0)' },
+                        },
+                        'glitch-2': {
+                            '0%, 100%': { clipPath: 'inset(46% 0 47% 0)' },
+                            '20%': { clipPath: 'inset(15% 0 65% 0)' },
+                            '40%': { clipPath: 'inset(60% 0 25% 0)' },
+                            '60%': { clipPath: 'inset(30% 0 50% 0)' },
+                            '80%': { clipPath: 'inset(85% 0 5% 0)' },
+                        }
+                    },
+                    animation: {
+                        'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
+                        'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
+                    },
+                    // NEW: Background pattern utility for texture
+                    backgroundImage: {
+                       'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
+                    },
+                    backgroundSize: {
+                        'pattern': '24px 24px',
+                    }
+                }
             }
-          },
-          animation: {
-            'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
-            'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
-          }
         }
-      }
-    }
-  </script>
+    </script>
 
-  <style type="text/tailwindcss">
-    @layer base {
-      .skip-link {
-        @apply sr-only focus:not-sr-only absolute top-4 left-4 bg-slate-800 text-white px-4 py-2 rounded z-50;
-      }
-      body { @apply bg-dark-bg text-slate-200 antialiased; }
-      h1,h2,h3 { @apply font-black; }
-    }
-
-    @layer components {
-      /* Hero video background */
-      #hero { @apply relative overflow-hidden; }
-      #hero-video {
-        @apply absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto z-0 object-cover;
-        transform: translateX(-50%) translateY(-50%);
-      }
-      #hero::before {
-        content: '';
-        @apply absolute inset-0 bg-dark-bg/80 z-10;
-      }
-      .hero-content { @apply relative z-20; }
-
-      /* Card spotlight */
-      .card {
-        @apply transition-transform duration-300 ease-in-out bg-card-bg border border-slate-800 rounded-xl relative overflow-hidden;
-        --mouse-x: 50%;
-        --mouse-y: 50%;
-      }
-      .card:hover { @apply transform -translate-y-1 scale-[1.01] shadow-2xl shadow-accent/10 border-accent/30; }
-      .card::before {
-        content: '';
-        @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300;
-        background-image: radial-gradient(
-          400px circle at var(--mouse-x) var(--mouse-y),
-          rgba(253,224,71,0.12),
-          transparent 40%
-        );
-        z-index: 1;
-        pointer-events: none; /* don't trap pointer events */
-        will-change: opacity, background-image;
-      }
-      .card:hover::before { @apply opacity-100; }
-      .card-content { @apply relative z-10; }
-
-      /* Reveal on scroll */
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        will-change: opacity, transform;
-      }
-      .reveal.visible { opacity: 1; transform: translateY(0); }
-
-      /* Glitch */
-      .glitch { @apply relative inline-block; --glitch-bg: theme('colors.dark-bg'); }
-
-      /* Only run hover animations if user prefers motion */
-      @media (prefers-reduced-motion: no-preference) {
-        .glitch:hover::before, .glitch:hover::after {
-          content: attr(data-text);
-          @apply absolute top-0 left-0 w-full h-full overflow-hidden;
-          background: var(--glitch-bg);
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-dark-bg text-slate-200;
+            }
+            h1, h2, h3 {
+                @apply font-black;
+            }
         }
-        .glitch:hover::before { left: 2px; text-shadow: -2px 0 #ff00c1; @apply animate-glitch-1; }
-        .glitch:hover::after { left: -2px; text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1; @apply animate-glitch-2; }
-      }
-    }
-  </style>
+
+        @layer components {
+             /* Header - Dynamic background/shadow on scroll */
+             #site-header {
+                @apply transition-all duration-300 ease-in-out;
+            }
+            #site-header.scrolled {
+                @apply bg-slate-950/80 backdrop-blur-md shadow-lg shadow-black/30;
+            }
+
+            /* Hero Video Background */
+            #hero {
+                @apply relative overflow-hidden;
+            }
+            #hero-video {
+                @apply absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto z-0 object-cover;
+                transform: translateX(-50%) translateY(-50%);
+            }
+            #hero::before {
+                content: '';
+                @apply absolute inset-0 bg-dark-bg/80 z-10;
+            }
+            .hero-content {
+                @apply relative z-20;
+            }
+
+            /* Interactive Card Hover Effect (Mouse tracking spotlight) */
+            .card {
+                @apply transition-transform duration-300 ease-in-out bg-card-bg border border-slate-800 rounded-xl relative;
+                /* CSS Variables --mouse-x and --mouse-y are updated by JavaScript */
+            }
+            .card:hover {
+                 @apply transform -translate-y-1 scale-[1.01] shadow-2xl shadow-accent/10 border-accent/30;
+            }
+            /* Pseudo-element for the spotlight effect */
+            .card::before {
+                content: '';
+                @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
+                /* Radial gradient centered at the mouse position */
+                background-image: radial-gradient(
+                    400px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(253, 224, 71, 0.12),
+                    transparent 40%
+                );
+                z-index: 1;
+            }
+            .card:hover::before {
+                @apply opacity-100;
+            }
+            .card-content {
+                /* Ensure content stays above the spotlight effect */
+                @apply relative z-10;
+            }
+
+            /* Scroll Animations */
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+                will-change: opacity, transform; /* Performance hint */
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Glitch Effect */
+            .glitch {
+                @apply relative inline-block;
+                /* CSS Variable for background color, defaults to dark-bg */
+                 --glitch-bg: theme('colors.dark-bg');
+            }
+            
+            /* Accessibility: Only apply animation if user prefers motion */
+            @media (prefers-reduced-motion: no-preference) {
+                .glitch:hover::before, .glitch:hover::after {
+                    content: attr(data-text);
+                    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
+                    background: var(--glitch-bg);
+                }
+
+                .glitch:hover::before {
+                    left: 2px;
+                    text-shadow: -2px 0 #ff00c1; /* Cyberpunk Pink */
+                    @apply animate-glitch-1;
+                }
+                .glitch:hover::after {
+                    left: -2px;
+                    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1; /* Cyberpunk Cyan/Pink */
+                    @apply animate-glitch-2;
+                }
+            }
+
+            /* NEW: Navigation Active State (ScrollSpy) */
+            .nav-link {
+                @apply relative transition-colors duration-200 text-slate-300;
+            }
+            /* Underline effect */
+            .nav-link::after {
+                content: '';
+                @apply absolute left-0 -bottom-1 w-full h-0.5 bg-accent transform scale-x-0 transition-transform duration-300 origin-center;
+            }
+            .nav-link:hover, .nav-link.active {
+                @apply text-accent;
+            }
+            /* Show underline when active */
+            .nav-link.active::after {
+                @apply scale-x-100;
+            }
+        }
+    </style>
 </head>
+<body class="antialiased font-sans">
 
-<body class="font-sans">
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="Hugo Luna" aria-label="Home" style="--glitch-bg: transparent;">Hugo Luna</a>
+                
+                <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#philosophy" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Philosophy</a>
+                    <a href="#projects" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Projects</a>
+                    <a href="#toolkit" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Toolkit</a>
+                    <a href="#ai-creations" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">AI Creations</a>
+                    <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
+                    <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
+                </nav>
 
-  <!-- Skip-to-content for keyboard users -
+                <button id="menu-btn" class="md:hidden text-slate-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 p-1 rounded" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                    <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800">
+            <nav class="container mx-auto px-6 py-4 flex flex-col space-y-4 text-md font-medium text-slate-300">
+                <a href="#philosophy" class="mobile-link hover:text-accent transition-colors">Philosophy</a>
+                <a href="#projects" class="mobile-link hover:text-accent transition-colors">Projects</a>
+                <a href="#toolkit" class="mobile-link hover:text-accent transition-colors">Toolkit</a>
+                <a href="#ai-creations" class="mobile-link hover:text-accent transition-colors">AI Creations</a>
+                <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
+                <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="min-h-screen flex items-center">
+            <video autoplay loop muted playsinline id="hero-video" aria-label="Abstract technological background video" poster="hero-poster.jpg">
+                <source src="hero-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="hero-content container mx-auto px-6 py-24 text-center">
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
+                    Creative Technologist & Systems Builder.
+                </h1>
+                <p class="mt-8 text-xl md:text-2xl max-w-4xl mx-auto text-slate-200 font-medium">
+                    I architect robust solutions at the intersection of technology, creativity, and AI.
+                </p>
+                <a href="#projects" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    View My Work
+                </a>
+            </div>
+        </section>
+
+        <section id="philosophy" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
+            <div class="container mx-auto px-6 reveal">
+                 <div class="max-w-5xl mx-auto">
+                     <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
+                        I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">Featured Projects</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">A selection of case studies demonstrating my approach.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                    
+                    <div class="card reveal">
+                        <div class="card-content p-8">
+                            <h3 class="text-2xl font-bold mb-4 text-white">Architecting a Digital Ecosystem</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card reveal" style="transition-delay: 100ms;">
+                        <div class="card-content p-8">
+                            <h3 class="text-2xl font-bold mb-4 text-white">Founding an Open-Source Legacy</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Founder</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card reveal" style="transition-delay: 200ms;">
+                        <div class="card-content p-8">
+                            <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Automation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card reveal" style="transition-delay: 300ms;">
+                        <div class="card-content p-8">
+                            <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
+                                <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">QPST</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit" class="py-20 lg:py-32 bg-dark-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">My Toolkit</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Technologies and methodologies I use to build robust systems.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
+                    
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">Systems & Infrastructure</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Network Architecture & Management</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> A/V Technology (BrightSign, Q-SYS)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Interactive Experience Design</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Cybersecurity & Vulnerability Assessment</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Remote Systems Troubleshooting</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 150ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">AI & Automation</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Advanced Prompt Engineering</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Generative Media (Veo, Stable Diffusion)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Workflow Automation & Scripting</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> AI-Assisted Coding & Debugging</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Data Analysis & Insight Generation</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">Creative & Development</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Adobe Creative Suite (Premiere, AE)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Video Production & Post-Production</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Open-Source Project Management</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Web Technologies (HTML, CSS, JS)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Low-Level Programming Concepts</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/70">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white">AI & Generative Media</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Exploring the frontier of creation with tools like Google's Veo.</p>
+                </div>
+                <div class="max-w-5xl mx-auto reveal">
+                    <div class="bg-card-bg rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-slate-800 transition-shadow duration-300 hover:shadow-accent/10">
+                        <video controls class="w-full aspect-video" aria-label="AI Generated Media Example" loading="lazy">
+                            <source src="hero-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="p-6 lg:p-8">
+                            <p class="font-mono text-sm text-slate-400 leading-relaxed">
+                                <span class="text-accent font-semibold block mb-3">Veo 3 Quality Prompt:</span>
+                                 "Hyper-realistic, ultra-detailed 8-second cinematic looping video depicting AI architecture. Visualize intricate, self-assembling structures representing advanced AI neural networks or futuristic AI data processing centers, rendered with laser-precision clarity and sharp focus. These structures should feature crisp, well-defined lines, complex geometries, and elements of parametric design, realized with photorealistic textures suggesting polished metals, transparent crystalline conduits, and emissive surfaces. Intricate micro-details should be visible on all surfaces. Glowing pathways of luminous #21C060 green light, with sharp, distinct edges, pulsate and flow through these structures, symbolizing data streams and AI computational processes with utmost clarity. The architecture itself is composed of sleek, modern materials in deep, rich blues, cool greys, and polished dark tones, creating strong contrast with the vibrant green energy. Over the 8-second loop, the AI architecture subtly expands, reconfigures, or reveals new layers of meticulously detailed complexity in a smooth, organic, yet mathematically precise manner. The camera perspective, possibly with a slight macro feel to emphasize detail, might drift or zoom smoothly, offering evolving, crystal-clear views of this immense, intelligent system. Avoid motion blur; all elements should remain in sharp focus. The final frame seamlessly transitions back to the first for a perfect, hypnotic loop, emphasizing elegant complexity, underlying order, and flawless visual fidelity."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 lg:py-32 bg-slate-900/70">
+            <div class="container mx-auto px-6 reveal">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white">The "Who" Behind the Work</h2>
+                    </div>
+                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left">
+                         <p>
+                            I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
+                        </p>
+                        <p>
+                             I am driven by an innate curiosity to understand <em class="text-accent font-medium not-italic">why</em> things work. This allows me to rapidly diagnose issues and build better, more scalable solutions. I thrive under pressure, communicate effectively (fluent in English and Spanish), and excel at translating technical complexity into strategic action.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 lg:py-32 bg-dark-bg bg-pattern bg-pattern">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h2 class="text-5xl md:text-6xl tracking-tighter text-white">Let's build what's next.</h2>
+                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto">Get in touch to discuss how we can bring your next project to life.</p>
+                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6">
+                    <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        Email Me
+                    </a>
+                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto border-2 border-slate-500 text-slate-300 font-bold py-4 px-10 rounded-lg hover:bg-slate-800 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark-bg border-t border-slate-800/50">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
+            <p>&copy; <span id="year">2025</span> Hugo Luna. All rights reserved.</p>
+            <p class="mt-2 font-mono">Built with passion, curiosity, and code.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Dynamic Year Update
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                // Ensure the displayed year is accurate
+                const currentYear = new Date().getFullYear();
+                yearSpan.textContent = currentYear;
+            }
+
+            // 2. Intersection Observer for scroll animations (Optimized)
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optimization: Unobserve after it becomes visible
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const elementsToReveal = document.querySelectorAll('.reveal');
+            elementsToReveal.forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // 3. Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            const toggleMenu = () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.toggle('hidden', isHidden);
+                // Update aria-expanded status
+                menuBtn.setAttribute('aria-expanded', !isHidden);
+            };
+
+            menuBtn.addEventListener('click', toggleMenu);
+
+            // Close menu when a mobile link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                     if (!mobileMenu.classList.contains('hidden')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 4. Interactive Card Hover Effect (Mouse tracking spotlight)
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // Calculate mouse position relative to the card element
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    // Update CSS variables for the gradient position (used by the ::before element)
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+
+            // 5. Dynamic Header Shadow on Scroll
+            const header = document.getElementById('site-header');
+            const handleHeaderScroll = () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            };
+            window.addEventListener('scroll', handleHeaderScroll);
+            handleHeaderScroll(); // Run on load
+
+
+            // 6. NEW: Active Navigation Link Highlighting (Scroll Spy)
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // Use IntersectionObserver for efficient scroll spying
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        
+                        // Remove active class from all links
+                        navLinks.forEach(link => link.classList.remove('active'));
+
+                        if (activeLink) {
+                            // Add active class to the current link
+                            activeLink.classList.add('active');
+                        }
+                    }
+                });
+            }, {
+                // rootMargin configuration ensures the link highlights when the section is significantly in view
+                // This configuration means the intersection is checked within the middle 60% of the viewport height.
+                rootMargin: "-20% 0px -40% 0px",
+                threshold: 0.1
+            });
+
+            // Observe all sections, including hero, for robustness
+            sections.forEach(section => {
+                navObserver.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>
