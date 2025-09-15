@@ -392,7 +392,7 @@
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                            <a href="Maintenence.zip" download id="download-btn" onclick="handleDownloadClick()" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                             <a href="Maintenence.zip" download id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
                                 Download Maintenence.zip
                             </a>
                             <div class="text-sm font-mono text-slate-500">
@@ -477,89 +477,65 @@
     <script>
 
         // =================================================================
-        // Download Counter Logic (Using CountAPI.xyz)
+        // Download Counter Logic (Using GitHub API)
         // =================================================================
         
-        // Configuration for CountAPI
-        const COUNT_API_URL = 'https://api.countapi.xyz';
-        // Using your GitHub username/repo as the namespace
-        const NAMESPACE = 'Shinydude100.github.io'; 
-        // A unique key for this specific download file
-        const KEY = 'MaintenanceUtilityZipV1'; 
+        // Configuration for GitHub API
+        const GITHUB_REPO_OWNER = 'Shinydude100';
+        const GITHUB_REPO_NAME = 'Shinydude100.github.io';
+        const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
+        // The exact filename of the asset uploaded to the release
+        const ASSET_NAME = 'Maintenence.zip'; 
 
-        async function fetchDownloadCount() {
-            try {
-                const response = await fetch(`${COUNT_API_URL}/get/${NAMESPACE}/${KEY}`);
-                if (!response.ok) {
-                     // If the key doesn't exist yet (status 404), create it
-                    if (response.status === 404) {
-                        return createDownloadKey();
-                    }
-                    throw new Error('Failed to fetch count');
-                }
-                const data = await response.json();
-                return data.value || 0;
-            } catch (error) {
-                console.error("Error fetching download count:", error);
-                return 'N/A';
-            }
-        }
-
-        async function createDownloadKey() {
-             try {
-                // Create the key with an initial value of 0
-                const response = await fetch(`${COUNT_API_URL}/create?namespace=${NAMESPACE}&key=${KEY}&value=0`);
-                if (!response.ok) throw new Error('Failed to create key');
-                const data = await response.json();
-                return data.value;
-            } catch (error) {
-                console.error("Error creating download key:", error);
-                return 0;
-            }
-        }
-
-        async function incrementDownloadCount() {
-            try {
-                // Use the /hit endpoint to increment the count
-                const response = await fetch(`${COUNT_API_URL}/hit/${NAMESPACE}/${KEY}`);
-                if (!response.ok) throw new Error('Failed to increment count');
-                const data = await response.json();
-                return data.value;
-            } catch (error) {
-                console.error("Error incrementing download count:", error);
-                // Return the current displayed count if increment fails
-                const counterElement = document.getElementById('download-counter');
-                return counterElement ? counterElement.textContent : 'N/A';
-            }
-        }
-
-        // Function called by the download button's 'onclick' attribute
-        async function handleDownloadClick() {
-            // Prevent rapid clicking while the API call is in progress
+        async function fetchGitHubReleaseData() {
+            const counterElement = document.getElementById('download-counter');
             const downloadBtn = document.getElementById('download-btn');
-            if (!downloadBtn || downloadBtn.disabled) return;
 
-            downloadBtn.disabled = true;
-            const newCount = await incrementDownloadCount();
-            const counterElement = document.getElementById('download-counter');
-            if (counterElement) {
-                counterElement.textContent = newCount;
-            }
-            
-            // Re-enable the button shortly after the click
-             setTimeout(() => {
-                downloadBtn.disabled = false;
-            }, 500);
+            if (!counterElement || !downloadBtn) return;
 
-            // The actual download is handled by the browser via the <a> tag's href attribute
-        }
+            try {
+                // Fetch the list of releases for the repository
+                const response = await fetch(GITHUB_API_URL);
+                if (!response.ok) {
+                    throw new Error(`GitHub API request failed: ${response.status}`);
+                }
+                const releases = await response.json();
 
-        // Initialize the counter display on page load
-        async function initializeDownloadCounter() {
-            const counterElement = document.getElementById('download-counter');
-            if (counterElement) {
-                const count = await fetchDownloadCount();
-                counterElement.textContent = count;
+                if (releases.length === 0) {
+                    console.warn("No releases found on GitHub. Counter will not work until a release is created.");
+                    counterElement.textContent = 'N/A';
+                    return;
+                }
+
+                // Iterate through releases to find the asset and sum download counts
+                let totalDownloads = 0;
+                let assetFound = false;
+
+                for (const release of releases) {
+                    const asset = release.assets.find(a => a.name === ASSET_NAME);
+                    if (asset) {
+                        totalDownloads += asset.download_count;
+                        
+                        // Update the download button link to the official asset URL from the latest release containing the asset
+                        // This ensures GitHub tracks the download when clicked
+                        if (!assetFound) {
+                             downloadBtn.href = asset.browser_download_url;
+                             assetFound = true;
+                        }
+                    }
+                }
+
+                if (assetFound) {
+                    counterElement.textContent = totalDownloads.toLocaleString();
+                } else {
+                    console.warn(`Asset "${ASSET_NAME}" not found in any release.`);
+                    counterElement.textContent = 'N/A';
+                }
+
+            } catch (error) {
+                console.error("Error fetching download count from GitHub API:", error);
+                counterElement.textContent = 'N/A';
+                // The download button will retain its fallback href (Maintenence.zip in the root) if the API fails
             }
         }
 
@@ -570,15 +546,16 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Initialize Download Counter
-            initializeDownloadCounter();
+            // 1. Initialize Download Counter (Switched to GitHub API)
+            fetchGitHubReleaseData();
 
             // 2. Dynamic Year Update
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 // Ensure the displayed year is accurate
                 const currentYear = new Date().getFullYear();
-                yearSpan.textContent = currentYear;
+                // Ensure the year doesn't display a past date if the current year is ahead.
+                yearSpan.textContent = Math.max(2025, currentYear);
             }
 
             // 3. Intersection Observer for scroll animations (Optimized)
