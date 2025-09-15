@@ -387,13 +387,13 @@
                                 Requirements & Warnings
                             </h4>
                             <p class="text-slate-300">
-                                This utility **requires Administrator privileges** to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
+                                This utility <strong>requires Administrator privileges</strong> to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
                             </p>
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                            <a href="Shinydude100.github.io/Maintenence.zip" download id="download-btn" onclick="handleDownloadClick()" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
-                                Download Maintenance.zip
+                            <a href="Maintenence.zip" download id="download-btn" onclick="handleDownloadClick()" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                                Download Maintenence.zip
                             </a>
                             <div class="text-sm font-mono text-slate-500">
                                 Total Downloads: <span id="download-counter">Loading...</span>
@@ -408,6 +408,7 @@
                 </div>
             </div>
         </section>
+        
         <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16 reveal">
@@ -527,7 +528,8 @@
             } catch (error) {
                 console.error("Error incrementing download count:", error);
                 // Return the current displayed count if increment fails
-                return document.getElementById('download-counter').textContent;
+                const counterElement = document.getElementById('download-counter');
+                return counterElement ? counterElement.textContent : 'N/A';
             }
         }
 
@@ -535,20 +537,30 @@
         async function handleDownloadClick() {
             // Prevent rapid clicking while the API call is in progress
             const downloadBtn = document.getElementById('download-btn');
-            if (downloadBtn.disabled) return;
+            if (!downloadBtn || downloadBtn.disabled) return;
 
             downloadBtn.disabled = true;
             const newCount = await incrementDownloadCount();
-            document.getElementById('download-counter').textContent = newCount;
-            downloadBtn.disabled = false;
+            const counterElement = document.getElementById('download-counter');
+            if (counterElement) {
+                counterElement.textContent = newCount;
+            }
+            
+            // Re-enable the button shortly after the click
+             setTimeout(() => {
+                downloadBtn.disabled = false;
+            }, 500);
 
             // The actual download is handled by the browser via the <a> tag's href attribute
         }
 
         // Initialize the counter display on page load
         async function initializeDownloadCounter() {
-            const count = await fetchDownloadCount();
-            document.getElementById('download-counter').textContent = count;
+            const counterElement = document.getElementById('download-counter');
+            if (counterElement) {
+                const count = await fetchDownloadCount();
+                counterElement.textContent = count;
+            }
         }
 
 
@@ -559,9 +571,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             // 1. Initialize Download Counter
-            if (document.getElementById('download-counter')) {
-                initializeDownloadCounter();
-            }
+            initializeDownloadCounter();
 
             // 2. Dynamic Year Update
             const yearSpan = document.getElementById('year');
@@ -597,6 +607,8 @@
             const mobileLinks = document.querySelectorAll('.mobile-link');
 
             const toggleMenu = () => {
+                if (!mobileMenu || !menuIconOpen || !menuIconClose || !menuBtn) return;
+
                 const isHidden = mobileMenu.classList.toggle('hidden');
                 menuIconOpen.classList.toggle('hidden', !isHidden);
                 menuIconClose.classList.toggle('hidden', isHidden);
@@ -604,12 +616,14 @@
                 menuBtn.setAttribute('aria-expanded', !isHidden);
             };
 
-            menuBtn.addEventListener('click', toggleMenu);
+            if(menuBtn) {
+                menuBtn.addEventListener('click', toggleMenu);
+            }
 
             // Close menu when a mobile link is clicked
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                     if (!mobileMenu.classList.contains('hidden')) {
+                     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                         toggleMenu();
                     }
                 });
@@ -634,6 +648,7 @@
             // 6. Dynamic Header Shadow on Scroll
             const header = document.getElementById('site-header');
             const handleHeaderScroll = () => {
+                if (!header) return;
                 if (window.scrollY > 50) {
                     header.classList.add('scrolled');
                 } else {
@@ -680,4 +695,3 @@
 
 </body>
 </html>
-
