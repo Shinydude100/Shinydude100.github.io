@@ -1,1084 +1,950 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Hugo Luna - Creative Technologist & Systems Builder</title>
-    <meta name="description" content="Hugo Luna: Architecting robust solutions at the intersection of technology, creativity, and AI. Expert in systems management, open-source leadership, and AI integration.">
-    
-    <meta property="og:title" content="Hugo Luna - Creative Technologist & Systems Builder">
-    <meta property="og:description" content="Architecting robust solutions at the intersection of technology, creativity, and AI.">
-    <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Hugo Luna - Creative Technologist & Systems Builder</title>
+    <meta name="description" content="Hugo Luna: Architecting robust solutions at the intersection of technology, creativity, and AI. Expert in systems management, open-source leadership, and AI integration.">
+    
+    <meta property="og:title" content="Hugo Luna - Creative Technologist & Systems Builder">
+    <meta property="og:description" content="Architecting robust solutions at the intersection of technology, creativity, and AI.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'accent': '#fde047', // Yellow 300
-                        'dark-bg': '#020617', // Slate 950
-                        'card-bg': '#0f172a', // Slate 900
-                        'card-bg-light': '#1e293b', // Slate 800 (Added for tags)
-                        'warning': '#f97316', // Orange 500
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                    // Glitch Animations
-                    keyframes: {
-                        'glitch-1': {
-                            '0%, 100%': { clipPath: 'inset(15% 0 86% 0)' },
-                            '20%': { clipPath: 'inset(50% 0 30% 0)' },
-                            '40%': { clipPath: 'inset(10% 0 85% 0)' },
-                            '60%': { clipPath: 'inset(75% 0 5% 0)' },
-                            '80%': { clipPath: 'inset(20% 0 70% 0)' },
-                        },
-                        'glitch-2': {
-                            '0%, 100%': { clipPath: 'inset(46% 0 47% 0)' },
-                            '20%': { clipPath: 'inset(15% 0 65% 0)' },
-                            '40%': { clipPath: 'inset(60% 0 25% 0)' },
-                            '60%': { clipPath: 'inset(30% 0 50% 0)' },
-                            '80%': { clipPath: 'inset(85% 0 5% 0)' },
-                        }
-                    },
-                    animation: {
-                        'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
-                        'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
-                    },
-                    // Background pattern utility for texture
-                    backgroundImage: {
-                       'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
-                    },
-                    backgroundSize: {
-                        'pattern': '24px 24px',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'accent': '#fde047', // Yellow 300
+                        'dark-bg': '#020617', // Slate 950
+                        'card-bg': '#0f172a', // Slate 900
+                        'warning': '#f97316', // Orange 500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    // Glitch Animations
+                    keyframes: {
+                        'glitch-1': {
+                            '0%, 100%': { clipPath: 'inset(15% 0 86% 0)' },
+                            '20%': { clipPath: 'inset(50% 0 30% 0)' },
+                            '40%': { clipPath: 'inset(10% 0 85% 0)' },
+                            '60%': { clipPath: 'inset(75% 0 5% 0)' },
+                            '80%': { clipPath: 'inset(20% 0 70% 0)' },
+                        },
+                        'glitch-2': {
+                            '0%, 100%': { clipPath: 'inset(46% 0 47% 0)' },
+                            '20%': { clipPath: 'inset(15% 0 65% 0)' },
+                            '40%': { clipPath: 'inset(60% 0 25% 0)' },
+                            '60%': { clipPath: 'inset(30% 0 50% 0)' },
+                            '80%': { clipPath: 'inset(85% 0 5% 0)' },
+                        }
+                    },
+                    animation: {
+                        'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
+                        'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
+                    },
+                    // Background pattern utility for texture
+                    backgroundImage: {
+                       'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
+                    },
+                    backgroundSize: {
+                        'pattern': '24px 24px',
+                    }
+                }
+            }
+        }
+    </script>
 
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-dark-bg text-slate-200;
-            }
-            h1, h2, h3 {
-                @apply font-black;
-            }
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-dark-bg text-slate-200;
+            }
+            h1, h2, h3 {
+                @apply font-black;
+            }
 
-            /* Custom Cursor (Desktop only) */
-            @media (pointer: fine) {
-                html {
-                    cursor: none;
-                }
-                .cursor-dot {
-                    @apply fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[10001] transition-opacity duration-300;
-                }
-                .cursor-aura {
-                    @apply fixed top-0 left-0 w-10 h-10 border border-accent/50 rounded-full pointer-events-none z-[10000] transition-transform duration-300 ease-out;
-                }
-                /* Hide cursor when hovering over elements that utilize custom interactions heavily */
-                a:hover, button:hover, [role="button"]:hover, .glitch:hover {
-                    cursor: none;
-                }
-            }
-        }
+            /* NEW: Custom Cursor (Desktop only) */
+            @media (pointer: fine) {
+                html {
+                    cursor: none;
+                }
+                .cursor-dot {
+                    @apply fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[10001] transition-opacity duration-300;
+                }
+                .cursor-aura {
+                    @apply fixed top-0 left-0 w-10 h-10 border border-accent/50 rounded-full pointer-events-none z-[10000] transition-transform duration-300 ease-out;
+                }
+                /* Hide cursor when hovering over elements that utilize custom interactions heavily */
+                a:hover, button:hover, [role="button"]:hover, .glitch:hover {
+                    cursor: none;
+                }
+            }
+        }
 
-        @layer components {
+        @layer components {
+             /* Header - Dynamic background/shadow on scroll */
+             #site-header {
+                @apply transition-all duration-300 ease-in-out;
+            }
+            #site-header.scrolled {
+                @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
+            }
+
+            /* Hero Background (Now Interactive Canvas) */
+            #hero {
+                @apply relative overflow-hidden bg-dark-bg;
+            }
+            /* CHANGE: Adjusted z-index for proper layering. Canvas is at the absolute bottom. */
+            #hero-canvas {
+                @apply absolute inset-0 z-0;
+            }
+            /* CHANGE: The overlay now sits ON TOP of the canvas (z-10) but BELOW the content (z-20). */
+            #hero::before {
+                content: '';
+                /* Slightly reduced opacity (0.85) to let the constellation show through more clearly */
+                @apply absolute inset-0 bg-dark-bg/85 z-10;
+            }
+            .hero-content {
+                @apply relative z-20;
+            }
+
+            /* Interactive Card Hover Effect (Spotlight + NEW: 3D Tilt) */
+            .card-container {
+                /* Required for 3D effect */
+                perspective: 1000px; 
+            }
+
+            .card {
+                /* Fast transition during interaction */
+                @apply transition-transform duration-100 ease-out bg-card-bg border border-slate-800 rounded-xl relative;
+                /* Ensure the card respects the 3D space of the container */
+                transform-style: preserve-3d;
+                /* Initial state */
+                transform: rotateX(0deg) rotateY(0deg);
+                will-change: transform;
+            }
+
+            /* Smooth out the transition when the mouse leaves */
+            .card.resetting {
+                 @apply transition-transform duration-500 ease-in-out;
+            }
+
+            .card:hover {
+                 @apply shadow-2xl shadow-accent/10 border-accent/30;
+            }
+
+            /* Pseudo-element for the spotlight effect */
+            .card::before {
+                content: '';
+                @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
+                /* Radial gradient centered at the mouse position (CSS Variables updated by JS) */
+                background-image: radial-gradient(
+                    450px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(253, 224, 71, 0.15),
+                    transparent 40%
+                );
+                z-index: 1;
+            }
+            .card:hover::before {
+                @apply opacity-100;
+            }
+            .card-content {
+                @apply relative z-10;
+                 /* Optional: Moves content slightly forward in 3D space on hover */
+                transform: translateZ(10px);
+            }
+
+            /* Scroll Animations */
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+                will-change: opacity, transform;
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
             
-            /* === NEW: CAROUSEL (SLIDESHOW) STYLES === */
-            .carousel {
-                @apply relative w-full h-full overflow-hidden;
+             /* NEW: Decrypting text effect initialization */
+             .decrypt {
+                /* Ensures the space is held while decrypting */
+                visibility: hidden; 
+             }
+
+            /* Glitch Effect */
+            .glitch {
+                @apply relative inline-block;
+                 --glitch-bg: theme('colors.dark-bg');
             }
-            .carousel-slides {
-                @apply absolute inset-0 list-none p-0 m-0;
+            
+            /* Accessibility: Reduce motion for users who prefer it */
+            @media (prefers-reduced-motion: no-preference) {
+                .glitch:hover::before, .glitch:hover::after {
+                    content: attr(data-text);
+                    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
+                    background: var(--glitch-bg);
+                }
+
+                .glitch:hover::before {
+                    left: 2px;
+                    text-shadow: -2px 0 #ff00c1;
+                    @apply animate-glitch-1;
+                }
+                .glitch:hover::after {
+                    left: -2px;
+                    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+                    @apply animate-glitch-2;
+                }
             }
-            .carousel-slide {
-                /* Uses opacity fading for transition */
-                @apply absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out;
+
+            /* Navigation Active State (ScrollSpy) */
+            .nav-link {
+                @apply relative transition-colors duration-200 text-slate-300;
             }
-            .carousel-slide[data-active] {
-                @apply opacity-100 z-10;
+            .nav-link::after {
+                content: '';
+                @apply absolute left-0 -bottom-1 w-full h-0.5 bg-accent transform scale-x-0 transition-transform duration-300 origin-center;
             }
-            .carousel-slide img {
-                @apply block w-full h-full object-cover;
+            .nav-link:hover, .nav-link.active {
+                @apply text-accent;
             }
-            .carousel-button {
-                @apply absolute z-20 bg-black/50 border-none text-4xl top-1/2 transform -translate-y-1/2 text-white cursor-pointer px-2 transition-colors duration-300;
+            .nav-link.active::after {
+                @apply scale-x-100;
             }
-            .carousel-button:hover,
-            .carousel-button:focus {
-                @apply bg-black/80 text-accent;
-            }
-            .carousel-button.prev {
-                @apply left-0;
-            }
-            .carousel-button.next {
-                @apply right-0;
-            }
-            /* === END CAROUSEL STYLES === */
-
-             /* Header - Dynamic background/shadow on scroll */
-             #site-header {
-                @apply transition-all duration-300 ease-in-out;
-            }
-            #site-header.scrolled {
-                @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
-            }
-
-            /* Hero Background (Interactive Canvas) */
-            #hero {
-                @apply relative overflow-hidden bg-dark-bg;
-            }
-            #hero-canvas {
-                @apply absolute inset-0 z-0;
-            }
-            #hero::before {
-                content: '';
-                @apply absolute inset-0 bg-dark-bg/85 z-10;
-            }
-            .hero-content {
-                @apply relative z-20;
-            }
-
-            /* Interactive Card Hover Effect (Spotlight + 3D Tilt) */
-            .card-container {
-                /* Increased perspective for larger cards */
-                perspective: 1500px; 
-            }
-
-            .card {
-                /* Added overflow-hidden for the new layout */
-                @apply transition-transform duration-100 ease-out bg-card-bg border border-slate-800 rounded-xl relative overflow-hidden;
-                transform-style: preserve-3d;
-                transform: rotateX(0deg) rotateY(0deg);
-                will-change: transform;
-            }
-
-            /* Smooth out the transition when the mouse leaves */
-            .card.resetting {
-                 @apply transition-transform duration-500 ease-in-out;
-            }
-
-            .card:hover {
-                 @apply shadow-2xl shadow-accent/10 border-accent/30;
-            }
-
-            /* Pseudo-element for the spotlight effect */
-            .card::before {
-                content: '';
-                @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
-                /* Increased radius (800px) and reduced intensity for the new larger project cards */
-                background-image: radial-gradient(
-                    800px circle at var(--mouse-x) var(--mouse-y),
-                    rgba(253, 224, 71, 0.10),
-                    transparent 40%
-                );
-                z-index: 1;
-            }
-            .card:hover::before {
-                @apply opacity-100;
-            }
-            .card-content {
-                @apply relative z-10;
-                 /* Moves content slightly forward in 3D space on hover */
-                transform: translateZ(20px);
-            }
-
-            /* Scroll Animations */
-            .reveal {
-                opacity: 0;
-                transform: translateY(30px);
-                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-                will-change: opacity, transform;
-            }
-            .reveal.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            
-             /* Decrypting text effect initialization */
-             .decrypt {
-                visibility: hidden; 
-             }
-
-            /* Glitch Effect */
-            .glitch {
-                @apply relative inline-block;
-                 --glitch-bg: theme('colors.dark-bg');
-            }
-            
-            /* Accessibility: Reduce motion for users who prefer it */
-            @media (prefers-reduced-motion: no-preference) {
-                .glitch:hover::before, .glitch:hover::after {
-                    content: attr(data-text);
-                    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
-                    background: var(--glitch-bg);
-                }
-
-                .glitch:hover::before {
-                    left: 2px;
-                    text-shadow: -2px 0 #ff00c1;
-                    @apply animate-glitch-1;
-                }
-                .glitch:hover::after {
-                    left: -2px;
-                    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
-                    @apply animate-glitch-2;
-                }
-            }
-
-            /* Navigation Active State (ScrollSpy) */
-            .nav-link {
-                @apply relative transition-colors duration-200 text-slate-300;
-            }
-            .nav-link::after {
-                content: '';
-                @apply absolute left-0 -bottom-1 w-full h-0.5 bg-accent transform scale-x-0 transition-transform duration-300 origin-center;
-            }
-            .nav-link:hover, .nav-link.active {
-                @apply text-accent;
-            }
-            .nav-link.active::after {
-                @apply scale-x-100;
-            }
-        }
-    </style>
+        }
+    </style>
 </head>
 <body class="antialiased font-sans">
 
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-aura" data-cursor-aura></div>
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-aura" data-cursor-aura></div>
 
-    <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="Hugo Luna" aria-label="Home" style="--glitch-bg: transparent;">Hugo Luna</a>
-                
-                <nav class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#philosophy" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Philosophy</a>
-                    <a href="#projects" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Projects</a>
-                    <a href="#toolkit" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Toolkit</a>
-                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Tools</a>
-                    <a href="#ai-creations" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">AI Creations</a>
-                    <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
-                    <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
-                </nav>
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="Hugo Luna" aria-label="Home" style="--glitch-bg: transparent;">Hugo Luna</a>
+                
+                <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#philosophy" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Philosophy</a>
+                    <a href="#projects" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Projects</a>
+                    <a href="#toolkit" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Toolkit</a>
+                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Tools</a>
+                    <a href="#ai-creations" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">AI Creations</a>
+                    <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
+                    <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
+                </nav>
 
-                <button id="menu-btn" class="md:hidden text-slate-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 p-1 rounded" aria-label="Toggle Navigation Menu" aria-expanded="false">
-                    <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800">
-            <nav class="container mx-auto px-6 py-4 flex flex-col space-y-4 text-md font-medium text-slate-300">
-                <a href="#philosophy" class="mobile-link hover:text-accent transition-colors">Philosophy</a>
-                <a href="#projects" class="mobile-link hover:text-accent transition-colors">Projects</a>
-                <a href="#toolkit" class="mobile-link hover:text-accent transition-colors">Toolkit</a>
-                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Tools</a>
-                <a href="#ai-creations" class="mobile-link hover:text-accent transition-colors">AI Creations</a>
-                <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
-                <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
-            </nav>
-        </div>
-    </header>
+                <button id="menu-btn" class="md:hidden text-slate-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 p-1 rounded" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                    <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800">
+            <nav class="container mx-auto px-6 py-4 flex flex-col space-y-4 text-md font-medium text-slate-300">
+                <a href="#philosophy" class="mobile-link hover:text-accent transition-colors">Philosophy</a>
+                <a href="#projects" class="mobile-link hover:text-accent transition-colors">Projects</a>
+                <a href="#toolkit" class="mobile-link hover:text-accent transition-colors">Toolkit</a>
+                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Tools</a>
+                <a href="#ai-creations" class="mobile-link hover:text-accent transition-colors">AI Creations</a>
+                <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
+                <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-    <main>
-        <section id="hero" class="min-h-screen flex items-center">
-             <canvas id="hero-canvas" aria-label="Interactive network constellation background"></canvas>
+    <main>
+        <section id="hero" class="min-h-screen flex items-center">
+             <canvas id="hero-canvas" aria-label="Interactive network constellation background"></canvas>
 
-            <div class="hero-content container mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
-                    Creative Technologist & Systems Builder.
-                </h1>
-                <p class="mt-8 text-xl md:text-2xl max-w-4xl mx-auto text-slate-200 font-medium">
-                    I architect robust solutions at the intersection of technology, creativity, and AI.
-                </p>
-                <a href="#projects" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                    View My Work
-                </a>
-            </div>
-        </section>
+            <div class="hero-content container mx-auto px-6 py-24 text-center">
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
+                    Creative Technologist & Systems Builder.
+                </h1>
+                <p class="mt-8 text-xl md:text-2xl max-w-4xl mx-auto text-slate-200 font-medium">
+                    I architect robust solutions at the intersection of technology, creativity, and AI.
+                </p>
+                <a href="#projects" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    View My Work
+                </a>
+            </div>
+        </section>
 
-        <section id="philosophy" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
-            <div class="container mx-auto px-6 reveal">
-                 <div class="max-w-5xl mx-auto">
-                      <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
-                          I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
-                      </h2>
-                 </div>
-            </div>
-        </section>
+        <section id="philosophy" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
+            <div class="container mx-auto px-6 reveal">
+                 <div class="max-w-5xl mx-auto">
+                      <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
+                          I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
+                      </h2>
+                 </div>
+            </div>
+        </section>
 
-                <section id="projects" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-20">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Featured Projects</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">A selection of case studies demonstrating my approach, showcasing the 'why' and the 'how'.</p>
-                </div>
-
-                <div class="card-container mb-24 reveal">
-                    <div class="card flex flex-col lg:flex-row">
-                        
-                        <div class="lg:w-1/2 bg-dark-bg">
-                            <div class="carousel h-64 md:h-80 lg:h-full" data-carousel>
-                                <button class="carousel-button prev" data-carousel-button="prev" aria-label="Previous Slide">&#10094;</button>
-                                <button class="carousel-button next" data-carousel-button="next" aria-label="Next Slide">&#10095;</button>
-                                <ul class="carousel-slides" data-slides>
-                                    <li class="carousel-slide" data-active>
-                                        <img src="https://placehold.co/800x600/0f172a/fde047?text=Ecosystem+Overview" alt="Overview of the digital ecosystem">
-                                    </li>
-                                    <li class="carousel-slide">
-                                        <img src="https://placehold.co/800x600/1e293b/fde047?text=Interactive+Display+Example" alt="Example of an interactive display">
-                                    </li>
-                                    <li class="carousel-slide">
-                                        <img src="https://placehold.co/800x600/020617/fde047?text=System+Management+Dashboard" alt="System management dashboard">
-                                    </li>
-                                </ul>
+        <section id="projects" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Featured Projects</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">A selection of case studies demonstrating my approach.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                    
+                    <div class="card-container reveal">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Architecting a Digital Ecosystem</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="lg:w-1/2 p-8 md:p-10">
-                            <div class="card-content flex flex-col h-full">
-                                <h3 class="text-3xl font-bold mb-6 text-white">Architecting a Digital Ecosystem</h3>
-                                
-                                <div class="space-y-6 mb-8 text-slate-300">
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Challenge (For Everyone)</h4>
-                                        <p>The organization required a vast network of over 120 interactive digital systems to provide a seamless visitor experience, demanding high uptime and dynamic content updates.</p>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Outcome (For Non-Technical Audience)</h4>
-                                        <p>I currently manage and maintain this ecosystem, ensuring near-constant operational stability and the ability to rapidly deploy new content and experiences across the network.</p>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Implementation (For Technical Audience)</h4>
-                                        <p>Utilized centralized management tools for deployment and monitoring. Integrated A/V technologies (like BrightSign) and developed standardized troubleshooting protocols for rapid response.</p>
-                                    </div>
+                    <div class="card-container reveal" style="transition-delay: 100ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Founding an Open-Source Legacy</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Founder</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <div class="flex flex-wrap gap-3 mt-auto pt-4">
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Systems Management</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">A/V Tech</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Content Creation</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Troubleshooting</span>
+                    <div class="card-container reveal" style="transition-delay: 200ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Automation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-container reveal" style="transition-delay: 300ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">QPST</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="card-container mb-24 reveal">
-                    <div class="card flex flex-col lg:flex-row-reverse">
-                        
-                        <div class="lg:w-1/2 bg-dark-bg">
-                             <img src="https://placehold.co/800x600/1e293b/fde047?text=DaedalusX64+Interface+or+Logo" alt="DaedalusX64 Project Screenshot or Logo" class="w-full h-64 md:h-80 lg:h-full object-cover">
+        <section id="toolkit" class="py-20 lg:py-32 bg-dark-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">My Toolkit</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Technologies and methodologies I use to build robust systems.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
+                    
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">Systems & Infrastructure</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Network Architecture & Management</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> A/V Technology (BrightSign, Q-SYS)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Interactive Experience Design</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Cybersecurity & Vulnerability Assessment</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Remote Systems Troubleshooting</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 150ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">AI & Automation</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Advanced Prompt Engineering</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Generative Media (Veo, Stable Diffusion)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Workflow Automation & Scripting</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> AI-Assisted Coding & Debugging</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Data Analysis & Insight Generation</li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <h3 class="text-xl font-bold mb-5 text-accent">Creative & Development</h3>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Adobe Creative Suite (Premiere, AE)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Video Production & Post-Production</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Open-Source Project Management</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Web Technologies (HTML, CSS, JS)</li>
+                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Low-Level Programming Concepts</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="py-20 lg:py-32 bg-slate-900/70">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Free IT Tools</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Utilities I've developed and shared for the IT community.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto reveal">
+                    <div class="bg-card-bg p-8 lg:p-12 rounded-xl shadow-2xl border border-slate-800">
+                        <h3 class="text-3xl font-bold mb-4 text-white">Windows Maintenance Utility (v1.0)</h3>
+                        <p class="text-slate-300 mb-6 leading-relaxed">
+                            An all-in-one PowerShell utility designed for IT professionals to streamline essential Windows integrity checks and repairs. This script automates SFC (System File Checker), schedules a comprehensive CHKDSK upon the next boot, and executes DISM Restore Health, generating detailed logs for review.
+                        </p>
+
+                        <div class="mb-8">
+                            <h4 class="text-xl font-semibold mb-3 text-accent">Key Features:</h4>
+                            <ul class="list-disc list-inside space-y-2 text-slate-400 ml-4">
+                                <li>Automated System File Checker (<code class="font-mono text-xs bg-slate-800 p-1 rounded">SFC /scannow</code>).</li>
+                                <li>Scheduled Disk Error Checking (<code class="font-mono text-xs bg-slate-800 p-1 rounded">CHKDSK C: /f /r</code>).</li>
+                                <li>Windows Image Repair (<code class="font-mono text-xs bg-slate-800 p-1 rounded">DISM RestoreHealth</code>).</li>
+                                <li>Automatic logging of all operations.</li>
+                            </ul>
                         </div>
 
-                        <div class="lg:w-1/2 p-8 md:p-10">
-                            <div class="card-content flex flex-col h-full">
-                                <h3 class="text-3xl font-bold mb-6 text-white">Founding an Open-Source Legacy</h3>
-                                
-                                <div class="space-y-6 mb-8 text-slate-300">
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Challenge (For Everyone)</h4>
-                                        <p>The technical community lacked a robust, accessible emulator for the Nintendo 64 platform, presenting an opportunity to preserve gaming history and foster innovation.</p>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Outcome (For Non-Technical Audience)</h4>
-                                        <p>I founded and led the DaedalusX64 Project, which achieved millions of downloads and cultivated a thriving, collaborative community of developers dedicated to its improvement.</p>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-semibold mb-2 text-accent font-mono">The Implementation (For Technical Audience)</h4>
-                                        <p>Managed the project lifecycle, coordinated contributions from global developers, and navigated the complexities of low-level hardware emulation and optimization (C/C++, Assembly concepts).</p>
-                                    </div>
-                                </div>
+                        <div class="bg-slate-800/70 border-l-4 border-warning p-6 rounded-lg mb-8">
+                            <h4 class="text-xl font-semibold mb-3 text-warning flex items-center">
+                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                Requirements & Warnings
+                            </h4>
+                            <p class="text-slate-300">
+                                This utility <strong>requires Administrator privileges</strong> to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
+                            </p>
+                        </div>
 
-                                <div class="flex flex-wrap gap-3 mt-auto pt-4">
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Project Management</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Founder</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Community Leadership</span>
-                                    <span class="font-mono text-sm bg-card-bg-light text-slate-300 py-1 px-4 rounded-full">Open Source</span>
-                                </div>
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                                Download Maintenence.zip
+                            </a>
+                            <div class="text-sm font-mono text-slate-500">
+                                Total Downloads: <span id="download-counter">Loading...</span>
                             </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
+                            <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">AI & Generative Media</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Exploring the frontier of creation with tools like Google's Veo.</p>
+                </div>
+                <div class="max-w-5xl mx-auto reveal">
+                    <div class="bg-card-bg rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-slate-800 transition-shadow duration-300 hover:shadow-accent/10">
+                        <video controls class="w-full aspect-video" aria-label="AI Generated Media Example" loading="lazy">
+                            <source src="hero-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="p-6 lg:p-8">
+                            <p class="font-mono text-sm text-slate-400 leading-relaxed">
+                                <span class="text-accent font-semibold block mb-3">Veo 3 Quality Prompt:</span>
+                                 "Hyper-realistic, ultra-detailed 8-second cinematic looping video depicting AI architecture. Visualize intricate, self-assembling structures representing advanced AI neural networks or futuristic AI data processing centers, rendered with laser-precision clarity and sharp focus. These structures should feature crisp, well-defined lines, complex geometries, and elements of parametric design, realized with photorealistic textures suggesting polished metals, transparent crystalline conduits, and emissive surfaces. Intricate micro-details should be visible on all surfaces. Glowing pathways of luminous #21C060 green light, with sharp, distinct edges, pulsate and flow through these structures, symbolizing data streams and AI computational processes with utmost clarity. The architecture itself is composed of sleek, modern materials in deep, rich blues, cool greys, and polished dark tones, creating strong contrast with the vibrant green energy. Over the 8-second loop, the AI architecture subtly expands, reconfigures, or reveals new layers of meticulously detailed complexity in a smooth, organic, yet mathematically precise manner. The camera perspective, possibly with a slight macro feel to emphasize detail, might drift or zoom smoothly, offering evolving, crystal-clear views of this immense, intelligent system. Avoid motion blur; all elements should remain in sharp focus. The final frame seamlessly transitions back to the first for a perfect, hypnotic loop, emphasizing elegant complexity, underlying order, and flawless visual fidelity."
+                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="text-center mb-16 reveal">
-                    <h3 class="text-3xl md:text-4xl tracking-tighter text-white">Additional Expertise</h3>
+        <section id="about" class="py-20 lg:py-32 bg-dark-bg">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">The "Who" Behind the Work</h2>
+                    </div>
+                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left reveal">
+                         <p>
+                            I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
+                        </p>
+                         <p>
+                             I am driven by an innate curiosity to understand <em class="text-accent font-medium not-italic">why</em> things work. This allows me to rapidly diagnose issues and build better, more scalable solutions. I thrive under pressure, communicate effectively (fluent in English and Spanish), and excel at translating technical complexity into strategic action.
+                        </p>
+                    </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="card-container reveal" style="transition-delay: 100ms;">
-                        <div class="card">
-                            <div class="card-content p-8">
-                                <div class="text-accent mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">Automation</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                                        <div class="card-container reveal" style="transition-delay: 200ms;">
-                        <div class="card">
-                            <div class="card-content p-8">
-                                <div class="text-accent mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
-                                    <span class="font-mono text-xs bg-card-bg-light text-slate-300 py-1 px-3 rounded-full">QPST</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Let's build what's next.</h2>
+                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Get in touch to discuss how we can bring your next project to life.</p>
+                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 reveal">
+                    <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        Email Me
+                    </a>
+                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto border-2 border-slate-500 text-slate-300 font-bold py-4 px-10 rounded-lg hover:bg-slate-800 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                        LinkedIn
+                    </a>
                 </div>
+            </div>
+        </section>
 
-            </div>
-        </section>
-                <section id="toolkit" class="py-20 lg:py-32 bg-dark-bg">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">My Toolkit</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Technologies and methodologies I use to build robust systems.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
-                    
-                    <div class="reveal" style="transition-delay: 0ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">Systems & Infrastructure</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Network Architecture & Management</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> A/V Technology (BrightSign, Q-SYS)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Interactive Experience Design</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Cybersecurity & Vulnerability Assessment</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Remote Systems Troubleshooting</li>
-                        </ul>
-                    </div>
+    </main>
 
-                    <div class="reveal" style="transition-delay: 150ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">AI & Automation</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Advanced Prompt Engineering</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Generative Media (Veo, Stable Diffusion)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Workflow Automation & Scripting</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> AI-Assisted Coding & Debugging</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Data Analysis & Insight Generation</li>
-                        </ul>
-                    </div>
+    <footer class="bg-dark-bg border-t border-slate-800/50">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
+            <p>&copy; <span id="year">2025</span> Hugo Luna. All rights reserved.</p>
+            <p class="mt-2 font-mono">Built with passion, curiosity, and code.</p>
+        </div>
+    </footer>
 
-                    <div class="reveal" style="transition-delay: 300ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">Creative & Development</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Adobe Creative Suite (Premiere, AE)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Video Production & Post-Production</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Open-Source Project Management</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Web Technologies (HTML, CSS, JS)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Low-Level Programming Concepts</li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <section id="tools" class="py-20 lg:py-32 bg-slate-900/70">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Free IT Tools</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Utilities I've developed and shared for the IT community.</p>
-                </div>
-
-                <div class="max-w-4xl mx-auto reveal">
-                    <div class="bg-card-bg p-8 lg:p-12 rounded-xl shadow-2xl border border-slate-800">
-                        <h3 class="text-3xl font-bold mb-4 text-white">Windows Maintenance Utility (v1.0)</h3>
-                        <p class="text-slate-300 mb-6 leading-relaxed">
-                            An all-in-one PowerShell utility designed for IT professionals to streamline essential Windows integrity checks and repairs. This script automates SFC (System File Checker), schedules a comprehensive CHKDSK upon the next boot, and executes DISM Restore Health, generating detailed logs for review.
-                        </p>
-
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold mb-3 text-accent">Key Features:</h4>
-                            <ul class="list-disc list-inside space-y-2 text-slate-400 ml-4">
-                                <li>Automated System File Checker (<code class="font-mono text-xs bg-slate-800 p-1 rounded">SFC /scannow</code>).</li>
-                                <li>Scheduled Disk Error Checking (<code class="font-mono text-xs bg-slate-800 p-1 rounded">CHKDSK C: /f /r</code>).</li>
-                                <li>Windows Image Repair (<code class="font-mono text-xs bg-slate-800 p-1 rounded">DISM RestoreHealth</code>).</li>
-                                <li>Automatic logging of all operations.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-slate-800/70 border-l-4 border-warning p-6 rounded-lg mb-8">
-                            <h4 class="text-xl font-semibold mb-3 text-warning flex items-center">
-                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                Requirements & Warnings
-                            </h4>
-                            <p class="text-slate-300">
-                                This utility <strong>requires Administrator privileges</strong> to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
-                            </p>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
-                                Download Maintenence.zip
-                            </a>
-                            <div class="text-sm font-mono text-slate-500">
-                                Total Downloads: <span id="download-counter">Loading...</span>
-                            </div>
-                        </div>
-
-                        <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
-                            <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">AI & Generative Media</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Exploring the frontier of creation with tools like Google's Veo.</p>
-                </div>
-                <div class="max-w-5xl mx-auto reveal">
-                    <div class="bg-card-bg rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-slate-800 transition-shadow duration-300 hover:shadow-accent/10">
-                        <video controls class="w-full aspect-video" aria-label="AI Generated Media Example" loading="lazy">
-                            <source src="hero-video.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="p-6 lg:p-8">
-                            <p class="font-mono text-sm text-slate-400 leading-relaxed">
-                                <span class="text-accent font-semibold block mb-3">Veo 3 Quality Prompt:</span>
-                                 "Hyper-realistic, ultra-detailed 8-second cinematic looping video depicting AI architecture. Visualize intricate, self-assembling structures representing advanced AI neural networks or futuristic AI data processing centers, rendered with laser-precision clarity and sharp focus. These structures should feature crisp, well-defined lines, complex geometries, and elements of parametric design, realized with photorealistic textures suggesting polished metals, transparent crystalline conduits, and emissive surfaces. Intricate micro-details should be visible on all surfaces. Glowing pathways of luminous #21C060 green light, with sharp, distinct edges, pulsate and flow through these structures, symbolizing data streams and AI computational processes with utmost clarity. The architecture itself is composed of sleek, modern materials in deep, rich blues, cool greys, and polished dark tones, creating strong contrast with the vibrant green energy. Over the 8-second loop, the AI architecture subtly expands, reconfigures, or reveals new layers of meticulously detailed complexity in a smooth, organic, yet mathematically precise manner. The camera perspective, possibly with a slight macro feel to emphasize detail, might drift or zoom smoothly, offering evolving, crystal-clear views of this immense, intelligent system. Avoid motion blur; all elements should remain in sharp focus. The final frame seamlessly transitions back to the first for a perfect, hypnotic loop, emphasizing elegant complexity, underlying order, and flawless visual fidelity."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="py-20 lg:py-32 bg-dark-bg">
-            <div class="container mx-auto px-6">
-                <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">The "Who" Behind the Work</h2>
-                    </div>
-                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left reveal">
-                         <p>
-                            I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
-                        </p>
-                         <p>
-                             I am driven by an innate curiosity to understand <em class="text-accent font-medium not-italic">why</em> things work. This allows me to rapidly diagnose issues and build better, more scalable solutions. I thrive under pressure, communicate effectively (fluent in English and Spanish), and excel at translating technical complexity into strategic action.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Let's build what's next.</h2>
-                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Get in touch to discuss how we can bring your next project to life.</p>
-                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 reveal">
-                    <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                        Email Me
-                    </a>
-                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto border-2 border-slate-500 text-slate-300 font-bold py-4 px-10 rounded-lg hover:bg-slate-800 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        LinkedIn
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-dark-bg border-t border-slate-800/50">
-        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
-            <p>&copy; <span id="year">2025</span> Hugo Luna. All rights reserved.</p>
-            <p class="mt-2 font-mono">Built with passion, curiosity, and code.</p>
-        </div>
-    </footer>
-
-    <script>
+    <script>
 
         // =================================================================
-        // NEW Feature: Image Carousel (Slideshow)
-        // =================================================================
-        function initCarousels() {
-            const buttons = document.querySelectorAll("[data-carousel-button]");
+        // Feature: Interactive Constellation Background (Canvas)
+        // =================================================================
+        function initConstellation() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
 
-            buttons.forEach(button => {
-                button.addEventListener("click", () => {
-                    // Determine if the button is 'next' (1) or 'prev' (-1)
-                    const offset = button.dataset.carouselButton === "next" ? 1 : -1;
-                    
-                    // Find the slides container associated with this button.
-                    const slides = button
-                        .closest("[data-carousel]")
-                        .querySelector("[data-slides]");
+            const ctx = canvas.getContext('2d');
+            const heroSection = document.getElementById('hero');
+            let w, h;
 
-                    // Get the currently active slide
-                    const activeSlide = slides.querySelector("[data-active]");
-                    
-                    // Calculate the index of the new slide
-                    let newIndex = [...slides.children].indexOf(activeSlide) + offset;
-                    
-                    // Handle looping
-                    if (newIndex < 0) newIndex = slides.children.length - 1;
-                    if (newIndex >= slides.children.length) newIndex = 0;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-                    // Activate the new slide and deactivate the old one
-                    slides.children[newIndex].dataset.active = true;
-                    delete activeSlide.dataset.active;
+            function resizeCanvas() {
+                w = canvas.width = heroSection.offsetWidth;
+                h = canvas.height = heroSection.offsetHeight;
+                initializeStars();
+            }
+
+            let stars = [];
+            const maxStars = window.innerWidth < 768 ? 80 : 150; 
+            // CHANGE: Increased connection distance slightly for a denser network
+            const connectionDistance = 160;
+            const mouse = { x: null, y: null };
+            const interactionRadius = 100;
+            const baseSpeed = prefersReducedMotion ? 0.1 : 0.3;
+
+            class Star {
+                constructor(x, y) {
+                    this.x = x || Math.random() * w;
+                    this.y = y || Math.random() * h;
+                    this.vx = (Math.random() - 0.5) * baseSpeed;
+                    this.vy = (Math.random() - 0.5) * baseSpeed;
+                    // CHANGE: Stars are now larger and have a minimum size.
+                    this.radius = Math.random() * 1.5 + 0.5; 
+                    // CHANGE: Stars are now more opaque.
+                    this.color = `rgba(248, 250, 252, ${0.7 + Math.random() * 0.3})`;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+
+                update() {
+                    if (this.x < 0 || this.x > w) this.vx = -this.vx;
+                    if (this.y < 0 || this.y > h) this.vy = -this.vy;
+
+                    if (!prefersReducedMotion && mouse.x && mouse.y) {
+                        const dx = this.x - mouse.x;
+                        const dy = this.y - mouse.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < interactionRadius) {
+                            const angle = Math.atan2(dy, dx);
+                            const force = (interactionRadius - distance) / interactionRadius * 0.5;
+                            this.x += Math.cos(angle) * force;
+                            this.y += Math.sin(angle) * force;
+                        }
+                    }
+
+                    this.x += this.vx;
+                    this.y += this.vy;
+                }
+            }
+
+            function connectStars() {
+                for (let i = 0; i < stars.length; i++) {
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const star1 = stars[i];
+                        const star2 = stars[j];
+                        const distance = Math.sqrt(Math.pow(star1.x - star2.x, 2) + Math.pow(star1.y - star2.y, 2));
+
+                        if (distance < connectionDistance) {
+                            const opacity = 1 - distance / connectionDistance;
+                            ctx.beginPath();
+                            ctx.moveTo(star1.x, star1.y);
+                            ctx.lineTo(star2.x, star2.y);
+                            // CHANGE: Lines are now more opaque.
+                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.7})`; 
+                            // CHANGE: Lines are now slightly thicker.
+                            ctx.lineWidth = 1; 
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+                connectStars();
+                requestAnimationFrame(animate);
+            }
+
+            function initializeStars() {
+                 stars = [];
+                for (let i = 0; i < maxStars; i++) {
+                    stars.push(new Star());
+                }
+            }
+            
+            resizeCanvas();
+
+            window.addEventListener('resize', resizeCanvas);
+
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+
+            heroSection.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            animate();
+        }
+
+        // ... (The rest of the script remains the same) ...
+
+        // =================================================================
+        // Feature: Text Decryption Effect
+        // =================================================================
+        function initDecryption() {
+            const elements = document.querySelectorAll('.decrypt');
+            const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const decryptText = (element) => {
+                if (prefersReducedMotion) {
+                    element.style.visibility = 'visible';
+                    return;
+                }
+
+                const originalText = element.textContent.trim();
+                let iterations = 0;
+                const maxIterations = originalText.length;
+                
+                element.style.visibility = 'visible';
+
+                const interval = setInterval(() => {
+                    element.textContent = originalText.split('')
+                        .map((char, index) => {
+                            if (index < iterations) {
+                                return originalText[index];
+                            }
+                            if (char === " ") return " ";
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+
+                    if (iterations >= maxIterations) {
+                        clearInterval(interval);
+                        element.textContent = originalText;
+                    }
+                    
+                    iterations += 1/3;
+                }, 30);
+            };
+
+             const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        decryptText(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // =================================================================
+        // Feature: Smooth Custom Cursor
+        // =================================================================
+        function initCustomCursor() {
+            if (!window.matchMedia("(pointer: fine)").matches) return;
+
+            const cursorDot = document.querySelector("[data-cursor-dot]");
+            const cursorAura = document.querySelector("[data-cursor-aura]");
+            const interactiveElements = document.querySelectorAll("a, button, [role='button'], .glitch");
+
+            window.addEventListener("mousemove", function (e) {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                if (cursorDot) {
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                }
+
+                if (cursorAura) {
+                    cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
+                }
+            });
+
+            interactiveElements.forEach(el => {
+                el.addEventListener("mouseenter", () => {
+                    if (cursorAura) cursorAura.style.transform += ' scale(1.5)';
+                    if (cursorDot) cursorDot.style.opacity = '0.5';
+                });
+                el.addEventListener("mouseleave", () => {
+                     if (cursorDot) cursorDot.style.opacity = '1';
+                });
+            });
+        }
+
+        // =================================================================
+        // Feature: 3D Parallax Tilt Cards
+        // =================================================================
+        function init3DTiltCards() {
+             const cards = document.querySelectorAll('.card');
+            const MAX_TILT = 8; 
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    card.classList.remove('resetting');
+
+                    const rect = card.getBoundingClientRect();
+                    const width = rect.width;
+                    const height = rect.height;
+
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    const normalizedX = (mouseX / width) * 2 - 1;
+                    const normalizedY = (mouseY / height) * 2 - 1;
+
+                    const rotateY = normalizedX * MAX_TILT;
+                    const rotateX = normalizedY * -MAX_TILT; 
+
+                    card.style.setProperty('--mouse-x', `${mouseX}px`);
+                    card.style.setProperty('--mouse-y', `${mouseY}px`);
+
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.classList.add('resetting');
+                    card.style.transform = 'rotateX(0deg) rotateY(0deg)';
                 });
             });
         }
 
 
-        // =================================================================
-        // Feature: Interactive Constellation Background (Canvas)
-        // =================================================================
-        function initConstellation() {
-            const canvas = document.getElementById('hero-canvas');
-            if (!canvas) return;
-
-            const ctx = canvas.getContext('2d');
-            const heroSection = document.getElementById('hero');
-            let w, h;
-
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            function resizeCanvas() {
-                w = canvas.width = heroSection.offsetWidth;
-                h = canvas.height = heroSection.offsetHeight;
-                initializeStars();
-            }
-
-            let stars = [];
-            const maxStars = window.innerWidth < 768 ? 80 : 150; 
-            const connectionDistance = 160;
-            const mouse = { x: null, y: null };
-            const interactionRadius = 100;
-            const baseSpeed = prefersReducedMotion ? 0.1 : 0.3;
-
-            class Star {
-                constructor(x, y) {
-                    this.x = x || Math.random() * w;
-                    this.y = y || Math.random() * h;
-                    this.vx = (Math.random() - 0.5) * baseSpeed;
-                    this.vy = (Math.random() - 0.5) * baseSpeed;
-                    this.radius = Math.random() * 1.5 + 0.5; 
-                    this.color = `rgba(248, 250, 252, ${0.7 + Math.random() * 0.3})`;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-
-                update() {
-                    if (this.x < 0 || this.x > w) this.vx = -this.vx;
-                    if (this.y < 0 || this.y > h) this.vy = -this.vy;
-
-                    if (!prefersReducedMotion && mouse.x && mouse.y) {
-                        const dx = this.x - mouse.x;
-                        const dy = this.y - mouse.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < interactionRadius) {
-                            const angle = Math.atan2(dy, dx);
-                            const force = (interactionRadius - distance) / interactionRadius * 0.5;
-                            this.x += Math.cos(angle) * force;
-                            this.y += Math.sin(angle) * force;
-                        }
-                    }
-
-                    this.x += this.vx;
-                    this.y += this.vy;
-                }
-            }
-
-            function connectStars() {
-                for (let i = 0; i < stars.length; i++) {
-                    for (let j = i + 1; j < stars.length; j++) {
-                        const star1 = stars[i];
-                        const star2 = stars[j];
-                        const distance = Math.sqrt(Math.pow(star1.x - star2.x, 2) + Math.pow(star1.y - star2.y, 2));
-
-                        if (distance < connectionDistance) {
-                            const opacity = 1 - distance / connectionDistance;
-                            ctx.beginPath();
-                            ctx.moveTo(star1.x, star1.y);
-                            ctx.lineTo(star2.x, star2.y);
-                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.7})`; 
-                            ctx.lineWidth = 1; 
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, w, h);
-                stars.forEach(star => {
-                    star.update();
-                    star.draw();
-                });
-                connectStars();
-                requestAnimationFrame(animate);
-            }
-
-            function initializeStars() {
-                 stars = [];
-                for (let i = 0; i < maxStars; i++) {
-                    stars.push(new Star());
-                }
-            }
-            
-            resizeCanvas();
-
-            window.addEventListener('resize', resizeCanvas);
-
-            heroSection.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
-
-            heroSection.addEventListener('mouseleave', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            animate();
-        }
-
-        // =================================================================
-        // Feature: Text Decryption Effect
-        // =================================================================
-        function initDecryption() {
-            const elements = document.querySelectorAll('.decrypt');
-            const chars = '!<>-_\\/[]{}—=+*^?#________';
-
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            const decryptText = (element) => {
-                if (prefersReducedMotion) {
-                    element.style.visibility = 'visible';
-                    return;
-                }
-
-                const originalText = element.textContent.trim();
-                let iterations = 0;
-                const maxIterations = originalText.length;
-                
-                element.style.visibility = 'visible';
-
-                const interval = setInterval(() => {
-                    element.textContent = originalText.split('')
-                        .map((char, index) => {
-                            if (index < iterations) {
-                                return originalText[index];
-                            }
-                            if (char === " ") return " ";
-                            return chars[Math.floor(Math.random() * chars.length)];
-                        })
-                        .join('');
-
-                    if (iterations >= maxIterations) {
-                        clearInterval(interval);
-                        element.textContent = originalText;
-                    }
-                    
-                    iterations += 1/3;
-                }, 30);
-            };
-
-             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        decryptText(entry.target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            elements.forEach(el => observer.observe(el));
-        }
-
-        // =================================================================
-        // Feature: Smooth Custom Cursor
-        // =================================================================
-        function initCustomCursor() {
-            if (!window.matchMedia("(pointer: fine)").matches) return;
-
-            const cursorDot = document.querySelector("[data-cursor-dot]");
-            const cursorAura = document.querySelector("[data-cursor-aura]");
-            // Added .carousel-button to the list of interactive elements
-            const interactiveElements = document.querySelectorAll("a, button, [role='button'], .glitch, .carousel-button");
-
-            window.addEventListener("mousemove", function (e) {
-                const posX = e.clientX;
-                const posY = e.clientY;
-
-                if (cursorDot) {
-                    cursorDot.style.left = `${posX}px`;
-                    cursorDot.style.top = `${posY}px`;
-                }
-
-                if (cursorAura) {
-                    cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
-                }
-            });
-
-            interactiveElements.forEach(el => {
-                el.addEventListener("mouseenter", () => {
-                    if (cursorAura) cursorAura.style.transform += ' scale(1.5)';
-                    if (cursorDot) cursorDot.style.opacity = '0.5';
-                });
-                el.addEventListener("mouseleave", () => {
-                     if (cursorDot) cursorDot.style.opacity = '1';
-                });
-            });
-        }
-
-        // =================================================================
-        // Feature: 3D Parallax Tilt Cards
-        // =================================================================
-        function init3DTiltCards() {
-             const cards = document.querySelectorAll('.card');
-            // Reduced the tilt slightly as the cards are now much larger
-            const MAX_TILT = 6; 
-
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    card.classList.remove('resetting');
-
-                    const rect = card.getBoundingClientRect();
-                    const width = rect.width;
-                    const height = rect.height;
-
-                    const mouseX = e.clientX - rect.left;
-                    const mouseY = e.clientY - rect.top;
-
-                    const normalizedX = (mouseX / width) * 2 - 1;
-                    const normalizedY = (mouseY / height) * 2 - 1;
-
-                    const rotateY = normalizedX * MAX_TILT;
-                    const rotateX = normalizedY * -MAX_TILT; 
-
-                    card.style.setProperty('--mouse-x', `${mouseX}px`);
-                    card.style.setProperty('--mouse-y', `${mouseY}px`);
-
-                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.classList.add('resetting');
-                    card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-                });
-            });
-        }
-
-
-        // =================================================================
-        // Feature: Download Counter Logic (Using GitHub API)
-        // =================================================================
-        
-        const GITHUB_REPO_OWNER = 'Shinydude100';
-        const GITHUB_REPO_NAME = 'Shinydude100.github.io';
-        const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
-        const ASSET_NAME = 'Maintenence.zip'; 
-
-        async function fetchGitHubReleaseData() {
-            const counterElement = document.getElementById('download-counter');
-            const downloadBtn = document.getElementById('download-btn');
-
-            if (!counterElement || !downloadBtn) return;
-
-            try {
-                const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub API request failed: ${response.status}`);
-                }
-                const releases = await response.json();
-
-                if (releases.length === 0) {
-                    console.warn("No releases found on GitHub.");
-                    counterElement.textContent = 'N/A';
-                    return;
-                }
-
-                let totalDownloads = 0;
-                let assetFound = false;
-
-                for (const release of releases) {
-                    const asset = release.assets.find(a => a.name === ASSET_NAME);
-                    if (asset) {
-                        totalDownloads += asset.download_count;
-                        
-                        if (!assetFound) {
-                             downloadBtn.href = asset.browser_download_url;
-                             downloadBtn.removeAttribute('download'); 
-                             assetFound = true;
-                        }
-                    }
-                }
-
-                if (assetFound) {
-                    counterElement.textContent = totalDownloads.toLocaleString();
-                } else {
-                    console.warn(`Asset "${ASSET_NAME}" not found in any release.`);
-                    counterElement.textContent = 'N/A';
-                }
-
-            } catch (error) {
-                console.error("Error fetching download count from GitHub API:", error);
-                counterElement.textContent = 'N/A';
-            }
-        }
-
-
-        // =================================================================
-        // Main Application Logic & Initializations
-        // =================================================================
-
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // Initialize Magical Features
-            initCarousels(); // Initialize Carousels first
-            initConstellation();
-            initDecryption();
-            init3DTiltCards();
-            // Initialize CustomCursor last so it detects all interactive elements (including carousel buttons)
-            initCustomCursor(); 
-
-            // Initialize Standard Features
-            fetchGitHubReleaseData();
-
-            // Dynamic Year Update
-            const yearSpan = document.getElementById('year');
-            if (yearSpan) {
-                const currentYear = new Date().getFullYear();
-                // Ensure the displayed year is at least 2025
-                yearSpan.textContent = Math.max(2025, currentYear);
-            }
-
-            // Intersection Observer for scroll animations (Optimized)
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        revealObserver.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            const elementsToReveal = document.querySelectorAll('.reveal');
-            elementsToReveal.forEach(el => {
-                revealObserver.observe(el);
-            });
-
-            // Mobile Menu Toggle
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
-            const mobileLinks = document.querySelectorAll('.mobile-link');
-
-            const toggleMenu = () => {
-                if (!mobileMenu || !menuIconOpen || !menuIconClose || !menuBtn) return;
-
-                const isHidden = mobileMenu.classList.toggle('hidden');
-                menuIconOpen.classList.toggle('hidden', !isHidden);
-                menuIconClose.classList.toggle('hidden', isHidden);
-                menuBtn.setAttribute('aria-expanded', !isHidden);
-            };
-
-            if(menuBtn) {
-                menuBtn.addEventListener('click', toggleMenu);
-            }
-
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                         toggleMenu();
-                    }
-                });
-            });
-
-            // Dynamic Header Shadow on Scroll
-            const header = document.getElementById('site-header');
-            const handleHeaderScroll = () => {
-                if (!header) return;
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            };
-            window.addEventListener('scroll', handleHeaderScroll);
-            handleHeaderScroll(); 
-
-
-            // Active Navigation Link Highlighting (Scroll Spy)
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            const navObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
-                        
-                        navLinks.forEach(link => link.classList.remove('active'));
-
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                        }
-                    }
-                });
-            }, {
-                rootMargin: "-20% 0px -40% 0px",
-                threshold: 0.1
-            });
-
-            sections.forEach(section => {
-                navObserver.observe(section);
-            });
-        });
-    </script>
+        // =================================================================
+        // Feature: Download Counter Logic (Using GitHub API)
+        // =================================================================
+        
+        const GITHUB_REPO_OWNER = 'Shinydude100';
+        const GITHUB_REPO_NAME = 'Shinydude100.github.io';
+        const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
+        const ASSET_NAME = 'Maintenence.zip'; 
+
+        async function fetchGitHubReleaseData() {
+            const counterElement = document.getElementById('download-counter');
+            const downloadBtn = document.getElementById('download-btn');
+
+            if (!counterElement || !downloadBtn) return;
+
+            try {
+                const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API request failed: ${response.status}`);
+                }
+                const releases = await response.json();
+
+                if (releases.length === 0) {
+                    console.warn("No releases found on GitHub.");
+                    counterElement.textContent = 'N/A';
+                    return;
+                }
+
+                let totalDownloads = 0;
+                let assetFound = false;
+
+                for (const release of releases) {
+                    const asset = release.assets.find(a => a.name === ASSET_NAME);
+                    if (asset) {
+                        totalDownloads += asset.download_count;
+                        
+                        if (!assetFound) {
+                             downloadBtn.href = asset.browser_download_url;
+                             downloadBtn.removeAttribute('download'); 
+                             assetFound = true;
+                        }
+                    }
+                }
+
+                if (assetFound) {
+                    counterElement.textContent = totalDownloads.toLocaleString();
+                } else {
+                    console.warn(`Asset "${ASSET_NAME}" not found in any release.`);
+                    counterElement.textContent = 'N/A';
+                }
+
+            } catch (error) {
+                console.error("Error fetching download count from GitHub API:", error);
+                counterElement.textContent = 'N/A';
+            }
+        }
+
+
+        // =================================================================
+        // Main Application Logic & Initializations
+        // =================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Initialize Magical Features
+            initConstellation();
+            initDecryption();
+            initCustomCursor();
+            init3DTiltCards();
+
+            // Initialize Standard Features
+            fetchGitHubReleaseData();
+
+            // Dynamic Year Update
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                const currentYear = new Date().getFullYear();
+                yearSpan.textContent = Math.max(2025, currentYear);
+            }
+
+            // Intersection Observer for scroll animations (Optimized)
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const elementsToReveal = document.querySelectorAll('.reveal');
+            elementsToReveal.forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            const toggleMenu = () => {
+                if (!mobileMenu || !menuIconOpen || !menuIconClose || !menuBtn) return;
+
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.toggle('hidden', isHidden);
+                menuBtn.setAttribute('aria-expanded', !isHidden);
+            };
+
+            if(menuBtn) {
+                menuBtn.addEventListener('click', toggleMenu);
+            }
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                         toggleMenu();
+                    }
+                });
+            });
+
+            // Dynamic Header Shadow on Scroll
+            const header = document.getElementById('site-header');
+            const handleHeaderScroll = () => {
+                if (!header) return;
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            };
+            window.addEventListener('scroll', handleHeaderScroll);
+            handleHeaderScroll(); 
+
+
+            // Active Navigation Link Highlighting (Scroll Spy)
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        
+                        navLinks.forEach(link => link.classList.remove('active'));
+
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                    }
+                });
+            }, {
+                rootMargin: "-20% 0px -40% 0px",
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                navObserver.observe(section);
+            });
+        });
+    </script>
 
 </body>
 </html>
