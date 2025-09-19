@@ -105,12 +105,14 @@
             #hero {
                 @apply relative overflow-hidden bg-dark-bg;
             }
+            /* CHANGE: Adjusted z-index for proper layering. Canvas is at the absolute bottom. */
             #hero-canvas {
                 @apply absolute inset-0 z-0;
             }
+            /* CHANGE: The overlay now sits ON TOP of the canvas (z-10) but BELOW the content (z-20). */
             #hero::before {
                 content: '';
-                /* Slightly reduced opacity (0.85) to let the constellation show through clearly */
+                /* Slightly reduced opacity (0.85) to let the constellation show through more clearly */
                 @apply absolute inset-0 bg-dark-bg/85 z-10;
             }
             .hero-content {
@@ -285,10 +287,10 @@
         <section id="philosophy" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
             <div class="container mx-auto px-6 reveal">
                  <div class="max-w-5xl mx-auto">
-                     <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
-                        I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
-                    </h2>
-                </div>
+                      <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
+                          I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
+                      </h2>
+                 </div>
             </div>
         </section>
 
@@ -439,7 +441,7 @@
                         </div>
 
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                            <a href="Maintenence.zip" download id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
                                 Download Maintenence.zip
                             </a>
                             <div class="text-sm font-mono text-slate-500">
@@ -489,7 +491,7 @@
                          <p>
                             I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
                         </p>
-                        <p>
+                         <p>
                              I am driven by an innate curiosity to understand <em class="text-accent font-medium not-italic">why</em> things work. This allows me to rapidly diagnose issues and build better, more scalable solutions. I thrive under pressure, communicate effectively (fluent in English and Spanish), and excel at translating technical complexity into strategic action.
                         </p>
                     </div>
@@ -534,7 +536,6 @@
             const heroSection = document.getElementById('hero');
             let w, h;
 
-            // Check for reduced motion preference
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             function resizeCanvas() {
@@ -544,9 +545,9 @@
             }
 
             let stars = [];
-            // Adjust density based on screen size
             const maxStars = window.innerWidth < 768 ? 80 : 150; 
-            const connectionDistance = 150;
+            // CHANGE: Increased connection distance slightly for a denser network
+            const connectionDistance = 160;
             const mouse = { x: null, y: null };
             const interactionRadius = 100;
             const baseSpeed = prefersReducedMotion ? 0.1 : 0.3;
@@ -557,8 +558,10 @@
                     this.y = y || Math.random() * h;
                     this.vx = (Math.random() - 0.5) * baseSpeed;
                     this.vy = (Math.random() - 0.5) * baseSpeed;
-                    this.radius = Math.random() * 1.5;
-                    this.color = `rgba(248, 250, 252, ${0.5 + Math.random() * 0.5})`; // Slate 50
+                    // CHANGE: Stars are now larger and have a minimum size.
+                    this.radius = Math.random() * 1.5 + 0.5; 
+                    // CHANGE: Stars are now more opaque.
+                    this.color = `rgba(248, 250, 252, ${0.7 + Math.random() * 0.3})`;
                 }
 
                 draw() {
@@ -569,11 +572,9 @@
                 }
 
                 update() {
-                    // Boundary checks
                     if (this.x < 0 || this.x > w) this.vx = -this.vx;
                     if (this.y < 0 || this.y > h) this.vy = -this.vy;
 
-                    // Mouse interaction (subtle warping) - only if motion is allowed
                     if (!prefersReducedMotion && mouse.x && mouse.y) {
                         const dx = this.x - mouse.x;
                         const dy = this.y - mouse.y;
@@ -604,9 +605,10 @@
                             ctx.beginPath();
                             ctx.moveTo(star1.x, star1.y);
                             ctx.lineTo(star2.x, star2.y);
-                            // Use a subtle color (Slate 400) for the lines
-                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.5})`;
-                            ctx.lineWidth = 0.5;
+                            // CHANGE: Lines are now more opaque.
+                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.7})`; 
+                            // CHANGE: Lines are now slightly thicker.
+                            ctx.lineWidth = 1; 
                             ctx.stroke();
                         }
                     }
@@ -623,7 +625,6 @@
                 requestAnimationFrame(animate);
             }
 
-            // Initialize stars
             function initializeStars() {
                  stars = [];
                 for (let i = 0; i < maxStars; i++) {
@@ -631,12 +632,10 @@
                 }
             }
             
-            resizeCanvas(); // Set initial size and create stars
+            resizeCanvas();
 
-            // Event listeners
             window.addEventListener('resize', resizeCanvas);
 
-            // Track mouse only within the hero section
             heroSection.addEventListener('mousemove', (e) => {
                 const rect = canvas.getBoundingClientRect();
                 mouse.x = e.clientX - rect.left;
@@ -651,6 +650,8 @@
             animate();
         }
 
+        // ... (The rest of the script remains the same) ...
+
         // =================================================================
         // Feature: Text Decryption Effect
         // =================================================================
@@ -658,11 +659,9 @@
             const elements = document.querySelectorAll('.decrypt');
             const chars = '!<>-_\\/[]{}—=+*^?#________';
 
-            // Check if user prefers reduced motion
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             const decryptText = (element) => {
-                // Skip animation if user prefers reduced motion
                 if (prefersReducedMotion) {
                     element.style.visibility = 'visible';
                     return;
@@ -687,10 +686,10 @@
 
                     if (iterations >= maxIterations) {
                         clearInterval(interval);
-                        element.textContent = originalText; // Ensure final text is correct
+                        element.textContent = originalText;
                     }
                     
-                    iterations += 1/3; // Speed of decoding
+                    iterations += 1/3;
                 }, 30);
             };
 
@@ -710,40 +709,33 @@
         // Feature: Smooth Custom Cursor
         // =================================================================
         function initCustomCursor() {
-            // Check if the device supports fine pointer (mouse/trackpad)
             if (!window.matchMedia("(pointer: fine)").matches) return;
 
             const cursorDot = document.querySelector("[data-cursor-dot]");
             const cursorAura = document.querySelector("[data-cursor-aura]");
-            // Select elements that should trigger a cursor change
             const interactiveElements = document.querySelectorAll("a, button, [role='button'], .glitch");
 
             window.addEventListener("mousemove", function (e) {
                 const posX = e.clientX;
                 const posY = e.clientY;
 
-                // Update the dot position instantly
                 if (cursorDot) {
                     cursorDot.style.left = `${posX}px`;
                     cursorDot.style.top = `${posY}px`;
                 }
 
-                // Update the aura position (using CSS transitions via transform for smooth lagging effect)
                 if (cursorAura) {
-                    // Center the aura (40px wide/high) around the cursor
                     cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
                 }
             });
 
-            // Add effects when hovering over interactive elements
             interactiveElements.forEach(el => {
                 el.addEventListener("mouseenter", () => {
                     if (cursorAura) cursorAura.style.transform += ' scale(1.5)';
                     if (cursorDot) cursorDot.style.opacity = '0.5';
                 });
                 el.addEventListener("mouseleave", () => {
-                     // The CSS transition handles the smooth return to original state
-                    if (cursorDot) cursorDot.style.opacity = '1';
+                     if (cursorDot) cursorDot.style.opacity = '1';
                 });
             });
         }
@@ -753,44 +745,33 @@
         // =================================================================
         function init3DTiltCards() {
              const cards = document.querySelectorAll('.card');
-            // Maximum tilt angle (degrees)
             const MAX_TILT = 8; 
 
             cards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
-                    // Remove the smooth reset class if the user re-enters quickly
                     card.classList.remove('resetting');
 
                     const rect = card.getBoundingClientRect();
                     const width = rect.width;
                     const height = rect.height;
 
-                    // Mouse position relative to the card element
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
 
-                    // Calculate normalized position (-1 to 1) relative to the center
                     const normalizedX = (mouseX / width) * 2 - 1;
                     const normalizedY = (mouseY / height) * 2 - 1;
 
-                    // Calculate rotation angles. Y-axis rotation depends on X movement, and vice-versa.
                     const rotateY = normalizedX * MAX_TILT;
-                    // Invert X rotation for natural feel
                     const rotateX = normalizedY * -MAX_TILT; 
 
-                    // Update CSS variables for the spotlight position
                     card.style.setProperty('--mouse-x', `${mouseX}px`);
                     card.style.setProperty('--mouse-y', `${mouseY}px`);
 
-                    // Apply the 3D rotation transform
                     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                 });
 
-                // Handle mouse leaving the card area
                 card.addEventListener('mouseleave', () => {
-                    // Add a class to enable smooth transition back to center
                     card.classList.add('resetting');
-                    // Reset the transform
                     card.style.transform = 'rotateX(0deg) rotateY(0deg)';
                 });
             });
@@ -813,8 +794,6 @@
             if (!counterElement || !downloadBtn) return;
 
             try {
-                // Fetch releases, forcing bypass of browser cache. 
-                // Note: GitHub's server-side statistics processing delay will still cause updates to take time.
                 const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
                 
                 if (!response.ok) {
@@ -831,13 +810,11 @@
                 let totalDownloads = 0;
                 let assetFound = false;
 
-                // GitHub API returns releases newest first.
                 for (const release of releases) {
                     const asset = release.assets.find(a => a.name === ASSET_NAME);
                     if (asset) {
                         totalDownloads += asset.download_count;
                         
-                        // Update the download button link to the official asset URL from the *latest* release
                         if (!assetFound) {
                              downloadBtn.href = asset.browser_download_url;
                              downloadBtn.removeAttribute('download'); 
@@ -879,7 +856,6 @@
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 const currentYear = new Date().getFullYear();
-                // Ensure the year displays the current year if it's 2025 or later.
                 yearSpan.textContent = Math.max(2025, currentYear);
             }
 
@@ -923,7 +899,7 @@
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                        toggleMenu();
+                         toggleMenu();
                     }
                 });
             });
