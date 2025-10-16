@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Hugo Luna - Creative Technologist & Systems Builder</title>
-    <meta name="description" content="Hugo Luna: Architecting robust solutions at the intersection of technology, creativity, and AI. Expert in systems management, open-source leadership, and AI integration.">
+    <title>Hugo's DFW Tech Support & PC Builds | Dallas, Irving, TX</title>
+    <meta name="description" content="Expert, affordable PC builds and fast IT/tech support in the Dallas/DFW area. Serving freelancers and small businesses in Irving, Dallas, and Fort Worth. Get a free quote today.">
     
-    <meta property="og:title" content="Hugo Luna - Creative Technologist & Systems Builder">
-    <meta property="og:description" content="Architecting robust solutions at the intersection of technology, creativity, and AI.">
+    <meta property="og:title" content="Hugo's DFW Tech Support & PC Builds">
+    <meta property="og:description" content="Expert, affordable PC builds and fast IT/tech support in the Dallas/DFW area.">
     <meta property="og:type" content="website">
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,11 +95,11 @@
 
         @layer components {
              /* Header - Dynamic background/shadow on scroll */
-             #site-header {
-                @apply transition-all duration-300 ease-in-out;
+            #site-header {
+                 @apply transition-all duration-300 ease-in-out;
             }
             #site-header.scrolled {
-                @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
+                 @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
             }
 
             /* Hero Background (Now Interactive Canvas) */
@@ -178,10 +179,10 @@
             }
             
              /* NEW: Decrypting text effect initialization */
-             .decrypt {
-                /* Ensures the space is held while decrypting */
-                visibility: hidden; 
-             }
+            .decrypt {
+                 /* Ensures the space is held while decrypting */
+                 visibility: hidden; 
+            }
 
             /* Glitch Effect */
             .glitch {
@@ -234,14 +235,12 @@
     <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="Hugo Luna" aria-label="Home" style="--glitch-bg: transparent;">Hugo Luna</a>
+                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="DFW Tech & Builds" aria-label="Home" style="--glitch-bg: transparent;">DFW Tech & Builds</a>
                 
                 <nav class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#philosophy" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Philosophy</a>
-                    <a href="#projects" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Projects</a>
-                    <a href="#toolkit" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Toolkit</a>
-                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Tools</a>
-                    <a href="#ai-creations" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">AI Creations</a>
+                    <a href="#services" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Services</a>
+                    <a href="#pc-builds" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Custom PCs</a>
+                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Free Tools</a>
                     <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
                     <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
                 </nav>
@@ -256,11 +255,9 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800">
             <nav class="container mx-auto px-6 py-4 flex flex-col space-y-4 text-md font-medium text-slate-300">
-                <a href="#philosophy" class="mobile-link hover:text-accent transition-colors">Philosophy</a>
-                <a href="#projects" class="mobile-link hover:text-accent transition-colors">Projects</a>
-                <a href="#toolkit" class="mobile-link hover:text-accent transition-colors">Toolkit</a>
-                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Tools</a>
-                <a href="#ai-creations" class="mobile-link hover:text-accent transition-colors">AI Creations</a>
+                <a href="#services" class="mobile-link hover:text-accent transition-colors">Services</a>
+                <a href="#pc-builds" class="mobile-link hover:text-accent transition-colors">Custom PCs</a>
+                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Free Tools</a>
                 <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
                 <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
             </nav>
@@ -272,45 +269,76 @@
              <canvas id="hero-canvas" aria-label="Interactive network constellation background"></canvas>
 
             <div class="hero-content container mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tighter text-white glitch" data-text="Creative Technologist & Systems Builder.">
-                    Creative Technologist & Systems Builder.
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-white glitch" data-text="DFW Tech Support & Custom PC Builds.">
+                    DFW Tech Support & Custom PC Builds.
                 </h1>
                 <p class="mt-8 text-xl md:text-2xl max-w-4xl mx-auto text-slate-200 font-medium">
-                    I architect robust solutions at the intersection of technology, creativity, and AI.
+                    Fast, reliable IT support and high-performance computer builds for freelancers and small businesses in the Dallas / Fort Worth Metroplex.
                 </p>
-                <a href="#projects" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                    View My Work
+                <a href="#contact" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    Get a Free Quote
                 </a>
             </div>
         </section>
 
-        <section id="philosophy" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
+        <section id="services" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
             <div class="container mx-auto px-6 reveal">
-                 <div class="max-w-5xl mx-auto">
-                      <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-relaxed text-slate-200">
-                          I don’t just solve problems; I <span class="text-accent font-bold">build the systems</span> that prevent them. My work blends high-level technical knowledge with deep creative intuition to turn chaos into clarity. If a better way exists, I find it or <span class="text-accent font-bold">build it myself</span>.
-                      </h2>
-                 </div>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Our Services</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Providing comprehensive IT solutions across the DFW area.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
+        
+                    <div class="card-container reveal">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Reliable Tech Support</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Fast troubleshooting, virus removal, software setup, and general IT assistance for Windows and macOS. Minimize downtime and keep your business running.</p>
+                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">IT Support</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="card-container reveal" style="transition-delay: 100ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Custom PC Builds</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">High-performance workstations tailored for creative professionals, gaming, or optimized office use. We select the best components for your budget and needs.</p>
+                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">Hardware</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="card-container reveal" style="transition-delay: 200ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-2xl font-bold mb-4 text-white">Networking & Security</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Setup and optimization of home office or small business networks. Implementing backup solutions and basic cybersecurity assessments.</p>
+                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">Infrastructure</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
             </div>
         </section>
 
-        <section id="projects" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
+        <section id="pc-builds" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Featured Projects</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">A selection of case studies demonstrating my approach.</p>
+                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Custom PC Builds</h2>
+                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Performance tailored to your exact needs and budget.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                     
                     <div class="card-container reveal">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Architecting a Digital Ecosystem</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Currently manage, troubleshoot, and create content for over 120 interactive digital systems, ensuring a seamless, high-uptime visitor experience.</p>
+                                <h3 class="text-2xl font-bold mb-4 text-white">The Creative Workstation</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Optimized for Adobe Premiere, After Effects, DaVinci Resolve, and 3D rendering. Focused on multi-core performance, high RAM capacity, and powerful GPUs.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Systems Management</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">A/V Tech</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Content Creation</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Video Editing</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Design</span>
                                 </div>
                             </div>
                         </div>
@@ -319,12 +347,11 @@
                     <div class="card-container reveal" style="transition-delay: 100ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Founding an Open-Source Legacy</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Founded and led the DaedalusX64 Project, an open-source Nintendo 64 emulator that achieved millions of downloads and built a thriving developer community.</p>
+                                <h3 class="text-2xl font-bold mb-4 text-white">The High-End Gaming Rig</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Built for maximum FPS and stunning visuals. We optimize cooling, select the latest GPUs, and ensure a clean, professional aesthetic with expert cable management.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Project Management</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Founder</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Community Leadership</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Gaming</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Streaming</span>
                                 </div>
                             </div>
                         </div>
@@ -333,12 +360,11 @@
                     <div class="card-container reveal" style="transition-delay: 200ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">The AI Force Multiplier</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">As an AI Power User, I leverage advanced AI platforms daily to automate tasks, streamline creative workflows, and enhance data-driven decision-making.</p>
+                                <h3 class="text-2xl font-bold mb-4 text-white">The Reliable Office PC</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">Cost-effective solutions for daily productivity. Focused on speed, reliability, and seamless multitasking for small business and home office environments.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">AI Integration</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Prompt Engineering</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Automation</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Productivity</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Small Business</span>
                                 </div>
                             </div>
                         </div>
@@ -347,61 +373,16 @@
                     <div class="card-container reveal" style="transition-delay: 300ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Uncovering a Zero-Day Exploit</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Utilized specialized tools for remote programming, leading to the discovery and confidential reporting of a critical zero-day exploit for a major telecom company.</p>
+                                <h3 class="text-2xl font-bold mb-4 text-white">Our Build Process</h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">It starts with a consultation to understand your needs. We provide a detailed parts list, handle procurement, assemble the PC, and perform rigorous stress testing.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Cybersecurity</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Vulnerability Assessment</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">QPST</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Consultation</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Assembly</span>
+                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Testing</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="toolkit" class="py-20 lg:py-32 bg-dark-bg">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">My Toolkit</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Technologies and methodologies I use to build robust systems.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
-                    
-                    <div class="reveal" style="transition-delay: 0ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">Systems & Infrastructure</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Network Architecture & Management</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> A/V Technology (BrightSign, Q-SYS)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Interactive Experience Design</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Cybersecurity & Vulnerability Assessment</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Remote Systems Troubleshooting</li>
-                        </ul>
-                    </div>
-
-                    <div class="reveal" style="transition-delay: 150ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">AI & Automation</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Advanced Prompt Engineering</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Generative Media (Veo, Stable Diffusion)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Workflow Automation & Scripting</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> AI-Assisted Coding & Debugging</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Data Analysis & Insight Generation</li>
-                        </ul>
-                    </div>
-
-                    <div class="reveal" style="transition-delay: 300ms;">
-                        <h3 class="text-xl font-bold mb-5 text-accent">Creative & Development</h3>
-                        <ul class="space-y-3 text-slate-300">
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Adobe Creative Suite (Premiere, AE)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Video Production & Post-Production</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Open-Source Project Management</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Web Technologies (HTML, CSS, JS)</li>
-                            <li class="flex items-start"><span class="text-accent mr-3 mt-1 font-mono">→</span> Low-Level Programming Concepts</li>
-                        </ul>
-                    </div>
-
                 </div>
             </div>
         </section>
@@ -458,41 +439,18 @@
             </div>
         </section>
         
-        <section id="ai-creations" class="py-20 lg:py-32 bg-gradient-to-b from-slate-900/70 to-dark-bg">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">AI & Generative Media</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Exploring the frontier of creation with tools like Google's Veo.</p>
-                </div>
-                <div class="max-w-5xl mx-auto reveal">
-                    <div class="bg-card-bg rounded-xl overflow-hidden shadow-2xl shadow-black/40 border border-slate-800 transition-shadow duration-300 hover:shadow-accent/10">
-                        <video controls class="w-full aspect-video" aria-label="AI Generated Media Example" loading="lazy">
-                            <source src="hero-video.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="p-6 lg:p-8">
-                            <p class="font-mono text-sm text-slate-400 leading-relaxed">
-                                <span class="text-accent font-semibold block mb-3">Veo 3 Quality Prompt:</span>
-                                 "Hyper-realistic, ultra-detailed 8-second cinematic looping video depicting AI architecture. Visualize intricate, self-assembling structures representing advanced AI neural networks or futuristic AI data processing centers, rendered with laser-precision clarity and sharp focus. These structures should feature crisp, well-defined lines, complex geometries, and elements of parametric design, realized with photorealistic textures suggesting polished metals, transparent crystalline conduits, and emissive surfaces. Intricate micro-details should be visible on all surfaces. Glowing pathways of luminous #21C060 green light, with sharp, distinct edges, pulsate and flow through these structures, symbolizing data streams and AI computational processes with utmost clarity. The architecture itself is composed of sleek, modern materials in deep, rich blues, cool greys, and polished dark tones, creating strong contrast with the vibrant green energy. Over the 8-second loop, the AI architecture subtly expands, reconfigures, or reveals new layers of meticulously detailed complexity in a smooth, organic, yet mathematically precise manner. The camera perspective, possibly with a slight macro feel to emphasize detail, might drift or zoom smoothly, offering evolving, crystal-clear views of this immense, intelligent system. Avoid motion blur; all elements should remain in sharp focus. The final frame seamlessly transitions back to the first for a perfect, hypnotic loop, emphasizing elegant complexity, underlying order, and flawless visual fidelity."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="about" class="py-20 lg:py-32 bg-dark-bg">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">The "Who" Behind the Work</h2>
+                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">About Hugo's DFW Tech</h2>
                     </div>
                     <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left reveal">
                          <p>
-                            I'm a neurodivergent creative technologist and relentless problem-solver with 20+ years of unconventional, hands-on experience spanning video production, low-level programming, and complex systems architecture.
+                            Based in Irving, TX, and serving the entire Dallas/Fort Worth Metroplex. I'm Hugo Luna, an IT professional and systems builder with 20+ years of hands-on experience spanning complex systems architecture, troubleshooting, and hardware optimization.
                         </p>
                          <p>
-                             I am driven by an innate curiosity to understand <em class="text-accent font-medium not-italic">why</em> things work. This allows me to rapidly diagnose issues and build better, more scalable solutions. I thrive under pressure, communicate effectively (fluent in English and Spanish), and excel at translating technical complexity into strategic action.
+                            My focus is providing reliable, clear, and effective IT solutions for freelancers and small businesses. I understand that when your technology fails, your business stops. I excel at rapidly diagnosing issues and building better, more stable solutions to prevent downtime. (Fluent in English and Spanish).
                         </p>
                     </div>
                 </div>
@@ -501,11 +459,11 @@
 
         <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Let's build what's next.</h2>
-                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Get in touch to discuss how we can bring your next project to life.</p>
+                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Get Support or a Quote.</h2>
+                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Contact me for IT support inquiries or to discuss your custom PC build.</p>
                 <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 reveal">
                     <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                        Email Me
+                        Email for a Quote
                     </a>
                     <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto border-2 border-slate-500 text-slate-300 font-bold py-4 px-10 rounded-lg hover:bg-slate-800 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
                         LinkedIn
@@ -518,8 +476,8 @@
 
     <footer class="bg-dark-bg border-t border-slate-800/50">
         <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
-            <p>&copy; <span id="year">2025</span> Hugo Luna. All rights reserved.</p>
-            <p class="mt-2 font-mono">Built with passion, curiosity, and code.</p>
+            <p>&copy; <span id="year">2025</span> Hugo's DFW Tech Support & PC Builds.</p>
+            <p class="mt-2 font-mono">Serving Irving, Dallas, and the DFW Metroplex.</p>
         </div>
     </footer>
 
@@ -856,6 +814,7 @@
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 const currentYear = new Date().getFullYear();
+                // Ensure the year doesn't go backward if the current year is past 2025
                 yearSpan.textContent = Math.max(2025, currentYear);
             }
 
