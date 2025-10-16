@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://api.github.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src https://api.github.com;">
     
     <title>Hugo's DFW Tech Support & PC Builds | Dallas, Irving, TX</title>
     <meta name="description" content="Expert, affordable PC builds and fast IT/tech support in the Dallas/DFW area. Serving freelancers and small businesses in Irving, Dallas, and Fort Worth. Get a free quote today.">
@@ -15,6 +17,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -425,12 +429,12 @@
                             <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
                                 Download Maintenence.zip
                             </a>
-                            <div class="text-sm font-mono text-slate-500">
+                            <div class="text-sm font-mono text-slate-400">
                                 Total Downloads: <span id="download-counter">Loading...</span>
                             </div>
                         </div>
 
-                        <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
+                        <div class="text-xs text-slate-400 border-t border-slate-800 pt-6">
                             <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
                         </div>
 
@@ -475,7 +479,7 @@
     </main>
 
     <footer class="bg-dark-bg border-t border-slate-800/50">
-        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-500">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
             <p>&copy; <span id="year">2025</span> Hugo's DFW Tech Support & PC Builds.</p>
             <p class="mt-2 font-mono">Serving Irving, Dallas, and the DFW Metroplex.</p>
         </div>
@@ -497,14 +501,16 @@
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             function resizeCanvas() {
-                w = canvas.width = heroSection.offsetWidth;
-                h = canvas.height = heroSection.offsetHeight;
+                // Check if heroSection exists before accessing properties
+                if (heroSection) {
+                    w = canvas.width = heroSection.offsetWidth;
+                    h = canvas.height = heroSection.offsetHeight;
+                }
                 initializeStars();
             }
 
             let stars = [];
             const maxStars = window.innerWidth < 768 ? 80 : 150; 
-            // CHANGE: Increased connection distance slightly for a denser network
             const connectionDistance = 160;
             const mouse = { x: null, y: null };
             const interactionRadius = 100;
@@ -516,9 +522,7 @@
                     this.y = y || Math.random() * h;
                     this.vx = (Math.random() - 0.5) * baseSpeed;
                     this.vy = (Math.random() - 0.5) * baseSpeed;
-                    // CHANGE: Stars are now larger and have a minimum size.
                     this.radius = Math.random() * 1.5 + 0.5; 
-                    // CHANGE: Stars are now more opaque.
                     this.color = `rgba(248, 250, 252, ${0.7 + Math.random() * 0.3})`;
                 }
 
@@ -563,9 +567,7 @@
                             ctx.beginPath();
                             ctx.moveTo(star1.x, star1.y);
                             ctx.lineTo(star2.x, star2.y);
-                            // CHANGE: Lines are now more opaque.
                             ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.7})`; 
-                            // CHANGE: Lines are now slightly thicker.
                             ctx.lineWidth = 1; 
                             ctx.stroke();
                         }
@@ -573,6 +575,7 @@
                 }
             }
 
+            let animationFrameId;
             function animate() {
                 ctx.clearRect(0, 0, w, h);
                 stars.forEach(star => {
@@ -580,35 +583,39 @@
                     star.draw();
                 });
                 connectStars();
-                requestAnimationFrame(animate);
+                animationFrameId = requestAnimationFrame(animate);
             }
 
             function initializeStars() {
                  stars = [];
-                for (let i = 0; i < maxStars; i++) {
-                    stars.push(new Star());
-                }
+                 // Ensure w and h are defined before creating stars
+                 if (w && h) {
+                    for (let i = 0; i < maxStars; i++) {
+                        stars.push(new Star());
+                    }
+                 }
             }
             
-            resizeCanvas();
+            // Initial setup
+            if (heroSection) {
+                resizeCanvas();
 
-            window.addEventListener('resize', resizeCanvas);
+                window.addEventListener('resize', resizeCanvas);
 
-            heroSection.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
+                heroSection.addEventListener('mousemove', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    mouse.x = e.clientX - rect.left;
+                    mouse.y = e.clientY - rect.top;
+                });
 
-            heroSection.addEventListener('mouseleave', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
+                heroSection.addEventListener('mouseleave', () => {
+                    mouse.x = null;
+                    mouse.y = null;
+                });
 
-            animate();
+                animate();
+            }
         }
-
-        // ... (The rest of the script remains the same) ...
 
         // =================================================================
         // Feature: Text Decryption Effect
@@ -683,6 +690,7 @@
                 }
 
                 if (cursorAura) {
+                    // Using transform for the aura movement
                     cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
                 }
             });
@@ -808,6 +816,7 @@
             init3DTiltCards();
 
             // Initialize Standard Features
+            // Delay fetching GitHub data slightly to prioritize rendering if needed, but generally okay on DOMContentLoaded
             fetchGitHubReleaseData();
 
             // Dynamic Year Update
