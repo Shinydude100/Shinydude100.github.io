@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
+    <link rel="preload" href="dallas-skyline-bg.jpg" as="image">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -61,6 +63,8 @@
                     // Background pattern utility for texture
                     backgroundImage: {
                        'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
+                       // NEW: Define the hero image URL
+                       'hero-skyline': "url('dallas-skyline-bg.jpg')",
                     },
                     backgroundSize: {
                         'pattern': '24px 24px',
@@ -79,7 +83,7 @@
                 @apply font-black;
             }
 
-            /* NEW: Custom Cursor (Desktop only) */
+            /* Custom Cursor (Desktop only) */
             @media (pointer: fine) {
                 html {
                     cursor: none;
@@ -106,25 +110,24 @@
                  @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
             }
 
-            /* Hero Background (Now Interactive Canvas) */
+            /* UPDATED: Hero Background (Now Static Image) */
             #hero {
-                @apply relative overflow-hidden bg-dark-bg;
+                /* Set up the background image, center it, and ensure it covers the area */
+                @apply relative overflow-hidden bg-dark-bg bg-hero-skyline bg-center bg-cover;
             }
-            /* CHANGE: Adjusted z-index for proper layering. Canvas is at the absolute bottom. */
-            #hero-canvas {
-                @apply absolute inset-0 z-0;
-            }
-            /* CHANGE: The overlay now sits ON TOP of the canvas (z-10) but BELOW the content (z-20). */
+
+            /* UPDATED: The overlay sits on top of the image to ensure text legibility */
             #hero::before {
                 content: '';
-                /* Slightly reduced opacity (0.85) to let the constellation show through more clearly */
-                @apply absolute inset-0 bg-dark-bg/85 z-10;
+                /* A dark overlay with a gradient for better blending: Darker at the bottom, lighter at the top */
+                @apply absolute inset-0 z-10;
+                background-image: linear-gradient(to top, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0.5) 100%);
             }
             .hero-content {
                 @apply relative z-20;
             }
 
-            /* Interactive Card Hover Effect (Spotlight + NEW: 3D Tilt) */
+            /* Interactive Card Hover Effect (Spotlight + 3D Tilt) */
             .card-container {
                 /* Required for 3D effect */
                 perspective: 1000px; 
@@ -182,7 +185,7 @@
                 transform: translateY(0);
             }
             
-             /* NEW: Decrypting text effect initialization */
+             /* Decrypting text effect initialization */
             .decrypt {
                  /* Ensures the space is held while decrypting */
                  visibility: hidden; 
@@ -191,7 +194,6 @@
             /* Glitch Effect */
             .glitch {
                 @apply relative inline-block;
-                 --glitch-bg: theme('colors.dark-bg');
             }
             
             /* Accessibility: Reduce motion for users who prefer it */
@@ -199,7 +201,8 @@
                 .glitch:hover::before, .glitch:hover::after {
                     content: attr(data-text);
                     @apply absolute top-0 left-0 w-full h-full overflow-hidden;
-                    background: var(--glitch-bg);
+                    /* NEW: Use a semi-transparent dark background for the glitch effect over the image */
+                    background: rgba(2, 6, 23, 0.9);
                 }
 
                 .glitch:hover::before {
@@ -239,7 +242,7 @@
     <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="DFW Tech & Builds" aria-label="Home" style="--glitch-bg: transparent;">DFW Tech & Builds</a>
+                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="DFW Tech & Builds" aria-label="Home">DFW Tech & Builds</a>
                 
                 <nav class="hidden md:flex space-x-8 text-sm font-medium">
                     <a href="#services" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Services</a>
@@ -270,8 +273,6 @@
 
     <main>
         <section id="hero" class="min-h-screen flex items-center">
-             <canvas id="hero-canvas" aria-label="Interactive network constellation background"></canvas>
-
             <div class="hero-content container mx-auto px-6 py-24 text-center">
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-white glitch" data-text="DFW Tech Support & Custom PC Builds.">
                     DFW Tech Support & Custom PC Builds.
@@ -433,7 +434,7 @@
                                 Total Downloads: <span id="download-counter">Loading...</span>
                             </div>
                         </div>
-
+                        
                         <div class="text-xs text-slate-400 border-t border-slate-800 pt-6">
                             <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
                         </div>
@@ -486,136 +487,9 @@
     </footer>
 
     <script>
-
         // =================================================================
-        // Feature: Interactive Constellation Background (Canvas)
+        // NOTE: initConstellation() function has been removed.
         // =================================================================
-        function initConstellation() {
-            const canvas = document.getElementById('hero-canvas');
-            if (!canvas) return;
-
-            const ctx = canvas.getContext('2d');
-            const heroSection = document.getElementById('hero');
-            let w, h;
-
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            function resizeCanvas() {
-                // Check if heroSection exists before accessing properties
-                if (heroSection) {
-                    w = canvas.width = heroSection.offsetWidth;
-                    h = canvas.height = heroSection.offsetHeight;
-                }
-                initializeStars();
-            }
-
-            let stars = [];
-            const maxStars = window.innerWidth < 768 ? 80 : 150; 
-            const connectionDistance = 160;
-            const mouse = { x: null, y: null };
-            const interactionRadius = 100;
-            const baseSpeed = prefersReducedMotion ? 0.1 : 0.3;
-
-            class Star {
-                constructor(x, y) {
-                    this.x = x || Math.random() * w;
-                    this.y = y || Math.random() * h;
-                    this.vx = (Math.random() - 0.5) * baseSpeed;
-                    this.vy = (Math.random() - 0.5) * baseSpeed;
-                    this.radius = Math.random() * 1.5 + 0.5; 
-                    this.color = `rgba(248, 250, 252, ${0.7 + Math.random() * 0.3})`;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-
-                update() {
-                    if (this.x < 0 || this.x > w) this.vx = -this.vx;
-                    if (this.y < 0 || this.y > h) this.vy = -this.vy;
-
-                    if (!prefersReducedMotion && mouse.x && mouse.y) {
-                        const dx = this.x - mouse.x;
-                        const dy = this.y - mouse.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < interactionRadius) {
-                            const angle = Math.atan2(dy, dx);
-                            const force = (interactionRadius - distance) / interactionRadius * 0.5;
-                            this.x += Math.cos(angle) * force;
-                            this.y += Math.sin(angle) * force;
-                        }
-                    }
-
-                    this.x += this.vx;
-                    this.y += this.vy;
-                }
-            }
-
-            function connectStars() {
-                for (let i = 0; i < stars.length; i++) {
-                    for (let j = i + 1; j < stars.length; j++) {
-                        const star1 = stars[i];
-                        const star2 = stars[j];
-                        const distance = Math.sqrt(Math.pow(star1.x - star2.x, 2) + Math.pow(star1.y - star2.y, 2));
-
-                        if (distance < connectionDistance) {
-                            const opacity = 1 - distance / connectionDistance;
-                            ctx.beginPath();
-                            ctx.moveTo(star1.x, star1.y);
-                            ctx.lineTo(star2.x, star2.y);
-                            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.7})`; 
-                            ctx.lineWidth = 1; 
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            let animationFrameId;
-            function animate() {
-                ctx.clearRect(0, 0, w, h);
-                stars.forEach(star => {
-                    star.update();
-                    star.draw();
-                });
-                connectStars();
-                animationFrameId = requestAnimationFrame(animate);
-            }
-
-            function initializeStars() {
-                 stars = [];
-                 // Ensure w and h are defined before creating stars
-                 if (w && h) {
-                    for (let i = 0; i < maxStars; i++) {
-                        stars.push(new Star());
-                    }
-                 }
-            }
-            
-            // Initial setup
-            if (heroSection) {
-                resizeCanvas();
-
-                window.addEventListener('resize', resizeCanvas);
-
-                heroSection.addEventListener('mousemove', (e) => {
-                    const rect = canvas.getBoundingClientRect();
-                    mouse.x = e.clientX - rect.left;
-                    mouse.y = e.clientY - rect.top;
-                });
-
-                heroSection.addEventListener('mouseleave', () => {
-                    mouse.x = null;
-                    mouse.y = null;
-                });
-
-                animate();
-            }
-        }
 
         // =================================================================
         // Feature: Text Decryption Effect
@@ -810,13 +684,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             // Initialize Magical Features
-            initConstellation();
+            // initConstellation(); // Removed
             initDecryption();
             initCustomCursor();
             init3DTiltCards();
 
             // Initialize Standard Features
-            // Delay fetching GitHub data slightly to prioritize rendering if needed, but generally okay on DOMContentLoaded
             fetchGitHubReleaseData();
 
             // Dynamic Year Update
@@ -916,4 +789,3 @@
 
 </body>
 </html>
-
