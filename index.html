@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://api.github.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src https://api.github.com; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; img-src 'self' data:;">
     
     <title>Hugo's DFW Tech Support & PC Builds | Dallas, Irving, TX</title>
-    <meta name="description" content="Expert, affordable PC builds and fast IT/tech support in the Dallas/DFW area. Serving freelancers and small businesses in Irving, Dallas, and Fort Worth. Get a free quote today.">
+    <meta name="description" content="Expert, elite-tier PC builds and hyper-fast IT infrastructure support across the DFW Metroplex. Serving freelancers, creators, and small businesses.">
     
     <meta property="og:title" content="Hugo's DFW Tech Support & PC Builds">
-    <meta property="og:description" content="Expert, affordable PC builds and fast IT/tech support in the Dallas/DFW area.">
+    <meta property="og:description" content="High-performance custom computing systems and enterprise-grade operational technology support.">
     <meta property="og:type" content="website">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
@@ -30,16 +30,15 @@
             theme: {
                 extend: {
                     colors: {
-                        'accent': '#fde047', // Yellow 300
-                        'dark-bg': '#020617', // Slate 950
-                        'card-bg': '#0f172a', // Slate 900
-                        'warning': '#f97316', // Orange 500
+                        'accent': '#fde047', 
+                        'dark-bg': '#020617', 
+                        'card-bg': '#0f172a', 
+                        'warning': '#f97316',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['Fira Code', 'monospace'],
                     },
-                    // Glitch Animations
                     keyframes: {
                         'glitch-1': {
                             '0%, 100%': { clipPath: 'inset(15% 0 86% 0)' },
@@ -60,10 +59,8 @@
                         'glitch-1': 'glitch-1 2s infinite linear alternate-reverse',
                         'glitch-2': 'glitch-2 2s infinite linear alternate-reverse',
                     },
-                    // Background pattern utility for texture
                     backgroundImage: {
-                       'pattern': "radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)",
-                       // NEW: Define the hero image URL
+                       'pattern': "radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px)",
                        'hero-skyline': "url('dallas-skyline-bg.jpg')",
                     },
                     backgroundSize: {
@@ -77,107 +74,89 @@
     <style type="text/tailwindcss">
         @layer base {
             body {
-                @apply bg-dark-bg text-slate-200;
+                @apply bg-dark-bg text-slate-200 selection:bg-accent selection:text-slate-900;
             }
             h1, h2, h3 {
-                @apply font-black;
+                @apply font-black tracking-tight;
             }
 
-            /* Custom Cursor (Desktop only) */
+            /* Custom Cursor Pipeline (Only active when js-cursor-ready is mounted) */
             @media (pointer: fine) {
-                html {
+                html.js-cursor-ready {
+                    cursor: none;
+                }
+                html.js-cursor-ready a, 
+                html.js-cursor-ready button, 
+                html.js-cursor-ready [role="button"], 
+                html.js-cursor-ready .glitch {
                     cursor: none;
                 }
                 .cursor-dot {
-                    @apply fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[10001] transition-opacity duration-300;
+                    @apply fixed top-0 left-0 w-2 h-2 bg-accent rounded-full pointer-events-none z-[10001] mix-blend-difference transform -translate-x-1/2 -translate-y-1/2;
+                    will-change: transform;
                 }
                 .cursor-aura {
-                    @apply fixed top-0 left-0 w-10 h-10 border border-accent/50 rounded-full pointer-events-none z-[10000] transition-transform duration-300 ease-out;
-                }
-                /* Hide cursor when hovering over elements that utilize custom interactions heavily */
-                a:hover, button:hover, [role="button"]:hover, .glitch:hover {
-                    cursor: none;
+                    @apply fixed top-0 left-0 w-10 h-10 border border-accent/40 rounded-full pointer-events-none z-[10000] transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-150 ease-out;
+                    will-change: transform;
                 }
             }
         }
 
         @layer components {
-             /* Header - Dynamic background/shadow on scroll */
             #site-header {
-                 @apply transition-all duration-300 ease-in-out;
+                 @apply transition-all duration-300 ease-in-out border-b border-transparent;
             }
             #site-header.scrolled {
-                 @apply bg-slate-950/90 backdrop-blur-md shadow-lg shadow-black/30;
+                 @apply bg-slate-950/80 backdrop-blur-xl shadow-xl shadow-black/40 border-slate-800/60;
             }
 
-            /* UPDATED: Hero Background (Now Static Image) */
             #hero {
-                /* Set up the background image, center it, and ensure it covers the area */
                 @apply relative overflow-hidden bg-dark-bg bg-hero-skyline bg-center bg-cover;
             }
-
-            /* UPDATED: The overlay sits on top of the image to ensure text legibility */
             #hero::before {
                 content: '';
-                /* A dark overlay with a gradient for better blending: Darker at the bottom, lighter at the top */
                 @apply absolute inset-0 z-10;
-                background-image: linear-gradient(to top, rgba(2, 6, 23, 0.9) 0%, rgba(2, 6, 23, 0.5) 100%);
+                background-image: linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.6) 100%);
             }
             .hero-content {
                 @apply relative z-20;
             }
 
-            /* Interactive Card Hover Effect (Spotlight + 3D Tilt) */
             .card-container {
-                /* Required for 3D effect */
-                perspective: 1000px; 
+                perspective: 1200px; 
             }
-
             .card {
-                /* Fast transition during interaction */
-                @apply transition-transform duration-100 ease-out bg-card-bg border border-slate-800 rounded-xl relative;
-                /* Ensure the card respects the 3D space of the container */
+                @apply transition-all duration-300 ease-out bg-card-bg/60 backdrop-blur-sm border border-slate-800/80 rounded-xl relative;
                 transform-style: preserve-3d;
-                /* Initial state */
-                transform: rotateX(0deg) rotateY(0deg);
                 will-change: transform;
             }
-
-            /* Smooth out the transition when the mouse leaves */
             .card.resetting {
                  @apply transition-transform duration-500 ease-in-out;
             }
-
             .card:hover {
-                 @apply shadow-2xl shadow-accent/10 border-accent/30;
+                 @apply shadow-[0_0_30px_rgba(253,224,71,0.08)] border-accent/40 bg-card-bg/90;
             }
-
-            /* Pseudo-element for the spotlight effect */
             .card::before {
                 content: '';
-                @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none;
-                /* Radial gradient centered at the mouse position (CSS Variables updated by JS) */
+                @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none z-0;
                 background-image: radial-gradient(
-                    450px circle at var(--mouse-x) var(--mouse-y),
-                    rgba(253, 224, 71, 0.15),
-                    transparent 40%
+                    300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+                    rgba(253, 224, 71, 0.12),
+                    transparent 80%
                 );
-                z-index: 1;
             }
             .card:hover::before {
                 @apply opacity-100;
             }
             .card-content {
                 @apply relative z-10;
-                 /* Optional: Moves content slightly forward in 3D space on hover */
-                transform: translateZ(10px);
+                transform: translateZ(20px);
             }
 
-            /* Scroll Animations */
             .reveal {
                 opacity: 0;
-                transform: translateY(30px);
-                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+                transform: translateY(20px);
+                transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
                 will-change: opacity, transform;
             }
             .reveal.visible {
@@ -185,26 +164,19 @@
                 transform: translateY(0);
             }
             
-             /* Decrypting text effect initialization */
             .decrypt {
-                 /* Ensures the space is held while decrypting */
                  visibility: hidden; 
             }
 
-            /* Glitch Effect */
             .glitch {
                 @apply relative inline-block;
             }
             
-            /* Accessibility: Reduce motion for users who prefer it */
             @media (prefers-reduced-motion: no-preference) {
                 .glitch:hover::before, .glitch:hover::after {
                     content: attr(data-text);
-                    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
-                    /* NEW: Use a semi-transparent dark background for the glitch effect over the image */
-                    background: rgba(2, 6, 23, 0.9);
+                    @apply absolute top-0 left-0 w-full h-full overflow-hidden bg-dark-bg;
                 }
-
                 .glitch:hover::before {
                     left: 2px;
                     text-shadow: -2px 0 #ff00c1;
@@ -217,13 +189,12 @@
                 }
             }
 
-            /* Navigation Active State (ScrollSpy) */
             .nav-link {
-                @apply relative transition-colors duration-200 text-slate-300;
+                @apply relative transition-colors duration-200 text-slate-400 font-mono tracking-wide text-xs uppercase;
             }
             .nav-link::after {
                 content: '';
-                @apply absolute left-0 -bottom-1 w-full h-0.5 bg-accent transform scale-x-0 transition-transform duration-300 origin-center;
+                @apply absolute left-0 -bottom-1 w-full h-[2px] bg-accent transform scale-x-0 transition-transform duration-300 origin-left;
             }
             .nav-link:hover, .nav-link.active {
                 @apply text-accent;
@@ -234,7 +205,7 @@
         }
     </style>
 </head>
-<body class="antialiased font-sans">
+<body class="antialiased font-sans selection:bg-accent/30">
 
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-aura" data-cursor-aura></div>
@@ -242,14 +213,14 @@
     <header id="site-header" class="fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter glitch" data-text="DFW Tech & Builds" aria-label="Home">DFW Tech & Builds</a>
+                <a href="#hero" class="text-xl font-bold font-mono tracking-tighter text-white glitch" data-text="&lt;DFW_BUILD_LAB/&gt;" aria-label="Home">&lt;DFW_BUILD_LAB/&gt;</a>
                 
-                <nav class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#services" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Services</a>
-                    <a href="#pc-builds" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Custom PCs</a>
-                    <a href="#tools" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Free Tools</a>
-                    <a href="#about" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">About</a>
-                    <a href="#contact" class="nav-link focus:outline-none focus:ring-2 focus:ring-accent rounded">Contact</a>
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#services" class="nav-link focus:outline-none focus:ring-1 focus:ring-accent rounded">Services</a>
+                    <a href="#pc-builds" class="nav-link focus:outline-none focus:ring-1 focus:ring-accent rounded">Custom_Builds</a>
+                    <a href="#tools" class="nav-link focus:outline-none focus:ring-1 focus:ring-accent rounded">Sys_Tools</a>
+                    <a href="#about" class="nav-link focus:outline-none focus:ring-1 focus:ring-accent rounded">Telemetry</a>
+                    <a href="#contact" class="nav-link focus:outline-none focus:ring-1 focus:ring-accent rounded bg-slate-800/40 px-3 py-1.5 rounded-md border border-slate-700/50 hover:border-accent/40 transition-all">Contact_Init</a>
                 </nav>
 
                 <button id="menu-btn" class="md:hidden text-slate-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/50 p-1 rounded" aria-label="Toggle Navigation Menu" aria-expanded="false">
@@ -260,46 +231,67 @@
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800">
-            <nav class="container mx-auto px-6 py-4 flex flex-col space-y-4 text-md font-medium text-slate-300">
-                <a href="#services" class="mobile-link hover:text-accent transition-colors">Services</a>
-                <a href="#pc-builds" class="mobile-link hover:text-accent transition-colors">Custom PCs</a>
-                <a href="#tools" class="mobile-link hover:text-accent transition-colors">Free Tools</a>
-                <a href="#about" class="mobile-link hover:text-accent transition-colors">About</a>
-                <a href="#contact" class="mobile-link hover:text-accent transition-colors">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 absolute top-full left-0 right-0 shadow-xl border-t border-slate-800 backdrop-blur-lg">
+            <nav class="container mx-auto px-6 py-6 flex flex-col space-y-4 text-sm font-mono text-slate-300">
+                <a href="#services" class="mobile-link hover:text-accent transition-colors py-2 border-b border-slate-900">01 // Services</a>
+                <a href="#pc-builds" class="mobile-link hover:text-accent transition-colors py-2 border-b border-slate-900">02 // Custom_PCs</a>
+                <a href="#tools" class="mobile-link hover:text-accent transition-colors py-2 border-b border-slate-900">03 // Sys_Tools</a>
+                <a href="#about" class="mobile-link hover:text-accent transition-colors py-2 border-b border-slate-900">04 // Telemetry</a>
+                <a href="#contact" class="mobile-link hover:text-accent transition-colors py-2 text-accent">05 // Contact_Init</a>
             </nav>
         </div>
     </header>
 
     <main>
         <section id="hero" class="min-h-screen flex items-center">
-            <div class="hero-content container mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-white glitch" data-text="DFW Tech Support & Custom PC Builds.">
-                    DFW Tech Support & Custom PC Builds.
+            <div class="hero-content container mx-auto px-6 py-32 text-center">
+                <div class="inline-flex items-center space-x-2 bg-slate-900/80 border border-slate-700/60 rounded-full px-4 py-1.5 mb-6 font-mono text-xs text-accent shadow-inner">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span>SYSTEMS UP // METROPLEX OPERATIONAL</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter text-white glitch" data-text="DFW Tech Support & Custom PC Builds.">
+                    DFW Tech Support &<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-accent">Custom PC Builds.</span>
                 </h1>
-                <p class="mt-8 text-xl md:text-2xl max-w-4xl mx-auto text-slate-200 font-medium">
-                    Fast, reliable IT support and high-performance computer builds for freelancers and small businesses in the Dallas / Fort Worth Metroplex.
+                <p class="mt-8 text-lg md:text-xl max-w-3xl mx-auto text-slate-300 font-medium leading-relaxed">
+                    High-performance hardware infrastructure deployments and ironclad IT troubleshooting architecture for creators, studios, and small business networks across North Texas.
                 </p>
-                <a href="#contact" class="mt-12 inline-block bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-yellow-300/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                    Get a Free Quote
-                </a>
+                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#contact" class="w-full sm:w-auto bg-accent text-slate-950 font-mono text-sm font-bold py-4 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 shadow-[0_4px_20px_rgba(253,224,71,0.2)] focus:outline-none focus:ring-2 focus:ring-accent">
+                        ./initialize_quote.sh
+                    </a>
+                    <a href="#tools" class="w-full sm:w-auto bg-slate-900/60 text-slate-300 font-mono text-sm font-medium py-4 px-8 rounded-lg border border-slate-800 hover:border-slate-700 hover:bg-slate-950 transition-all">
+                        view_free_utilities
+                    </a>
+                </div>
             </div>
         </section>
 
-        <section id="services" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg to-slate-900/50">
+        <section id="services" class="py-24 lg:py-32 bg-gradient-to-b from-dark-bg via-slate-950 to-dark-bg border-t border-slate-900">
             <div class="container mx-auto px-6 reveal">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Our Services</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">Providing comprehensive IT solutions across the DFW area.</p>
+                <div class="text-center mb-20">
+                    <h2 class="text-3xl md:text-5xl font-black text-white decrypt">Operational Capabilities</h2>
+                    <p class="mt-4 text-sm font-mono text-accent">SYSTEM_CAPABILITIES_LOG</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
         
                     <div class="card-container reveal">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Reliable Tech Support</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Fast troubleshooting, virus removal, software setup, and general IT assistance for Windows and macOS. Minimize downtime and keep your business running.</p>
-                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">IT Support</span>
+                                <div class="text-accent font-mono text-xs mb-4">// 01_INFRASTRUCTURE</div>
+                                <h3 class="text-xl font-bold mb-3 text-white">Elite Tech Support</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Fast-response troubleshooting, secure threat isolation, deep registry architecture calibration, and bare-metal OS optimization across Windows & macOS systems.</p>
+                                <span class="font-mono text-[10px] bg-slate-900 text-accent/80 border border-slate-800/80 py-1 px-2.5 rounded-md">IT Support</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="card-container reveal" style="transition-delay: 50ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <div class="text-accent font-mono text-xs mb-4">// 02_HARDWARE</div>
+                                <h3 class="text-xl font-bold mb-3 text-white">Bespoke Computations</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Tailored, low-latency processing topologies designed specifically for real-time video encoders, heavy 3D frame render arrays, and extreme frame-paced gaming matrices.</p>
+                                <span class="font-mono text-[10px] bg-slate-900 text-accent/80 border border-slate-800/80 py-1 px-2.5 rounded-md">Hardware Architecture</span>
                             </div>
                         </div>
                     </div>
@@ -307,19 +299,10 @@
                     <div class="card-container reveal" style="transition-delay: 100ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Custom PC Builds</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">High-performance workstations tailored for creative professionals, gaming, or optimized office use. We select the best components for your budget and needs.</p>
-                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">Hardware</span>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="card-container reveal" style="transition-delay: 200ms;">
-                        <div class="card">
-                            <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Networking & Security</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Setup and optimization of home office or small business networks. Implementing backup solutions and basic cybersecurity assessments.</p>
-                                <span class="font-mono text-xs bg-slate-700/50 text-accent py-1 px-3 rounded-full">Infrastructure</span>
+                                <div class="text-accent font-mono text-xs mb-4">// 03_TELEMETRY</div>
+                                <h3 class="text-xl font-bold mb-3 text-white">Networking & Audits</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Hardened configuration layouts for clean office intranets, advanced NAS system installations, local proxy deployments, and complete structural edge security audits.</p>
+                                <span class="font-mono text-[10px] bg-slate-900 text-accent/80 border border-slate-800/80 py-1 px-2.5 rounded-md">Security & Layer-3</span>
                             </div>
                         </div>
                     </div>
@@ -328,22 +311,35 @@
             </div>
         </section>
 
-        <section id="pc-builds" class="py-20 lg:py-32 bg-slate-900/50 bg-pattern bg-pattern">
+        <section id="pc-builds" class="py-24 lg:py-32 bg-slate-950 bg-pattern">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Custom PC Builds</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Performance tailored to your exact needs and budget.</p>
+                <div class="text-center mb-20">
+                    <h2 class="text-3xl md:text-5xl font-black text-white decrypt">Hardware Topologies</h2>
+                    <p class="mt-4 text-sm font-mono text-accent">CUSTOM_RIG_MANIFEST</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
                     
                     <div class="card-container reveal">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">The Creative Workstation</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Optimized for Adobe Premiere, After Effects, DaVinci Resolve, and 3D rendering. Focused on multi-core performance, high RAM capacity, and powerful GPUs.</p>
+                                <h3 class="text-xl font-bold mb-3 text-white">The Creative Workstation</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Engineered directly for low rendering latencies in DaVinci Resolve, Premiere Pro, and complex graphic asset generation pipelines. Maximized memory bus bandwidth and specialized storage configurations.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Video Editing</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Design</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">NLE Optimization</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Mass Storage Arrays</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-container reveal" style="transition-delay: 50ms;">
+                        <div class="card">
+                            <div class="card-content p-8">
+                                <h3 class="text-xl font-bold mb-3 text-white">The Elite Gaming Engine</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Built for frame-pacing accuracy and thermal profiles that sustain high performance over time. Hand-tuned infinity fabric adjustments, clean component placement, and advanced cable management systems.</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">High Refresh Optimization</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Thermal Control</span>
                                 </div>
                             </div>
                         </div>
@@ -352,38 +348,24 @@
                     <div class="card-container reveal" style="transition-delay: 100ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">The High-End Gaming Rig</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Built for maximum FPS and stunning visuals. We optimize cooling, select the latest GPUs, and ensure a clean, professional aesthetic with expert cable management.</p>
+                                <h3 class="text-xl font-bold mb-3 text-white">The High-Availability Office Node</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Cost-effective productivity deployment focused on continuous runtime, small hardware footprint, low power usage, and effortless multi-tenant local database scaling.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Gaming</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Streaming</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Continuous Operation</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Clean Footprint</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-container reveal" style="transition-delay: 200ms;">
+                    <div class="card-container reveal" style="transition-delay: 150ms;">
                         <div class="card">
                             <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">The Reliable Office PC</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">Cost-effective solutions for daily productivity. Focused on speed, reliability, and seamless multitasking for small business and home office environments.</p>
+                                <h3 class="text-xl font-bold mb-3 text-white">System Deployment Protocol</h3>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed">Every machine undergoes methodical diagnostics, rigorous hardware loop tests, memory data stability validations, and precision BIOS adjustments before deployment.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Productivity</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Small Business</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-container reveal" style="transition-delay: 300ms;">
-                        <div class="card">
-                            <div class="card-content p-8">
-                                <h3 class="text-2xl font-bold mb-4 text-white">Our Build Process</h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">It starts with a consultation to understand your needs. We provide a detailed parts list, handle procurement, assemble the PC, and perform rigorous stress testing.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Consultation</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Assembly</span>
-                                    <span class="font-mono text-xs bg-slate-700/50 text-slate-300 py-1 px-3 rounded-full">Testing</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Stress Testing</span>
+                                    <span class="font-mono text-[10px] bg-slate-900 text-slate-300 border border-slate-800 py-1 px-2.5 rounded">Hardware Diagnostics</span>
                                 </div>
                             </div>
                         </div>
@@ -392,112 +374,112 @@
             </div>
         </section>
 
-        <section id="tools" class="py-20 lg:py-32 bg-slate-900/70">
+        <section id="tools" class="py-24 lg:py-32 bg-slate-900/40 border-t border-b border-slate-900/60">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">Free IT Tools</h2>
-                    <p class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto reveal">Utilities I've developed and shared for the IT community.</p>
+                <div class="text-center mb-20">
+                    <h2 class="text-3xl md:text-5xl font-black text-white decrypt">Terminal Assets</h2>
+                    <p class="mt-4 text-sm font-mono text-accent">OPEN_SOURCE_UTILITIES</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto reveal">
-                    <div class="bg-card-bg p-8 lg:p-12 rounded-xl shadow-2xl border border-slate-800">
-                        <h3 class="text-3xl font-bold mb-4 text-white">Windows Maintenance Utility (v1.0)</h3>
-                        <p class="text-slate-300 mb-6 leading-relaxed">
-                            An all-in-one PowerShell utility designed for IT professionals to streamline essential Windows integrity checks and repairs. This script automates SFC (System File Checker), schedules a comprehensive CHKDSK upon the next boot, and executes DISM Restore Health, generating detailed logs for review.
+                    <div class="bg-card-bg/40 backdrop-blur-md p-8 lg:p-12 rounded-xl shadow-2xl border border-slate-800/80">
+                        <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+                            <h3 class="text-2xl font-bold text-white font-mono">win_maintenance_routine.ps1</h3>
+                            <span class="font-mono text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-900/80 px-2 py-0.5 rounded">v1.0.0 Stable</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-8 leading-relaxed">
+                            An automated PowerShell deployment architecture optimized for system maintainers. It automates critical partition integrity validation sequences, flags filesystem blocks for repair, schedules runtime adjustments on subsequent boot sequences, and manages localized log sorting structures natively.
                         </p>
 
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold mb-3 text-accent">Key Features:</h4>
-                            <ul class="list-disc list-inside space-y-2 text-slate-400 ml-4">
-                                <li>Automated System File Checker (<code class="font-mono text-xs bg-slate-800 p-1 rounded">SFC /scannow</code>).</li>
-                                <li>Scheduled Disk Error Checking (<code class="font-mono text-xs bg-slate-800 p-1 rounded">CHKDSK C: /f /r</code>).</li>
-                                <li>Windows Image Repair (<code class="font-mono text-xs bg-slate-800 p-1 rounded">DISM RestoreHealth</code>).</li>
-                                <li>Automatic logging of all operations.</li>
-                            </ul>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 font-mono text-xs text-slate-400">
+                            <div class="bg-slate-950/60 p-4 rounded-lg border border-slate-900">
+                                <h4 class="text-accent mb-2">// Executed Directives:</h4>
+                                <ul class="space-y-1.5 list-none">
+                                    <li>- SFC integrity validation sequences</li>
+                                    <li>- CHKDSK boot sector scheduling</li>
+                                    <li>- DISM deployment health synchronization</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-950/60 p-4 rounded-lg border border-slate-900">
+                                <h4 class="text-warning mb-2">// Requirements:</h4>
+                                <ul class="space-y-1.5 list-none">
+                                    <li>- Elevated execution privileges required</li>
+                                    <li>- Local partition administrative rights</li>
+                                    <li>- Target platform: Windows 10 / 11</li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <div class="bg-slate-800/70 border-l-4 border-warning p-6 rounded-lg mb-8">
-                            <h4 class="text-xl font-semibold mb-3 text-warning flex items-center">
-                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                Requirements & Warnings
-                            </h4>
-                            <p class="text-slate-300">
-                                This utility <strong>requires Administrator privileges</strong> to execute successfully. The CHKDSK operation requires a system reboot to complete. Please save all work before running this utility.
-                            </p>
+                        <div class="bg-warning/10 border-l-2 border-warning p-4 rounded-r-lg mb-8 text-xs leading-relaxed text-slate-300">
+                            <strong>[!] CAUTION:</strong> Administrative escalation is required to register filesystem changes. Save all active workspace buffers before execution due to required core module reloads.
                         </div>
 
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 text-center">
-                                Download Maintenence.zip
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-slate-800/60">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="w-full sm:w-auto bg-accent text-slate-950 font-mono text-xs font-bold py-3.5 px-6 rounded-lg hover:bg-yellow-200 transition-all text-center">
+                                fetch_utility_package.zip
                             </a>
-                            <div class="text-sm font-mono text-slate-400">
-                                Total Downloads: <span id="download-counter">Loading...</span>
+                            <div class="text-xs font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-md border border-slate-900">
+                                CDN_PULLS: <span id="download-counter" class="text-accent font-bold">Connecting...</span>
                             </div>
                         </div>
                         
-                        <div class="text-xs text-slate-400 border-t border-slate-800 pt-6">
-                            <p><strong>Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author (Hugo Luna) assumes no responsibility for any data loss, system damage, or other issues arising from the use or misuse of this software. Use at your own risk.</p>
+                        <div class="text-[10px] text-slate-500 font-mono mt-8 pt-4 border-t border-slate-900/50">
+                            LEGAL: AS-IS REDISTRIBUTION PERMISSION. NO EXPRESSED OR IMPLIED WARRANTIES. USER ASSUMES PARTITION FAILURE RESPONSIBILITY.
                         </div>
-
                     </div>
                 </div>
             </div>
         </section>
         
-        <section id="about" class="py-20 lg:py-32 bg-dark-bg">
+        <section id="about" class="py-24 lg:py-32 bg-dark-bg">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl tracking-tighter text-white decrypt">About Hugo's DFW Tech</h2>
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-5xl font-black text-white decrypt">Operational Profile</h2>
+                        <p class="mt-4 text-sm font-mono text-accent">ENGINEER_TELEMETRY</p>
                     </div>
-                    <div class="text-lg md:text-xl text-slate-300 leading-9 space-y-6 text-left reveal">
+                    <div class="text-base md:text-lg text-slate-300 leading-relaxed space-y-6 text-left reveal font-sans">
                          <p>
-                            Based in Irving, TX, and serving the entire Dallas/Fort Worth Metroplex. I'm Hugo Luna, an IT professional and systems builder with 20+ years of hands-on experience spanning complex systems architecture, troubleshooting, and hardware optimization.
+                            Operating out of Irving, TX, and extending coverage across the entire DFW metropolitan landscape. Specializing in low-level systems integration, automated troubleshooting routines, and custom component layout architectures with over two decades of technical problem-solving.
                         </p>
                          <p>
-                            My focus is providing reliable, clear, and effective IT solutions for freelancers and small businesses. I understand that when your technology fails, your business stops. I excel at rapidly diagnosing issues and building better, more stable solutions to prevent downtime. (Fluent in English and Spanish).
+                            Focused on providing reliable IT architectures and high-performance workflows for creative spaces, specialized professionals, and fast-paced business operations. Systems engineering handled cleanly in both English and Spanish.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-20 lg:py-32 bg-slate-900 bg-pattern bg-pattern">
+        <section id="contact" class="py-24 lg:py-32 bg-slate-950 bg-pattern border-t border-slate-900">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-5xl md:text-6xl tracking-tighter text-white decrypt">Get Support or a Quote.</h2>
-                <p class="mt-6 text-xl text-slate-300 max-w-2xl mx-auto reveal">Contact me for IT support inquiries or to discuss your custom PC build.</p>
-                <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 reveal">
-                    <a href="mailto:hugo.a.luna@icloud.com" class="w-full sm:w-auto bg-accent text-slate-900 font-bold py-4 px-10 rounded-lg hover:bg-yellow-200 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                        Email for a Quote
+                <h2 class="text-4xl md:text-6xl font-black text-white decrypt">Initialize Connection.</h2>
+                <p class="mt-4 text-sm font-mono text-accent mb-12">SOCKET_ESTABLISHMENT_REQUEST</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto reveal">
+                    <a href="mailto:hugo.a.luna@icloud.com" class="w-full bg-accent text-slate-950 font-mono text-xs font-bold py-4 px-6 rounded-lg hover:bg-yellow-200 transition-all shadow-lg shadow-yellow-500/10">
+                        mailto:hugo.a.luna@icloud.com
                     </a>
-                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto border-2 border-slate-500 text-slate-300 font-bold py-4 px-10 rounded-lg hover:bg-slate-800 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        LinkedIn
+                    <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="w-full bg-slate-900 text-slate-300 font-mono text-xs font-medium py-4 px-6 rounded-lg border border-slate-800 hover:border-slate-700 transition-all">
+                        linkedin://in/hugoaluna
                     </a>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <footer class="bg-dark-bg border-t border-slate-800/50">
-        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
-            <p>&copy; <span id="year">2025</span> Hugo's DFW Tech Support & PC Builds.</p>
-            <p class="mt-2 font-mono">Serving Irving, Dallas, and the DFW Metroplex.</p>
+    <footer class="bg-dark-bg border-t border-slate-900/60">
+        <div class="container mx-auto px-6 py-12 text-center text-xs font-mono text-slate-500">
+            <p>&copy; <span id="year">2026</span> DFW_BUILD_LAB // ALL RIGHTS RESERVED.</p>
+            <p class="mt-2 text-[10px] text-slate-600">LOC_ID // IRVING_DALLAS_TX_METRO_NODE</p>
         </div>
     </footer>
 
     <script>
         // =================================================================
-        // NOTE: initConstellation() function has been removed.
-        // =================================================================
-
-        // =================================================================
-        // Feature: Text Decryption Effect
+        // Feature: Text Decryption Effect (UI/UX Motion Sensitive)
         // =================================================================
         function initDecryption() {
             const elements = document.querySelectorAll('.decrypt');
             const chars = '!<>-_\\/[]{}—=+*^?#________';
-
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             const decryptText = (element) => {
@@ -509,15 +491,12 @@
                 const originalText = element.textContent.trim();
                 let iterations = 0;
                 const maxIterations = originalText.length;
-                
                 element.style.visibility = 'visible';
 
                 const interval = setInterval(() => {
                     element.textContent = originalText.split('')
                         .map((char, index) => {
-                            if (index < iterations) {
-                                return originalText[index];
-                            }
+                            if (index < iterations) return originalText[index];
                             if (char === " ") return " ";
                             return chars[Math.floor(Math.random() * chars.length)];
                         })
@@ -527,55 +506,72 @@
                         clearInterval(interval);
                         element.textContent = originalText;
                     }
-                    
-                    iterations += 1/3;
-                }, 30);
+                    iterations += 1/2; // Faster, snappier reveal pacing
+                }, 25);
             };
 
-             const observer = new IntersectionObserver((entries) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         decryptText(entry.target);
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: 0.2 });
 
             elements.forEach(el => observer.observe(el));
         }
 
         // =================================================================
-        // Feature: Smooth Custom Cursor
+        // Feature: Hardware Accelerated Custom Cursor Render Loop (GPU bound)
         // =================================================================
         function initCustomCursor() {
             if (!window.matchMedia("(pointer: fine)").matches) return;
+
+            // Signal CSS to safely un-hide the custom pointer setup
+            document.documentElement.classList.add('js-cursor-ready');
 
             const cursorDot = document.querySelector("[data-cursor-dot]");
             const cursorAura = document.querySelector("[data-cursor-aura]");
             const interactiveElements = document.querySelectorAll("a, button, [role='button'], .glitch");
 
-            window.addEventListener("mousemove", function (e) {
-                const posX = e.clientX;
-                const posY = e.clientY;
+            let targetX = 0, targetY = 0;
+            let dotX = 0, dotY = 0;
+            let auraX = 0, auraY = 0;
+
+            window.addEventListener("mousemove", (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            });
+
+            // Smooth linear interpolation render cycle
+            function updateCoordinates() {
+                // Snappy interpolation for tracking center dot
+                dotX += (targetX - dotX) * 0.4;
+                dotY += (targetY - dotY) * 0.4;
+
+                // Lagged fluid interpolation for structural tracking aura
+                auraX += (targetX - auraX) * 0.15;
+                auraY += (targetY - auraY) * 0.15;
 
                 if (cursorDot) {
-                    cursorDot.style.left = `${posX}px`;
-                    cursorDot.style.top = `${posY}px`;
+                    cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0)`;
+                }
+                if (cursorAura) {
+                    cursorAura.style.transform = `translate3d(calc(${auraX}px), calc(${auraY}px), 0)`;
                 }
 
-                if (cursorAura) {
-                    // Using transform for the aura movement
-                    cursorAura.style.transform = `translate(calc(${posX}px - 20px), calc(${posY}px - 20px))`;
-                }
-            });
+                requestAnimationFrame(updateCoordinates);
+            }
+            requestAnimationFrame(updateCoordinates);
 
             interactiveElements.forEach(el => {
                 el.addEventListener("mouseenter", () => {
-                    if (cursorAura) cursorAura.style.transform += ' scale(1.5)';
-                    if (cursorDot) cursorDot.style.opacity = '0.5';
+                    if (cursorAura) cursorAura.style.transform += ' scale(1.4)';
+                    if (cursorDot) cursorDot.style.backgroundColor = '#ffffff';
                 });
                 el.addEventListener("mouseleave", () => {
-                     if (cursorDot) cursorDot.style.opacity = '1';
+                    if (cursorDot) cursorDot.style.backgroundColor = '';
                 });
             });
         }
@@ -584,8 +580,8 @@
         // Feature: 3D Parallax Tilt Cards
         // =================================================================
         function init3DTiltCards() {
-             const cards = document.querySelectorAll('.card');
-            const MAX_TILT = 8; 
+            const cards = document.querySelectorAll('.card');
+            const MAX_TILT = 6; 
 
             cards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
@@ -617,11 +613,9 @@
             });
         }
 
-
         // =================================================================
-        // Feature: Download Counter Logic (Using GitHub API)
+        // Feature: Download Counter Logic (Secure GitHub API Handlers)
         // =================================================================
-        
         const GITHUB_REPO_OWNER = 'Shinydude100';
         const GITHUB_REPO_NAME = 'Shinydude100.github.io';
         const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
@@ -635,15 +629,11 @@
 
             try {
                 const response = await fetch(GITHUB_API_URL, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP_ERR_CODE_${response.status}`);
                 
-                if (!response.ok) {
-                    throw new Error(`GitHub API request failed: ${response.status}`);
-                }
                 const releases = await response.json();
-
                 if (releases.length === 0) {
-                    console.warn("No releases found on GitHub.");
-                    counterElement.textContent = 'N/A';
+                    counterElement.textContent = '0';
                     return;
                 }
 
@@ -654,53 +644,39 @@
                     const asset = release.assets.find(a => a.name === ASSET_NAME);
                     if (asset) {
                         totalDownloads += asset.download_count;
-                        
                         if (!assetFound) {
-                             downloadBtn.href = asset.browser_download_url;
-                             downloadBtn.removeAttribute('download'); 
-                             assetFound = true;
+                            downloadBtn.href = asset.browser_download_url;
+                            downloadBtn.removeAttribute('download'); 
+                            assetFound = true;
                         }
                     }
                 }
 
-                if (assetFound) {
-                    counterElement.textContent = totalDownloads.toLocaleString();
-                } else {
-                    console.warn(`Asset "${ASSET_NAME}" not found in any release.`);
-                    counterElement.textContent = 'N/A';
-                }
+                counterElement.textContent = assetFound ? totalDownloads.toLocaleString() : 'N/A';
 
             } catch (error) {
-                console.error("Error fetching download count from GitHub API:", error);
-                counterElement.textContent = 'N/A';
+                console.error("SYS_LOG_ERR // GitHub Fetch Protocol Halted:", error);
+                counterElement.textContent = 'OFFLINE';
             }
         }
 
-
         // =================================================================
-        // Main Application Logic & Initializations
+        // Core Application Context Initializations
         // =================================================================
-
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // Initialize Magical Features
-            // initConstellation(); // Removed
             initDecryption();
             initCustomCursor();
             init3DTiltCards();
-
-            // Initialize Standard Features
             fetchGitHubReleaseData();
 
-            // Dynamic Year Update
+            // Precision Year Synchronization
             const yearSpan = document.getElementById('year');
             if (yearSpan) {
                 const currentYear = new Date().getFullYear();
-                // Ensure the year doesn't go backward if the current year is past 2025
-                yearSpan.textContent = Math.max(2025, currentYear);
+                yearSpan.textContent = Math.max(2026, currentYear);
             }
 
-            // Intersection Observer for scroll animations (Optimized)
+            // High Performance Element Reveal Engine
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -708,58 +684,41 @@
                         revealObserver.unobserve(entry.target);
                     }
                 });
-            }, {
-                threshold: 0.1
-            });
+            }, { threshold: 0.05 });
 
-            const elementsToReveal = document.querySelectorAll('.reveal');
-            elementsToReveal.forEach(el => {
-                revealObserver.observe(el);
-            });
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-            // Mobile Menu Toggle
+            // Mobile Navigation Toggle Controller
             const menuBtn = document.getElementById('menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIconOpen = document.getElementById('menu-icon-open');
             const menuIconClose = document.getElementById('menu-icon-close');
-            const mobileLinks = document.querySelectorAll('.mobile-link');
 
             const toggleMenu = () => {
-                if (!mobileMenu || !menuIconOpen || !menuIconClose || !menuBtn) return;
-
+                if (!mobileMenu || !menuIconOpen || !menuIconClose) return;
                 const isHidden = mobileMenu.classList.toggle('hidden');
                 menuIconOpen.classList.toggle('hidden', !isHidden);
                 menuIconClose.classList.toggle('hidden', isHidden);
                 menuBtn.setAttribute('aria-expanded', !isHidden);
             };
 
-            if(menuBtn) {
-                menuBtn.addEventListener('click', toggleMenu);
-            }
-
-            mobileLinks.forEach(link => {
+            if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+            document.querySelectorAll('.mobile-link').forEach(link => {
                 link.addEventListener('click', () => {
-                     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                         toggleMenu();
-                    }
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) toggleMenu();
                 });
             });
 
-            // Dynamic Header Shadow on Scroll
+            // Header Layer-Alpha Adjustment on Scroll
             const header = document.getElementById('site-header');
             const handleHeaderScroll = () => {
                 if (!header) return;
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                window.scrollY > 30 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
             };
-            window.addEventListener('scroll', handleHeaderScroll);
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
             handleHeaderScroll(); 
 
-
-            // Active Navigation Link Highlighting (Scroll Spy)
+            // ScrollSpy System tracking current window state
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
 
@@ -768,24 +727,14 @@
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
                         const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
-                        
                         navLinks.forEach(link => link.classList.remove('active'));
-
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                        }
+                        if (activeLink) activeLink.classList.add('active');
                     }
                 });
-            }, {
-                rootMargin: "-20% 0px -40% 0px",
-                threshold: 0.1
-            });
+            }, { rootMargin: "-30% 0px -60% 0px" });
 
-            sections.forEach(section => {
-                navObserver.observe(section);
-            });
+            sections.forEach(section => navObserver.observe(section));
         });
     </script>
-
 </body>
 </html>
