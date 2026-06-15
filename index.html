@@ -42,7 +42,8 @@
             .ptr-aura.interacting { width: 52px; height: 52px; background: rgba(253, 224, 71, 0.08); border-color: #ffffff; }
         }
 
-        #matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.4; }
+        /* High-DPI Layer Bounds & Mobile Bar Protection */
+        #matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.4; }
         #app-wrapper { position: relative; z-index: 2; width: 100%; }
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
@@ -59,8 +60,8 @@
         .nav-item a:hover::after, .nav-item.active a::after { transform: scaleX(1); transform-origin: left; }
         .nav-item a:hover, .nav-item.active a { color: var(--accent); }
 
-        /* Hero Pipeline */
-        .hero-viewport { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 90px; }
+        /* Hero Pipeline Optimized with Dynamic Viewport Primitives */
+        .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
         .hero-core { width: 100%; text-align: left; }
         .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
         .sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
@@ -131,6 +132,13 @@
         .footer-loc { color: rgba(255,255,255,0.15); text-transform: uppercase; letter-spacing: 0.05em; }
 
         #mobile-toggle { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; }
+
+        /* Compact High-Density Display Optimization Rules */
+        @media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+            .hero-title { line-height: 1.12; letter-spacing: -0.04em; }
+            .interactive-card { padding: 2rem; min-height: 360px; }
+            .tool-monolith { padding: 1.5rem; }
+        }
 
         @media (max-width: 768px) {
             #mobile-toggle { display: block; }
@@ -373,7 +381,7 @@
 
     <script>
         // =================================================================
-        // Dynamic Low-Level Assembly/Memory Visualizer Backplane (HTML5 Canvas)
+        // Dynamic Low-Level Assembly/Memory Visualizer Backplane (High-DPI Optimized)
         // =================================================================
         class MemoryBackplane {
             constructor() {
@@ -389,15 +397,24 @@
             }
 
             init() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-                this.columns = Math.floor(this.canvas.width / 45);
+                // High-DPI Scale Factor Interception Matrix Calculation
+                const dpr = window.devicePixelRatio || 1;
+                
+                this.canvas.width = window.innerWidth * dpr;
+                this.canvas.height = window.innerHeight * dpr;
+                
+                this.canvas.style.width = `${window.innerWidth}px`;
+                this.canvas.style.height = `${window.innerHeight}px`;
+                
+                this.ctx.scale(dpr, dpr);
+
+                this.columns = Math.floor(window.innerWidth / 45);
                 this.streams = [];
 
                 for (let i = 0; i < this.columns; i++) {
                     this.streams.push({
                         x: i * 45,
-                        y: Math.random() * -this.canvas.height,
+                        y: Math.random() * -window.innerHeight,
                         speed: Math.random() * 2 + 1,
                         chars: Array.from({length: Math.floor(Math.random() * 20) + 10}, () => this.randomToken())
                     });
@@ -409,8 +426,8 @@
             }
 
             animate() {
-                this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)'; // High-persistence motion trails
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)'; 
+                this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
                 
                 this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
                 
@@ -420,8 +437,7 @@
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
                         
-                        if (yPos > 0 && yPos < this.canvas.height) {
-                            // Fade opacity down the trail stream
+                        if (yPos > 0 && yPos < window.innerHeight) {
                             let alpha = 1 - (j / stream.chars.length);
                             this.ctx.fillStyle = j === 0 
                                 ? `rgba(255, 255, 255, ${alpha * 0.8})` 
@@ -433,7 +449,7 @@
 
                     stream.y += stream.speed;
 
-                    if (stream.y > this.canvas.height) {
+                    if (stream.y > window.innerHeight) {
                         stream.y = Math.random() * -200;
                         stream.speed = Math.random() * 2 + 1;
                     }
