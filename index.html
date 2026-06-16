@@ -60,15 +60,30 @@
         .nav-item a:hover::after, .nav-item.active a::after { transform: scaleX(1); transform-origin: left; }
         .nav-item a:hover, .nav-item.active a { color: var(--accent); }
 
-        /* Hero Pipeline Optimized with Dynamic Viewport Primitives */
+        /* Hero Pipeline & Native Staging Animations */
+        @keyframes sysRevealFade {
+            from { opacity: 0; transform: translate3d(0, 20px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
         .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
         .hero-core { width: 100%; text-align: left; }
+        
+        .sys-reveal { opacity: 0; animation: sysRevealFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .sys-reveal:nth-child(1) { animation-delay: 0.1s; }
+        .sys-reveal:nth-child(2) { animation-delay: 0.25s; }
+        .sys-reveal:nth-child(3) { animation-delay: 0.4s; }
+        .sys-reveal:nth-child(4) { animation-delay: 0.55s; }
+
         .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
         .sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
         
-        .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 900; line-height: 1.05; tracking: -0.03em; color: #fff; margin-bottom: 2rem; }
+        .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
         .hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
-        .hero-desc { font-size: clamp(1.05rem, 1.8vw, 1.3rem); color: var(--text-muted); max-w: 800px; line-height: 1.62; margin-bottom: 3.5rem; min-height: 80px; }
+        
+        .hero-desc { max-w: 800px; margin-bottom: 3.5rem; min-height: 80px; }
+        
+        /* Semantically Isolated Native Terminal Outputs */
+        .console-line { font-family: var(--font-mono); font-size: clamp(0.72rem, 1.5vw, 0.85rem); letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.6; text-align: left; }
         
         .btn-stack { display: flex; gap: 1.25rem; flex-wrap: wrap; }
         .btn-primitive { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 1.15rem 2rem; border-radius: 6px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; min-width: 240px; }
@@ -86,8 +101,8 @@
         .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
         .matrix-cell { perspective: 1200px; }
         
-        /* Interactive 3D Structural Cards */
-        .interactive-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 3rem; min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; transform-style: preserve-3d; transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        /* Interactive 3D Structural Cards with Fluid Recovery Physic Loops */
+        .interactive-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 3rem; min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
         .interactive-card:hover { border-color: var(--accent); background: rgba(15, 23, 42, 0.8); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); }
         .interactive-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(400px circle at var(--m-x, 0px) var(--m-y, 0px), rgba(253, 224, 71, 0.06), transparent 60%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .interactive-card:hover::before { opacity: 1; }
@@ -101,7 +116,7 @@
 
         /* Tech Stack Monolith */
         .tool-monolith { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 16px; padding: 4rem; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-        .tool-meta { display: flex; justify-content: space-between; align-items: center; border-b: 1px solid var(--border-glow); padding-bottom: 2.5rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+        .tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 2.5rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
         .tool-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: #fff; }
         .sys-tag-stable { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: 4px; }
         .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-w: 850px; }
@@ -118,8 +133,8 @@
         .counter-housing { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); background: rgba(2, 6, 23, 0.5); padding: 0.85rem 1.5rem; border-radius: 4px; border: 1px solid var(--border-glow); }
         .counter-housing span { color: var(--accent); font-weight: 700; }
 
-        /* Typography & Presentation Layout blocks */
-        .prose-block { max-w: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
+        /* Typography & Layout Optimization Safeguards */
+        .prose-block { max-width: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
         .prose-block p { margin-bottom: 2rem; }
         
         .reveal-element { opacity: 0; transform: translate3d(0, 25px, 0); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
@@ -127,7 +142,7 @@
         
         .glitch { position: relative; display: inline-block; }
         
-        .sys-footer { border-t: 1px solid var(--border-glow); padding: 5rem 0; background: rgba(2, 6, 23, 0.95); }
+        .sys-footer { border-top: 1px solid var(--border-glow); padding: 5rem 0; background: rgba(2, 6, 23, 0.95); }
         .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
         .footer-loc { color: rgba(255,255,255,0.15); text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -163,10 +178,10 @@
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
-                    <a href="#hero" class="sys-logo" aria-label="Home">
+                    <a href="#hero" class="sys-logo" aria-label="Home Workspace">
                         CORE_INFRA//<span>HL</span>
                     </a>
-                    <button id="mobile-toggle" aria-label="Menu Toggle">
+                    <button id="mobile-toggle" aria-label="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <nav>
@@ -194,7 +209,7 @@
                             Infrastructure Security &<br>
                             <em>Low-Level Hardware Synthesis.</em>
                         </h1>
-                        <div class="hero-desc sys-reveal font-mono">
+                        <div class="hero-desc sys-reveal">
                             </div>
                         <div class="btn-stack sys-reveal">
                             <a href="#contact" class="btn-primitive primary" data-glitch-btn="./establish_comms.sh">./establish_comms.sh</a>
@@ -379,8 +394,11 @@
     </div>
 
     <script>
+        // Global Motion & State Controls
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
         // =================================================================
-        // Dynamic Low-Level Assembly Visualizer Backplane (High-DPI & Interaction)
+        // Dynamic Memory Visualizer Matrix (High-DPI & Interactivity Waves)
         // =================================================================
         class MemoryBackplane {
             constructor() {
@@ -394,7 +412,13 @@
                 this.init();
                 this.bindInteractions();
                 window.addEventListener('resize', () => this.init());
-                this.animate();
+                
+                // Motion throttling safeguard validation check
+                if (!prefersReducedMotion) {
+                    this.animate();
+                } else {
+                    this.renderStaticFrame();
+                }
             }
 
             init() {
@@ -434,10 +458,27 @@
                 return this.hexTokens[Math.floor(Math.random() * this.hexTokens.length)];
             }
 
+            renderStaticFrame() {
+                this.ctx.fillStyle = '#020617';
+                this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+                this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
+                
+                for (let i = 0; i < this.streams.length; i++) {
+                    let stream = this.streams[i];
+                    stream.y = Math.random() * window.innerHeight;
+                    for (let j = 0; j < stream.chars.length; j++) {
+                        let yPos = stream.y + (j * (this.fontSize + 6));
+                        if (yPos < window.innerHeight) {
+                            this.ctx.fillStyle = `rgba(253, 224, 71, 0.08)`;
+                            this.ctx.fillText(stream.chars[j], stream.x, yPos);
+                        }
+                    }
+                }
+            }
+
             animate() {
                 this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)'; 
                 this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-                
                 this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
                 
                 if (this.interaction.active && this.interaction.pingRadius < this.interaction.targetRadius) {
@@ -456,25 +497,26 @@
                             let alpha = 1 - (j / stream.chars.length);
                             let finalFill = `rgba(253, 224, 71, ${alpha * 0.16})`;
                             let displayToken = stream.chars[j];
+                            let isGlitchedNode = false;
 
                             if (this.interaction.active) {
                                 let dx = stream.x - this.interaction.x;
                                 let dy = yPos - this.interaction.y;
                                 let currentDist = Math.hypot(dx, dy);
 
-                                // If intercepted by the interaction vector wave, trigger character glitch distortion
                                 if (Math.abs(currentDist - this.interaction.pingRadius) < 40) {
-                                    finalFill = `rgba(255, 60, 100, ${alpha * 0.9})`; 
-                                    displayToken = 'XX';
+                                    isGlitchedNode = true;
                                 }
                             }
 
-                            if (j === 0 && finalFill !== `rgba(255, 60, 100, ${alpha * 0.9})`) {
-                                this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
-                            } else {
-                                this.ctx.fillStyle = finalFill;
+                            if (isGlitchedNode) {
+                                finalFill = `rgba(255, 60, 100, ${alpha * 0.9})`; 
+                                displayToken = 'XX';
+                            } else if (j === 0) {
+                                finalFill = `rgba(255, 255, 255, ${alpha * 0.8})`;
                             }
-                            
+
+                            this.ctx.fillStyle = finalFill;
                             this.ctx.fillText(displayToken, stream.x, yPos);
                         }
                     }
@@ -495,7 +537,7 @@
         }
 
         // =================================================================
-        // Fluid GPU-bound Vector Pointer Engine
+        // Fluid GPU-bound Interpolated Vector Pointer Engine
         // =================================================================
         function initCompositeCursor() {
             if (!window.matchMedia("(pointer: fine)").matches) return;
@@ -526,11 +568,12 @@
         }
 
         // =================================================================
-        // Core Console Logging Typing Framework
+        // Core Console Logging Typing Framework (Vanilla Layouts Only)
         // =================================================================
         function initConsoleTyping() {
             const descEl = document.querySelector('.hero-desc');
             if (!descEl) return;
+            
             const logStreams = [
                 "> initializing zero-trust operational security architecture...",
                 "> loading distributed infrastructure lead telemetry vectors... [OK]",
@@ -545,7 +588,7 @@
                 if (streamIdx < logStreams.length) {
                     if (characterIdx === 0) {
                         const lineNode = document.createElement('div');
-                        lineNode.className = 'font-mono text-xs md:text-sm tracking-wide text-slate-400 mb-2';
+                        lineNode.className = 'console-line';
                         descEl.appendChild(lineNode);
                     }
                     const dynamicTargetNode = descEl.lastChild;
@@ -557,7 +600,7 @@
                         characterIdx = 0;
                         setTimeout(printLogLine, 350);
                     } else {
-                        setTimeout(printLogLine, 12);
+                        setTimeout(printLogLine, prefersReducedMotion ? 0 : 12);
                     }
                 }
             }
@@ -583,7 +626,7 @@
         // Text Matrix Decryption Engine
         // =================================================================
         function initTextDecryption() {
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            if (prefersReducedMotion) {
                 document.querySelectorAll('.decrypt-trigger').forEach(el => el.style.visibility = 'visible');
                 return;
             }
@@ -622,6 +665,7 @@
         // Inertial Matrix Card Parallax
         // =================================================================
         function initParallaxArchitecture() {
+            if (prefersReducedMotion) return;
             document.querySelectorAll('.interactive-card').forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
@@ -681,6 +725,7 @@
             const yEl = document.getElementById('year');
             if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
 
+            // Structural Reveal Intersection Engine
             const revealEngine = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -691,14 +736,52 @@
             }, { threshold: 0.05 });
             document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
 
+            // Modern Mobile UI Toggle Interceptors with Escape Hotkey Access
             const toggle = document.getElementById('mobile-toggle');
             const menu = document.getElementById('menu-box');
+            
+            const closeMobileMenu = () => {
+                if (menu && menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            };
+
             if (toggle && menu) {
-                toggle.addEventListener('click', () => menu.classList.toggle('active'));
-                menu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => menu.classList.remove('active')));
+                toggle.addEventListener('click', () => {
+                    const isActive = menu.classList.toggle('active');
+                    toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+                });
+                menu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
             }
 
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeMobileMenu();
+            });
+
+            // High Performance Passive Scroll Trackers & Active State Sync
             const header = document.getElementById('site-header');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-item');
+
+            const scrollSpyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeId = entry.target.getAttribute('id');
+                        navLinks.forEach(item => {
+                            const link = item.querySelector('a');
+                            if (link && link.getAttribute('href') === `#${activeId}`) {
+                                item.classList.add('active');
+                            } else {
+                                item.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-20% 0px -60% 0px", threshold: 0.1 });
+
+            sections.forEach(section => scrollSpyObserver.observe(section));
+
             window.addEventListener('scroll', () => {
                 window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
             }, { passive: true });
