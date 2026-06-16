@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Hardened Shift-Left Security Backplane -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; img-src 'self' data:;">
     
     <title>Hugo Luna // Systems Infrastructure Lead & Security Architect</title>
@@ -34,13 +33,23 @@
         
         ::selection { background: var(--accent); color: var(--bg-pure); }
 
-        /* Smooth Input Processing Cursor Loops */
+        /* Hardware Accelerated Input Processing Pointer Overrides */
         @media (pointer: fine) {
             html.sys-cursor-active { cursor: none; }
             html.sys-cursor-active a, html.sys-cursor-active button { cursor: none; }
+            
+            /* Defensive A11y: Safely restore default tracking if keyboard navigation takes focus */
+            html.sys-cursor-active *:focus-visible { cursor: auto !important; }
+
             .ptr-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--accent); pointer-events: none; z-index: 10001; border-radius: 50%; transform: translate3d(-50%,-50%,0); will-change: transform; mix-blend-mode: difference; }
             .ptr-aura { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1px solid var(--accent); pointer-events: none; z-index: 10000; border-radius: 50%; transform: translate3d(-50%,-50%,0); will-change: transform; transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s; }
             .ptr-aura.interacting { width: 52px; height: 52px; background: rgba(253, 224, 71, 0.08); border-color: #ffffff; }
+        }
+
+        /* Keyboard Accessibility Focus Indicators */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent) !important;
+            outline-offset: 4px !important;
         }
 
         /* High-DPI Layer Bounds & Mobile Bar Protection */
@@ -121,7 +130,7 @@
         .tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 2.5rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
         .tool-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: #fff; }
         .sys-tag-stable { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: 4px; }
-        .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-w: 850px; }
+        .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-width: 850px; }
         
         .manifesto-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3.5rem; }
         .manifesto-node { background: rgba(2, 6, 23, 0.4); border: 1px solid var(--border-glow); padding: 2.5rem; border-radius: 8px; }
@@ -173,7 +182,6 @@
     <div class="ptr-dot" data-cursor-pointer></div>
     <div class="ptr-aura" data-cursor-aura></div>
 
-    <!-- Core Low-Level Memory Visualizer Stream Matrix -->
     <canvas id="matrix-backplane"></canvas>
 
     <div id="app-wrapper">
@@ -213,8 +221,7 @@
                             <em>High-Performance Workstations.</em>
                         </h1>
                         <div class="hero-desc sys-reveal">
-                            <!-- Real-time dynamic compilation hook injected cleanly here -->
-                        </div>
+                            </div>
                         <div class="btn-stack sys-reveal">
                             <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh">./connect_with_hugo.sh</a>
                             <a href="#services" class="btn-primitive secondary">view_technical_capabilities</a>
@@ -321,7 +328,7 @@
                             <span class="sys-tag-stable">PRODUCTION_STABLE</span>
                         </div>
                         <p class="tool-desc">
-                            An automated PowerShell asset deployment built for systems administrators. It orchestrates critical filesystem integrity checks, maps low-level block allocation discrepancies, synchronizes environment base states, and outputs clear system error analytics natively.
+                            An automated PowerShell asset deployment built for systems administrators. It orchestrates critical filesystem integrity checks, maps low-level block allocation discrepancies, pipelines environment base states, and outputs clear system error analytics natively.
                         </p>
 
                         <div class="manifesto-layout">
@@ -417,6 +424,12 @@
                 this.bindInteractions();
                 window.addEventListener('resize', () => this.init());
                 
+                // Track Tab Focus state changes cleanly to eliminate CPU waste
+                document.addEventListener('visibilitychange', () => {
+                    this.isRenderActive = document.visibilityState === 'visible';
+                });
+                this.isRenderActive = true;
+                
                 if (!prefersReducedMotion) {
                     this.animate();
                 } else {
@@ -431,7 +444,9 @@
                 this.canvas.style.width = `${window.innerWidth}px`;
                 this.canvas.style.height = `${window.innerHeight}px`;
                 
-                this.ctx.scale(dpr, dpr);
+                // Hardened fix: Restoring absolute vector transformations to break relative scale loop leaks
+                this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                
                 this.columns = Math.floor(window.innerWidth / 45);
                 this.streams = [];
 
@@ -480,6 +495,12 @@
             }
 
             animate() {
+                // Throttle compilation loops if tab visibility matrix states drop
+                if (!this.isRenderActive) {
+                    requestAnimationFrame(() => this.animate());
+                    return;
+                }
+
                 this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)'; 
                 this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
                 this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
@@ -571,7 +592,7 @@
         }
 
         // =================================================================
-        // Core Console Logging Typing Framework (Clarity Refactored)
+        // Core Console Logging Typing Framework
         // =================================================================
         function initConsoleTyping() {
             const descEl = document.querySelector('.hero-desc');
@@ -738,6 +759,7 @@
             }, { threshold: 0.05 });
             document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
 
+            // Extracted listener blocks for zero-trust runtime execution
             const toggle = document.getElementById('mobile-toggle');
             const menu = document.getElementById('menu-box');
             
