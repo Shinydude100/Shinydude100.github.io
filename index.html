@@ -1,3 +1,10 @@
+Here is your fully integrated, production-ready `index.html` file.
+
+I have injected the updated text descriptions we wrote earlier, embedded the full PowerShell Terminal Emulator, layered the Windows Memory Diagnostics Tool simulation on top of it, and wired up all the CSS and JavaScript natively.
+
+You can completely overwrite your current `index.html` with this block:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,9 +147,58 @@
         .node-list li { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem; padding-left: 1.25rem; position: relative; line-height: 1.5; }
         .node-list li::before { content: '🖲️'; position: absolute; left: 0; font-size: 0.65rem; top: 2px; }
         
-        .telemetry-row { display: flex; justify-content: space-between; align-items: center; border-t: 1px solid var(--border-glow); padding-top: 3rem; flex-wrap: wrap; gap: 1.5rem; }
-        .counter-housing { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); background: rgba(2, 6, 23, 0.5); padding: 0.85rem 1.5rem; border-radius: 4px; border: 1px solid var(--border-glow); }
-        .counter-housing span { color: var(--accent); font-weight: 700; }
+        /* PowerShell Terminal Emulator Styling */
+        .sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid var(--border-glow); border-radius: 6px; overflow: hidden; margin-bottom: 3.5rem; font-family: 'Consolas', 'Fira Code', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
+        .terminal-header { background: #ffffff; color: #000000; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; letter-spacing: -0.02em; }
+        .terminal-header::before { content: 'C:\\_'; margin-right: 8px; }
+        .terminal-body { padding: 0; display: flex; flex-direction: column; }
+        
+        .terminal-log { padding: 1.5rem 1.5rem 1rem; color: #cccccc; font-size: 0.82rem; line-height: 1.6; min-height: 120px; }
+        .terminal-log p { margin-bottom: 0.2rem; }
+        .log-critical { color: #fde047; }
+        .log-success { color: #10b981; }
+        
+        /* The Blue Write-Progress Banner */
+        .ps-progress { background: #012456; color: #0eeaff; padding: 1rem 1.5rem; font-size: 0.85rem; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; display: none; }
+        .ps-progress.active { display: block; background: #2B88D8; color: #ffffff; }
+        .ps-title { margin-bottom: 0.2rem; }
+        .ps-stage { margin-bottom: 0.2rem; padding-left: 1.5rem; }
+        .ps-bar { padding-left: 1.5rem; letter-spacing: 1px; color: #fde047; }
+        
+        /* Hexadecimal Memory Grid */
+        .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(22px, 1fr)); gap: 4px; padding: 1.5rem; }
+        .memory-node { height: 22px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #333; transition: color 0.2s; }
+        .memory-node::after { content: '00'; }
+        
+        .memory-node.safe { color: #10b981; }
+        .memory-node.safe::after { content: 'FF'; }
+        
+        .memory-node.corrupt { background: #f97316; color: #000; font-weight: bold; animation: terminalGlitch 0.15s infinite; }
+        .memory-node.corrupt::after { content: 'XX'; }
+        
+        .memory-node.scan { background: #fde047; color: #000; transform: scale(1.1); z-index: 2; font-weight: bold; box-shadow: 0 0 10px rgba(253, 224, 71, 0.4); }
+        .memory-node.scan::after { content: '>>'; }
+        
+        .terminal-legend { padding: 1rem 1.5rem; border-top: 1px dashed #333; display: flex; gap: 1.5rem; font-size: 0.75rem; color: #888; }
+        .terminal-legend .node { width: 12px; height: 12px; }
+        .terminal-legend .node.safe { background: #10b981; }
+        .terminal-legend .node.corrupt { background: #f97316; }
+        .terminal-legend .node.scan { background: #fde047; }
+        
+        @keyframes terminalGlitch { 
+            0% { transform: translate(0) } 
+            33% { transform: translate(-1px, 1px) } 
+            66% { transform: translate(1px, -1px) } 
+            100% { transform: translate(0) } 
+        }
+
+        /* WMDT Pre-OS Reboot Overlay */
+        .wmdt-screen { position: absolute; inset: 0; background: #0000aa; color: #ffffff; font-family: 'Consolas', 'Lucida Console', monospace; z-index: 10; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .wmdt-screen.active { opacity: 1; pointer-events: auto; }
+        .wmdt-header { background: #aaaaaa; color: #000000; text-align: center; padding: 2px 0; font-size: 0.85rem; }
+        .wmdt-body { padding: 1.5rem; font-size: 0.85rem; line-height: 1.4; }
+        .wmdt-yellow { color: #ffff55; }
+        .wmdt-progress-bar { background: #aaaaaa; height: 14px; width: 0%; margin-top: 6px; transition: width 0.1s linear; }
 
         /* Typography & Layout Optimization Safeguards */
         .prose-block { max-width: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
@@ -328,25 +384,70 @@
                             <span class="sys-tag-stable">PRODUCTION_STABLE</span>
                         </div>
                         <p class="tool-desc">
-                            An automated PowerShell asset deployment built for systems administrators. It orchestrates critical filesystem integrity checks, maps low-level block allocation discrepancies, pipelines environment base states, and outputs clear system error analytics natively.
+                            An automated PowerShell asset deployment built for system administrators resolving critical BSOD errors and corrupted states. It orchestrates deep OS image repairs, parses live BugCheck crash logs, safely extracts raw memory dumps for WinDbg analysis, and alters registry memory management to purge corrupted Nonpaged Area caches natively.
                         </p>
 
                         <div class="manifesto-layout">
                             <div class="manifesto-node">
                                 <h4 class="node-label">// Integrated Directives</h4>
                                 <ul class="node-list">
-                                    <li>Automates image health validation routines</li>
-                                    <li>Schedules systemic file validation parameters</li>
-                                    <li>Triggers logical disk structure diagnostics</li>
+                                    <li>Extracts BSOD crash parameters & isolates Minidumps (.dmp)</li>
+                                    <li>Executes Component Store (DISM) & active OS Integrity (SFC) repairs</li>
+                                    <li>Forces paging file clearance to remediate Nonpaged Area faults</li>
+                                    <li>Automatically queues native hardware memory diagnostics</li>
                                 </ul>
                             </div>
                             <div class="manifesto-node warn">
                                 <h4 class="node-label" style="color:var(--warning)">// Execution Constraints</h4>
                                 <ul class="node-list">
-                                    <li>Demands administrative context initialization</li>
-                                    <li>Requires target partition structural access</li>
-                                    <li>Forces local execution scope modifications</li>
+                                    <li>Demands strictly elevated administrative context</li>
+                                    <li>Requires direct Windows Event Viewer API access</li>
+                                    <li>Forces local registry memory management overrides</li>
                                 </ul>
+                            </div>
+                        </div>
+
+                        <div class="sys-visualizer terminal-mode reveal-element">
+                            <div class="terminal-header">
+                                <span>Administrator: System Rescue Launcher</span>
+                            </div>
+                            <div class="terminal-body">
+                                <div class="terminal-log" id="terminal-log">
+                                    <p>Launching System Rescue Utility...</p>
+                                    <br>
+                                </div>
+                                
+                                <div class="ps-progress" id="vis-progress-bar">
+                                    <div class="ps-title">System Rescue & Maintenance</div>
+                                    <div class="ps-stage" id="vis-status-text">Stage 1 of 6: Extracting BSOD Logs</div>
+                                    <div class="ps-bar">[oooooooooooooo                                    ]</div>
+                                </div>
+                                
+                                <div class="memory-grid" id="memory-grid">
+                                    </div>
+                                
+                                <div class="vis-legend terminal-legend">
+                                    <div class="legend-item"><div class="node safe"></div> <span>[VERIFIED]</span></div>
+                                    <div class="legend-item"><div class="node corrupt"></div> <span>[PAGE_FAULT]</span></div>
+                                    <div class="legend-item"><div class="node scan"></div> <span>[DISM_OVR]</span></div>
+                                </div>
+                            </div>
+
+                            <div class="wmdt-screen" id="wmdt-screen">
+                                <div class="wmdt-header">Windows Memory Diagnostics Tool</div>
+                                <div class="wmdt-body">
+                                    <p>Windows is checking for memory problems...<br>This might take several minutes.</p>
+                                    <br>
+                                    <p>Running test pass 1 of 2: <span id="wmdt-pass-pct">0</span>% complete<br>
+                                    Overall test status: <span id="wmdt-overall-pct">00</span>% complete</p>
+                                    <div class="wmdt-progress-bar" id="wmdt-bar"></div>
+                                    <br>
+                                    <p>Status:<br><span class="wmdt-yellow">No problems have been detected yet.</span></p>
+                                    <br>
+                                    <p class="wmdt-yellow">Although the test may appear inactive at times, it is still running. Please wait until testing is complete...</p>
+                                    <br><br>
+                                    <p>Windows will restart the computer automatically. Test results will be displayed again after you log on.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -712,6 +813,112 @@
         }
 
         // =================================================================
+        // Terminal Execution & Pre-OS Remediation Visualizer Simulation
+        // =================================================================
+        function initRescueVisualizer() {
+            const grid = document.getElementById('memory-grid');
+            const statusTxt = document.getElementById('vis-status-text');
+            const progressBar = document.getElementById('vis-progress-bar');
+            const logArea = document.getElementById('terminal-log');
+            const wmdtScreen = document.getElementById('wmdt-screen');
+            const wmdtBar = document.getElementById('wmdt-bar');
+            const passPct = document.getElementById('wmdt-pass-pct');
+            const overallPct = document.getElementById('wmdt-overall-pct');
+            
+            if (!grid || !statusTxt || !logArea || !wmdtScreen || prefersReducedMotion) return;
+
+            const totalNodes = 104; 
+            const nodes = [];
+            
+            for (let i = 0; i < totalNodes; i++) {
+                const node = document.createElement('div');
+                node.className = 'memory-node safe';
+                grid.appendChild(node);
+                nodes.push(node);
+            }
+
+            function appendLog(text, className = '') {
+                const p = document.createElement('p');
+                p.textContent = text;
+                if (className) p.className = className;
+                logArea.appendChild(p);
+                if (logArea.childNodes.length > 5) logArea.removeChild(logArea.firstChild);
+            }
+
+            function runSimulation() {
+                logArea.innerHTML = '<p>Launching System Rescue Utility...</p><br>';
+                progressBar.classList.add('active');
+                
+                statusTxt.textContent = "Stage 1 of 6: Extracting BSOD Crash Logs";
+                appendLog("Scanning Event Viewer for recent system crashes...");
+                
+                const corruptIndices = [];
+                for(let i=0; i < 7; i++) {
+                    corruptIndices.push(Math.floor(Math.random() * totalNodes));
+                }
+
+                setTimeout(() => {
+                    appendLog("CRITICAL: BugCheck (BSOD) events found. Page Faults Detected.", "log-critical");
+                    corruptIndices.forEach(idx => nodes[idx].className = 'memory-node corrupt');
+                }, 1500);
+
+                setTimeout(() => {
+                    statusTxt.textContent = "Stage 2 of 6: Repairing Windows OS image";
+                    appendLog("Deployment Image Servicing and Management tool initialized.");
+                    appendLog("[==========================62.6%====                  ]");
+                    corruptIndices.forEach(idx => nodes[idx].className = 'memory-node scan');
+                }, 3500);
+
+                setTimeout(() => {
+                    statusTxt.textContent = "Stage 3 of 6: Scanning and repairing system files";
+                    appendLog("Overwriting corrupted clusters with verified WinSxS payloads...");
+                    
+                    let repaired = 0;
+                    const repairInterval = setInterval(() => {
+                        if(repaired >= corruptIndices.length) {
+                            clearInterval(repairInterval);
+                            
+                            statusTxt.textContent = "Stage 6 of 6: Maintenance Complete";
+                            appendLog("Rescue operations complete! Rebooting into Diagnostics...", "log-success");
+                            progressBar.classList.remove('active');
+                            
+                            // Trigger the Pre-OS Reboot Sequence
+                            setTimeout(triggerMemoryDiagnostics, 1500);
+                        } else {
+                            nodes[corruptIndices[repaired]].className = 'memory-node safe';
+                            repaired++;
+                        }
+                    }, 350);
+                }, 6000);
+            }
+
+            function triggerMemoryDiagnostics() {
+                wmdtScreen.classList.add('active');
+                let wmdtProgress = 0;
+                
+                const memTestInterval = setInterval(() => {
+                    wmdtProgress += 2;
+                    wmdtBar.style.width = wmdtProgress + '%';
+                    passPct.textContent = wmdtProgress;
+                    
+                    // Overall is usually half the speed of pass 1
+                    overallPct.textContent = Math.floor(wmdtProgress / 2).toString().padStart(2, '0');
+                    
+                    if(wmdtProgress >= 100) {
+                        clearInterval(memTestInterval);
+                        setTimeout(() => {
+                            wmdtScreen.classList.remove('active');
+                            // Reset state and restart simulation
+                            setTimeout(runSimulation, 1000);
+                        }, 2000); // Hold on 100% for a moment before dropping the overlay
+                    }
+                }, 100); // Ticks up relatively fast for visual engagement
+            }
+
+            setTimeout(runSimulation, 1000);
+        }
+
+        // =================================================================
         // Secure GitHub API Payload Telemetry
         // =================================================================
         async function runPipelineTelemetry() {
@@ -745,6 +952,7 @@
             initCallGlitchText();
             initTextDecryption();
             initParallaxArchitecture();
+            initRescueVisualizer();
             runPipelineTelemetry();
 
             const yEl = document.getElementById('year');
@@ -812,3 +1020,5 @@
     </script>
 </body>
 </html>
+
+```
