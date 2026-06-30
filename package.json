@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --testPathIgnorePatterns=.*\\.spec\\.js$ && npx playwright test"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
+    "@playwright/test": "^1.61.1",
     "@testing-library/dom": "^10.4.1",
     "babel-jest": "^30.4.1",
     "jest": "^29.7.0",
