@@ -835,7 +835,7 @@
                 p.textContent = text;
                 if (className) p.className = className;
                 logArea.appendChild(p);
-                if (logArea.childNodes.length > 5) logArea.removeChild(logArea.firstChild);
+                if (logArea.children.length > 5) logArea.removeChild(logArea.firstElementChild);
             }
 
             function runSimulation() {
