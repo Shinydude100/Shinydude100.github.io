@@ -928,10 +928,14 @@
                 const payloads = await response.json();
                 
                 let downloads = 0;
-                payloads.forEach(release => {
-                    const asset = release.assets.find(a => a.name === 'Maintenence.zip');
-                    if (asset) downloads += asset.download_count;
-                });
+                for (const release of payloads) {
+                    for (const asset of release.assets) {
+                        if (asset.name === "Maintenence.zip") {
+                            downloads += asset.download_count;
+                            break;
+                        }
+                    }
+                }
                 
                 countEl.textContent = downloads.toLocaleString() + " PACKAGES DEPLOYED";
             } catch {
