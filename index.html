@@ -517,7 +517,11 @@
                 
                 this.init();
                 this.bindInteractions();
-                window.addEventListener('resize', () => this.init());
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => this.init(), 150);
+                });
                 
                 // Track Tab Focus state changes cleanly to eliminate CPU waste
                 document.addEventListener('visibilitychange', () => {
