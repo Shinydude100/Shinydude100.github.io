@@ -988,16 +988,24 @@
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-item');
 
+            const navLinksCache = Array.from(navLinks).map(item => {
+                const link = item.querySelector('a');
+                return {
+                    item: item,
+                    href: link ? link.getAttribute('href') : null
+                };
+            });
+
             const scrollSpyObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const activeId = entry.target.getAttribute('id');
-                        navLinks.forEach(item => {
-                            const link = item.querySelector('a');
-                            if (link && link.getAttribute('href') === `#${activeId}`) {
-                                item.classList.add('active');
+                        const targetHref = `#${activeId}`;
+                        navLinksCache.forEach(cache => {
+                            if (cache.href === targetHref) {
+                                cache.item.classList.add('active');
                             } else {
-                                item.classList.remove('active');
+                                cache.item.classList.remove('active');
                             }
                         });
                     }
