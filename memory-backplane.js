@@ -12,7 +12,11 @@ class MemoryBackplane {
 
                 this.init();
                 this.bindInteractions();
-                window.addEventListener('resize', () => this.init());
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => this.init(), 150);
+                });
 
                 // Track Tab Focus state changes cleanly to eliminate CPU waste
                 document.addEventListener('visibilitychange', () => {
@@ -34,7 +38,7 @@ class MemoryBackplane {
                 this.canvas.style.width = `${window.innerWidth}px`;
                 this.canvas.style.height = `${window.innerHeight}px`;
 
-                // Hardened fix: Restoring absolute vector transformations to break relative scale loop leaks
+                // Use absolute vector transformations to break relative scale loop leaks
                 this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
                 this.columns = Math.floor(window.innerWidth / 45);
