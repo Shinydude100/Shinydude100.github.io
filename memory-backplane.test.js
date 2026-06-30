@@ -36,11 +36,12 @@ describe('MemoryBackplane', () => {
         global.prefersReducedMotion = false;
 
         // Mock document properties
-        global.document = {
-            getElementById: jest.fn().mockReturnValue(mockCanvas),
-            addEventListener: jest.fn(),
-            visibilityState: 'visible'
-        };
+        global.document.getElementById = jest.fn().mockReturnValue(mockCanvas);
+        global.document.addEventListener = jest.fn();
+        Object.defineProperty(global.document, 'visibilityState', {
+            value: 'visible',
+            configurable: true
+        });
 
         // Mock requestAnimationFrame
         global.requestAnimationFrame = jest.fn();
