@@ -10,7 +10,7 @@ describe('initConsoleTyping', () => {
         global.prefersReducedMotion = false;
 
         // Read index.html and extract initConsoleTyping
-        const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8');
+        const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
         const scriptMatch = html.match(/function initConsoleTyping\(\) \{[\s\S]*?printLogLine\(\);\s*\}/);
 
         if (!scriptMatch) {
@@ -18,8 +18,10 @@ describe('initConsoleTyping', () => {
         }
 
         // Evaluate the function in the current context
-        eval(scriptMatch[0]);
-        global.initConsoleTyping = initConsoleTyping;
+        // Wrap the evaluated code so we can capture the function reference
+        const scriptContent = scriptMatch[0] + "\nreturn initConsoleTyping;";
+        const initFn = new Function(scriptContent)();
+        global.initConsoleTyping = initFn;
     });
 
     afterEach(() => {
