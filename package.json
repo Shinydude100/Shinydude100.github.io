@@ -1,0 +1,14 @@
+{
+  "name": "daca.me-repo",
+  "version": "1.0.0",
+  "description": "Repo for daca.me",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jsdom": "^22.1.0"
+  }
+}
