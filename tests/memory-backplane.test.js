@@ -131,4 +131,59 @@ describe('MemoryBackplane', () => {
             expect(mockCtx.fillText).toHaveBeenNthCalledWith(2, 'B', 100, 216);
         });
     });
+
+
+    describe('bindInteractions', () => {
+        let backplane;
+                let originalInnerWidth;
+        let originalInnerHeight;
+
+        beforeEach(() => {
+            originalInnerWidth = window.innerWidth;
+            originalInnerHeight = window.innerHeight;
+            window.innerWidth = 1000;
+            window.innerHeight = 800;
+
+
+            backplane = new MemoryBackplane();
+        });
+
+        afterEach(() => {
+            window.innerWidth = originalInnerWidth;
+            window.innerHeight = originalInnerHeight;
+            // No need to remove event listeners from window as JSDOM handles document teardown in our main afterEach
+            // However, a good practice is to avoid bleeding state
+        });
+
+        it('should handle click event and update interaction state', () => {
+            backplane.bindInteractions();
+            const clickEvent = new MouseEvent('click', {
+                clientX: 250,
+                clientY: 350
+            });
+            window.dispatchEvent(clickEvent);
+
+            expect(backplane.interaction.x).toBe(250);
+            expect(backplane.interaction.y).toBe(350);
+            expect(backplane.interaction.pingRadius).toBe(0);
+            expect(backplane.interaction.targetRadius).toBe(Math.max(window.innerWidth, window.innerHeight) * 0.35);
+            expect(backplane.interaction.active).toBe(true);
+        });
+
+        it('should handle touchstart event and update interaction state', () => {
+            backplane.bindInteractions();
+            const touchStartEvent = new Event('touchstart');
+            touchStartEvent.touches = [{
+                clientX: 400,
+                clientY: 500
+            }];
+            window.dispatchEvent(touchStartEvent);
+
+            expect(backplane.interaction.x).toBe(400);
+            expect(backplane.interaction.y).toBe(500);
+            expect(backplane.interaction.pingRadius).toBe(0);
+            expect(backplane.interaction.targetRadius).toBe(Math.max(window.innerWidth, window.innerHeight) * 0.35);
+            expect(backplane.interaction.active).toBe(true);
+        });
+    });
 });

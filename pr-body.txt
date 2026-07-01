@@ -1,0 +1,10 @@
+🎯 **What:** The testing gap addressed
+The `MemoryBackplane.bindInteractions` method was untested. This method binds `click` and `touchstart` event listeners to the window, which update the `interaction` state variables used for the background animation ping effect.
+
+📊 **Coverage:** What scenarios are now tested
+1. Triggering a `click` event updates the `interaction` state correctly based on `clientX` and `clientY`.
+2. Triggering a `touchstart` event updates the `interaction` state correctly based on `touches[0].clientX` and `touches[0].clientY`.
+3. It also validates that the other state variables like `pingRadius`, `targetRadius`, and `active` are initialized correctly. Window dimensions were appropriately mocked to ensure deterministic tests.
+
+✨ **Result:** The improvement in test coverage
+`MemoryBackplane.bindInteractions` is now thoroughly covered by unit tests, increasing the test coverage and reliability of the `MemoryBackplane` class.
