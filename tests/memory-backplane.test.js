@@ -30,7 +30,11 @@ describe('MemoryBackplane', () => {
             getContext: jest.fn(),
             setTransform: jest.fn(),
             fillRect: jest.fn(),
-            fillText: jest.fn()
+            fillText: jest.fn(),
+            fillStyles: [],
+            set fillStyle(val) {
+                this.fillStyles.push(val);
+            }
         };
         mockCanvas.getContext = jest.fn(() => mockCtx);
 
@@ -83,14 +87,8 @@ describe('MemoryBackplane', () => {
     });
 
     describe('renderStaticFrame', () => {
-        let originalRandom;
-
-        beforeEach(() => {
-            originalRandom = Math.random;
-        });
-
         afterEach(() => {
-            Math.random = originalRandom;
+            jest.restoreAllMocks();
         });
 
         it('should render a static frame with fillRect and fillText', () => {
@@ -107,7 +105,7 @@ describe('MemoryBackplane', () => {
 
             // Mock Math.random so stream.y calculation is deterministic
             // Math.random() * window.innerHeight (800)
-            Math.random = jest.fn().mockReturnValue(0.25); // y = 200
+            jest.spyOn(Math, 'random').mockReturnValue(0.25); // y = 200
 
             // Clear mock history from init
             mockCtx.fillRect.mockClear();
@@ -129,6 +127,36 @@ describe('MemoryBackplane', () => {
             expect(mockCtx.fillText).toHaveBeenCalledTimes(2);
             expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 200);
             expect(mockCtx.fillText).toHaveBeenNthCalledWith(2, 'B', 100, 216);
+
+            // Check fillStyle assignments
+            expect(mockCtx.fillStyles).toContain('#020617'); // Background
+            expect(mockCtx.fillStyles).toContain('rgba(253, 224, 71, 0.08)'); // Text
+        });
+
+        it('should not render characters out of bounds', () => {
+            const backplane = new MemoryBackplane();
+
+            backplane.streams = [{
+                x: 100,
+                y: 0,
+                speed: 1,
+                chars: ['A']
+            }];
+            backplane.fontSize = 10;
+
+            // Mock Math.random to return 1.0 so yPos >= window.innerHeight
+            jest.spyOn(Math, 'random').mockReturnValue(1.0);
+
+            mockCtx.fillRect.mockClear();
+            mockCtx.fillText.mockClear();
+
+            backplane.renderStaticFrame();
+
+            // Explicitly verify fillRect was called with window dimensions for background
+            expect(mockCtx.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
+
+            // Check that fillText was never called for out-of-bounds chars
+            expect(mockCtx.fillText).toHaveBeenCalledTimes(0);
         });
     });
 
