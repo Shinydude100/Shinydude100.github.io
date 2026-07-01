@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; img-src 'self' data:;">
-    
+
     <title>Hugo Luna // Systems Infrastructure Lead & Security Architect</title>
     <meta name="description" content="High-availability network environments, low-level system engineering, and enterprise endpoint security architecture.">
 
@@ -29,14 +29,14 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; background: var(--bg-pure); font-family: var(--font-sans); color: var(--text-main); overflow-x: hidden; }
-        
+
         ::selection { background: var(--accent); color: var(--bg-pure); }
 
         /* Hardware Accelerated Input Processing Pointer Overrides */
         @media (pointer: fine) {
             html.sys-cursor-active { cursor: none; }
             html.sys-cursor-active a, html.sys-cursor-active button { cursor: none; }
-            
+
             /* Defensive A11y: Safely restore default tracking if keyboard navigation takes focus */
             html.sys-cursor-active *:focus-visible { cursor: auto !important; }
 
@@ -62,7 +62,7 @@
         .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 90px; }
         .sys-logo { font-family: var(--font-mono); font-weight: 700; text-decoration: none; color: #fff; font-size: 1.15rem; letter-spacing: -0.05em; }
         .sys-logo span { color: var(--accent); }
-        
+
         .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
         .nav-item a { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--text-muted); transition: color 0.3s; position: relative; padding: 0.5rem 0; }
         .nav-item a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -76,7 +76,7 @@
         }
         .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
         .hero-core { width: 100%; text-align: left; }
-        
+
         .sys-reveal { opacity: 0; animation: sysRevealFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .sys-reveal:nth-child(1) { animation-delay: 0.1s; }
         .sys-reveal:nth-child(2) { animation-delay: 0.25s; }
@@ -85,15 +85,15 @@
 
         .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
         .sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
-        
+
         .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
         .hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
-        
+
         .hero-desc { max-width: 800px; margin-bottom: 3.5rem; min-height: 80px; }
-        
+
         /* Semantically Isolated Native Terminal Outputs */
         .console-line { font-family: var(--font-mono); font-size: clamp(0.72rem, 1.5vw, 0.85rem); letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.6; text-align: left; }
-        
+
         .btn-stack { display: flex; gap: 1.25rem; flex-wrap: wrap; }
         .btn-primitive { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 1.15rem 2rem; border-radius: 6px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; min-width: 240px; }
         .btn-primitive.primary { background: var(--accent); color: var(--bg-pure); box-shadow: 0 4px 25px rgba(253, 224, 71, 0.12); }
@@ -109,7 +109,7 @@
 
         .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
         .matrix-cell { perspective: 1200px; }
-        
+
         /* Interactive 3D Structural Cards with Fluid Recovery Physic Loops */
         .interactive-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 3rem; min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
         .interactive-card:hover { border-color: var(--accent); background: rgba(15, 23, 42, 0.8); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); }
@@ -130,7 +130,7 @@
         .tool-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: #fff; }
         .sys-tag-stable { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: 4px; }
         .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-width: 850px; }
-        
+
         .manifesto-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3.5rem; }
         .manifesto-node { background: rgba(2, 6, 23, 0.4); border: 1px solid var(--border-glow); padding: 2.5rem; border-radius: 8px; }
         .manifesto-node.warn { border-left: 3px solid var(--warning); }
@@ -138,50 +138,50 @@
         .node-list { list-style: none; }
         .node-list li { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem; padding-left: 1.25rem; position: relative; line-height: 1.5; }
         .node-list li::before { content: '🖲️'; position: absolute; left: 0; font-size: 0.65rem; top: 2px; }
-        
+
         /* PowerShell Terminal Emulator Styling */
         .sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid var(--border-glow); border-radius: 6px; overflow: hidden; margin-bottom: 3.5rem; font-family: 'Consolas', 'Fira Code', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
         .terminal-header { background: #ffffff; color: #000000; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; letter-spacing: -0.02em; }
         .terminal-header::before { content: 'C:\\_'; margin-right: 8px; }
         .terminal-body { padding: 0; display: flex; flex-direction: column; }
-        
+
         .terminal-log { padding: 1.5rem 1.5rem 1rem; color: #cccccc; font-size: 0.82rem; line-height: 1.6; min-height: 120px; }
         .terminal-log p { margin-bottom: 0.2rem; }
         .log-critical { color: #fde047; }
         .log-success { color: #10b981; }
-        
+
         /* The Blue Write-Progress Banner */
         .ps-progress { background: #012456; color: #0eeaff; padding: 1rem 1.5rem; font-size: 0.85rem; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; display: none; }
         .ps-progress.active { display: block; background: #2B88D8; color: #ffffff; }
         .ps-title { margin-bottom: 0.2rem; }
         .ps-stage { margin-bottom: 0.2rem; padding-left: 1.5rem; }
         .ps-bar { padding-left: 1.5rem; letter-spacing: 1px; color: #fde047; }
-        
+
         /* Hexadecimal Memory Grid */
         .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(22px, 1fr)); gap: 4px; padding: 1.5rem; }
         .memory-node { height: 22px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #333; transition: color 0.2s; }
         .memory-node::after { content: '00'; }
-        
+
         .memory-node.safe { color: #10b981; }
         .memory-node.safe::after { content: 'FF'; }
-        
+
         .memory-node.corrupt { background: #f97316; color: #000; font-weight: bold; animation: terminalGlitch 0.15s infinite; }
         .memory-node.corrupt::after { content: 'XX'; }
-        
+
         .memory-node.scan { background: #fde047; color: #000; transform: scale(1.1); z-index: 2; font-weight: bold; box-shadow: 0 0 10px rgba(253, 224, 71, 0.4); }
         .memory-node.scan::after { content: '>>'; }
-        
+
         .terminal-legend { padding: 1rem 1.5rem; border-top: 1px dashed #333; display: flex; gap: 1.5rem; font-size: 0.75rem; color: #888; }
         .terminal-legend .node { width: 12px; height: 12px; }
         .terminal-legend .node.safe { background: #10b981; }
         .terminal-legend .node.corrupt { background: #f97316; }
         .terminal-legend .node.scan { background: #fde047; }
-        
-        @keyframes terminalGlitch { 
-            0% { transform: translate(0) } 
-            33% { transform: translate(-1px, 1px) } 
-            66% { transform: translate(1px, -1px) } 
-            100% { transform: translate(0) } 
+
+        @keyframes terminalGlitch {
+            0% { transform: translate(0) }
+            33% { transform: translate(-1px, 1px) }
+            66% { transform: translate(1px, -1px) }
+            100% { transform: translate(0) }
         }
 
         /* WMDT Pre-OS Reboot Overlay */
@@ -195,12 +195,12 @@
         /* Typography & Layout Optimization Safeguards */
         .prose-block { max-width: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
         .prose-block p { margin-bottom: 2rem; }
-        
+
         .reveal-element { opacity: 0; transform: translate3d(0, 25px, 0); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
         .reveal-element.visible { opacity: 1; transform: translate3d(0, 0, 0); }
-        
+
         .glitch { position: relative; display: inline-block; }
-        
+
         .sys-footer { border-top: 1px solid var(--border-glow); padding: 5rem 0; background: rgba(2, 6, 23, 0.95); }
         .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
         .footer-loc { color: rgba(255,255,255,0.15); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -233,7 +233,7 @@
     <canvas id="matrix-backplane"></canvas>
 
     <div id="app-wrapper">
-        
+
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
@@ -284,7 +284,7 @@
                         <span class="section-tag">// CORE EXPERTISE</span>
                         <h2 class="section-title decrypt-trigger">Infrastructure Security Metrics</h2>
                     </div>
-                    
+
                     <div class="matrix-grid">
                         <div class="matrix-cell reveal-element">
                             <div class="interactive-card">
@@ -408,16 +408,16 @@
                                     <p>Launching System Rescue Utility...</p>
                                     <br>
                                 </div>
-                                
+
                                 <div class="ps-progress" id="vis-progress-bar">
                                     <div class="ps-title">System Rescue & Maintenance</div>
                                     <div class="ps-stage" id="vis-status-text">Stage 1 of 6: Extracting BSOD Logs</div>
                                     <div class="ps-bar">[oooooooooooooo                                    ]</div>
                                 </div>
-                                
+
                                 <div class="memory-grid" id="memory-grid">
                                     </div>
-                                
+
                                 <div class="vis-legend terminal-legend">
                                     <div class="legend-item"><div class="node safe"></div> <span>[VERIFIED]</span></div>
                                     <div class="legend-item"><div class="node corrupt"></div> <span>[PAGE_FAULT]</span></div>
@@ -517,7 +517,7 @@
 
             const dot = document.querySelector("[data-cursor-pointer]");
             const aura = document.querySelector("[data-cursor-aura]");
-            
+
             let tX = 0, tY = 0, dX = 0, dY = 0, aX = 0, aY = 0;
 
             window.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
@@ -525,10 +525,10 @@
             function cycle() {
                 dX += (tX - dX) * 0.35; dY += (tY - dY) * 0.35;
                 aX += (tX - aX) * 0.16; aY += (tY - aY) * 0.16;
-                
+
                 if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
                 if (aura) aura.style.transform = `translate3d(${aX}px, ${aY}px, 0)`;
-                
+
                 requestAnimationFrame(cycle);
             }
             requestAnimationFrame(cycle);
@@ -545,17 +545,17 @@
         function initConsoleTyping() {
             const descEl = document.querySelector('.hero-desc');
             if (!descEl) return;
-            
+
             const logStreams = [
                 "> initializing secure environment telemetry monitoring platforms...",
                 "> assessing deployment base metrics for 170+ enterprise network nodes... [OK]",
                 "> zero-trust authentication policies enforced and structural auditing active. [OK]"
             ];
-            
+
             descEl.innerHTML = '';
             let streamIdx = 0;
             let characterIdx = 0;
-            
+
             function printLogLine() {
                 if (streamIdx < logStreams.length) {
                     if (characterIdx === 0) {
@@ -566,7 +566,7 @@
                     const dynamicTargetNode = descEl.lastChild;
                     dynamicTargetNode.textContent = logStreams[streamIdx].substring(0, characterIdx + 1);
                     characterIdx++;
-                    
+
                     if (characterIdx >= logStreams[streamIdx].length) {
                         streamIdx++;
                         characterIdx = 0;
@@ -643,10 +643,10 @@
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
+
                     const normX = (x / rect.width) * 2 - 1;
                     const normY = (y / rect.height) * 2 - 1;
-                    
+
                     card.style.setProperty('--m-x', `${x}px`);
                     card.style.setProperty('--m-y', `${y}px`);
                     card.style.transform = `rotateX(${normY * -4}deg) rotateY(${normX * 4}deg) translateZ(5px)`;
@@ -670,12 +670,12 @@
             const wmdtBar = document.getElementById('wmdt-bar');
             const passPct = document.getElementById('wmdt-pass-pct');
             const overallPct = document.getElementById('wmdt-overall-pct');
-            
+
             if (!grid || !statusTxt || !logArea || !wmdtScreen || prefersReducedMotion) return;
 
-            const totalNodes = 104; 
+            const totalNodes = 104;
             const nodes = [];
-            
+
             for (let i = 0; i < totalNodes; i++) {
                 const node = document.createElement('div');
                 node.className = 'memory-node safe';
@@ -694,10 +694,10 @@
             function runSimulation() {
                 logArea.innerHTML = '<p>Launching System Rescue Utility...</p><br>';
                 progressBar.classList.add('active');
-                
+
                 statusTxt.textContent = "Stage 1 of 6: Extracting BSOD Crash Logs";
                 appendLog("Scanning Event Viewer for recent system crashes...");
-                
+
                 const corruptIndices = [];
                 for(let i=0; i < 7; i++) {
                     corruptIndices.push(Math.floor(Math.random() * totalNodes));
@@ -718,16 +718,16 @@
                 setTimeout(() => {
                     statusTxt.textContent = "Stage 3 of 6: Scanning and repairing system files";
                     appendLog("Overwriting corrupted clusters with verified WinSxS payloads...");
-                    
+
                     let repaired = 0;
                     const repairInterval = setInterval(() => {
                         if(repaired >= corruptIndices.length) {
                             clearInterval(repairInterval);
-                            
+
                             statusTxt.textContent = "Stage 6 of 6: Maintenance Complete";
                             appendLog("Rescue operations complete! Rebooting into Diagnostics...", "log-success");
                             progressBar.classList.remove('active');
-                            
+
                             // Trigger the Pre-OS Reboot Sequence
                             setTimeout(triggerMemoryDiagnostics, 1500);
                         } else {
@@ -741,15 +741,15 @@
             function triggerMemoryDiagnostics() {
                 wmdtScreen.classList.add('active');
                 let wmdtProgress = 0;
-                
+
                 const memTestInterval = setInterval(() => {
                     wmdtProgress += 2;
                     wmdtBar.style.width = wmdtProgress + '%';
                     passPct.textContent = wmdtProgress;
-                    
+
                     // Overall is usually half the speed of pass 1
                     overallPct.textContent = Math.floor(wmdtProgress / 2).toString().padStart(2, '0');
-                    
+
                     if(wmdtProgress >= 100) {
                         clearInterval(memTestInterval);
                         setTimeout(() => {
@@ -775,7 +775,7 @@
                 const response = await fetch('https://api.github.com/repos/Shinydude100/Shinydude100.github.io/releases');
                 if (!response.ok) throw new Error();
                 const payloads = await response.json();
-                
+
                 let downloads = 0;
                 for (const release of payloads) {
                     for (const asset of release.assets) {
@@ -785,7 +785,7 @@
                         }
                     }
                 }
-                
+
                 countEl.textContent = downloads.toLocaleString() + " PACKAGES DEPLOYED";
             } catch {
                 countEl.textContent = "LOCAL_SECURE_MIRROR";
@@ -821,7 +821,7 @@
             // Extracted listener blocks for zero-trust runtime execution
             const toggle = document.getElementById('mobile-toggle');
             const menu = document.getElementById('menu-box');
-            
+
             const closeMobileMenu = () => {
                 if (menu && menu.classList.contains('active')) {
                     menu.classList.remove('active');
@@ -845,26 +845,34 @@
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-item');
 
-            const navLinksCache = Array.from(navLinks).map(item => {
+            const navLinksMap = new Map();
+            navLinks.forEach(item => {
                 const link = item.querySelector('a');
-                return {
-                    item: item,
-                    href: link ? link.getAttribute('href') : null
-                };
+                if (link) {
+                    const href = link.getAttribute('href');
+                    if (href) navLinksMap.set(href, item);
+                }
             });
 
+            let currentActiveNavItem = null;
             const scrollSpyObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const activeId = entry.target.getAttribute('id');
-                        const targetHref = `#${activeId}`;
-                        navLinksCache.forEach(cache => {
-                            if (cache.href === targetHref) {
-                                cache.item.classList.add('active');
+                        const targetHref = `#${entry.target.getAttribute('id')}`;
+                        const targetItem = navLinksMap.get(targetHref);
+
+                        if (currentActiveNavItem !== targetItem) {
+                            if (currentActiveNavItem) {
+                                currentActiveNavItem.classList.remove('active');
                             } else {
-                                cache.item.classList.remove('active');
+                                navLinks.forEach(item => item.classList.remove('active'));
                             }
-                        });
+
+                            if (targetItem) {
+                                targetItem.classList.add('active');
+                            }
+                            currentActiveNavItem = targetItem;
+                        }
                     }
                 });
             }, { rootMargin: "-20% 0px -60% 0px", threshold: 0.1 });
