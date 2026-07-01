@@ -40,7 +40,7 @@ class MemoryBackplane {
                 this.canvas.style.width = `${window.innerWidth}px`;
                 this.canvas.style.height = `${window.innerHeight}px`;
 
-                // Use absolute vector transformations to break relative scale loop leaks
+                // Hardened fix: Restoring absolute vector transformations to break relative scale loop leaks
                 this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
                 this.columns = Math.floor(window.innerWidth / 45);
