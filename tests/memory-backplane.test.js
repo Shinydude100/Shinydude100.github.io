@@ -214,4 +214,242 @@ describe('MemoryBackplane', () => {
             expect(backplane.interaction.active).toBe(true);
         });
     });
+
+    describe('event listeners', () => {
+        let backplane;
+        beforeEach(() => {
+            jest.useFakeTimers();
+            backplane = new MemoryBackplane();
+            jest.spyOn(backplane, 'init');
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('should call init on window resize after 150ms timeout', () => {
+            window.dispatchEvent(new Event('resize'));
+            jest.advanceTimersByTime(100);
+            expect(backplane.init).not.toHaveBeenCalled();
+            jest.advanceTimersByTime(50);
+            expect(backplane.init).toHaveBeenCalled();
+        });
+
+        it('should update isRenderActive on visibilitychange', () => {
+            Object.defineProperty(document, 'visibilityState', {
+                value: 'hidden',
+                configurable: true
+            });
+            document.dispatchEvent(new Event('visibilitychange'));
+            expect(backplane.isRenderActive).toBe(false);
+
+            Object.defineProperty(document, 'visibilityState', {
+                value: 'visible',
+                configurable: true
+            });
+            document.dispatchEvent(new Event('visibilitychange'));
+            expect(backplane.isRenderActive).toBe(true);
+        });
+    });
+
+    describe('animate', () => {
+        let backplane;
+
+        beforeEach(() => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {});
+            backplane = new MemoryBackplane();
+            backplane.streams = [{
+                x: 100,
+                y: 10,
+                speed: 1,
+                chars: ['A', 'B']
+            }];
+            backplane.fontSize = 10;
+        });
+
+        afterEach(() => {
+            window.requestAnimationFrame.mockRestore();
+        });
+
+        it('should early return and request another frame if isRenderActive is false', () => {
+            backplane.isRenderActive = false;
+            mockCtx.fillRect.mockClear();
+
+            backplane.animate();
+
+            expect(mockCtx.fillRect).not.toHaveBeenCalled();
+            expect(window.requestAnimationFrame).toHaveBeenCalled();
+        });
+
+        it('should render frame and animate streams', () => {
+            jest.spyOn(Math, 'random').mockReturnValue(0.5); // To avoid random chars changes
+            mockCtx.fillRect.mockClear();
+            mockCtx.fillText.mockClear();
+
+            backplane.animate();
+
+            expect(mockCtx.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
+
+            // Check chars render
+            // stream.y = 10
+            // j=0: yPos = 10
+            // j=1: yPos = 10 + 16 = 26
+            expect(mockCtx.fillText).toHaveBeenCalledTimes(2);
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 10);
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(2, 'B', 100, 26);
+
+            // Speed = 1
+            expect(backplane.streams[0].y).toBe(11);
+        });
+
+
+        it('should handle interaction.active false setting in animate', () => {
+            backplane.interaction.active = true;
+            backplane.interaction.pingRadius = 100;
+            backplane.interaction.targetRadius = 100; // >= targetRadius
+
+            backplane.animate();
+
+            expect(backplane.interaction.active).toBe(false);
+        });
+
+
+        it('should handle un-glitched nodes during active interaction', () => {
+            backplane.interaction.active = true;
+            backplane.interaction.pingRadius = 20;
+            backplane.interaction.targetRadius = 100;
+            backplane.interaction.x = 100;
+            backplane.interaction.y = 10;
+
+            // Mock hypot to NOT hit the glitch node condition
+            jest.spyOn(Math, 'hypot').mockReturnValue(100);
+
+            mockCtx.fillText.mockClear();
+
+            backplane.animate();
+
+            // First char should NOT be glitched, should just be white since it's j=0
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 10);
+            expect(mockCtx.fillStyles.join('')).toContain('rgba(255, 255, 255');
+        });
+
+        it('should handle glitched nodes during active interaction', () => {
+            backplane.interaction.active = true;
+            backplane.interaction.pingRadius = 20;
+            backplane.interaction.targetRadius = 100;
+            backplane.interaction.x = 100;
+            backplane.interaction.y = 10;
+
+            // Mock hypot to easily hit the glitch node condition
+            jest.spyOn(Math, 'hypot').mockReturnValue(20);
+
+            mockCtx.fillText.mockClear();
+
+            backplane.animate();
+
+            // First char should be glitched
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'XX', 100, 10);
+            expect(backplane.interaction.pingRadius).toBe(32); // 20 + 12
+        });
+
+        it('should reset stream y and speed if out of bounds', () => {
+            backplane.streams[0].y = 900; // > window.innerHeight (800)
+
+            jest.spyOn(Math, 'random').mockReturnValue(0.5); // Predictable random values
+
+            backplane.animate();
+
+            expect(backplane.streams[0].y).toBe(-100); // 0.5 * -200
+            expect(backplane.streams[0].speed).toBe(1.75); // 0.5 * 1.5 + 1
+        });
+
+        it('should randomly change characters', () => {
+            jest.spyOn(Math, 'random').mockReturnValue(0.01); // Trigger random token update
+            jest.spyOn(backplane, 'randomToken').mockReturnValue('Z');
+
+            backplane.animate();
+
+            expect(backplane.streams[0].chars).toContain('Z');
+        });
+    });
+
+    describe('prefersReducedMotion', () => {
+        let backplane;
+        beforeEach(() => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {});
+        });
+        afterEach(() => {
+            window.requestAnimationFrame.mockRestore();
+            jest.restoreAllMocks();
+        });
+
+        it('should call renderStaticFrame if prefersReducedMotion is true', () => {
+            // Re-mock matchMedia for this test
+            window.matchMedia.mockImplementation(query => ({
+                matches: true,
+                media: query,
+                onchange: null,
+                addListener: jest.fn(),
+                removeListener: jest.fn(),
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+                dispatchEvent: jest.fn(),
+            }));
+
+            // Force the re-evaluation of the module level variable prefersReducedMotion
+            // Since it's evaluated at module load, we need to reset modules
+            jest.resetModules();
+
+            const originalMatchMedia = window.matchMedia;
+            window.matchMedia = jest.fn().mockImplementation(query => ({
+                matches: true,
+                media: query,
+                onchange: null,
+                addListener: jest.fn(),
+                removeListener: jest.fn(),
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+                dispatchEvent: jest.fn(),
+            }));
+
+            const { MemoryBackplane } = require('../memory-backplane.js');
+
+            const renderStaticSpy = jest.spyOn(MemoryBackplane.prototype, 'renderStaticFrame').mockImplementation(() => {});
+            const animateSpy = jest.spyOn(MemoryBackplane.prototype, 'animate').mockImplementation(() => {});
+
+            backplane = new MemoryBackplane();
+
+            expect(renderStaticSpy).toHaveBeenCalled();
+            expect(animateSpy).not.toHaveBeenCalled();
+
+            window.matchMedia = originalMatchMedia;
+        });
+
+        it('should call animate if prefersReducedMotion is false', () => {
+            jest.resetModules();
+            const originalMatchMedia = window.matchMedia;
+            window.matchMedia = jest.fn().mockImplementation(query => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addListener: jest.fn(),
+                removeListener: jest.fn(),
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+                dispatchEvent: jest.fn(),
+            }));
+
+            const { MemoryBackplane } = require('../memory-backplane.js');
+
+            const renderStaticSpy = jest.spyOn(MemoryBackplane.prototype, 'renderStaticFrame').mockImplementation(() => {});
+            const animateSpy = jest.spyOn(MemoryBackplane.prototype, 'animate').mockImplementation(() => {});
+
+            backplane = new MemoryBackplane();
+
+            expect(renderStaticSpy).not.toHaveBeenCalled();
+            expect(animateSpy).toHaveBeenCalled();
+
+            window.matchMedia = originalMatchMedia;
+        });
+    });
 });
