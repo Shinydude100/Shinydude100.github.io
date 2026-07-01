@@ -1,0 +1,10 @@
+🎯 What: The testing gap addressed
+This PR addresses the lack of test coverage for the `MemoryBackplane.renderStaticFrame` method, particularly its handling of `ctx.fillStyle` and edge case handling for character coordinate calculation.
+
+📊 Coverage: What scenarios are now tested
+1. **Happy path rendering**: The existing `renderStaticFrame` test was enhanced to properly verify that the correct `fillStyle` values (`#020617` for the background, `rgba(253, 224, 71, 0.08)` for text) are assigned before calling `fillRect` and `fillText` respectively. This is achieved via a mock setter tracking assignments to `mockCtx`.
+2. **Out of bounds rendering**: A new test case was added to verify that characters falling outside the window bounds (`yPos >= window.innerHeight`) are ignored and `fillText` is skipped.
+3. **Prevent Test Pollution**: Global overrides of `Math.random` were refactored to use `jest.spyOn()` coupled with `jest.restoreAllMocks()` inside the `afterEach` block.
+
+✨ Result: The improvement in test coverage
+`MemoryBackplane.renderStaticFrame` is fully tested, verifying that both canvas methods receive the exact correct bounds, styles, and positional arguments, with line coverage increased for the component.
