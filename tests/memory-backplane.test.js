@@ -81,4 +81,54 @@ describe('MemoryBackplane', () => {
             expect(backplane.hexTokens).toContain(token);
         });
     });
+
+    describe('renderStaticFrame', () => {
+        let originalRandom;
+
+        beforeEach(() => {
+            originalRandom = Math.random;
+        });
+
+        afterEach(() => {
+            Math.random = originalRandom;
+        });
+
+        it('should render a static frame with fillRect and fillText', () => {
+            const backplane = new MemoryBackplane();
+
+            // Set up a predictable stream to test fillText easily
+            backplane.streams = [{
+                x: 100,
+                y: 0,
+                speed: 1,
+                chars: ['A', 'B']
+            }];
+            backplane.fontSize = 10;
+
+            // Mock Math.random so stream.y calculation is deterministic
+            // Math.random() * window.innerHeight (800)
+            Math.random = jest.fn().mockReturnValue(0.25); // y = 200
+
+            // Clear mock history from init
+            mockCtx.fillRect.mockClear();
+            mockCtx.fillText.mockClear();
+
+            backplane.renderStaticFrame();
+
+            // Check clear background
+            expect(mockCtx.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
+
+            // We can assert the mocked context properties
+            expect(mockCtx.font).toBe("600 10px 'Fira Code', monospace");
+
+            // Check chars render
+            // stream.y gets recalculated to Math.random() * window.innerHeight = 0.25 * 800 = 200
+            // j=0: yPos = 200 + (0 * (10 + 6)) = 200
+            // j=1: yPos = 200 + (1 * (10 + 6)) = 216
+
+            expect(mockCtx.fillText).toHaveBeenCalledTimes(2);
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 200);
+            expect(mockCtx.fillText).toHaveBeenNthCalledWith(2, 'B', 100, 216);
+        });
+    });
 });
