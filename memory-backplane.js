@@ -47,11 +47,21 @@ class MemoryBackplane {
                 this.streams = [];
 
                 for (let i = 0; i < this.columns; i++) {
+                    const charCount = Math.floor(Math.random() * 20) + 12;
+                    const fills = [];
+                    const glitchFills = [];
+                    for (let j = 0; j < charCount; j++) {
+                        let alpha = 1 - (j / charCount);
+                        fills.push(j === 0 ? `rgba(255, 255, 255, ${alpha * 0.8})` : `rgba(253, 224, 71, ${alpha * 0.16})`);
+                        glitchFills.push(`rgba(255, 60, 100, ${alpha * 0.9})`);
+                    }
                     this.streams.push({
                         x: i * 45,
                         y: Math.random() * -window.innerHeight,
                         speed: Math.random() * 1.5 + 1,
-                        chars: Array.from({length: Math.floor(Math.random() * 20) + 12}, () => this.randomToken())
+                        chars: Array.from({length: charCount}, () => this.randomToken()),
+                        fills,
+                        glitchFills
                     });
                 }
             }
@@ -114,8 +124,8 @@ class MemoryBackplane {
                         let yPos = stream.y + (j * (this.fontSize + 6));
 
                         if (yPos > 0 && yPos < window.innerHeight) {
-                            let alpha = 1 - (j / stream.chars.length);
-                            let finalFill = `rgba(253, 224, 71, ${alpha * 0.16})`;
+                            // ⚡ Bolt Optimization: Precalculate string interpolations to prevent GC thrashing
+                            let finalFill = stream.fills ? stream.fills[j] : `rgba(253, 224, 71, ${(1 - (j / stream.chars.length)) * 0.16})`;
                             let displayToken = stream.chars[j];
                             let isGlitchedNode = false;
 
@@ -130,10 +140,10 @@ class MemoryBackplane {
                             }
 
                             if (isGlitchedNode) {
-                                finalFill = `rgba(255, 60, 100, ${alpha * 0.9})`;
+                                finalFill = stream.glitchFills ? stream.glitchFills[j] : `rgba(255, 60, 100, ${(1 - (j / stream.chars.length)) * 0.9})`;
                                 displayToken = 'XX';
-                            } else if (j === 0) {
-                                finalFill = `rgba(255, 255, 255, ${alpha * 0.8})`;
+                            } else if (j === 0 && (!stream.fills)) {
+                                finalFill = `rgba(255, 255, 255, ${(1 - (j / stream.chars.length)) * 0.8})`;
                             }
 
                             this.ctx.fillStyle = finalFill;
