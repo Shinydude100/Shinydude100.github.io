@@ -552,7 +552,8 @@
                 "> zero-trust authentication policies enforced and structural auditing active. [OK]"
             ];
 
-            descEl.innerHTML = '';
+            // 🛡️ Security Enhancement: Use textContent instead of innerHTML to prevent DOM-based XSS vectors
+            descEl.textContent = '';
             let streamIdx = 0;
             let characterIdx = 0;
 
@@ -692,7 +693,10 @@
             }
 
             function runSimulation() {
-                logArea.innerHTML = '<p>Launching System Rescue Utility...</p><br>';
+                // 🛡️ Security Enhancement: Avoid innerHTML for DOM construction
+                logArea.textContent = '';
+                appendLog('Launching System Rescue Utility...');
+                logArea.appendChild(document.createElement('br'));
                 progressBar.classList.add('active');
 
                 statusTxt.textContent = "Stage 1 of 6: Extracting BSOD Crash Logs";
