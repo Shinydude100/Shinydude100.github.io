@@ -471,12 +471,6 @@
         #mobile-toggle { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; }
 
         /* Compact High-Density Display Optimization Rules */
-        @media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
-            .hero-title { line-height: 1.12; letter-spacing: -0.04em; }
-            .interactive-card { padding: 2rem; min-height: 360px; }
-            .tool-monolith { padding: 1.5rem; }
-        }
-
         @media (max-width: 768px) {
             #mobile-toggle { display: block; }
             .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-pure); flex-direction: column; padding: 3rem; border-bottom: 1px solid var(--border-glow); gap: 2rem; align-items: flex-start; }
@@ -485,6 +479,31 @@
             .tool-monolith { padding: 2rem; }
             .telemetry-row { flex-direction: column; align-items: flex-start; width: 100%; }
             .btn-primitive { width: 100%; }
+
+            .matrix-grid { grid-template-columns: 1fr; }
+            .interactive-card { padding: 1.5rem; }
+            .memory-grid { padding: 1rem; gap: 2px; }
+            .terminal-log { padding: 4px; font-size: 12px; word-wrap: break-word; overflow-wrap: break-word; }
+            .ps-progress { padding: 0.75rem 1rem; font-size: 0.75rem; }
+            .terminal-legend { padding: 0.75rem 1rem; gap: 1rem; flex-wrap: wrap; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 1rem; }
+            .section-padding { padding: 4rem 0; }
+            .interactive-card { padding: 1.25rem; min-height: 320px; }
+            .tool-monolith { padding: 1.25rem; }
+            .memory-grid { padding: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(18px, 1fr)); }
+            .memory-node { height: 18px; font-size: 0.6rem; }
+            .terminal-log { font-size: 11px; }
+            .ps-progress { padding: 0.5rem; font-size: 0.7rem; }
+            .ps-stage { padding-left: 0.5rem; }
+            .ps-bar { padding-left: 0.5rem; }
+            .terminal-legend { padding: 0.5rem; gap: 0.5rem; font-size: 0.65rem; }
+        }
+
+        @media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+            .hero-title { line-height: 1.12; letter-spacing: -0.04em; }
         }
     </style>
 </head>
