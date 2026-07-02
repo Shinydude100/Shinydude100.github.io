@@ -4,3 +4,6 @@
 ## 2026-07-02 - Skip to Content Navigation Pattern
 **Learning:** For a single-page application with complex 3D CSS and "pseudo-terminal" visual overlays, standard top-left "skip to content" links need high `z-index` and contrasting background colors to ensure they remain clearly visible during keyboard navigation.
 **Action:** Always verify `z-index` bounds against complex hero elements like `#matrix-backplane` when adding accessible focus overlays.
+## 2026-07-02 - Token Implementation Strategy
+**Learning:** Migrating from hard-coded values to CSS variables for typography and shapes allows for centralizing design themes, but care must be taken to not affect SVG assets or internal components unintentionally. Replacing inline rgba usages with hex-derived alternatives enables rapid color shifting.
+**Action:** Enforce strict usage of `var(--font-body)` or `var(--radius-md)` across components instead of raw sizing units to adhere to the design system.

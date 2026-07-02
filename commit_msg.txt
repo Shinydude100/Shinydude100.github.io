@@ -1,0 +1,4 @@
+🎨 Palette: update design tokens
+
+Updated the CSS :root variables, typography rules, border-radius tokens, and color hex codes in index.html.
+The slate blues were replaced with the new terminal background colors defined in the design document (design.md).
