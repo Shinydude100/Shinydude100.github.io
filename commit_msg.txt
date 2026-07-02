@@ -1,6 +1,6 @@
-🎨 Palette: Redesign interactive cards as server dashboard widgets
+🎨 Palette: Redesign Terminal UI
 
-What: Redesigned `.interactive-card` to match an authentic server dashboard widget using v0 MCP generation.
-Why: To upgrade the internal UI with better data visualization (metrics, graphs, LEDs) while preserving the exact text and 3D CSS physics, fulfilling the user's request.
-Before/After: Cards previously had basic text formatting; now they have detailed grid overlays, a widget top bar, a metric grid (Uptime, Latency, Load), a fake activity graph, and status LEDs.
-Accessibility: All newly added purely decorative visual elements are wrapped in containers with `aria-hidden="true"`, ensuring screen readers only read the semantic original content.
+What: Redesigned the `.sys-visualizer.terminal-mode` element to mimic a native Windows 11 Command Prompt title bar and terminal execution environment.
+Why: To meet the user's request for a raw, native execution environment visual style.
+Before/After: The terminal header previously used a simple span with text; now it features a structured Windows 11-style title bar with a left-aligned icon, title, and right-aligned window control buttons (Minimize, Maximize, Close). The terminal body was updated with custom dark slim scrollbars and adjusted typography (Consolas, 14px, tighter line height) for authenticity.
+Accessibility: Maintained text contrast and structural semantics. The purely visual SVG controls do not interfere with core screen reading logic.
