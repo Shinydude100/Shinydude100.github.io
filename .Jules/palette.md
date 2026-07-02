@@ -1,0 +1,3 @@
+## 2026-07-02 - Screen Reader Punctuation in Pseudo-Terminal Aesthetics
+**Learning:** This application heavily relies on "pseudo-terminal" aesthetics (e.g. `./connect_with_hugo.sh`, `pull_sanitized_resume.pdf`, `Core_Expertise`). Screen readers will read all punctuation aloud, which severely degrades the auditory experience and makes navigation confusing.
+**Action:** Add natural-language `aria-label` attributes to all navigation links and interactive elements that use pseudo-terminal strings as their visible text content (e.g. converting `pull_sanitized_resume.pdf` to `"Download sanitized resume PDF"`).
