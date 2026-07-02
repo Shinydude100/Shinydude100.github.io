@@ -227,10 +227,10 @@
 </head>
 <body>
 
-    <div class="ptr-dot" data-cursor-pointer></div>
-    <div class="ptr-aura" data-cursor-aura></div>
+    <div class="ptr-dot" data-cursor-pointer aria-hidden="true"></div>
+    <div class="ptr-aura" data-cursor-aura aria-hidden="true"></div>
 
-    <canvas id="matrix-backplane"></canvas>
+    <canvas id="matrix-backplane" aria-hidden="true"></canvas>
 
     <div id="app-wrapper">
 
@@ -245,11 +245,11 @@
                     </button>
                     <nav>
                         <ul id="menu-box" class="nav-links">
-                            <li class="nav-item"><a href="#services">Core_Expertise</a></li>
-                            <li class="nav-item"><a href="#pc-builds">Bespoke_Compute</a></li>
-                            <li class="nav-item"><a href="#tools">Sys_Automation</a></li>
-                            <li class="nav-item"><a href="#about">Track_Record</a></li>
-                            <li class="nav-item"><a href="#contact">Contact_Init</a></li>
+                            <li class="nav-item"><a href="#services" aria-label="Core Expertise">Core_Expertise</a></li>
+                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute">Bespoke_Compute</a></li>
+                            <li class="nav-item"><a href="#tools" aria-label="System Automation">Sys_Automation</a></li>
+                            <li class="nav-item"><a href="#about" aria-label="Track Record">Track_Record</a></li>
+                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact">Contact_Init</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -261,7 +261,7 @@
                 <div class="container">
                     <div class="hero-core">
                         <div class="sys-reveal sys-status-pill">
-                            <span class="sys-status-indicator"></span>
+                            <span class="sys-status-indicator" aria-hidden="true"></span>
                             <span>INFRASTRUCTURE SECURITY // HIGH-AVAILABILITY ARCHITECT</span>
                         </div>
                         <h1 class="hero-title sys-reveal">
@@ -271,8 +271,8 @@
                         <div class="hero-desc sys-reveal">
                             </div>
                         <div class="btn-stack sys-reveal">
-                            <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh">./connect_with_hugo.sh</a>
-                            <a href="#services" class="btn-primitive secondary">view_technical_capabilities</a>
+                            <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh" aria-label="Connect with Hugo">./connect_with_hugo.sh</a>
+                            <a href="#services" class="btn-primitive secondary" aria-label="View Technical Capabilities">view_technical_capabilities</a>
                         </div>
                     </div>
                 </div>
@@ -444,7 +444,7 @@
                         </div>
 
                         <div class="telemetry-row">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP">
                                 pull_binary_payload.zip
                             </a>
                             <div class="counter-housing">
@@ -479,9 +479,9 @@
                         <h2 class="section-title decrypt-trigger" style="margin-bottom:2rem">Open Infrastructure Communications</h2>
                         <p class="card-text" style="margin-bottom:3.5rem">Initialize a secure connection to exchange technical architecture blueprints, project proposals, or critical network engineering requirements directly with the lab.</p>
                         <div class="btn-stack" style="justify-content: center;">
-                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary">hugo.luna.sec@gmail.com</a>
-                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary">pull_sanitized_resume.pdf</a>
-                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary">linkedin://verify_identity</a>
+                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
+                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF">pull_sanitized_resume.pdf</a>
+                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn">linkedin://verify_identity</a>
                         </div>
                     </div>
                 </div>
