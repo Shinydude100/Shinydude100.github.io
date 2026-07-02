@@ -1,4 +1,6 @@
-What: Redesigned the visual layout of `.interactive-card` elements to look like authentic server-status dashboard widgets from a secure network interface, incorporating detailed overlays, status bars, and metric grids.
-Why: To fulfill the user's request for a more technical, server dashboard aesthetic using the defined design tokens while keeping the 3D hover physics intact.
-Before/After: Cards previously had basic styling; they now feature grid overlays, a widget top bar with node IDs and "ONLINE" statuses, a 3-column metric grid (Uptime, Latency, Load), an activity graph (Throughput), and status LEDs in the footer.
-Accessibility: All purely decorative visual sub-elements (like grids, scanlines, and dummy metric graphs) were marked with `aria-hidden="true"` to hide them from screen readers, preserving the core text content semantics.
+🎨 Palette: Redesign Terminal UI
+
+What: Redesigned the `.sys-visualizer.terminal-mode` element to mimic a native Windows 11 Command Prompt title bar and terminal execution environment.
+Why: To meet the user's request for a raw, native execution environment visual style.
+Before/After: The terminal header previously used a simple span with text; now it features a structured Windows 11-style title bar with a left-aligned icon, title, and right-aligned window control buttons (Minimize, Maximize, Close). The terminal body was updated with custom dark slim scrollbars and adjusted typography (Consolas, 14px, tighter line height) for authenticity.
+Accessibility: Maintained text contrast and structural semantics. The purely visual SVG controls do not interfere with core screen reading logic.
