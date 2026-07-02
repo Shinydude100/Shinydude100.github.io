@@ -1,13 +1,4 @@
-What:
-Updated the CSS `:root` variables, typography rules, border-radius tokens, and color hex codes in `index.html`.
-The slate blues were replaced with the new terminal background colors defined in the design document (`design.md`).
-
-Why:
-To strictly match the design system tokens for color, typography, and border-radius in the design document.
-
-Before/After:
-Before, the site used arbitrary slate blues (`#020617`, `rgba(...)`), hardcoded border-radius sizes (`4px`, `6px`, `12px`, `16px`), and the `Fira Code` font.
-After, it utilizes precise color tokens from `design.md` (`#090B10`, `#111827`, `#FDE047`, `#E2E8F0`), properly inherits `Inter` and `JetBrains Mono` fonts, and uses CSS variables for border-radius (`var(--radius-sm)`, `var(--radius-md)`).
-
-Accessibility:
-Retained high visual contrast, reduced eye strain using a dark mode context, and maintained existing keyboard/pointer accessibility implementations.
+What: Redesigned the visual layout of `.interactive-card` elements to look like authentic server-status dashboard widgets from a secure network interface, incorporating detailed overlays, status bars, and metric grids.
+Why: To fulfill the user's request for a more technical, server dashboard aesthetic using the defined design tokens while keeping the 3D hover physics intact.
+Before/After: Cards previously had basic styling; they now feature grid overlays, a widget top bar with node IDs and "ONLINE" statuses, a 3-column metric grid (Uptime, Latency, Load), an activity graph (Throughput), and status LEDs in the footer.
+Accessibility: All purely decorative visual sub-elements (like grids, scanlines, and dummy metric graphs) were marked with `aria-hidden="true"` to hide them from screen readers, preserving the core text content semantics.

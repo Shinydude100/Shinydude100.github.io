@@ -7,3 +7,7 @@
 ## 2026-07-02 - Token Implementation Strategy
 **Learning:** Migrating from hard-coded values to CSS variables for typography and shapes allows for centralizing design themes, but care must be taken to not affect SVG assets or internal components unintentionally. Replacing inline rgba usages with hex-derived alternatives enables rapid color shifting.
 **Action:** Enforce strict usage of `var(--font-body)` or `var(--radius-md)` across components instead of raw sizing units to adhere to the design system.
+
+## 2026-07-02 - Server Widget Redesign
+**Learning:** Upgrading static UI elements (like cards) into detailed "widgets" with decorative overlays (like `.card-grid`, `.metric-grid`, `.activity-graph`) significantly enhances the technical dashboard aesthetic.
+**Action:** Always wrap purely visual/decorative sub-elements with `aria-hidden="true"` to maintain accessibility and prevent screen readers from reading meaningless data or structure.

@@ -1,4 +1,6 @@
-🎨 Palette: update design tokens
+🎨 Palette: Redesign interactive cards as server dashboard widgets
 
-Updated the CSS :root variables, typography rules, border-radius tokens, and color hex codes in index.html.
-The slate blues were replaced with the new terminal background colors defined in the design document (design.md).
+What: Redesigned `.interactive-card` to match an authentic server dashboard widget using v0 MCP generation.
+Why: To upgrade the internal UI with better data visualization (metrics, graphs, LEDs) while preserving the exact text and 3D CSS physics, fulfilling the user's request.
+Before/After: Cards previously had basic text formatting; now they have detailed grid overlays, a widget top bar, a metric grid (Uptime, Latency, Load), a fake activity graph, and status LEDs.
+Accessibility: All newly added purely decorative visual elements are wrapped in containers with `aria-hidden="true"`, ensuring screen readers only read the semantic original content.
