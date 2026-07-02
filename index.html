@@ -519,23 +519,51 @@
             const aura = document.querySelector("[data-cursor-aura]");
 
             let tX = 0, tY = 0, dX = 0, dY = 0, aX = 0, aY = 0;
+            let isRunning = false; // Bolt Optimization: Pause animation loop when idle
 
-            window.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
+            const startCycle = () => {
+                if (!isRunning) {
+                    isRunning = true;
+                    requestAnimationFrame(cycle);
+                }
+            };
+
+            window.addEventListener('mousemove', e => {
+                tX = e.clientX;
+                tY = e.clientY;
+                startCycle();
+            });
 
             function cycle() {
+                // Bolt Optimization: Calculate distance to target
+                const distDot = Math.abs(tX - dX) + Math.abs(tY - dY);
+                const distAura = Math.abs(tX - aX) + Math.abs(tY - aY);
+
+                if (distDot < 0.1 && distAura < 0.1) {
+                    // Snap to exact position and pause loop
+                    dX = tX; dY = tY;
+                    aX = tX; aY = tY;
+                    if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
+                    if (aura) aura.style.transform = `translate3d(${aX}px, ${aY}px, 0)`;
+                    isRunning = false;
+                    return;
+                }
+
                 dX += (tX - dX) * 0.35; dY += (tY - dY) * 0.35;
                 aX += (tX - aX) * 0.16; aY += (tY - aY) * 0.16;
 
                 if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
                 if (aura) aura.style.transform = `translate3d(${aX}px, ${aY}px, 0)`;
 
-                requestAnimationFrame(cycle);
+                if (isRunning) {
+                    requestAnimationFrame(cycle);
+                }
             }
-            requestAnimationFrame(cycle);
+            startCycle();
 
             document.querySelectorAll("a, button, #mobile-toggle").forEach(el => {
-                el.addEventListener('mouseenter', () => aura.classList.add('interacting'));
-                el.addEventListener('mouseleave', () => aura.classList.remove('interacting'));
+                el.addEventListener('mouseenter', () => { aura.classList.add('interacting'); startCycle(); });
+                el.addEventListener('mouseleave', () => { aura.classList.remove('interacting'); startCycle(); });
             });
         }
 
