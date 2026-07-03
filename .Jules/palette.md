@@ -11,3 +11,7 @@
 ## 2026-07-02 - Server Widget Redesign
 **Learning:** Upgrading static UI elements (like cards) into detailed "widgets" with decorative overlays (like `.card-grid`, `.metric-grid`, `.activity-graph`) significantly enhances the technical dashboard aesthetic.
 **Action:** Always wrap purely visual/decorative sub-elements with `aria-hidden="true"` to maintain accessibility and prevent screen readers from reading meaningless data or structure.
+
+## 2026-07-02 - Silence Decorative Terminal Animations
+**Learning:** Purely decorative, fast-updating terminal logs and structural SVGs create massive noise for screen readers, breaking the navigation experience.
+**Action:** Always add `aria-hidden="true"` to large decorative visualizer blocks (like pseudo-terminals) and non-semantic SVG icons within UI controls.
