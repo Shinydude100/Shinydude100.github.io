@@ -2,3 +2,8 @@
 **Vulnerability:** Use of innerHTML for DOM updates which could theoretically be a vector for DOM-based XSS (though currently hardcoded).
 **Learning:** Defense in depth: removing innerHTML sinks ensures safety against future regressions or strict static analysis linters.
 **Prevention:** Use textContent and createElement/appendChild instead of innerHTML when updating the DOM.
+
+## 2026-07-03 - [Security Enhancement] Enforced explicit timeout on external API calls
+**Vulnerability:** The application was making an external fetch request without an explicit timeout, posing a risk of resource exhaustion or hanging connections if the API server was unresponsive.
+**Learning:** Defense in depth: Client-side logic should not assume that external services will respond promptly.
+**Prevention:** Always attach an AbortController with a setTimeout to `fetch` calls.
