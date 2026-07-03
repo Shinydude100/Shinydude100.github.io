@@ -120,6 +120,12 @@ class MemoryBackplane {
                 for (let i = 0; i < this.streams.length; i++) {
                     let stream = this.streams[i];
 
+                    // ⚡ Bolt Optimization: Extract dx calculation out of inner loop
+                    let dx = 0;
+                    if (this.interaction.active) {
+                        dx = stream.x - this.interaction.x;
+                    }
+
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
 
@@ -130,9 +136,9 @@ class MemoryBackplane {
                             let isGlitchedNode = false;
 
                             if (this.interaction.active) {
-                                let dx = stream.x - this.interaction.x;
                                 let dy = yPos - this.interaction.y;
-                                let currentDist = Math.hypot(dx, dy);
+                                // ⚡ Bolt Optimization: Math.sqrt(dx*dx + dy*dy) is up to ~10x faster than Math.hypot in hot loops
+                                let currentDist = Math.sqrt(dx * dx + dy * dy);
 
                                 if (Math.abs(currentDist - this.interaction.pingRadius) < 40) {
                                     isGlitchedNode = true;

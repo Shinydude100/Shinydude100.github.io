@@ -321,8 +321,8 @@ describe('MemoryBackplane', () => {
             backplane.interaction.x = 100;
             backplane.interaction.y = 10;
 
-            // Mock hypot to NOT hit the glitch node condition
-            jest.spyOn(Math, 'hypot').mockReturnValue(100);
+            // Mock sqrt to NOT hit the glitch node condition
+            jest.spyOn(Math, 'sqrt').mockReturnValue(100);
 
             mockCtx.fillText.mockClear();
 
@@ -340,8 +340,8 @@ describe('MemoryBackplane', () => {
             backplane.interaction.x = 100;
             backplane.interaction.y = 10;
 
-            // Mock hypot to easily hit the glitch node condition
-            jest.spyOn(Math, 'hypot').mockReturnValue(20);
+            // Mock sqrt to easily hit the glitch node condition
+            jest.spyOn(Math, 'sqrt').mockReturnValue(20);
 
             mockCtx.fillText.mockClear();
 
