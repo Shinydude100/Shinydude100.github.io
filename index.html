@@ -72,6 +72,18 @@
             top: 0;
         }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         /* High-DPI Layer Bounds & Mobile Bar Protection */
         #matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.4; }
         #app-wrapper { position: relative; z-index: 2; width: 100%; }
@@ -551,11 +563,16 @@
                             I Engineer Hardened Networks &<br>
                             <em>High-Performance Workstations.</em>
                         </h1>
-                        <div class="hero-desc sys-reveal">
+                        <div class="hero-desc sys-reveal" aria-hidden="true">
                             </div>
+                        <p class="sr-only">
+                            &gt; initializing secure environment telemetry monitoring platforms...
+                            &gt; assessing deployment base metrics for 170+ enterprise network nodes... [OK]
+                            &gt; zero-trust authentication policies enforced and structural auditing active. [OK]
+                        </p>
                         <div class="btn-stack sys-reveal">
-                            <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh" aria-label="Connect with Hugo">./connect_with_hugo.sh</a>
-                            <a href="#services" class="btn-primitive secondary" aria-label="View Technical Capabilities">view_technical_capabilities</a>
+                            <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh" aria-label="Connect with Hugo" title="Connect with Hugo">./connect_with_hugo.sh</a>
+                            <a href="#services" class="btn-primitive secondary" aria-label="View Technical Capabilities" title="View Technical Capabilities">view_technical_capabilities</a>
                         </div>
                     </div>
                 </div>
@@ -1027,7 +1044,7 @@
                         </div>
 
                         <div class="telemetry-row">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP" title="Download Binary Payload ZIP">
                                 pull_binary_payload.zip
                             </a>
                             <div class="counter-housing">
@@ -1057,14 +1074,14 @@
 
             <section id="contact" class="section-padding">
                 <div class="container">
-                    <div class="reveal-element" style="text-align: center; max-w: 750px; margin: 0 auto;">
+                    <div class="reveal-element" style="text-align: center; max-width: 750px; margin: 0 auto;">
                         <span class="section-tag">// SECURE REQUISITIONS</span>
                         <h2 class="section-title decrypt-trigger" style="margin-bottom:2rem">Open Infrastructure Communications</h2>
                         <p class="card-text" style="margin-bottom:3.5rem">Initialize a secure connection to exchange technical architecture blueprints, project proposals, or critical network engineering requirements directly with the lab.</p>
                         <div class="btn-stack" style="justify-content: center;">
-                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
-                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF">pull_sanitized_resume.pdf</a>
-                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn">linkedin://verify_identity</a>
+                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com" title="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
+                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF" title="Download Sanitized Resume PDF">pull_sanitized_resume.pdf</a>
+                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn" title="Verify Identity on LinkedIn">linkedin://verify_identity</a>
                         </div>
                     </div>
                 </div>
