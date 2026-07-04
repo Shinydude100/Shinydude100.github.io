@@ -93,15 +93,18 @@ describe('MemoryBackplane', () => {
 
         it('should render a static frame with fillRect and fillText', () => {
             const backplane = new MemoryBackplane();
+            backplane.fontSize = 10;
 
-            // Set up a predictable stream to test fillText easily
+            // Re-run init to set font after we override fontSize
+            backplane.init();
+
+            // Replace the streams created by init with our predictable stream
             backplane.streams = [{
                 x: 100,
                 y: 0,
                 speed: 1,
                 chars: ['A', 'B']
             }];
-            backplane.fontSize = 10;
 
             // Mock Math.random so stream.y calculation is deterministic
             // Math.random() * window.innerHeight (800)
