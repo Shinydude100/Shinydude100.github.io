@@ -1268,17 +1268,26 @@
         function initParallaxArchitecture() {
             if (prefersReducedMotion) return;
             document.querySelectorAll('.interactive-card').forEach(card => {
+                // ⚡ Bolt Optimization: Throttle continuous DOM reads (getBoundingClientRect) and style writes in high-frequency mousemove events using requestAnimationFrame to prevent layout thrashing and high CPU usage.
+                let isTicking = false;
+
                 card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+                    if (!isTicking) {
+                        isTicking = true;
+                        requestAnimationFrame(() => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
 
-                    const normX = (x / rect.width) * 2 - 1;
-                    const normY = (y / rect.height) * 2 - 1;
+                            const normX = (x / rect.width) * 2 - 1;
+                            const normY = (y / rect.height) * 2 - 1;
 
-                    card.style.setProperty('--m-x', `${x}px`);
-                    card.style.setProperty('--m-y', `${y}px`);
-                    card.style.transform = `rotateX(${normY * -4}deg) rotateY(${normX * 4}deg) translateZ(5px)`;
+                            card.style.setProperty('--m-x', `${x}px`);
+                            card.style.setProperty('--m-y', `${y}px`);
+                            card.style.transform = `rotateX(${normY * -4}deg) rotateY(${normX * 4}deg) translateZ(5px)`;
+                            isTicking = false;
+                        });
+                    }
                 });
 
                 card.addEventListener('mouseleave', () => {
