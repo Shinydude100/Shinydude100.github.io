@@ -1408,7 +1408,7 @@
 
             try {
                 // 🛡️ Security Enhancement: Add timeout to prevent resource exhaustion / hanging connections
-                const response = await fetch('https://api.github.com/repos/Shinydude100/Shinydude100.github.io/releases', { signal: controller.signal });
+                const response = await fetch('https://api.github.com/repos/Shinydude100/Shinydude100.github.io/releases', { signal: controller.signal, referrerPolicy: 'no-referrer' });
 
                 if (!response.ok) throw new Error();
                 const payloads = await response.json();
