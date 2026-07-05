@@ -43,6 +43,9 @@ class MemoryBackplane {
                 // Hardened fix: Restoring absolute vector transformations to break relative scale loop leaks
                 this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+                // ⚡ Bolt Optimization: Set font once during initialization instead of every frame
+                this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
+
                 this.columns = Math.floor(window.innerWidth / 45);
                 this.streams = [];
 
@@ -83,16 +86,19 @@ class MemoryBackplane {
             }
 
             renderStaticFrame() {
+                // ⚡ Bolt Optimization: Cache DOM properties outside the loop to prevent layout thrashing and C++ boundary crossings
+                const winWidth = window.innerWidth;
+                const winHeight = window.innerHeight;
+
                 this.ctx.fillStyle = '#020617';
-                this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-                this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
+                this.ctx.fillRect(0, 0, winWidth, winHeight);
 
                 for (let i = 0; i < this.streams.length; i++) {
                     let stream = this.streams[i];
-                    stream.y = Math.random() * window.innerHeight;
+                    stream.y = Math.random() * winHeight;
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
-                        if (yPos < window.innerHeight) {
+                        if (yPos < winHeight) {
                             this.ctx.fillStyle = `rgba(253, 224, 71, 0.08)`;
                             this.ctx.fillText(stream.chars[j], stream.x, yPos);
                         }
@@ -107,9 +113,12 @@ class MemoryBackplane {
                     return;
                 }
 
+                // ⚡ Bolt Optimization: Cache DOM properties outside the loop to prevent layout thrashing and C++ boundary crossings
+                const winWidth = window.innerWidth;
+                const winHeight = window.innerHeight;
+
                 this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)';
-                this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-                this.ctx.font = `600 ${this.fontSize}px 'Fira Code', monospace`;
+                this.ctx.fillRect(0, 0, winWidth, winHeight);
 
                 if (this.interaction.active && this.interaction.pingRadius < this.interaction.targetRadius) {
                     this.interaction.pingRadius += 12;
@@ -129,7 +138,7 @@ class MemoryBackplane {
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
 
-                        if (yPos > 0 && yPos < window.innerHeight) {
+                        if (yPos > 0 && yPos < winHeight) {
                             // ⚡ Bolt Optimization: Precalculate string interpolations to prevent GC thrashing
                             let finalFill = stream.fills ? stream.fills[j] : `rgba(253, 224, 71, ${(1 - (j / stream.chars.length)) * 0.16})`;
                             let displayToken = stream.chars[j];
@@ -159,7 +168,7 @@ class MemoryBackplane {
 
                     stream.y += stream.speed;
 
-                    if (stream.y > window.innerHeight) {
+                    if (stream.y > winHeight) {
                         stream.y = Math.random() * -200;
                         stream.speed = Math.random() * 1.5 + 1;
                     }
