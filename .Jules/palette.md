@@ -15,3 +15,7 @@
 ## 2026-07-02 - Silence Decorative Terminal Animations
 **Learning:** Purely decorative, fast-updating terminal logs and structural SVGs create massive noise for screen readers, breaking the navigation experience.
 **Action:** Always add `aria-hidden="true"` to large decorative visualizer blocks (like pseudo-terminals) and non-semantic SVG icons within UI controls.
+
+## 2026-07-02 - Screen Reader Noise in Pseudo-Terminal Interfaces
+**Learning:** Fast-updating typing animations simulating terminal output cause massive screen reader noise. Cryptic "pseudo-terminal" button text (like `./connect_with_hugo.sh`) provides a poor experience without tooltips.
+**Action:** Always add `aria-hidden="true"` to dynamic typing animations, provide a static natural-language alternative using a `.sr-only` class, and append `title` attributes (matching `aria-label`) to pseudo-terminal buttons for visual tooltips.
