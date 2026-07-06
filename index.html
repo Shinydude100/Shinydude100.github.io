@@ -1241,14 +1241,24 @@
                         let count = 0;
                         target.style.visibility = 'visible';
 
+                        const txtLength = finalTxt.length;
+                        const charsLength = chars.length;
+                        // ⚡ Bolt Optimization: Replace `split/map/join` array chains with pre-calculated lengths
+                        // and a string concatenation loop to prevent massive object allocations and GC thrashing every 25ms.
                         const routine = setInterval(() => {
-                            target.textContent = finalTxt.split('').map((c, i) => {
-                                if (i < count) return finalTxt[i];
-                                if (c === " ") return " ";
-                                return chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
+                            let newText = '';
+                            for (let i = 0; i < txtLength; i++) {
+                                if (i < count) {
+                                    newText += finalTxt[i];
+                                } else if (finalTxt[i] === " ") {
+                                    newText += " ";
+                                } else {
+                                    newText += chars[Math.floor(Math.random() * charsLength)];
+                                }
+                            }
+                            target.textContent = newText;
 
-                            if (count >= finalTxt.length) {
+                            if (count >= txtLength) {
                                 clearInterval(routine);
                                 target.textContent = finalTxt;
                             }
