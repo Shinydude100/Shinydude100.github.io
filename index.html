@@ -551,7 +551,7 @@
             </div>
         </header>
 
-        <main id="main-content">
+        <main id="main-content" tabindex="-1" style="outline: none;">
             <section id="hero" class="hero-viewport">
                 <div class="container">
                     <div class="hero-core">
@@ -1474,6 +1474,8 @@
                 if (menu && menu.classList.contains('active')) {
                     menu.classList.remove('active');
                     toggle.setAttribute('aria-expanded', 'false');
+                    const svgPath = toggle.querySelector('svg path');
+                    if (svgPath) svgPath.setAttribute('d', 'M3 12h18M3 6h18M3 18h18');
                 }
             };
 
@@ -1481,6 +1483,10 @@
                 toggle.addEventListener('click', () => {
                     const isActive = menu.classList.toggle('active');
                     toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+                    const svgPath = toggle.querySelector('svg path');
+                    if (svgPath) {
+                        svgPath.setAttribute('d', isActive ? 'M18 6L6 18M6 6l12 12' : 'M3 12h18M3 6h18M3 18h18');
+                    }
                 });
                 menu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
             }
@@ -1512,12 +1518,20 @@
                         if (currentActiveNavItem !== targetItem) {
                             if (currentActiveNavItem) {
                                 currentActiveNavItem.classList.remove('active');
+                                const link = currentActiveNavItem.querySelector('a');
+                                if (link) link.removeAttribute('aria-current');
                             } else {
-                                navLinks.forEach(item => item.classList.remove('active'));
+                                navLinks.forEach(item => {
+                                    item.classList.remove('active');
+                                    const link = item.querySelector('a');
+                                    if (link) link.removeAttribute('aria-current');
+                                });
                             }
 
                             if (targetItem) {
                                 targetItem.classList.add('active');
+                                const link = targetItem.querySelector('a');
+                                if (link) link.setAttribute('aria-current', 'page');
                             }
                             currentActiveNavItem = targetItem;
                         }
