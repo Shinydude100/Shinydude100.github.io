@@ -13,3 +13,7 @@
 ## 2024-07-15 - Uncaching DOM Properties inside Nested Animation Loops
 **Learning:** Reading DOM properties like `window.innerHeight` and `window.innerWidth` forces the JavaScript engine to cross the C++ boundary, and in some engines can trigger synchronous layout recalculations (layout thrashing). When these properties are accessed unconditionally inside deeply nested `requestAnimationFrame` render loops (e.g., hundreds of times per frame, totaling tens of thousands of times per second), it creates a severe performance bottleneck.
 **Action:** Always extract invariant DOM properties to local cached variables at the top of an animation frame (e.g., `const winHeight = window.innerHeight`), and use the cached local variables for all boundary calculations within that frame. Additionally, move static canvas context configurations (like `ctx.font`) out of the loop and into `init()` handlers triggered only on setup or resize.
+
+## 2024-08-01 - Avoid Array Transformation Chains in Animation Loops
+**Learning:** Using chained array transformations (like `split('').map(...).join('')`) within high-frequency functions or `setInterval` triggers Garbage Collection (GC) thrashing and micro-stutters by creating many short-lived array objects on every tick.
+**Action:** Replace functional array chaining inside animation or high-frequency render loops with standard `for` loops and simple string concatenation to minimize object creation and memory allocations.

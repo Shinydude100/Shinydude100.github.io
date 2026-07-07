@@ -1242,11 +1242,17 @@
                         target.style.visibility = 'visible';
 
                         const routine = setInterval(() => {
-                            target.textContent = finalTxt.split('').map((c, i) => {
-                                if (i < count) return finalTxt[i];
-                                if (c === " ") return " ";
-                                return chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
+                            let result = '';
+                            for (let i = 0; i < finalTxt.length; i++) {
+                                if (i < count) {
+                                    result += finalTxt[i];
+                                } else if (finalTxt[i] === " ") {
+                                    result += " ";
+                                } else {
+                                    result += chars[Math.floor(Math.random() * chars.length)];
+                                }
+                            }
+                            target.textContent = result;
 
                             if (count >= finalTxt.length) {
                                 clearInterval(routine);
