@@ -13,3 +13,7 @@
 ## 2024-07-15 - Uncaching DOM Properties inside Nested Animation Loops
 **Learning:** Reading DOM properties like `window.innerHeight` and `window.innerWidth` forces the JavaScript engine to cross the C++ boundary, and in some engines can trigger synchronous layout recalculations (layout thrashing). When these properties are accessed unconditionally inside deeply nested `requestAnimationFrame` render loops (e.g., hundreds of times per frame, totaling tens of thousands of times per second), it creates a severe performance bottleneck.
 **Action:** Always extract invariant DOM properties to local cached variables at the top of an animation frame (e.g., `const winHeight = window.innerHeight`), and use the cached local variables for all boundary calculations within that frame. Additionally, move static canvas context configurations (like `ctx.font`) out of the loop and into `init()` handlers triggered only on setup or resize.
+
+## 2024-05-19 - Garbage Collection Thrashing in UI Effect Loops
+**Learning:** Using array functional chains like `split('').map().join('')` inside high-frequency intervals (like a decryption typing effect `setInterval` running every 25ms) creates an excessive number of short-lived array and string objects. This causes Garbage Collection (GC) thrashing which leads to micro-stutters and increased CPU usage.
+**Action:** Replace functional array manipulation chains in hot UI loops with standard `for` loops and string concatenation to avoid creating unnecessary intermediate array allocations.

@@ -1242,11 +1242,20 @@
                         target.style.visibility = 'visible';
 
                         const routine = setInterval(() => {
-                            target.textContent = finalTxt.split('').map((c, i) => {
-                                if (i < count) return finalTxt[i];
-                                if (c === " ") return " ";
-                                return chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
+                            // ⚡ Bolt Optimization: Replaced finalTxt.split('').map().join('') with a standard
+                            // for-loop and string concatenation to avoid Garbage Collection (GC) thrashing
+                            // caused by excessive array object creation inside this high-frequency interval.
+                            let tempStr = "";
+                            for (let i = 0; i < finalTxt.length; i++) {
+                                if (i < count) {
+                                    tempStr += finalTxt[i];
+                                } else if (finalTxt[i] === " ") {
+                                    tempStr += " ";
+                                } else {
+                                    tempStr += chars[Math.floor(Math.random() * chars.length)];
+                                }
+                            }
+                            target.textContent = tempStr;
 
                             if (count >= finalTxt.length) {
                                 clearInterval(routine);
