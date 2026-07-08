@@ -532,19 +532,19 @@
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
-                    <a href="#hero" class="sys-logo" aria-label="Home Workspace">
+                    <a href="#hero" class="sys-logo" aria-label="Home Workspace" title="Home Workspace">
                         HUGO LUNA // <span>SYSTEMS SEC</span>
                     </a>
-                    <button id="mobile-toggle" aria-label="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
+                    <button id="mobile-toggle" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <nav>
                         <ul id="menu-box" class="nav-links">
-                            <li class="nav-item"><a href="#services" aria-label="Core Expertise">Core_Expertise</a></li>
-                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute">Bespoke_Compute</a></li>
-                            <li class="nav-item"><a href="#tools" aria-label="System Automation">Sys_Automation</a></li>
-                            <li class="nav-item"><a href="#about" aria-label="Track Record">Track_Record</a></li>
-                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact">Contact_Init</a></li>
+                            <li class="nav-item"><a href="#services" aria-label="Core Expertise" title="Core Expertise">Core_Expertise</a></li>
+                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
+                            <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
+                            <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
+                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -1512,12 +1512,20 @@
                         if (currentActiveNavItem !== targetItem) {
                             if (currentActiveNavItem) {
                                 currentActiveNavItem.classList.remove('active');
+                                const activeLink = currentActiveNavItem.querySelector('a');
+                                if (activeLink) activeLink.removeAttribute('aria-current');
                             } else {
-                                navLinks.forEach(item => item.classList.remove('active'));
+                                navLinks.forEach(item => {
+                                    item.classList.remove('active');
+                                    const link = item.querySelector('a');
+                                    if (link) link.removeAttribute('aria-current');
+                                });
                             }
 
                             if (targetItem) {
                                 targetItem.classList.add('active');
+                                const activeLink = targetItem.querySelector('a');
+                                if (activeLink) activeLink.setAttribute('aria-current', 'page');
                             }
                             currentActiveNavItem = targetItem;
                         }
