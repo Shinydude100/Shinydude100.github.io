@@ -1512,12 +1512,20 @@
                         if (currentActiveNavItem !== targetItem) {
                             if (currentActiveNavItem) {
                                 currentActiveNavItem.classList.remove('active');
+                                const link = currentActiveNavItem.querySelector('a');
+                                if (link) link.removeAttribute('aria-current');
                             } else {
-                                navLinks.forEach(item => item.classList.remove('active'));
+                                navLinks.forEach(item => {
+                                    item.classList.remove('active');
+                                    const link = item.querySelector('a');
+                                    if (link) link.removeAttribute('aria-current');
+                                });
                             }
 
                             if (targetItem) {
                                 targetItem.classList.add('active');
+                                const link = targetItem.querySelector('a');
+                                if (link) link.setAttribute('aria-current', 'page');
                             }
                             currentActiveNavItem = targetItem;
                         }
