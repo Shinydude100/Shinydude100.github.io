@@ -7,3 +7,8 @@
 **Vulnerability:** The application was making an external fetch request without an explicit timeout, posing a risk of resource exhaustion or hanging connections if the API server was unresponsive.
 **Learning:** Defense in depth: Client-side logic should not assume that external services will respond promptly.
 **Prevention:** Always attach an AbortController with a setTimeout to `fetch` calls.
+
+## 2026-07-04 - [Security Enhancement] Prevent Referer Leakage on External Links
+**Vulnerability:** External links were missing the `referrerpolicy="no-referrer"` attribute, which could leak internal or sensitive URL paths to third-party sites.
+**Learning:** Defense in depth: Always use `referrerpolicy="no-referrer"` (along with `rel="noopener noreferrer"`) on external links to protect user privacy and prevent data leakage.
+**Prevention:** Add `referrerpolicy="no-referrer"` to all external anchor tags.
