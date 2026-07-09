@@ -19,3 +19,6 @@
 ## 2026-07-02 - Screen Reader Noise in Pseudo-Terminal Interfaces
 **Learning:** Fast-updating typing animations simulating terminal output cause massive screen reader noise. Cryptic "pseudo-terminal" button text (like `./connect_with_hugo.sh`) provides a poor experience without tooltips.
 **Action:** Always add `aria-hidden="true"` to dynamic typing animations, provide a static natural-language alternative using a `.sr-only` class, and append `title` attributes (matching `aria-label`) to pseudo-terminal buttons for visual tooltips.
+## 2026-07-02 - Enhancing State Feedback for Interactive Elements
+**Learning:** For interactive UI elements (like a mobile menu toggle), users rely on immediate visual and structural feedback. A simple hamburger icon that never changes state creates ambiguity about whether the menu is open or closed, and screen readers need `aria-current="page"` to understand navigation context.
+**Action:** When building interactive toggles, ensure the visual representation changes (e.g., morphing an SVG to an "X") alongside the `aria-expanded` attributes. For navigation links controlled by a ScrollSpy, dynamically update `aria-current="page"` to reflect the active page state.
