@@ -1242,11 +1242,18 @@
                         target.style.visibility = 'visible';
 
                         const routine = setInterval(() => {
-                            target.textContent = finalTxt.split('').map((c, i) => {
-                                if (i < count) return finalTxt[i];
-                                if (c === " ") return " ";
-                                return chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
+                            // ⚡ Bolt Optimization: Use string concatenation instead of array map to avoid GC thrashing in high-frequency interval
+                            let decryptedText = '';
+                            for (let i = 0; i < finalTxt.length; i++) {
+                                if (i < count) {
+                                    decryptedText += finalTxt[i];
+                                } else if (finalTxt[i] === " ") {
+                                    decryptedText += " ";
+                                } else {
+                                    decryptedText += chars[Math.floor(Math.random() * chars.length)];
+                                }
+                            }
+                            target.textContent = decryptedText;
 
                             if (count >= finalTxt.length) {
                                 clearInterval(routine);
