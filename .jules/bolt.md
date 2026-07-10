@@ -17,3 +17,7 @@
 ## 2024-11-20 - Array Transformation Chains in Animation Loops
 **Learning:** Using array transformation chains (like `split('').map(...).join('')`) inside high-frequency animation loops (such as a 25ms `setInterval`) causes excessive allocations and rapid Garbage Collection (GC) thrashing. Creating arrays, mapping them, and joining them back to strings many times per second per element leads to unnecessary overhead and potential UI stutters.
 **Action:** Replace `split/map/join` chains with a pre-calculated length and a simple string concatenation loop (using `+=` and `charAt` or array indexing on strings) within animation loops to avoid allocating short-lived array objects entirely.
+
+## 2025-02-27 - Canvas fillStyle RGBA Parsing Overhead
+**Learning:** Assigning CSS strings like `rgba(...)` to `ctx.fillStyle` inside a hot render loop forces the browser to parse strings on every frame, causing a CPU bottleneck.
+**Action:** Use base hex codes (e.g., `#fde047`) for `ctx.fillStyle` and separate the transparency by applying a numeric float to `ctx.globalAlpha` instead.
