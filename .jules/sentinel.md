@@ -12,3 +12,8 @@
 **Vulnerability:** External links were missing the `referrerpolicy="no-referrer"` attribute, which could leak internal or sensitive URL paths to third-party sites.
 **Learning:** Defense in depth: Always use `referrerpolicy="no-referrer"` (along with `rel="noopener noreferrer"`) on external links to protect user privacy and prevent data leakage.
 **Prevention:** Add `referrerpolicy="no-referrer"` to all external anchor tags.
+
+## 2026-07-10 - [Security Enhancement] Enforce cryptographically secure random number generation
+**Vulnerability:** Weak random number generation (`Math.random()`) was being used for randomized states, exposing potentially predictable entropy.
+**Learning:** Defense in depth: Even for visual or non-cryptographic purposes like array shuffling, relying on `crypto.getRandomValues()` mitigates edge-case predictability and adheres to strict security linting practices.
+**Prevention:** Avoid `Math.random()` entirely when possible and use a `getSecureRandom()` wrapper around `crypto.getRandomValues()`.
