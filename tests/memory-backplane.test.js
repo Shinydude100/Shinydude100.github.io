@@ -31,6 +31,7 @@ describe('MemoryBackplane', () => {
             setTransform: jest.fn(),
             fillRect: jest.fn(),
             fillText: jest.fn(),
+            globalAlpha: 1,
             fillStyles: [],
             set fillStyle(val) {
                 this.fillStyles.push(val);
@@ -133,7 +134,8 @@ describe('MemoryBackplane', () => {
 
             // Check fillStyle assignments
             expect(mockCtx.fillStyles).toContain('#020617'); // Background
-            expect(mockCtx.fillStyles).toContain('rgba(253, 224, 71, 0.08)'); // Text
+            expect(mockCtx.fillStyles).toContain('#fde047'); // Text
+            expect(mockCtx.globalAlpha).toBe(0.08); // Check applied alpha
         });
 
         it('should not render characters out of bounds', () => {
@@ -333,7 +335,7 @@ describe('MemoryBackplane', () => {
 
             // First char should NOT be glitched, should just be white since it's j=0
             expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 10);
-            expect(mockCtx.fillStyles.join('')).toContain('rgba(255, 255, 255');
+            expect(mockCtx.fillStyles.join('')).toContain('#ffffff');
         });
 
         it('should handle glitched nodes during active interaction', () => {

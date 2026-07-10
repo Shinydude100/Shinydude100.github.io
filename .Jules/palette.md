@@ -22,3 +22,4 @@
 ## 2026-07-08 - Active Navigation State Tracking
 **Learning:** For single-page applications using Intersection Observers ("scroll spies") to visually highlight the active section, relying solely on CSS classes (like `.active`) is insufficient for screen readers. They require programmatic tracking of the active state.
 **Action:** Always dynamically toggle the `aria-current="page"` attribute alongside visual highlight classes on navigation links to ensure keyboard and screen reader users know their current context.
+>>>>>>> 05e7b15 (feat(a11y): add title tooltips and active nav state tracking)
