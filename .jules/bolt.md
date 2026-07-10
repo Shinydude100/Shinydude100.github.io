@@ -14,6 +14,10 @@
 **Learning:** Reading DOM properties like `window.innerHeight` and `window.innerWidth` forces the JavaScript engine to cross the C++ boundary, and in some engines can trigger synchronous layout recalculations (layout thrashing). When these properties are accessed unconditionally inside deeply nested `requestAnimationFrame` render loops (e.g., hundreds of times per frame, totaling tens of thousands of times per second), it creates a severe performance bottleneck.
 **Action:** Always extract invariant DOM properties to local cached variables at the top of an animation frame (e.g., `const winHeight = window.innerHeight`), and use the cached local variables for all boundary calculations within that frame. Additionally, move static canvas context configurations (like `ctx.font`) out of the loop and into `init()` handlers triggered only on setup or resize.
 
-## 2024-08-01 - Avoid Array Transformation Chains in Animation Loops
-**Learning:** Using chained array transformations (like `split('').map(...).join('')`) within high-frequency functions or `setInterval` triggers Garbage Collection (GC) thrashing and micro-stutters by creating many short-lived array objects on every tick.
-**Action:** Replace functional array chaining inside animation or high-frequency render loops with standard `for` loops and simple string concatenation to minimize object creation and memory allocations.
+## 2024-11-20 - Array Transformation Chains in Animation Loops
+**Learning:** Using array transformation chains (like `split('').map(...).join('')`) inside high-frequency animation loops (such as a 25ms `setInterval`) causes excessive allocations and rapid Garbage Collection (GC) thrashing. Creating arrays, mapping them, and joining them back to strings many times per second per element leads to unnecessary overhead and potential UI stutters.
+**Action:** Replace `split/map/join` chains with a pre-calculated length and a simple string concatenation loop (using `+=` and `charAt` or array indexing on strings) within animation loops to avoid allocating short-lived array objects entirely.
+
+## 2025-02-27 - Canvas fillStyle RGBA Parsing Overhead
+**Learning:** Assigning CSS strings like `rgba(...)` to `ctx.fillStyle` inside a hot render loop forces the browser to parse strings on every frame, causing a CPU bottleneck.
+**Action:** Use base hex codes (e.g., `#fde047`) for `ctx.fillStyle` and separate the transparency by applying a numeric float to `ctx.globalAlpha` instead.
