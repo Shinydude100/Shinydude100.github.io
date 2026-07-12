@@ -25,3 +25,6 @@
 ## 2026-07-10 - Global CSS Reduced Motion
 **Learning:** While JavaScript can check `window.matchMedia('(prefers-reduced-motion: reduce)')` to disable complex canvas rendering and typing logic, structural CSS animations (like pulsating elements, fades, and smooth scrolling) will still trigger.
 **Action:** Always include a global CSS media query for `prefers-reduced-motion` that forces `animation-duration`, `transition-duration` to a near-zero value (e.g., `0.01ms`), and sets `scroll-behavior: auto !important` to ensure all structural styling respects the user's accessibility preferences.
+## 2026-07-12 - Visual Tooltips for All Pseudo-Terminal UI
+**Learning:** Sighted users relying on mouse navigation also experience cognitive friction with cryptic "pseudo-terminal" navigation links (like `Contact_Init`), not just primary buttons. Providing `title` attributes matching the `aria-label` provides a necessary visual tooltip for clarification.
+**Action:** Always add visual tooltips (`title` attributes) matching `aria-label`s to *all* interactive elements using pseudo-terminal aesthetics, including primary navigation links and interactive toggles.
