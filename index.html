@@ -1116,11 +1116,18 @@
     <script src="memory-backplane.js"></script>
     <script>
         // 🛡️ Security Enhancement: Cryptographically secure random generator utility to replace Math.random
-        function getSecureRandom() {
-            const arr = new Uint32Array(1);
-            window.crypto.getRandomValues(arr);
-            return arr[0] / (0xffffffff + 1);
-        }
+        // ⚡ Bolt Optimization: Pre-allocate high-frequency crypto buffers to avoid CPU overhead and GC thrashing
+        const getSecureRandom = (() => {
+            const buffer = new Uint32Array(256);
+            let index = 256;
+            return function() {
+                if (index >= 256) {
+                    window.crypto.getRandomValues(buffer);
+                    index = 0;
+                }
+                return buffer[index++] / (0xffffffff + 1);
+            };
+        })();
 
         // Global Motion & State Controls
 
