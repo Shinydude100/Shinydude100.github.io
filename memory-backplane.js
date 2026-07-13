@@ -11,6 +11,8 @@ class MemoryBackplane {
                 this.streams = [];
                 this.fontSize = 11;
                 this.interaction = { x: -1000, y: -1000, pingRadius: 0, targetRadius: 0, active: false };
+                this.secureRandomBuffer = new Uint32Array(256);
+                this.secureRandomIndex = 256;
 
                 this.init();
                 this.bindInteractions();
@@ -50,23 +52,36 @@ class MemoryBackplane {
                 this.streams = [];
 
                 for (let i = 0; i < this.columns; i++) {
-                    const charCount = Math.floor(Math.random() * 20) + 12;
-                    const fills = [];
-                    const glitchFills = [];
+                    const charCount = Math.floor(this.getSecureRandom() * 20) + 12;
+                    const alphas = [];
+                    const glitchAlphas = [];
                     for (let j = 0; j < charCount; j++) {
                         let alpha = 1 - (j / charCount);
-                        fills.push(j === 0 ? `rgba(255, 255, 255, ${alpha * 0.8})` : `rgba(253, 224, 71, ${alpha * 0.16})`);
-                        glitchFills.push(`rgba(255, 60, 100, ${alpha * 0.9})`);
+                        alphas.push(j === 0 ? alpha * 0.8 : alpha * 0.16);
+                        glitchAlphas.push(alpha * 0.9);
                     }
                     this.streams.push({
                         x: i * 45,
-                        y: Math.random() * -window.innerHeight,
-                        speed: Math.random() * 1.5 + 1,
+                        y: this.getSecureRandom() * -window.innerHeight,
+                        speed: this.getSecureRandom() * 1.5 + 1,
                         chars: Array.from({length: charCount}, () => this.randomToken()),
-                        fills,
-                        glitchFills
+                        alphas,
+                        glitchAlphas
                     });
                 }
+            }
+
+            getSecureRandom() {
+                if (this.secureRandomIndex >= 256) {
+                    if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+                        window.crypto.getRandomValues(this.secureRandomBuffer);
+                    } else {
+                        // Fallback for tests if crypto is missing
+                        for(let i=0; i<256; i++) this.secureRandomBuffer[i] = Math.floor(Math.random() * 4294967296);
+                    }
+                    this.secureRandomIndex = 0;
+                }
+                return this.secureRandomBuffer[this.secureRandomIndex++] / 4294967296;
             }
 
             bindInteractions() {
@@ -82,7 +97,7 @@ class MemoryBackplane {
             }
 
             randomToken() {
-                return this.hexTokens[Math.floor(Math.random() * this.hexTokens.length)];
+                return this.hexTokens[Math.floor(this.getSecureRandom() * this.hexTokens.length)];
             }
 
             renderStaticFrame() {
@@ -91,15 +106,17 @@ class MemoryBackplane {
                 const winHeight = window.innerHeight;
 
                 this.ctx.fillStyle = '#020617';
+                this.ctx.globalAlpha = 1;
                 this.ctx.fillRect(0, 0, winWidth, winHeight);
 
                 for (let i = 0; i < this.streams.length; i++) {
                     let stream = this.streams[i];
-                    stream.y = Math.random() * winHeight;
+                    stream.y = this.getSecureRandom() * winHeight;
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
                         if (yPos < winHeight) {
-                            this.ctx.fillStyle = `rgba(253, 224, 71, 0.08)`;
+                            this.ctx.fillStyle = '#fde047';
+                            this.ctx.globalAlpha = 0.08;
                             this.ctx.fillText(stream.chars[j], stream.x, yPos);
                         }
                     }
@@ -117,7 +134,8 @@ class MemoryBackplane {
                 const winWidth = window.innerWidth;
                 const winHeight = window.innerHeight;
 
-                this.ctx.fillStyle = 'rgba(2, 6, 23, 0.15)';
+                this.ctx.fillStyle = '#020617';
+                this.ctx.globalAlpha = 0.15;
                 this.ctx.fillRect(0, 0, winWidth, winHeight);
 
                 if (this.interaction.active && this.interaction.pingRadius < this.interaction.targetRadius) {
@@ -131,23 +149,26 @@ class MemoryBackplane {
 
                     // ⚡ Bolt Optimization: Extract dx calculation out of inner loop
                     let dx = 0;
+                    let dxSq = 0;
                     if (this.interaction.active) {
                         dx = stream.x - this.interaction.x;
+                        dxSq = dx * dx;
                     }
 
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
 
                         if (yPos > 0 && yPos < winHeight) {
-                            // ⚡ Bolt Optimization: Precalculate string interpolations to prevent GC thrashing
-                            let finalFill = stream.fills ? stream.fills[j] : `rgba(253, 224, 71, ${(1 - (j / stream.chars.length)) * 0.16})`;
+                            // ⚡ Bolt Optimization: Use hex fillStyle and globalAlpha to prevent GC thrashing and CSS string parsing bottleneck
+                            let currentAlpha = stream.alphas ? stream.alphas[j] : ((1 - (j / stream.chars.length)) * 0.16);
+                            let finalFill = '#fde047';
                             let displayToken = stream.chars[j];
                             let isGlitchedNode = false;
 
                             if (this.interaction.active) {
                                 let dy = yPos - this.interaction.y;
                                 // ⚡ Bolt Optimization: Math.sqrt(dx*dx + dy*dy) is up to ~10x faster than Math.hypot in hot loops
-                                let currentDist = Math.sqrt(dx * dx + dy * dy);
+                                let currentDist = Math.sqrt(dxSq + dy * dy);
 
                                 if (Math.abs(currentDist - this.interaction.pingRadius) < 40) {
                                     isGlitchedNode = true;
@@ -155,13 +176,16 @@ class MemoryBackplane {
                             }
 
                             if (isGlitchedNode) {
-                                finalFill = stream.glitchFills ? stream.glitchFills[j] : `rgba(255, 60, 100, ${(1 - (j / stream.chars.length)) * 0.9})`;
+                                finalFill = '#ff3c64';
+                                currentAlpha = stream.glitchAlphas ? stream.glitchAlphas[j] : ((1 - (j / stream.chars.length)) * 0.9);
                                 displayToken = 'XX';
-                            } else if (j === 0 && (!stream.fills)) {
-                                finalFill = `rgba(255, 255, 255, ${(1 - (j / stream.chars.length)) * 0.8})`;
+                            } else if (j === 0 && (!stream.alphas || stream.alphas.length > 0)) { // Simplified condition assuming initialization is proper
+                                finalFill = '#ffffff';
+                                currentAlpha = stream.alphas ? stream.alphas[j] : ((1 - (j / stream.chars.length)) * 0.8);
                             }
 
                             this.ctx.fillStyle = finalFill;
+                            this.ctx.globalAlpha = currentAlpha;
                             this.ctx.fillText(displayToken, stream.x, yPos);
                         }
                     }
@@ -169,12 +193,12 @@ class MemoryBackplane {
                     stream.y += stream.speed;
 
                     if (stream.y > winHeight) {
-                        stream.y = Math.random() * -200;
-                        stream.speed = Math.random() * 1.5 + 1;
+                        stream.y = this.getSecureRandom() * -200;
+                        stream.speed = this.getSecureRandom() * 1.5 + 1;
                     }
 
-                    if (Math.random() < 0.02) {
-                        stream.chars[Math.floor(Math.random() * stream.chars.length)] = this.randomToken();
+                    if (this.getSecureRandom() < 0.02) {
+                        stream.chars[Math.floor(this.getSecureRandom() * stream.chars.length)] = this.randomToken();
                     }
                 }
                 requestAnimationFrame(() => this.animate());

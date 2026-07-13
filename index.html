@@ -517,6 +517,21 @@
         @media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
             .hero-title { line-height: 1.12; letter-spacing: -0.04em; }
         }
+
+        /* Global prefers-reduced-motion for CSS */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto !important;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -532,26 +547,26 @@
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
-                    <a href="#hero" class="sys-logo" aria-label="Home Workspace">
+                    <a href="#hero" class="sys-logo" aria-label="Home Workspace" title="Home Workspace">
                         HUGO LUNA // <span>SYSTEMS SEC</span>
                     </a>
-                    <button id="mobile-toggle" aria-label="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
+                    <button id="mobile-toggle" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <nav>
                         <ul id="menu-box" class="nav-links">
-                            <li class="nav-item"><a href="#services" aria-label="Core Expertise">Core_Expertise</a></li>
-                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute">Bespoke_Compute</a></li>
-                            <li class="nav-item"><a href="#tools" aria-label="System Automation">Sys_Automation</a></li>
-                            <li class="nav-item"><a href="#about" aria-label="Track Record">Track_Record</a></li>
-                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact">Contact_Init</a></li>
+                            <li class="nav-item"><a href="#services" aria-label="Core Expertise" title="Core Expertise">Core_Expertise</a></li>
+                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
+                            <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
+                            <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
+                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </header>
 
-        <main id="main-content">
+        <main id="main-content" tabindex="-1" style="outline: none;">
             <section id="hero" class="hero-viewport">
                 <div class="container">
                     <div class="hero-core">
@@ -1044,7 +1059,7 @@
                         </div>
 
                         <div class="telemetry-row">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP" title="Download Binary Payload ZIP">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP" title="Download Binary Payload ZIP">
                                 pull_binary_payload.zip
                             </a>
                             <div class="counter-housing">
@@ -1081,7 +1096,7 @@
                         <div class="btn-stack" style="justify-content: center;">
                             <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com" title="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
                             <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF" title="Download Sanitized Resume PDF">pull_sanitized_resume.pdf</a>
-                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn" title="Verify Identity on LinkedIn">linkedin://verify_identity</a>
+                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn" title="Verify Identity on LinkedIn">linkedin://verify_identity</a>
                         </div>
                     </div>
                 </div>
@@ -1100,6 +1115,18 @@
 
     <script src="memory-backplane.js"></script>
     <script>
+        // 🛡️ Security Enhancement: Cryptographically secure random generator utility to replace Math.random
+        // ⚡ Bolt Optimization: Batch random values into a larger buffer to drastically reduce Crypto API overhead during animation loops
+        const _secureRandomBuffer = new Uint32Array(256);
+        let _secureRandomIndex = 256;
+        function getSecureRandom() {
+            if (_secureRandomIndex >= 256) {
+                window.crypto.getRandomValues(_secureRandomBuffer);
+                _secureRandomIndex = 0;
+            }
+            return _secureRandomBuffer[_secureRandomIndex++] / 4294967296; // 4294967296 is 0xffffffff + 1
+        }
+
         // Global Motion & State Controls
 
 
@@ -1241,14 +1268,24 @@
                         let count = 0;
                         target.style.visibility = 'visible';
 
+                        const txtLength = finalTxt.length;
+                        const charsLength = chars.length;
+                        // ⚡ Bolt Optimization: Replace `split/map/join` array chains with pre-calculated lengths
+                        // and a string concatenation loop to prevent massive object allocations and GC thrashing every 25ms.
                         const routine = setInterval(() => {
-                            target.textContent = finalTxt.split('').map((c, i) => {
-                                if (i < count) return finalTxt[i];
-                                if (c === " ") return " ";
-                                return chars[Math.floor(Math.random() * chars.length)];
-                            }).join('');
+                            let newText = '';
+                            for (let i = 0; i < txtLength; i++) {
+                                if (i < count) {
+                                    newText += finalTxt[i];
+                                } else if (finalTxt[i] === " ") {
+                                    newText += " ";
+                                } else {
+                                    newText += chars[Math.floor(getSecureRandom() * charsLength)];
+                                }
+                            }
+                            target.textContent = newText;
 
-                            if (count >= finalTxt.length) {
+                            if (count >= txtLength) {
                                 clearInterval(routine);
                                 target.textContent = finalTxt;
                             }
@@ -1341,7 +1378,7 @@
 
                 const corruptIndices = [];
                 for(let i=0; i < 7; i++) {
-                    corruptIndices.push(Math.floor(Math.random() * totalNodes));
+                    corruptIndices.push(Math.floor(getSecureRandom() * totalNodes));
                 }
 
                 setTimeout(() => {
@@ -1474,6 +1511,8 @@
                 if (menu && menu.classList.contains('active')) {
                     menu.classList.remove('active');
                     toggle.setAttribute('aria-expanded', 'false');
+                    const svgPath = toggle.querySelector('svg path');
+                    if (svgPath) svgPath.setAttribute('d', 'M3 12h18M3 6h18M3 18h18');
                 }
             };
 
@@ -1481,6 +1520,10 @@
                 toggle.addEventListener('click', () => {
                     const isActive = menu.classList.toggle('active');
                     toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+                    const svgPath = toggle.querySelector('svg path');
+                    if (svgPath) {
+                        svgPath.setAttribute('d', isActive ? 'M18 6L6 18M6 6l12 12' : 'M3 12h18M3 6h18M3 18h18');
+                    }
                 });
                 menu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
             }
