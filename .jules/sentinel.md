@@ -17,3 +17,8 @@
 **Vulnerability:** Weak random number generation (`Math.random()`) was being used for randomized states, exposing potentially predictable entropy.
 **Learning:** Defense in depth: Even for visual or non-cryptographic purposes like array shuffling, relying on `crypto.getRandomValues()` mitigates edge-case predictability and adheres to strict security linting practices.
 **Prevention:** Avoid `Math.random()` entirely when possible and use a `getSecureRandom()` wrapper around `crypto.getRandomValues()`.
+
+## 2026-07-13 - [Security Enhancement] Enforce secure RNG for animation states
+**Vulnerability:** Weak random number generation (`Math.random()`) was being used extensively in `memory-backplane.js`, posing a risk of predictable entropy and violating strict security linting practices. Furthermore, doing this inline inside requestAnimationFrame creates performance and GC issues if not buffered.
+**Learning:** Defense in depth: Even for visual animations, use `window.crypto.getRandomValues()`. When using it for continuous high-frequency RNG, pre-allocate a larger buffer (e.g. `Uint32Array(256)`) and consume it sequentially to prevent CPU overhead and GC thrashing.
+**Prevention:** Avoid `Math.random()` entirely within the application. Add a class property buffer and a `getSecureRandom()` method to manage secure random values efficiently.
