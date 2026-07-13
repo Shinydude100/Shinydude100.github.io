@@ -11,6 +11,8 @@ class MemoryBackplane {
                 this.streams = [];
                 this.fontSize = 11;
                 this.interaction = { x: -1000, y: -1000, pingRadius: 0, targetRadius: 0, active: false };
+                this.secureRandomBuffer = new Uint32Array(256);
+                this.secureRandomIndex = 256;
 
                 this.init();
                 this.bindInteractions();
@@ -50,7 +52,7 @@ class MemoryBackplane {
                 this.streams = [];
 
                 for (let i = 0; i < this.columns; i++) {
-                    const charCount = Math.floor(Math.random() * 20) + 12;
+                    const charCount = Math.floor(this.getSecureRandom() * 20) + 12;
                     const alphas = [];
                     const glitchAlphas = [];
                     for (let j = 0; j < charCount; j++) {
@@ -60,13 +62,26 @@ class MemoryBackplane {
                     }
                     this.streams.push({
                         x: i * 45,
-                        y: Math.random() * -window.innerHeight,
-                        speed: Math.random() * 1.5 + 1,
+                        y: this.getSecureRandom() * -window.innerHeight,
+                        speed: this.getSecureRandom() * 1.5 + 1,
                         chars: Array.from({length: charCount}, () => this.randomToken()),
                         alphas,
                         glitchAlphas
                     });
                 }
+            }
+
+            getSecureRandom() {
+                if (this.secureRandomIndex >= 256) {
+                    if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+                        window.crypto.getRandomValues(this.secureRandomBuffer);
+                    } else {
+                        // Fallback for tests if crypto is missing
+                        for(let i=0; i<256; i++) this.secureRandomBuffer[i] = Math.floor(Math.random() * 4294967296);
+                    }
+                    this.secureRandomIndex = 0;
+                }
+                return this.secureRandomBuffer[this.secureRandomIndex++] / 4294967296;
             }
 
             bindInteractions() {
@@ -82,7 +97,7 @@ class MemoryBackplane {
             }
 
             randomToken() {
-                return this.hexTokens[Math.floor(Math.random() * this.hexTokens.length)];
+                return this.hexTokens[Math.floor(this.getSecureRandom() * this.hexTokens.length)];
             }
 
             renderStaticFrame() {
@@ -96,7 +111,7 @@ class MemoryBackplane {
 
                 for (let i = 0; i < this.streams.length; i++) {
                     let stream = this.streams[i];
-                    stream.y = Math.random() * winHeight;
+                    stream.y = this.getSecureRandom() * winHeight;
                     for (let j = 0; j < stream.chars.length; j++) {
                         let yPos = stream.y + (j * (this.fontSize + 6));
                         if (yPos < winHeight) {
@@ -178,12 +193,12 @@ class MemoryBackplane {
                     stream.y += stream.speed;
 
                     if (stream.y > winHeight) {
-                        stream.y = Math.random() * -200;
-                        stream.speed = Math.random() * 1.5 + 1;
+                        stream.y = this.getSecureRandom() * -200;
+                        stream.speed = this.getSecureRandom() * 1.5 + 1;
                     }
 
-                    if (Math.random() < 0.02) {
-                        stream.chars[Math.floor(Math.random() * stream.chars.length)] = this.randomToken();
+                    if (this.getSecureRandom() < 0.02) {
+                        stream.chars[Math.floor(this.getSecureRandom() * stream.chars.length)] = this.randomToken();
                     }
                 }
                 requestAnimationFrame(() => this.animate());
