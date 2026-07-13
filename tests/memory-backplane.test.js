@@ -31,6 +31,7 @@ describe('MemoryBackplane', () => {
             setTransform: jest.fn(),
             fillRect: jest.fn(),
             fillText: jest.fn(),
+            globalAlpha: 1,
             fillStyles: [],
             set fillStyle(val) {
                 this.fillStyles.push(val);
@@ -106,9 +107,9 @@ describe('MemoryBackplane', () => {
                 chars: ['A', 'B']
             }];
 
-            // Mock Math.random so stream.y calculation is deterministic
-            // Math.random() * window.innerHeight (800)
-            jest.spyOn(Math, 'random').mockReturnValue(0.25); // y = 200
+            // Mock getSecureRandom so stream.y calculation is deterministic
+            // getSecureRandom() * window.innerHeight (800)
+            jest.spyOn(MemoryBackplane.prototype, 'getSecureRandom').mockReturnValue(0.25); // y = 200
 
             // Clear mock history from init
             mockCtx.fillRect.mockClear();
@@ -123,7 +124,7 @@ describe('MemoryBackplane', () => {
             expect(mockCtx.font).toBe("600 10px 'Fira Code', monospace");
 
             // Check chars render
-            // stream.y gets recalculated to Math.random() * window.innerHeight = 0.25 * 800 = 200
+            // stream.y gets recalculated to getSecureRandom() * window.innerHeight = 0.25 * 800 = 200
             // j=0: yPos = 200 + (0 * (10 + 6)) = 200
             // j=1: yPos = 200 + (1 * (10 + 6)) = 216
 
@@ -133,7 +134,8 @@ describe('MemoryBackplane', () => {
 
             // Check fillStyle assignments
             expect(mockCtx.fillStyles).toContain('#020617'); // Background
-            expect(mockCtx.fillStyles).toContain('rgba(253, 224, 71, 0.08)'); // Text
+            expect(mockCtx.fillStyles).toContain('#fde047'); // Text
+            expect(mockCtx.globalAlpha).toBe(0.08); // Check applied alpha
         });
 
         it('should not render characters out of bounds', () => {
@@ -147,8 +149,8 @@ describe('MemoryBackplane', () => {
             }];
             backplane.fontSize = 10;
 
-            // Mock Math.random to return 1.0 so yPos >= window.innerHeight
-            jest.spyOn(Math, 'random').mockReturnValue(1.0);
+            // Mock getSecureRandom to return 1.0 so yPos >= window.innerHeight
+            jest.spyOn(MemoryBackplane.prototype, 'getSecureRandom').mockReturnValue(1.0);
 
             mockCtx.fillRect.mockClear();
             mockCtx.fillText.mockClear();
@@ -285,7 +287,7 @@ describe('MemoryBackplane', () => {
         });
 
         it('should render frame and animate streams', () => {
-            jest.spyOn(Math, 'random').mockReturnValue(0.5); // To avoid random chars changes
+            jest.spyOn(MemoryBackplane.prototype, 'getSecureRandom').mockReturnValue(0.5); // To avoid random chars changes
             mockCtx.fillRect.mockClear();
             mockCtx.fillText.mockClear();
 
@@ -333,7 +335,7 @@ describe('MemoryBackplane', () => {
 
             // First char should NOT be glitched, should just be white since it's j=0
             expect(mockCtx.fillText).toHaveBeenNthCalledWith(1, 'A', 100, 10);
-            expect(mockCtx.fillStyles.join('')).toContain('rgba(255, 255, 255');
+            expect(mockCtx.fillStyles.join('')).toContain('#ffffff');
         });
 
         it('should handle glitched nodes during active interaction', () => {
@@ -358,7 +360,7 @@ describe('MemoryBackplane', () => {
         it('should reset stream y and speed if out of bounds', () => {
             backplane.streams[0].y = 900; // > window.innerHeight (800)
 
-            jest.spyOn(Math, 'random').mockReturnValue(0.5); // Predictable random values
+            jest.spyOn(MemoryBackplane.prototype, 'getSecureRandom').mockReturnValue(0.5); // Predictable random values
 
             backplane.animate();
 
@@ -367,7 +369,7 @@ describe('MemoryBackplane', () => {
         });
 
         it('should randomly change characters', () => {
-            jest.spyOn(Math, 'random').mockReturnValue(0.01); // Trigger random token update
+            jest.spyOn(MemoryBackplane.prototype, 'getSecureRandom').mockReturnValue(0.01); // Trigger random token update
             jest.spyOn(backplane, 'randomToken').mockReturnValue('Z');
 
             backplane.animate();

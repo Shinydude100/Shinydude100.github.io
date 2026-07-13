@@ -19,3 +19,12 @@
 ## 2026-07-02 - Screen Reader Noise in Pseudo-Terminal Interfaces
 **Learning:** Fast-updating typing animations simulating terminal output cause massive screen reader noise. Cryptic "pseudo-terminal" button text (like `./connect_with_hugo.sh`) provides a poor experience without tooltips.
 **Action:** Always add `aria-hidden="true"` to dynamic typing animations, provide a static natural-language alternative using a `.sr-only` class, and append `title` attributes (matching `aria-label`) to pseudo-terminal buttons for visual tooltips.
+## 2026-07-02 - Enhancing State Feedback for Interactive Elements
+**Learning:** For interactive UI elements (like a mobile menu toggle), users rely on immediate visual and structural feedback. A simple hamburger icon that never changes state creates ambiguity about whether the menu is open or closed, and screen readers need `aria-current="page"` to understand navigation context.
+**Action:** When building interactive toggles, ensure the visual representation changes (e.g., morphing an SVG to an "X") alongside the `aria-expanded` attributes. For navigation links controlled by a ScrollSpy, dynamically update `aria-current="page"` to reflect the active page state.
+## 2026-07-10 - Global CSS Reduced Motion
+**Learning:** While JavaScript can check `window.matchMedia('(prefers-reduced-motion: reduce)')` to disable complex canvas rendering and typing logic, structural CSS animations (like pulsating elements, fades, and smooth scrolling) will still trigger.
+**Action:** Always include a global CSS media query for `prefers-reduced-motion` that forces `animation-duration`, `transition-duration` to a near-zero value (e.g., `0.01ms`), and sets `scroll-behavior: auto !important` to ensure all structural styling respects the user's accessibility preferences.
+## 2026-07-12 - Visual Tooltips for All Pseudo-Terminal UI
+**Learning:** Sighted users relying on mouse navigation also experience cognitive friction with cryptic "pseudo-terminal" navigation links (like `Contact_Init`), not just primary buttons. Providing `title` attributes matching the `aria-label` provides a necessary visual tooltip for clarification.
+**Action:** Always add visual tooltips (`title` attributes) matching `aria-label`s to *all* interactive elements using pseudo-terminal aesthetics, including primary navigation links and interactive toggles.
