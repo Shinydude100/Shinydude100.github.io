@@ -22,6 +22,6 @@
 **Learning:** Assigning CSS strings like `rgba(...)` to `ctx.fillStyle` inside a hot render loop forces the browser to parse strings on every frame, causing a CPU bottleneck.
 **Action:** Use base hex codes (e.g., `#fde047`) for `ctx.fillStyle` and separate the transparency by applying a numeric float to `ctx.globalAlpha` instead.
 
-## 2025-02-28 - Crypto API Buffer Allocation Overhead
-**Learning:** Calling `window.crypto.getRandomValues(new Uint32Array(1))` repeatedly within high-frequency loops (like animation frames or interval loops) creates severe CPU overhead and Garbage Collection (GC) thrashing due to continuous typed array allocation and FFI boundary crossing per single value.
-**Action:** Pre-allocate a larger buffer (e.g., `new Uint32Array(256)`), track an index, and consume values sequentially. Only refill the buffer via `window.crypto.getRandomValues(buffer)` when the index exceeds the buffer length. This drastically reduces allocations and CPU wait time.
+## 2025-03-05 - Cryptographic API Overhead in Animation Loops
+**Learning:** Calling `window.crypto.getRandomValues(new Uint32Array(1))` repeatedly inside tight animation loops or iterative decryption effects incurs a heavy CPU and timing overhead. This causes performance drops compared to less secure pseudo-random number generators like `Math.random()`.
+**Action:** When a secure random number stream is required for continuous usage, create a larger buffer (e.g. `Uint32Array(256)`) and populate it once using `window.crypto.getRandomValues()`. Consume numbers from this buffer sequentially, and only invoke the Crypto API again when the buffer is exhausted.

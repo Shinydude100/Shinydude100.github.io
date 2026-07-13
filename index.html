@@ -547,19 +547,19 @@
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
-                    <a href="#hero" class="sys-logo" aria-label="Home Workspace">
+                    <a href="#hero" class="sys-logo" aria-label="Home Workspace" title="Home Workspace">
                         HUGO LUNA // <span>SYSTEMS SEC</span>
                     </a>
-                    <button id="mobile-toggle" aria-label="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
+                    <button id="mobile-toggle" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <nav>
                         <ul id="menu-box" class="nav-links">
-                            <li class="nav-item"><a href="#services" aria-label="Core Expertise">Core_Expertise</a></li>
-                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute">Bespoke_Compute</a></li>
-                            <li class="nav-item"><a href="#tools" aria-label="System Automation">Sys_Automation</a></li>
-                            <li class="nav-item"><a href="#about" aria-label="Track Record">Track_Record</a></li>
-                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact">Contact_Init</a></li>
+                            <li class="nav-item"><a href="#services" aria-label="Core Expertise" title="Core Expertise">Core_Expertise</a></li>
+                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
+                            <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
+                            <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
+                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -1116,18 +1116,16 @@
     <script src="memory-backplane.js"></script>
     <script>
         // 🛡️ Security Enhancement: Cryptographically secure random generator utility to replace Math.random
-        // ⚡ Bolt Optimization: Pre-allocate high-frequency crypto buffers to avoid CPU overhead and GC thrashing
-        const getSecureRandom = (() => {
-            const buffer = new Uint32Array(256);
-            let index = 256;
-            return function() {
-                if (index >= 256) {
-                    window.crypto.getRandomValues(buffer);
-                    index = 0;
-                }
-                return buffer[index++] / (0xffffffff + 1);
-            };
-        })();
+        // ⚡ Bolt Optimization: Batch random values into a larger buffer to drastically reduce Crypto API overhead during animation loops
+        const _secureRandomBuffer = new Uint32Array(256);
+        let _secureRandomIndex = 256;
+        function getSecureRandom() {
+            if (_secureRandomIndex >= 256) {
+                window.crypto.getRandomValues(_secureRandomBuffer);
+                _secureRandomIndex = 0;
+            }
+            return _secureRandomBuffer[_secureRandomIndex++] / 4294967296; // 4294967296 is 0xffffffff + 1
+        }
 
         // Global Motion & State Controls
 
