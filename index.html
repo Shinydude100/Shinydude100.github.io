@@ -547,19 +547,19 @@
         <header id="site-header" class="sys-header">
             <div class="container">
                 <div class="nav-inner">
-                    <a href="#hero" class="sys-logo" aria-label="Home Workspace">
+                    <a href="#hero" class="sys-logo" aria-label="Home Workspace" title="Home Workspace">
                         HUGO LUNA // <span>SYSTEMS SEC</span>
                     </a>
-                    <button id="mobile-toggle" aria-label="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
+                    <button id="mobile-toggle" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <nav>
                         <ul id="menu-box" class="nav-links">
-                            <li class="nav-item"><a href="#services" aria-label="Core Expertise">Core_Expertise</a></li>
-                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute">Bespoke_Compute</a></li>
-                            <li class="nav-item"><a href="#tools" aria-label="System Automation">Sys_Automation</a></li>
-                            <li class="nav-item"><a href="#about" aria-label="Track Record">Track_Record</a></li>
-                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact">Contact_Init</a></li>
+                            <li class="nav-item"><a href="#services" aria-label="Core Expertise" title="Core Expertise">Core_Expertise</a></li>
+                            <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
+                            <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
+                            <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
+                            <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -1116,10 +1116,15 @@
     <script src="memory-backplane.js"></script>
     <script>
         // 🛡️ Security Enhancement: Cryptographically secure random generator utility to replace Math.random
+        // ⚡ Bolt Optimization: Batch random values into a larger buffer to drastically reduce Crypto API overhead during animation loops
+        const _secureRandomBuffer = new Uint32Array(256);
+        let _secureRandomIndex = 256;
         function getSecureRandom() {
-            const arr = new Uint32Array(1);
-            window.crypto.getRandomValues(arr);
-            return arr[0] / (0xffffffff + 1);
+            if (_secureRandomIndex >= 256) {
+                window.crypto.getRandomValues(_secureRandomBuffer);
+                _secureRandomIndex = 0;
+            }
+            return _secureRandomBuffer[_secureRandomIndex++] / 4294967296; // 4294967296 is 0xffffffff + 1
         }
 
         // Global Motion & State Controls
@@ -1454,10 +1459,14 @@
                 if (!response.ok) throw new Error();
                 const payloads = await response.json();
 
+                // 🛡️ Security Enhancement: Validate external API payload structure before processing
+                if (!Array.isArray(payloads)) throw new Error('Invalid payload structure');
+
                 let downloads = 0;
                 for (const release of payloads) {
+                    if (!release || !Array.isArray(release.assets)) continue;
                     for (const asset of release.assets) {
-                        if (asset.name === "Maintenence.zip") {
+                        if (asset && asset.name === "Maintenence.zip" && typeof asset.download_count === 'number') {
                             downloads += asset.download_count;
                             break;
                         }
@@ -1573,8 +1582,16 @@
 
             sections.forEach(section => scrollSpyObserver.observe(section));
 
+            // ⚡ Bolt Optimization: Throttle scroll event listener using requestAnimationFrame to prevent main thread congestion and layout thrashing
+            let isScrolling = false;
             window.addEventListener('scroll', () => {
-                window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+                if (!isScrolling) {
+                    window.requestAnimationFrame(() => {
+                        window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+                        isScrolling = false;
+                    });
+                    isScrolling = true;
+                }
             }, { passive: true });
         });
     </script>
