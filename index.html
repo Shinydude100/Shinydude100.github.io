@@ -1459,10 +1459,14 @@
                 if (!response.ok) throw new Error();
                 const payloads = await response.json();
 
+                // 🛡️ Security Enhancement: Validate external API payload structure before processing
+                if (!Array.isArray(payloads)) throw new Error('Invalid payload structure');
+
                 let downloads = 0;
                 for (const release of payloads) {
+                    if (!release || !Array.isArray(release.assets)) continue;
                     for (const asset of release.assets) {
-                        if (asset.name === "Maintenence.zip") {
+                        if (asset && asset.name === "Maintenence.zip" && typeof asset.download_count === 'number') {
                             downloads += asset.download_count;
                             break;
                         }
