@@ -26,3 +26,8 @@
 **Vulnerability:** Weak random number generation (`Math.random()`) was being used extensively in `memory-backplane.js`, posing a risk of predictable entropy and violating strict security linting practices. Furthermore, doing this inline inside requestAnimationFrame creates performance and GC issues if not buffered.
 **Learning:** Defense in depth: Even for visual animations, use `window.crypto.getRandomValues()`. When using it for continuous high-frequency RNG, pre-allocate a larger buffer (e.g. `Uint32Array(256)`) and consume it sequentially to prevent CPU overhead and GC thrashing.
 **Prevention:** Avoid `Math.random()` entirely within the application. Add a class property buffer and a `getSecureRandom()` method to manage secure random values efficiently.
+
+## 2026-07-13 - [Security Enhancement] Removed unsafe-inline from script-src CSP
+**Vulnerability:** The application was using `'unsafe-inline'` in its Content-Security-Policy `script-src` directive, which is a critical security vulnerability that allows DOM-based XSS attacks if an injection point is found, completely defeating the primary purpose of CSP.
+**Learning:** Defense in depth: The use of inline scripts in `index.html` necessitated this insecure policy. Extracting scripts into external files (e.g. `script.js`) is essential for a robust CSP.
+**Prevention:** Avoid inline `<script>` blocks in HTML files entirely and rely on external `.js` files to ensure `'unsafe-inline'` is never required in production deployments.

@@ -10,11 +10,11 @@ describe('initConsoleTyping', () => {
         global.prefersReducedMotion = false;
 
         // Read index.html and extract initConsoleTyping
-        const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+        const html = fs.readFileSync(path.resolve(__dirname, '../script.js'), 'utf8');
         const scriptMatch = html.match(/function initConsoleTyping\(\) \{[\s\S]*?printLogLine\(\);\s*\}/);
 
         if (!scriptMatch) {
-            throw new Error("initConsoleTyping function not found in index.html");
+            throw new Error("initConsoleTyping function not found in script.js");
         }
 
         // Evaluate the function in the current context

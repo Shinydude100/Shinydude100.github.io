@@ -5,7 +5,7 @@ test('runPipelineTelemetry handles fetch error correctly', async ({ page }) => {
   await page.route('https://api.github.com/repos/Shinydude100/Shinydude100.github.io/releases', route => route.abort());
 
   // Load the page
-  await page.goto(`file://${__dirname}/../index.html`);
+  await page.goto(`/index.html`);
 
   // Verify the fallback text is set
   const counter = page.locator('#download-counter');
@@ -19,7 +19,7 @@ test('runPipelineTelemetry handles timeout correctly', async ({ page }) => {
   });
 
   // Load the page
-  await page.goto(`file://${__dirname}/../index.html`);
+  await page.goto(`/index.html`);
 
   // Verify the fallback text is set due to the timeout aborting the fetch
   const counter = page.locator('#download-counter');
