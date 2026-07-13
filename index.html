@@ -1578,8 +1578,16 @@
 
             sections.forEach(section => scrollSpyObserver.observe(section));
 
+            // ⚡ Bolt Optimization: Throttle scroll event listener using requestAnimationFrame to prevent main thread congestion and layout thrashing
+            let isScrolling = false;
             window.addEventListener('scroll', () => {
-                window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+                if (!isScrolling) {
+                    window.requestAnimationFrame(() => {
+                        window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+                        isScrolling = false;
+                    });
+                    isScrolling = true;
+                }
             }, { passive: true });
         });
     </script>
