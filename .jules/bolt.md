@@ -21,3 +21,7 @@
 ## 2025-02-27 - Canvas fillStyle RGBA Parsing Overhead
 **Learning:** Assigning CSS strings like `rgba(...)` to `ctx.fillStyle` inside a hot render loop forces the browser to parse strings on every frame, causing a CPU bottleneck.
 **Action:** Use base hex codes (e.g., `#fde047`) for `ctx.fillStyle` and separate the transparency by applying a numeric float to `ctx.globalAlpha` instead.
+
+## 2025-03-05 - Cryptographic API Overhead in Animation Loops
+**Learning:** Calling `window.crypto.getRandomValues(new Uint32Array(1))` repeatedly inside tight animation loops or iterative decryption effects incurs a heavy CPU and timing overhead. This causes performance drops compared to less secure pseudo-random number generators like `Math.random()`.
+**Action:** When a secure random number stream is required for continuous usage, create a larger buffer (e.g. `Uint32Array(256)`) and populate it once using `window.crypto.getRandomValues()`. Consume numbers from this buffer sequentially, and only invoke the Crypto API again when the buffer is exhausted.
