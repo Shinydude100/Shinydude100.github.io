@@ -1,6 +1,9 @@
-🎨 Palette: Redesign Terminal UI
+🎯 **What:** Removed lingering Python patch scripts (`patch_html.py`, `patch_css.py`, `patch_html_header.py`, `patch_palette.py`) from the repository.
 
-What: Redesigned the `.sys-visualizer.terminal-mode` element to mimic a native Windows 11 Command Prompt title bar and terminal execution environment.
-Why: To meet the user's request for a raw, native execution environment visual style.
-Before/After: The terminal header previously used a simple span with text; now it features a structured Windows 11-style title bar with a left-aligned icon, title, and right-aligned window control buttons (Minimize, Maximize, Close). The terminal body was updated with custom dark slim scrollbars and adjusted typography (Consolas, 14px, tighter line height) for authenticity.
-Accessibility: Maintained text contrast and structural semantics. The purely visual SVG controls do not interfere with core screen reading logic.
+💡 **Why:** These scripts were clearly one-off utilities designed to modify the static HTML and CSS files and handle merge conflicts in markdown. They are not part of the active runtime, build pipeline, or test suite. Leaving them in the repository introduces unnecessary clutter and potential confusion about their role. Removing them improves overall repository cleanliness and maintainability.
+
+✅ **Verification:**
+- Verified that these scripts were not referenced in `package.json` scripts or any GitHub Actions workflows.
+- Ran the full test suite (`pnpm test`) and HTML validation (`npx htmlhint index.html`) to confirm no regressions.
+
+✨ **Result:** A cleaner repository with fewer loose, unused utility files, reducing technical debt and improving readability for future maintainers.
