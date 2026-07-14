@@ -1,11 +1,15 @@
-🎨 Palette: Improve footer location text color contrast
+What:
+Added an `llms.txt` file and converted the simple `mailto:` contact link into an interactive HTML form enriched with WebMCP declarative annotations.
 
-**What:** Increased the opacity of the `.footer-loc` text color in `index.html` from `rgba(255, 255, 255, 0.15)` to `rgba(255, 255, 255, 0.5)`.
+Why:
+To establish native AI-friendly context discovery and structured interactions. The `llms.txt` file provides automated discovery for the site structure and design system. The WebMCP annotations on the contact form allow AI agents acting on behalf of the user to natively parse and auto-fill inquiries based on the site's explicit instructions (`tooldescription`, `toolparamtitle`, etc.).
 
-**Why:** The previous color contrast ratio against the footer background (`rgba(9, 11, 16, 0.95)`) was roughly 1.48:1, failing WCAG 4.5:1 accessibility standards. The new opacity provides a contrast ratio of roughly 5.3:1, making the text accessible.
+Verification:
+- Created the required `llms.txt` file mapped to standard directories.
+- Refactored the anchor tag into an HTML form implementing `toolname="contactForm"`, `tooldescription`, and input-level tool parameters.
+- Verified visual integrity and responsive behavior using a custom Playwright CUJ script, retaining the intended pseudo-terminal aesthetics.
+- HTML validation (`npx htmlhint`) passes successfully.
+- Test suites (`pnpm test`) run entirely green.
 
-**Before/After:**
-*   **Before:** `.footer-loc` color was `rgba(255,255,255,0.15)`.
-*   **After:** `.footer-loc` color is `rgba(255, 255, 255, 0.5)`.
-
-**Accessibility:** Improves text legibility for users with visual impairments, ensuring compliance with WCAG contrast requirements.
+Result:
+A more discoverable and interoperable static portfolio site natively ready for LLM-driven interactions and context parsing.
