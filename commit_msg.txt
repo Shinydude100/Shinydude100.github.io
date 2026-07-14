@@ -1,4 +1,1 @@
-🛡️ Sentinel: [CRITICAL] Fix CSP inline script vulnerability
-
-What: Removed inline script block and `onload` handler from `index.html`. Refactored font loading logic to `script.js`.
-Why: To comply with a strict `script-src 'self'` Content-Security-Policy (CSP) and remove the `unsafe-inline` directive, closing a significant vector for Cross-Site Scripting (XSS) attacks.
+🎨 Palette: Improve footer location text color contrast

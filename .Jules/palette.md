@@ -42,3 +42,6 @@
 ## 2026-07-14 - Mobile Menu Overlay Accessibility
 **Learning:** Users navigating overlay menus via keyboard lose their context when the menu closes, and mobile users expect to tap outside a menu to dismiss it. Lack of these interactions creates navigation dead-ends.
 **Action:** Always implement focus restoration to the triggering element (e.g., `toggle.focus()`) when closing overlays, especially via the 'Escape' key or inner links. Bind a `document` click listener to dismiss menus when clicking outside the boundary.
+## 2026-07-14 - Contrast Ratio for Subtle Elements
+**Learning:** Subtle UI elements (like `.footer-loc` with `rgba(255,255,255,0.15)`) often fail WCAG contrast requirements against dark backgrounds.
+**Action:** When designing subtle text, ensure the calculated luminance contrast ratio against the background color meets at least WCAG 4.5:1 (e.g., using `rgba(255,255,255,0.5)` on deep dark backgrounds).
