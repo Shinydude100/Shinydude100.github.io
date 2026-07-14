@@ -39,3 +39,6 @@
 ## 2026-07-08 - Active Navigation State Tracking
 **Learning:** For single-page applications using Intersection Observers ("scroll spies") to visually highlight the active section, relying solely on CSS classes (like `.active`) is insufficient for screen readers. They require programmatic tracking of the active state.
 **Action:** Always dynamically toggle the `aria-current="page"` attribute alongside visual highlight classes on navigation links to ensure keyboard and screen reader users know their current context.
+## 2026-07-14 - Mobile Menu Overlay Accessibility
+**Learning:** Users navigating overlay menus via keyboard lose their context when the menu closes, and mobile users expect to tap outside a menu to dismiss it. Lack of these interactions creates navigation dead-ends.
+**Action:** Always implement focus restoration to the triggering element (e.g., `toggle.focus()`) when closing overlays, especially via the 'Escape' key or inner links. Bind a `document` click listener to dismiss menus when clicking outside the boundary.
