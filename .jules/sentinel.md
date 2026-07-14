@@ -35,3 +35,8 @@
 **Vulnerability:** The application was using `'unsafe-inline'` in its Content-Security-Policy `script-src` directive, which is a critical security vulnerability that allows DOM-based XSS attacks if an injection point is found, completely defeating the primary purpose of CSP.
 **Learning:** Defense in depth: The use of inline scripts in `index.html` necessitated this insecure policy. Extracting scripts into external files (e.g. `script.js`) is essential for a robust CSP.
 **Prevention:** Avoid inline `<script>` blocks in HTML files entirely and rely on external `.js` files to ensure `'unsafe-inline'` is never required in production deployments.
+
+## 2026-07-14 - [Security Enhancement] Enforce strict frame-src and worker-src CSP directives
+**Vulnerability:** The application was missing `frame-src 'none'` and `worker-src 'none'` in its Content-Security-Policy, exposing it to potential clickjacking or malicious service worker spawning.
+**Learning:** Defense in depth: Explicitly blocking iframes and web workers reduces the attack surface, especially against DOM-based XSS vulnerabilities.
+**Prevention:** Always include `frame-src 'none'` and `worker-src 'none'` in the CSP for static applications unless explicitly required.
