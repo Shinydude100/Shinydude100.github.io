@@ -29,3 +29,7 @@
 ## 2024-11-20 - Unthrottled Event Listeners and Main Thread Congestion
 **Learning:** Performing DOM reads and writes directly inside high-frequency event listeners like `scroll` (or `mousemove`) without throttling forces the browser to evaluate the logic and potentially modify the DOM more often than it renders frames. This causes main thread congestion, resulting in choppy scrolling and layout thrashing (jank).
 **Action:** Always wrap DOM operations triggered by high-frequency events inside `window.requestAnimationFrame()`. Use a boolean flag (e.g., `isScrolling`) to prevent queuing up multiple animation frames before the first one executes, effectively throttling updates to the display refresh rate (typically 60fps).
+
+## 2026-07-14 - Render-Blocking Google Fonts
+**Learning:** Synchronous loading of Google Fonts blocks the critical rendering path, delaying First Contentful Paint (FCP).
+**Action:** Implement asynchronous font loading using `<link rel="stylesheet" media="print" onload="this.media='all'">` to allow the browser to continue rendering HTML while fonts are being downloaded.

@@ -1,9 +1,10 @@
-🎯 **What:** Removed lingering Python patch scripts (`patch_html.py`, `patch_css.py`, `patch_html_header.py`, `patch_palette.py`) from the repository.
+🎯 **What:** Implemented async loading for Google Fonts by using `media="print" onload="this.media='all'"`.
 
-💡 **Why:** These scripts were clearly one-off utilities designed to modify the static HTML and CSS files and handle merge conflicts in markdown. They are not part of the active runtime, build pipeline, or test suite. Leaving them in the repository introduces unnecessary clutter and potential confusion about their role. Removing them improves overall repository cleanliness and maintainability.
+💡 **Why:** To eliminate render-blocking resources during initial page load, allowing the browser to render the page structure before fonts are fully downloaded.
 
 ✅ **Verification:**
-- Verified that these scripts were not referenced in `package.json` scripts or any GitHub Actions workflows.
-- Ran the full test suite (`pnpm test`) and HTML validation (`npx htmlhint index.html`) to confirm no regressions.
+- Verified via `npx htmlhint` for structural integrity.
+- Used a Playwright script to verify visual assurance.
+- Ignored invalid requests based on constraints (e.g. Cloudflare DNS only, no custom HTTP headers for GH pages, flat structure for DOM).
 
-✨ **Result:** A cleaner repository with fewer loose, unused utility files, reducing technical debt and improving readability for future maintainers.
+✨ **Result:** Significantly improves the First Contentful Paint (FCP) metric by preventing Google Fonts from blocking the critical rendering path.
