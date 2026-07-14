@@ -233,13 +233,16 @@
 
             const totalNodes = 104;
             const nodes = [];
+            // ⚡ Bolt Optimization: Batch DOM insertions using DocumentFragment to prevent layout thrashing
+            const fragment = document.createDocumentFragment();
 
             for (let i = 0; i < totalNodes; i++) {
                 const node = document.createElement('div');
                 node.className = 'memory-node safe';
-                grid.appendChild(node);
+                fragment.appendChild(node);
                 nodes.push(node);
             }
+            grid.appendChild(fragment);
 
             function appendLog(text, className = '') {
                 const p = document.createElement('p');

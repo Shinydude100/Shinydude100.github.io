@@ -33,3 +33,7 @@
 ## 2026-07-14 - Render-Blocking Google Fonts
 **Learning:** Synchronous loading of Google Fonts blocks the critical rendering path, delaying First Contentful Paint (FCP).
 **Action:** Implement asynchronous font loading using `<link rel="stylesheet" media="print" onload="this.media='all'">` to allow the browser to continue rendering HTML while fonts are being downloaded.
+
+## 2026-07-15 - Batch DOM Insertions with DocumentFragment
+**Learning:** Appending multiple elements to a live DOM node sequentially (e.g., in a loop) triggers repeated browser recalculations and layout thrashing. This causes unnecessary overhead during component initialization.
+**Action:** When inserting multiple child elements into the DOM, append them to a `DocumentFragment` first, and then append the fragment to the live DOM in a single operation to minimize reflows and repaints.
