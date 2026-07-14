@@ -1,3 +1,7 @@
+## 2026-07-14 - [Security Enhancement] Removed unsafe-inline scripts and onload handlers
+**Vulnerability:** The application was using inline scripts and inline `onload` handlers, which violate a strict `script-src 'self'` Content-Security-Policy (CSP) and can expose the application to Cross-Site Scripting (XSS) vulnerabilities.
+**Learning:** Defense in depth: To enforce a strict CSP, all JavaScript logic must be moved to external files. Inline event handlers (like `onload`) must be replaced with event listeners attached dynamically in the external script.
+**Prevention:** Avoid inline `<script>` blocks and inline event attributes (e.g., `onclick`, `onload`) in HTML files entirely.
 ## 2025-05-18 - [Security Enhancement] Replaced innerHTML with textContent
 **Vulnerability:** Use of innerHTML for DOM updates which could theoretically be a vector for DOM-based XSS (though currently hardcoded).
 **Learning:** Defense in depth: removing innerHTML sinks ensures safety against future regressions or strict static analysis linters.

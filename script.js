@@ -368,6 +368,8 @@
         // Runtime Core Execution Mount
         // =================================================================
         document.addEventListener('DOMContentLoaded', () => {
+            const fontLink = document.getElementById('google-fonts-link');
+            if (fontLink) fontLink.media = 'all';
             new MemoryBackplane();
             initCompositeCursor();
             initConsoleTyping();

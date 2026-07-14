@@ -1,10 +1,12 @@
-🎯 **What:** Implemented async loading for Google Fonts by using `media="print" onload="this.media='all'"`.
+🛡️ Sentinel: [CRITICAL] Fix CSP inline script vulnerability
 
-💡 **Why:** To eliminate render-blocking resources during initial page load, allowing the browser to render the page structure before fonts are fully downloaded.
+🎯 **What:** Removed the inline script block and inline `onload` attribute for font loading in `index.html`. The font loading logic has been refactored into `script.js`.
+
+💡 **Why:** To comply with a strict `script-src 'self'` Content-Security-Policy (CSP) and remove the `unsafe-inline` directive, which is a significant vector for Cross-Site Scripting (XSS) attacks.
 
 ✅ **Verification:**
-- Verified via `npx htmlhint` for structural integrity.
-- Used a Playwright script to verify visual assurance.
-- Ignored invalid requests based on constraints (e.g. Cloudflare DNS only, no custom HTTP headers for GH pages, flat structure for DOM).
+- Verified `index.html` structure with `npx htmlhint`.
+- Confirmed no inline `<script>` tags or `onload` handlers remain.
+- All Jest and Playwright tests pass successfully.
 
-✨ **Result:** Significantly improves the First Contentful Paint (FCP) metric by preventing Google Fonts from blocking the critical rendering path.
+✨ **Result:** The application now strictly adheres to the defined CSP, improving the security posture against DOM-based XSS vulnerabilities.
