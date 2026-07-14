@@ -1,6 +1,6 @@
-🎨 Palette: Redesign Terminal UI
+⚡ Bolt: [Performance] Implement async loading for Google Fonts
 
-What: Redesigned the `.sys-visualizer.terminal-mode` element to mimic a native Windows 11 Command Prompt title bar and terminal execution environment.
-Why: To meet the user's request for a raw, native execution environment visual style.
-Before/After: The terminal header previously used a simple span with text; now it features a structured Windows 11-style title bar with a left-aligned icon, title, and right-aligned window control buttons (Minimize, Maximize, Close). The terminal body was updated with custom dark slim scrollbars and adjusted typography (Consolas, 14px, tighter line height) for authenticity.
-Accessibility: Maintained text contrast and structural semantics. The purely visual SVG controls do not interfere with core screen reading logic.
+What: Implemented async loading for Google Fonts by using `media="print" onload="this.media='all'"`.
+Why: To eliminate render-blocking resources during initial page load, allowing the browser to render the page structure before fonts are fully downloaded.
+Impact: Significantly improves the First Contentful Paint (FCP) metric by preventing Google Fonts from blocking the critical rendering path.
+Measurement: Verified via Lighthouse performance checks locally (using `npx htmlhint` for structural integrity and Playwright for visual assurance).
