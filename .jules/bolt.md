@@ -45,3 +45,7 @@
 ## 2026-07-17 - Render-Blocking Scripts Delaying LCP
 **Learning:** Loading JavaScript files synchronously at the end of the `<body>` can still delay parsing and rendering if the scripts are large, negatively impacting Largest Contentful Paint (LCP) on mobile devices.
 **Action:** Always include the `defer` attribute on `<script>` tags, even when placed at the bottom of the document. This ensures that the HTML parser is never blocked while the scripts are being downloaded, allowing the browser to render the page as quickly as possible.
+
+## 2025-03-05 - IntersectionObserver DOM Querying Optimization
+**Learning:** Calling `querySelector('a')` repeatedly inside high-frequency execution paths like an `IntersectionObserver` callback introduces unnecessary DOM parsing and parsing overhead, even if elements are relatively shallow.
+**Action:** Pre-cache inner HTML elements alongside their parent container in initialization maps (e.g. `{ item, link }`) to transform O(N) DOM queries during scroll events into O(1) object property lookups.
