@@ -37,3 +37,7 @@
 ## 2026-07-15 - Batch DOM Insertions with DocumentFragment
 **Learning:** Appending multiple elements to a live DOM node sequentially (e.g., in a loop) triggers repeated browser recalculations and layout thrashing. This causes unnecessary overhead during component initialization.
 **Action:** When inserting multiple child elements into the DOM, append them to a `DocumentFragment` first, and then append the fragment to the live DOM in a single operation to minimize reflows and repaints.
+
+## 2026-07-16 - Replacing String Concatenation in High-Frequency Animation Loops
+**Learning:** Even simple string concatenation (`+=`) inside a high-frequency animation loop (e.g., a 25ms `setInterval`) can create O(N) intermediate string allocations, causing measurable GC overhead on mobile processors when updating several DOM elements simultaneously.
+**Action:** Replace string concatenation loops with a pre-allocated array of characters. Mutate the array directly on each tick and join it into a single string immediately before setting the DOM property. This eliminates intermediate allocations entirely.

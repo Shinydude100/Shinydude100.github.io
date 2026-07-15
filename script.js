@@ -153,20 +153,24 @@
 
                         const txtLength = finalTxt.length;
                         const charsLength = chars.length;
-                        // ⚡ Bolt Optimization: Replace `split/map/join` array chains with pre-calculated lengths
-                        // and a string concatenation loop to prevent massive object allocations and GC thrashing every 25ms.
+                        // ⚡ Bolt Optimization: Replace string concatenation loop with a pre-allocated character array.
+                        // Mutating the array and joining it once per frame eliminates O(N) intermediate string allocations
+                        // and drastically reduces garbage collection thrashing on mobile processors every 25ms tick.
+                        const textArray = new Array(txtLength);
+                        for (let i = 0; i < txtLength; i++) textArray[i] = finalTxt[i] === " " ? " " : "";
+
                         const routine = setInterval(() => {
-                            let newText = '';
-                            for (let i = 0; i < txtLength; i++) {
-                                if (i < count) {
-                                    newText += finalTxt[i];
-                                } else if (finalTxt[i] === " ") {
-                                    newText += " ";
-                                } else {
-                                    newText += chars[Math.floor(getSecureRandom() * charsLength)];
+                            for (let i = count; i < txtLength; i++) {
+                                if (finalTxt[i] !== " ") {
+                                    textArray[i] = chars[Math.floor(getSecureRandom() * charsLength)];
                                 }
                             }
-                            target.textContent = newText;
+                            // The characters before `count` are permanently set to their final values
+                            if (count > 0 && count <= txtLength && finalTxt[count - 1] !== " ") {
+                                textArray[count - 1] = finalTxt[count - 1];
+                            }
+
+                            target.textContent = textArray.join('');
 
                             if (count >= txtLength) {
                                 clearInterval(routine);
