@@ -374,6 +374,7 @@
         // =================================================================
         // Runtime Core Execution Mount
         // =================================================================
+        if (typeof document !== 'undefined') {
         document.addEventListener('DOMContentLoaded', () => {
             const fontLink = document.getElementById('google-fonts-link');
             if (fontLink) fontLink.media = 'all';
@@ -490,3 +491,13 @@
                 }
             }, { passive: true });
         });
+}
+
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initTextDecryption,
+        initParallaxArchitecture,
+        initCompositeCursor
+    };
+}
