@@ -40,3 +40,8 @@
 **Vulnerability:** The application was missing `frame-src 'none'` and `worker-src 'none'` in its Content-Security-Policy, exposing it to potential clickjacking or malicious service worker spawning.
 **Learning:** Defense in depth: Explicitly blocking iframes and web workers reduces the attack surface, especially against DOM-based XSS vulnerabilities.
 **Prevention:** Always include `frame-src 'none'` and `worker-src 'none'` in the CSP for static applications unless explicitly required.
+
+## 2026-07-15 - [Security Enhancement] Removed insecure Math.random() fallback for RNG
+**Vulnerability:** The application used `Math.random()` as a fallback when `window.crypto.getRandomValues()` was unavailable. This is a weak PRNG and unpredictable, potentially compromising secure states or failing security linting.
+**Learning:** Defense in depth: Never fall back to insecure cryptography. If a secure provider is unavailable, it is better to fail securely (throw an error) than to silently generate predictable data.
+**Prevention:** Remove `Math.random()` fallbacks. Throw an explicit Error to ensure the system fails fast if the required secure cryptography environment is missing.

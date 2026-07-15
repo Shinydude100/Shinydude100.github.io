@@ -77,7 +77,7 @@ class MemoryBackplane {
                         window.crypto.getRandomValues(this.secureRandomBuffer);
                     } else {
                         // Fallback for tests if crypto is missing
-                        for(let i=0; i<256; i++) this.secureRandomBuffer[i] = Math.floor(Math.random() * 4294967296);
+                        throw new Error("Secure random number generation is not supported in this environment.");
                     }
                     this.secureRandomIndex = 0;
                 }
