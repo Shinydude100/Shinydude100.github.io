@@ -444,36 +444,33 @@
                 const link = item.querySelector('a');
                 if (link) {
                     const href = link.getAttribute('href');
-                    if (href) navLinksMap.set(href, item);
+                    if (href) navLinksMap.set(href, { item, link });
                 }
             });
 
-            let currentActiveNavItem = null;
+            let currentActiveNavObj = null;
             const scrollSpyObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const targetHref = `#${entry.target.getAttribute('id')}`;
-                        const targetItem = navLinksMap.get(targetHref);
+                        const targetObj = navLinksMap.get(targetHref);
 
-                        if (currentActiveNavItem !== targetItem) {
-                            if (currentActiveNavItem) {
-                                currentActiveNavItem.classList.remove('active');
-                                const link = currentActiveNavItem.querySelector('a');
-                                if (link) link.removeAttribute('aria-current');
+                        if (currentActiveNavObj !== targetObj) {
+                            if (currentActiveNavObj) {
+                                currentActiveNavObj.item.classList.remove('active');
+                                if (currentActiveNavObj.link) currentActiveNavObj.link.removeAttribute('aria-current');
                             } else {
-                                navLinks.forEach(item => {
-                                    item.classList.remove('active');
-                                    const link = item.querySelector('a');
-                                    if (link) link.removeAttribute('aria-current');
+                                navLinksMap.forEach(obj => {
+                                    obj.item.classList.remove('active');
+                                    if (obj.link) obj.link.removeAttribute('aria-current');
                                 });
                             }
 
-                            if (targetItem) {
-                                targetItem.classList.add('active');
-                                const link = targetItem.querySelector('a');
-                                if (link) link.setAttribute('aria-current', 'page');
+                            if (targetObj) {
+                                targetObj.item.classList.add('active');
+                                if (targetObj.link) targetObj.link.setAttribute('aria-current', 'page');
                             }
-                            currentActiveNavItem = targetItem;
+                            currentActiveNavObj = targetObj;
                         }
                     }
                 });
