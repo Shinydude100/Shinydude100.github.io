@@ -1,11 +1,7 @@
-🎨 Palette: Improve footer location text color contrast
+What: Added the `defer` attribute to the `<script>` tags for `memory-backplane.js` and `script.js` in `index.html`.
 
-**What:** Increased the opacity of the `.footer-loc` text color in `index.html` from `rgba(255, 255, 255, 0.15)` to `rgba(255, 255, 255, 0.5)`.
+Why: Loading JavaScript files synchronously, even at the end of the `<body>`, can delay the parsing and rendering of HTML if the scripts are large. This resolves a severe "Render-blocking requests" penalty on mobile devices that was delaying the Largest Contentful Paint (LCP).
 
-**Why:** The previous color contrast ratio against the footer background (`rgba(9, 11, 16, 0.95)`) was roughly 1.48:1, failing WCAG 4.5:1 accessibility standards. The new opacity provides a contrast ratio of roughly 5.3:1, making the text accessible.
+Impact: Improved Largest Contentful Paint on mobile by removing render-blocking script requests, ensuring the browser can render the page without waiting for scripts to download and execute.
 
-**Before/After:**
-*   **Before:** `.footer-loc` color was `rgba(255,255,255,0.15)`.
-*   **After:** `.footer-loc` color is `rgba(255, 255, 255, 0.5)`.
-
-**Accessibility:** Improves text legibility for users with visual impairments, ensuring compliance with WCAG contrast requirements.
+Measurement: Verified with local Playwright E2E testing to ensure adding `defer` introduced no regressions to application logic or DOM load sequencing.
