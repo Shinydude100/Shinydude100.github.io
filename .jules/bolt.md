@@ -41,3 +41,7 @@
 ## 2026-07-16 - Replacing String Concatenation in High-Frequency Animation Loops
 **Learning:** Even simple string concatenation (`+=`) inside a high-frequency animation loop (e.g., a 25ms `setInterval`) can create O(N) intermediate string allocations, causing measurable GC overhead on mobile processors when updating several DOM elements simultaneously.
 **Action:** Replace string concatenation loops with a pre-allocated array of characters. Mutate the array directly on each tick and join it into a single string immediately before setting the DOM property. This eliminates intermediate allocations entirely.
+
+## 2026-07-17 - Render-Blocking Scripts Delaying LCP
+**Learning:** Loading JavaScript files synchronously at the end of the `<body>` can still delay parsing and rendering if the scripts are large, negatively impacting Largest Contentful Paint (LCP) on mobile devices.
+**Action:** Always include the `defer` attribute on `<script>` tags, even when placed at the bottom of the document. This ensures that the HTML parser is never blocked while the scripts are being downloaded, allowing the browser to render the page as quickly as possible.
