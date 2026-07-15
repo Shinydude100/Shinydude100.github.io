@@ -23,6 +23,19 @@ describe('MemoryBackplane', () => {
     let mockCanvas, mockCtx;
 
     beforeEach(() => {
+        // Mock window.crypto for tests since jsdom doesn't have it natively sometimes
+        if (!window.crypto) {
+            Object.defineProperty(window, 'crypto', {
+                value: {
+                    getRandomValues: jest.fn(arr => {
+                        for(let i=0; i<arr.length; i++) { arr[i] = Math.floor(Math.random() * 4294967296); }
+                        return arr;
+                    })
+                },
+                configurable: true
+            });
+        }
+
         // Set up the mock DOM
         document.body.innerHTML = '<canvas id="matrix-backplane"></canvas>';
         mockCanvas = document.getElementById('matrix-backplane');
@@ -86,6 +99,43 @@ describe('MemoryBackplane', () => {
             expect(backplane.hexTokens).toContain(token);
         });
     });
+
+    describe('getSecureRandom', () => {
+        afterEach(() => {
+            jest.restoreAllMocks();
+        });
+
+        it('should utilize the Web Crypto API for generating random values', () => {
+            const backplane = new MemoryBackplane();
+            const spy = jest.spyOn(window.crypto, 'getRandomValues');
+
+            backplane.secureRandomIndex = 256;
+            const result = backplane.getSecureRandom();
+
+            expect(spy).toHaveBeenCalled();
+            expect(typeof result).toBe('number');
+            expect(result).toBeGreaterThanOrEqual(0);
+            expect(result).toBeLessThan(1);
+        });
+
+
+        it('should throw an error if window.crypto is missing', () => {
+            // Backup the original crypto object
+            const originalCrypto = window.crypto;
+
+            // Delete window.crypto to simulate missing Web Crypto API
+            // Actually, we must use Object.defineProperty since jsdom might define it as configurable.
+            Object.defineProperty(window, 'crypto', { value: undefined, configurable: true });
+
+            // It will throw during instantiation because constructor calls init() which calls getSecureRandom()
+            expect(() => new MemoryBackplane()).toThrow("Secure random number generation is not supported in this environment.");
+
+            // Restore window.crypto
+            Object.defineProperty(window, 'crypto', { value: originalCrypto, configurable: true });
+        });
+
+    });
+
 
     describe('renderStaticFrame', () => {
         afterEach(() => {
