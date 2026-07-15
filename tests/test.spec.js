@@ -25,3 +25,17 @@ test('runPipelineTelemetry handles timeout correctly', async ({ page }) => {
   const counter = page.locator('#download-counter');
   await expect(counter).toHaveText('LOCAL_SECURE_MIRROR', { timeout: 7000 });
 });
+
+test('runPipelineTelemetry handles invalid JSON payload structure correctly', async ({ page }) => {
+  // Mock the response with invalid JSON structure (not an array)
+  await page.route('https://api.github.com/repos/Shinydude100/Shinydude100.github.io/releases', route => {
+    route.fulfill({ status: 200, contentType: 'application/json', body: '{"invalid": "payload"}' });
+  });
+
+  // Load the page
+  await page.goto(`/index.html`);
+
+  // Verify the fallback text is set due to the payload structure error
+  const counter = page.locator('#download-counter');
+  await expect(counter).toHaveText('LOCAL_SECURE_MIRROR', { timeout: 5000 });
+});
