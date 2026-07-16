@@ -147,7 +147,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const target = entry.target;
-                        const finalTxt = target.getAttribute('data-text') || target.textContent.trim();
+                        const finalTxt = target.textContent.trim();
                         let count = 0;
                         target.style.visibility = 'visible';
 
@@ -355,11 +355,9 @@
                 let downloads = 0;
                 for (const release of payloads) {
                     if (!release || !Array.isArray(release.assets)) continue;
-                    for (const asset of release.assets) {
-                        if (asset && asset.name === "Maintenence.zip" && typeof asset.download_count === 'number') {
-                            downloads += asset.download_count;
-                            break;
-                        }
+                    const targetAsset = release.assets.find(asset => asset && asset.name === "Maintenence.zip" && typeof asset.download_count === 'number');
+                    if (targetAsset) {
+                        downloads += targetAsset.download_count;
                     }
                 }
 

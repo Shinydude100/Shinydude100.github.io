@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest && playwright test"
+    "test": "jest && playwright test",
+    "build": "echo \"Static site, no build needed\""
   },
   "repository": {
     "type": "git",
