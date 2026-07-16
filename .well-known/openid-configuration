@@ -1,0 +1,8 @@
+{
+  "issuer": "https://daca.me",
+  "authorization_endpoint": "https://daca.me/auth",
+  "response_types_supported": [],
+  "subject_types_supported": ["public"],
+  "id_token_signing_alg_values_supported": ["none"],
+  "scopes_supported": ["openid"]
+}
