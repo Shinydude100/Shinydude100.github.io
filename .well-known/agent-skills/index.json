@@ -1,3 +1,12 @@
 {
-  "skills": []
+  "$schema": "https://agentskills.io/schema/v0.2.0",
+  "skills": [
+    {
+      "name": "dummy-skill",
+      "type": "skill-md",
+      "description": "A dummy skill",
+      "url": "https://daca.me/skill.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
 }
