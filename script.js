@@ -384,6 +384,36 @@
             }
         }
 
+
+        // =================================================================
+        // WebMCP Integration for Agentic Browsing
+        // =================================================================
+        function initWebMCP() {
+            if (typeof navigator !== 'undefined' && navigator.modelContext) {
+                const registerWebMCPTool = () => {
+                    try {
+                        navigator.modelContext.registerTool({
+                            name: 'get_portfolio_info',
+                            description: 'Returns basic information about the site',
+                            execute: () => {
+                                return {
+                                    title: typeof document !== 'undefined' ? document.title : '',
+                                    url: typeof window !== 'undefined' ? window.location.href : ''
+                                };
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Failed to register WebMCP tool:', e);
+                    }
+                };
+                if (typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined') {
+                    window.requestIdleCallback(registerWebMCPTool);
+                } else {
+                    setTimeout(registerWebMCPTool, 0);
+                }
+            }
+        }
+
         // =================================================================
         // Runtime Core Execution Mount
         // =================================================================
@@ -400,6 +430,7 @@
             initRescueVisualizer();
             runPipelineTelemetry();
             initLinkSecurity();
+            initWebMCP();
 
             const yEl = document.getElementById('year');
             if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
