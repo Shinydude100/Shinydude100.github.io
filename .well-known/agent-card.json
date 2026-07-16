@@ -1,4 +1,19 @@
 {
   "agent": "daca.me Agent",
-  "description": "Public portfolio AI agent"
+  "description": "Public portfolio AI agent",
+  "name": "daca.me Agent",
+  "version": "1.0.0",
+  "supportedInterfaces": [
+    {
+      "type": "a2a",
+      "url": "https://daca.me"
+    }
+  ],
+  "skills": [
+    {
+      "id": "dev",
+      "name": "Web Dev",
+      "description": "Agentic architecture"
+    }
+  ]
 }
