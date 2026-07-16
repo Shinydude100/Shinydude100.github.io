@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "echo \"No build required for static site\"",
+    "start": "npx serve -s .",
     "test": "jest && playwright test"
   },
   "repository": {
