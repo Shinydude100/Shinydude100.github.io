@@ -49,3 +49,7 @@
 ## 2025-03-05 - IntersectionObserver DOM Querying Optimization
 **Learning:** Calling `querySelector('a')` repeatedly inside high-frequency execution paths like an `IntersectionObserver` callback introduces unnecessary DOM parsing and parsing overhead, even if elements are relatively shallow.
 **Action:** Pre-cache inner HTML elements alongside their parent container in initialization maps (e.g. `{ item, link }`) to transform O(N) DOM queries during scroll events into O(1) object property lookups.
+
+## 2026-07-20 - Refactoring Array Searches
+**Learning:** Using built-in array methods like `.find()` makes code cleaner and more readable than manual `for...of` loops, though they carry a minor performance cost in micro-benchmarks due to callback overhead.
+**Action:** Prefer `.find()` for searching arrays when performance difference is negligible compared to the maintainability benefits.
