@@ -147,7 +147,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const target = entry.target;
-                        const finalTxt = target.textContent.trim();
+                        const finalTxt = target.getAttribute('data-text') || target.textContent.trim();
                         let count = 0;
                         target.style.visibility = 'visible';
 
