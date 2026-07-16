@@ -10,9 +10,10 @@
     <meta name="description" content="High-availability network environments, low-level system engineering, and enterprise endpoint security architecture.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 font-family=%22monospace%22 fill=%22%23fde047%22>💻</text></svg>">
+    <link rel="preload" href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet" media="print" id="google-fonts-link">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" media="print" id="google-fonts-link">
 
     <style>
         :root {
@@ -110,16 +111,18 @@
         .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
         .hero-core { width: 100%; text-align: left; }
 
-        .sys-reveal { opacity: 0; animation: sysRevealFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .sys-reveal:nth-child(1) { animation-delay: 0.1s; }
-        .sys-reveal:nth-child(2) { animation-delay: 0.25s; }
-        .sys-reveal:nth-child(3) { animation-delay: 0.4s; }
-        .sys-reveal:nth-child(4) { animation-delay: 0.55s; }
+        @media (min-width: 769px) {
+            .sys-reveal { opacity: 0; animation: sysRevealFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+            .sys-reveal:nth-child(1) { animation-delay: 0.1s; }
+            .sys-reveal:nth-child(2) { animation-delay: 0.25s; }
+            .sys-reveal:nth-child(3) { animation-delay: 0.4s; }
+            .sys-reveal:nth-child(4) { animation-delay: 0.55s; }
+        }
 
         .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(17, 24, 39, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
         .sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
 
-        .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
+        .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
         .hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
 
         .hero-desc { max-width: 800px; margin-bottom: 3.5rem; min-height: 80px; }
