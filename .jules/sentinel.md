@@ -45,3 +45,7 @@
 **Vulnerability:** The application used `Math.random()` as a fallback when `window.crypto.getRandomValues()` was unavailable. This is a weak PRNG and unpredictable, potentially compromising secure states or failing security linting.
 **Learning:** Defense in depth: Never fall back to insecure cryptography. If a secure provider is unavailable, it is better to fail securely (throw an error) than to silently generate predictable data.
 **Prevention:** Remove `Math.random()` fallbacks. Throw an explicit Error to ensure the system fails fast if the required secure cryptography environment is missing.
+## 2026-07-16 - [Security Enhancement] Dynamically enforced rel="noopener noreferrer"
+**Vulnerability:** While static external links (target="_blank") were configured securely, any future dynamically generated external links could inadvertently leak referrers or expose the `window.opener` object to third parties (a potential Reverse Tabnabbing vulnerability), violating defense-in-depth principles.
+**Learning:** Defense in depth: Relying on developers to manually add security attributes to every future dynamically inserted DOM node is error-prone. A programmatic fallback is necessary.
+**Prevention:** Implement a global event delegation listener on the `document` that intercepts clicks on `a[target="_blank"]` and explicitly sets `rel="noopener noreferrer"` and `referrerpolicy="no-referrer"` right before navigation occurs, ensuring complete coverage without expensive DOM MutationObservers.

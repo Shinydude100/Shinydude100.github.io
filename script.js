@@ -333,6 +333,21 @@
         }
 
         // =================================================================
+        // Dynamic Link Security Enforcement
+        // =================================================================
+        function initLinkSecurity() {
+            // 🛡️ Security Enhancement: Enforce no-referrer and noopener on all external links dynamically as a fallback
+            // Using event delegation to catch any dynamically generated external links when clicked
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[target="_blank"]');
+                if (link) {
+                    link.setAttribute('rel', 'noopener noreferrer');
+                    link.setAttribute('referrerpolicy', 'no-referrer');
+                }
+            });
+        }
+
+        // =================================================================
         // Secure GitHub API Payload Telemetry
         // =================================================================
         async function runPipelineTelemetry() {
@@ -384,6 +399,7 @@
             initParallaxArchitecture();
             initRescueVisualizer();
             runPipelineTelemetry();
+            initLinkSecurity();
 
             const yEl = document.getElementById('year');
             if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
