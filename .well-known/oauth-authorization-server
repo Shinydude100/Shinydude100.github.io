@@ -1,26 +1,15 @@
 {
   "issuer": "https://daca.me/",
   "token_endpoint": "https://daca.me/oauth2/token",
-  "revocation_endpoint": "https://daca.me/oauth2/revoke",
   "grant_types_supported": [
-    "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    "urn:workos:agent-auth:grant-type:claim"
+    "urn:ietf:params:oauth:grant-type:jwt-bearer"
   ],
   "agent_auth": {
     "skill": "https://daca.me/auth.md",
-    "identity_endpoint": "https://daca.me/agent-auth",
-    "claim_endpoint": "https://daca.me/agent-auth/claim",
-    "events_endpoint": "https://daca.me/agent-auth/revoke",
-    "identity_types_supported": [
-      "anonymous",
-      "identity_assertion",
-      "service_auth"
-    ],
-    "identity_assertion": {
-      "assertion_types_supported": [
-        "urn:ietf:params:oauth:token-type:id-jag"
-      ]
-    },
-    "events_supported": []
+    "register_uri": "https://daca.me/agent-auth",
+    "supported_identity_types": ["jwks", "none"],
+    "supported_credential_types": ["bearer", "none"],
+    "claim_uri": "https://daca.me/agent-auth/claim",
+    "revocation_uri": "https://daca.me/agent-auth/revoke"
   }
 }
