@@ -1,14 +1,16 @@
 # Auth.md
 
 ## Agent Registration
-
 This domain operates as a zero-trust, public-facing portfolio. Traditional registration is not enforced. 
 
-To satisfy automated protocol linters, the standard standalone registration flow is documented below. 
+## Agent Verified
+Because this is a public edge node, you do not need to send an `ID-JAG`. 
+
+## User Claimed
+User claiming is bypassed for public access. 
 
 ## Standalone Registration Flow
-
-Because this is a public edge node, agents can register anonymously using the `none` identity and credential types advertised in our authorization server metadata.
+To satisfy automated protocol linters, agents can register anonymously using the `none` identity and credential types advertised in our metadata.
 
 ### Request
 ```http
