@@ -17,6 +17,9 @@ This project is built using a raw HTML, vanilla JavaScript, and Tailwind CSS (vi
   - `palette.md`: UX, accessibility, and design polish guidelines.
 - **`tests/`**: Contains Jest (unit) and Playwright (E2E) tests to ensure continuous stability.
 - **`package.json`**: Manages development dependencies specifically for the testing environment (Jest, Playwright) and HTML validation tools.
+- **`fonts/`**: Zero-trust local font hosting to eliminate third-party tracking vectors.
+- **`SECURITY.md`**: Edge-routing vulnerability scope.
+- **`LICENSE`**: Custom proprietary licensing to protect our architectural IP.
 
 ## Our Collaborative Workflow
 This repository is maintained through a unique, continuous collaboration between human direction and specialized AI agents. We utilize strict personas to ensure every PR maintains the high standards of the project:
