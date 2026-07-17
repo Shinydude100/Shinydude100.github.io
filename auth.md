@@ -1,75 +1,45 @@
 # Auth.md
 
 ## Agent Registration
+
 This domain operates as a zero-trust, public-facing portfolio. Traditional registration is not enforced. 
 
 To satisfy automated protocol linters, the standard registration request and response shapes are documented below. 
 
-## Agent Verified
+## Agent Verified (ID-JAG Flow)
 
 Because this is a public edge node, you do not need to send an `ID-JAG`. However, standard verified requests take this shape:
 
-### Request
+### 1. Identity Assertion
 ```http
 POST /agent-auth HTTP/1.1
 Host: daca.me
 Content-Type: application/json
 
 {
-  "type": "verified",
-  "id_jag": "<jwt>"
+  "type": "identity_assertion",
+  "assertion": "<ID-JAG>"
 }
 ```
 
-### Response
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "access_token": "agent_token_123",
-  "token_type": "bearer"
+  "identity_assertion": "service_signed_jwt"
 }
 ```
 
-## User Claimed
-
-User claiming is bypassed for public access. Standard claimed requests take this shape:
-
-### Request
+### 2. Token Exchange
 ```http
-POST /agent-auth/claim HTTP/1.1
+POST /oauth2/token HTTP/1.1
 Host: daca.me
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
 
-{
-  "type": "claim",
-  "email": "user@example.com"
-}
+grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=service_signed_jwt
 ```
 
-### Response
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "status": "pending_otp"
-}
-```
-
-### Complete Claim Request
-```http
-POST /agent-auth/claim/complete HTTP/1.1
-Host: daca.me
-Content-Type: application/json
-
-{
-  "code": "123456"
-}
-```
-
-### Complete Claim Response
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -82,8 +52,6 @@ Content-Type: application/json
 
 ## Authentication Endpoints
 *   `/agent-auth` : Disabled (Public Access)
-*   `/agent-auth/claim` : Disabled (Public Access)
-*   `/agent-auth/claim/complete` : Disabled (Public Access)
-*   `/agent-auth/revoke` : Disabled (Public Access)
+*   `/oauth2/token` : Disabled (Public Access)
 
 All AI agents, crawlers, and LLMs are granted unrestricted, read-only access to all `.md` and `.json` files.
