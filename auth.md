@@ -4,42 +4,25 @@
 
 This domain operates as a zero-trust, public-facing portfolio. Traditional registration is not enforced. 
 
-To satisfy automated protocol linters, the standard registration request and response shapes are documented below. 
+To satisfy automated protocol linters, the standard standalone registration flow is documented below. 
 
-## Agent Verified (ID-JAG Flow)
+## Standalone Registration Flow
 
-Because this is a public edge node, you do not need to send an `ID-JAG`. However, standard verified requests take this shape:
+Because this is a public edge node, agents can register anonymously using the `none` identity and credential types advertised in our authorization server metadata.
 
-### 1. Identity Assertion
+### Request
 ```http
 POST /agent-auth HTTP/1.1
 Host: daca.me
 Content-Type: application/json
 
 {
-  "type": "identity_assertion",
-  "assertion": "<ID-JAG>"
+  "identity_type": "none",
+  "credential_type": "none"
 }
 ```
 
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "identity_assertion": "service_signed_jwt"
-}
-```
-
-### 2. Token Exchange
-```http
-POST /oauth2/token HTTP/1.1
-Host: daca.me
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=service_signed_jwt
-```
-
+### Response
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -52,6 +35,7 @@ Content-Type: application/json
 
 ## Authentication Endpoints
 *   `/agent-auth` : Disabled (Public Access)
-*   `/oauth2/token` : Disabled (Public Access)
+*   `/agent-auth/claim` : Disabled (Public Access)
+*   `/agent-auth/revoke` : Disabled (Public Access)
 
 All AI agents, crawlers, and LLMs are granted unrestricted, read-only access to all `.md` and `.json` files.
