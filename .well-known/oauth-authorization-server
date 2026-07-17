@@ -1,5 +1,9 @@
 {
   "issuer": "https://daca.me/",
+  "token_endpoint": "https://daca.me/oauth2/token",
+  "grant_types_supported": [
+    "urn:ietf:params:oauth:grant-type:jwt-bearer"
+  ],
   "agent_auth": {
     "skill": "https://daca.me/auth.md",
     "register_uri": "https://daca.me/agent-auth",
