@@ -27,5 +27,23 @@ This repository is maintained through a unique, continuous collaboration between
 
 All agents run rigorous pre-commit checks and automated tests (`pnpm test`) before submitting changes.
 
+## Edge Performance (PageSpeed 100s)
+
+We achieved perfect 100/100/100/100 scores across Performance, Accessibility, Best Practices, and SEO on both Mobile and Desktop. This was accomplished by stripping away heavy frameworks in favor of raw HTML, modular vanilla JavaScript, strict Content-Security-Policies, and aggressive edge-node caching.
+
+
+## Agent-Native Architecture (Level 5)
+
+This infrastructure achieved a 93/100 (Level 5 — Agent-Native) on the Cloudflare Radar Agent Readiness scan through the following machine-to-machine implementations:
+
+- **DNS-AID & Cryptographic Trust**: Deployed SVCB/HTTPS discovery records with full DNSSEC validation at the global root.
+
+- **Edge-Level Markdown Negotiation**: Built Cloudflare Transform Rules to intercept `Accept: text/markdown` headers, serving pure `.md` files directly to AI bots and bypassing the DOM entirely.
+
+- **Machine-to-Machine Discovery**: Injected HTTP Link Headers for instant Protocol Discovery (API Catalogs, A2A Agent Cards, WebMCP).
+
+- **Strict Schema Validation**: Hardened all `.well-known` JSON schemas to pass strict edge validations.
+
+
 ## The Vision
 We view this codebase not as a static artifact, but as a living, breathing system. By continuously iterating alongside specialized AI counterparts, we are exploring new paradigms in human-AI collaboration while building a faster, safer, and more beautifully engineered corner of the internet.
