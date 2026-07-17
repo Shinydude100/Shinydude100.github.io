@@ -36,16 +36,12 @@ We achieved perfect 100/100/100/100 scores across Performance, Accessibility, Be
 
 
 ## Agent-Native Architecture (Level 5)
-
-This infrastructure achieved a 93/100 (Level 5 — Agent-Native) on the Cloudflare Radar Agent Readiness scan through the following machine-to-machine implementations:
+This infrastructure achieved a 100/100 (Level 5 — Agent-Native) on the Cloudflare Radar Agent Readiness scan through the following machine-to-machine implementations:
 
 - **DNS-AID & Cryptographic Trust**: Deployed SVCB/HTTPS discovery records with full DNSSEC validation at the global root.
-
-- **Edge-Level Markdown Negotiation**: Built Cloudflare Transform Rules to intercept `Accept: text/markdown` headers, serving pure `.md` files directly to AI bots and bypassing the DOM entirely.
-
-- **Machine-to-Machine Discovery**: Injected HTTP Link Headers for instant Protocol Discovery (API Catalogs, A2A Agent Cards, WebMCP).
-
-- **Strict Schema Validation**: Hardened all `.well-known` JSON schemas to pass strict edge validations.
+- **Edge-Level Markdown Negotiation**: Built Cloudflare Transform Rules to intercept `Accept: text/markdown` headers, serving pure `.md` files directly to AI bots.
+- **WorkOS Protocol Compliance**: Implemented a complete `Auth.md` registration flow, mapping JSON-based identity metadata (using legacy schema for compatibility) to clear, machine-readable HTTP request/response shapes.
+- **Strict Schema Validation**: Hardened all `/.well-known/` JSON schemas, including `api-catalog`, `oauth-authorization-server`, and `mcp/server-card.json` to pass enterprise-grade edge validation.
 
 
 ## The Vision
