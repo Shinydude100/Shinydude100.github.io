@@ -1,6 +1,7 @@
 {
   "issuer": "https://daca.me/",
   "agent_auth": {
+    "skill": "https://daca.me/auth.md",
     "register_uri": "https://daca.me/agent-auth",
     "supported_identity_types": ["jwks", "none"],
     "supported_credential_types": ["bearer", "none"],
