@@ -3,5 +3,6 @@
   "authorization_servers": [
     "https://daca.me/"
   ],
-  "scopes_supported": ["read"]
+  "scopes_supported": ["read"],
+  "bearer_methods_supported": ["header"]
 }
