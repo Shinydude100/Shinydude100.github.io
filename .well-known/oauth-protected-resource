@@ -1,4 +1,6 @@
 {
   "resource": "https://daca.me/",
-  "authorization_servers": []
+  "authorization_servers": [
+    "https://daca.me/"
+  ]
 }
