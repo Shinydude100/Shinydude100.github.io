@@ -1,0 +1,10 @@
+name = "daca-mcp-server"
+main = "worker/index.ts"
+compatibility_date = "2026-07-01"
+
+routes = [
+  { pattern = "daca.me/messages*", script = "daca-mcp-server" },
+  { pattern = "daca.me/.well-known/mcp.json", script = "daca-mcp-server" },
+  { pattern = "daca.me/llms.txt", script = "daca-mcp-server" },
+  { pattern = "daca.me/schema.jsonld", script = "daca-mcp-server" }
+]
