@@ -1,5 +1,5 @@
 {
-  "name": "daca-mcp-server",
+  "name": "daca.me",
   "description": "Live Model Context Protocol (MCP) Server for daca.me",
   "version": "1.0.0",
   "endpoints": {
