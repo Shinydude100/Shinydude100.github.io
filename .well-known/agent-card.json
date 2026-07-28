@@ -7,6 +7,10 @@
     {
       "type": "a2a",
       "url": "https://daca.me"
+    },
+    {
+      "type": "mcp",
+      "url": "https://daca.me/mcp"
     }
   ],
   "skills": [
