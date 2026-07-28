@@ -1,13 +1,20 @@
 {
-  "id": "daca-mcp-server",
-  "name": "daca.me MCP Server",
+  "id": "daca.me",
+  "name": "daca.me",
   "version": "1.0.0",
+  "description": "Live MCP server for daca.me — agentic status, services, contact info, and content retrieval",
   "serverInfo": {
-    "name": "daca.me MCP",
+    "name": "daca.me",
     "version": "1.0.0"
   },
   "transport": {
     "type": "http",
     "url": "https://daca.me/mcp"
-  }
+  },
+  "capabilities": {
+    "resources": true,
+    "tools": true,
+    "prompts": true
+  },
+  "authentication": "none"
 }
