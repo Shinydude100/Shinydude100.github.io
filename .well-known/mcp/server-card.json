@@ -1,9 +1,13 @@
 {
-  "id": "mcp-server",
-  "name": "daca.me MCP Server Placeholder",
+  "id": "daca-mcp-server",
+  "name": "daca.me MCP Server",
   "version": "1.0.0",
   "serverInfo": {
     "name": "daca.me MCP",
     "version": "1.0.0"
+  },
+  "transport": {
+    "type": "http",
+    "url": "https://daca.me/mcp"
   }
 }
