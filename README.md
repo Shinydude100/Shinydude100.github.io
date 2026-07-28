@@ -1,48 +1,99 @@
-# Shinydude100.github.io (daca.me)
+# daca.me — Agent-Native Portfolio & MCP Server
 
-## Project Overview
-This repository contains the source code for the personal and professional portfolio hosted at [daca.me](https://daca.me). It is designed as a highly optimized, terminal-inspired static website that showcases expertise in Systems Infrastructure and Security Architecture.
+## Overview
+This repository contains the source code for the personal and professional portfolio hosted at [daca.me](https://daca.me), a terminal-inspired static website showcasing expertise in AI Systems Architecture, Agentic Web Transformations, and Security Engineering.
 
-The vision behind this project is to create a digital presence that isn't just a document, but a reflection of core engineering principles: high performance, robust security, and precise, functional design. It serves as a continuous testing ground for web optimization and aesthetic exploration.
+What started as a performance-optimized portfolio evolved into a living case study for AI agent readiness — a real, functional MCP server running on Cloudflare's edge network, with machine-readable discovery surfaces that allow autonomous AI agents to discover, connect to, and interact with the site programmatically.
 
-## Navigation & Architecture
-This project is built using a raw HTML, vanilla JavaScript, and Tailwind CSS (via CDN) stack. It explicitly avoids heavy static site generators to maintain total control over the DOM and performance profile.
+## Architecture
 
-- **`index.html`**: The core entry point. Contains the complete markup and structure of the single-page application.
-- **`memory-backplane.js`**: Contains the client-side JavaScript logic, separated from HTML for better security (CSP compliance) and testability.
-- **`design.md`**: The design system manifesto. Outlines the specific colors, typography, layout grid, and "pseudo-terminal" aesthetic rules applied throughout the site.
-- **`.jules/` & `.Jules/`**: Hidden directories containing operational memory for our AI agents.
-  - `bolt.md`: Performance learnings and critical optimizations.
-  - `sentinel.md`: Security directives and vulnerability prevention notes.
-  - `palette.md`: UX, accessibility, and design polish guidelines.
-- **`tests/`**: Contains Jest (unit) and Playwright (E2E) tests to ensure continuous stability.
-- **`package.json`**: Manages development dependencies specifically for the testing environment (Jest, Playwright) and HTML validation tools.
-- **`fonts/`**: Zero-trust local font hosting to eliminate third-party tracking vectors.
+This project uses a dual-layer architecture on a single domain:
+
+```
+daca.me
+├── GitHub Pages (static)          → Homepage, /llms.txt, /portfolio.md, /schema.jsonld, /.well-known/*
+└── Cloudflare Worker (dynamic)   → /mcp (live MCP server with 5 custom tools)
+```
+
+- **Static layer**: Raw HTML, vanilla JavaScript, zero-trust local font hosting. No heavy frameworks, no hydration, no layout shifts.
+- **Dynamic layer**: Cloudflare Worker (`remote-mcp-server`) serving a live MCP server at `/mcp` using Streamable HTTP transport, with 5 custom tools for agent consumption.
+- **Edge layer**: Cloudflare Transform Rules for Content-Type overrides, URL rewrites for Markdown negotiation, and response header injection for agent discovery.
+
+## Agent Discovery Surfaces
+
+The site implements 7 machine-readable discovery surfaces, all scoring 10/10 on independent AI readiness audits (Gemini Spark) and 9.5/10 (ChatGPT):
+
+| Surface | URL | Purpose |
+|---|---|---|
+| `robots.txt` | `/robots.txt` | AI crawler permissions + discovery directives |
+| `sitemap.xml` | `/sitemap.xml` | XML sitemap with all discovery endpoints |
+| `llms.txt` | `/llms.txt` | LLM-optimized content summary with discovery links |
+| MCP Server Card | `/.well-known/mcp/server-card.json` | MCP transport & capability declaration |
+| Agent Card | `/.well-known/agent-card.json` | A2A + MCP interface declaration with skills |
+| MCP Manifest | `/.well-known/mcp.json` | MCP endpoint & capabilities manifest |
+| JSON-LD Schema | `/schema.jsonld` | Schema.org `Person` entity for disambiguation |
+
+### MCP Server Tools
+
+The live MCP server at `https://daca.me/mcp` exposes 5 tools:
+
+| Tool | Description |
+|---|---|
+| `get_agentic_status` | Returns the agentic readiness status of daca.me |
+| `get_services` | Lists service offerings with pricing |
+| `get_contact` | Returns contact info, role, location, and GitHub link |
+| `get_llms_txt` | Fetches and returns the /llms.txt content |
+| `get_portfolio` | Fetches and returns the /portfolio.md content |
+
+## File Structure
+
+- **`index.html`**: Core entry point. Single-page application with inline JSON-LD, MCP discovery links, and terminal-inspired UI.
+- **`memory-backplane.js`**: Client-side JavaScript logic, separated from HTML for CSP compliance.
+- **`script.js`**: Additional UI interactions and WebMCP integration.
+- **`design.md`**: Design system manifesto — colors, typography, layout grid, pseudo-terminal aesthetic.
+- **`portfolio.md`**: Markdown version of the portfolio, served to agents via Cloudflare URL Rewrite Rules.
+- **`llms.txt`**: LLM-optimized content summary with capabilities, discovery links, and resources.
+- **`schema.jsonld`**: Schema.org `Person` structured data for entity disambiguation.
+- **`robots.txt`**: AI crawler permissions for GPTBot, Google-Extended, PerplexityBot, ClaudeBot, Bytespider + custom discovery directives.
+- **`sitemap.xml`**: XML sitemap with `<lastmod>` timestamps for all discovery surfaces.
+- **`.well-known/`**: Agent discovery files (MCP server card, agent card, MCP manifest, OAuth metadata, API catalog).
+- **`.jules/` & `.Jules/`**: AI agent operational memory (bolt.md, sentinel.md, palette.md).
+- **`tests/`**: Jest (unit) and Playwright (E2E) tests.
+- **`fonts/`**: Zero-trust local font hosting (Inter, JetBrains Mono, Space Grotesk).
 - **`SECURITY.md`**: Edge-routing vulnerability scope.
-- **`LICENSE`**: Custom proprietary licensing to protect our architectural IP.
+- **`LICENSE`**: Custom proprietary licensing.
 
-## Our Collaborative Workflow
-This repository is maintained through a unique, continuous collaboration between human direction and specialized AI agents. We utilize strict personas to ensure every PR maintains the high standards of the project:
+## Collaborative Workflow
 
-- **🎨 Palette (UX & Accessibility)**: Focuses on small, targeted improvements to user experience, visual polish, and strict adherence to accessibility standards (like ARIA labels for pseudo-terminal aesthetics).
-- **🛡️ Sentinel (Security)**: Enforces defensive coding practices, strict Content-Security-Policies (CSP), and mitigates potential vulnerabilities (e.g., prohibiting `innerHTML` usage).
-- **⚡ Bolt (Performance)**: Obsessively monitors and improves rendering performance, CPU usage, and network load (e.g., managing garbage collection thrashing in animation loops).
+This repository is maintained through continuous collaboration between human direction and specialized AI agents:
 
-All agents run rigorous pre-commit checks and automated tests (`pnpm test`) before submitting changes.
+- **🎨 Palette (UX & Accessibility)**: Visual polish, ARIA labels, accessibility standards.
+- **🛡️ Sentinel (Security)**: CSP enforcement, vulnerability prevention, defensive coding.
+- **⚡ Bolt (Performance)**: Rendering performance, CPU optimization, network load.
 
-## Edge Performance (PageSpeed 100s)
+All agents run pre-commit checks and automated tests (`pnpm test`) before submitting changes.
 
-We achieved perfect 100/100/100/100 scores across Performance, Accessibility, Best Practices, and SEO on both Mobile and Desktop. This was accomplished by stripping away heavy frameworks in favor of raw HTML, modular vanilla JavaScript, strict Content-Security-Policies, and aggressive edge-node caching.
+## Cloudflare Configuration
 
+| Feature | Configuration |
+|---|---|
+| Worker Route | `daca.me/mcp*` → `remote-mcp-server` |
+| Transform Rule (Response Header) | `Content-Type: application/ld+json` on `/schema.jsonld` |
+| Transform Rule (Response Header) | `Link` headers for agent discovery on `/` |
+| URL Rewrite Rule | `Accept: text/markdown` on `/` → serve `/portfolio.md` |
+| Bot Fight Mode | Disabled (agent accessibility) |
+| DNSSEC | Enabled at root |
+| CNAME | `daca.me` → `shinydude100.github.io` (proxied) |
 
-## Agent-Native Architecture (Level 5)
-This infrastructure achieved a 100/100 (Level 5 — Agent-Native) on the Cloudflare Radar Agent Readiness scan through the following machine-to-machine implementations:
+## Audit Results
 
-- **DNS-AID & Cryptographic Trust**: Deployed SVCB/HTTPS discovery records with full DNSSEC validation at the global root.
-- **Edge-Level Markdown Negotiation**: Built Cloudflare Transform Rules to intercept `Accept: text/markdown` headers, serving pure `.md` files directly to AI bots.
-- **WorkOS Protocol Compliance**: Implemented a complete `Auth.md` registration flow, mapping JSON-based identity metadata (using legacy schema for compatibility) to clear, machine-readable HTTP request/response shapes.
-- **Strict Schema Validation**: Hardened all `/.well-known/` JSON schemas, including `api-catalog`, `oauth-authorization-server`, and `mcp/server-card.json` to pass enterprise-grade edge validation.
-
+| Auditor | Score | Date |
+|---|---|---|
+| Gemini Spark | 10.0/10 | 2026-07-28 |
+| ChatGPT | 9.5/10 | 2026-07-28 |
+| Initial (pre-MCP) | 8.1/10 | 2026-07-28 |
 
 ## The Vision
-We view this codebase not as a static artifact, but as a living, breathing system. By continuously iterating alongside specialized AI counterparts, we are exploring new paradigms in human-AI collaboration while building a faster, safer, and more beautifully engineered corner of the internet.
+
+This codebase is a living system — not a static artifact. It serves as a real-world proof that a single developer can build agent-native infrastructure that rivals enterprise implementations, using Cloudflare's edge network, GitHub Pages, and the Model Context Protocol. Every metric is earned, every score is verifiable, and every discovery surface is live and functional.
+````*
