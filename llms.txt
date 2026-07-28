@@ -4,18 +4,18 @@ Hugo Luna — AI Systems Architect & Software Engineer based in Irving/Dallas, T
 Specializing in agentic web transformations, Cloudflare Worker MCP deployments, and web performance optimization.
 
 ## Capabilities
-- MCP Server (live at /mcp)
+- MCP Server (live at https://daca.me/mcp)
 - AI Agent Discovery
 - Systems Architecture
 - Security Engineering
 - PageSpeed CRP Optimization
 
 ## Discovery
-- /.well-known/agent-card.json
-- /.well-known/mcp/server-card.json
-- /.well-known/mcp.json
-- /schema.jsonld
+- [Agent Card](https://daca.me/.well-known/agent-card.json)
+- [MCP Server Card](https://daca.me/.well-known/mcp/server-card.json)
+- [MCP Manifest](https://daca.me/.well-known/mcp.json)
+- [JSON-LD Schema](https://daca.me/schema.jsonld)
 
 ## Resources
-- /portfolio.md
-- /sitemap.xml
+- [Portfolio](https://daca.me/portfolio.md)
+- [Sitemap](https://daca.me/sitemap.xml)
