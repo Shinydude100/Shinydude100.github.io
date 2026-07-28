@@ -17,9 +17,24 @@
   ],
   "skills": [
     {
-      "id": "dev",
-      "name": "Web Dev",
-      "description": "Agentic architecture"
+      "id": "agentic-web",
+      "name": "Agentic Web Architecture",
+      "description": "Agent-native web transformations with MCP integration"
+    },
+    {
+      "id": "mcp",
+      "name": "MCP Development",
+      "description": "Cloudflare Worker MCP server deployments"
+    },
+    {
+      "id": "performance",
+      "name": "Web Performance Optimization",
+      "description": "PageSpeed CRP optimization and Cloudflare Radar tuning"
+    },
+    {
+      "id": "security",
+      "name": "Security Engineering",
+      "description": "Systems infrastructure and security architecture"
     }
   ]
 }
