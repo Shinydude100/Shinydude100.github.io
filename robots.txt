@@ -4,3 +4,6 @@ Allow: /
 Sitemap: https://daca.me/sitemap.xml
 
 Content-Signal: ai-train=no, search=yes, ai-input=no
+LLM-Discovery: /llms.txt
+Agent-Card: /.well-known/agent-card.json
+MCP-Server: /.well-known/mcp/server-card.json
