@@ -3,7 +3,7 @@
   "description": "Live Model Context Protocol (MCP) Server for daca.me",
   "version": "1.0.0",
   "endpoints": {
-    "mcp": "/mcp"
+    "mcp": "https://daca.me/mcp"
   },
   "capabilities": {
     "resources": true,
