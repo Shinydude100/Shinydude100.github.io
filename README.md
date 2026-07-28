@@ -96,4 +96,3 @@ All agents run pre-commit checks and automated tests (`pnpm test`) before submit
 ## The Vision
 
 This codebase is a living system — not a static artifact. It serves as a real-world proof that a single developer can build agent-native infrastructure that rivals enterprise implementations, using Cloudflare's edge network, GitHub Pages, and the Model Context Protocol. Every metric is earned, every score is verifiable, and every discovery surface is live and functional.
-````*
