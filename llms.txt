@@ -1,8 +1,21 @@
 # daca.me
 
-> Professional portfolio for Systems Infrastructure Lead & Security Architect.
+Hugo Luna — AI Systems Architect & Software Engineer based in Irving/Dallas, TX.
+Specializing in agentic web transformations, Cloudflare Worker MCP deployments, and web performance optimization.
 
-## Pages
+## Capabilities
+- MCP Server (live at /mcp)
+- AI Agent Discovery
+- Systems Architecture
+- Security Engineering
+- PageSpeed CRP Optimization
 
-- [Home](https://daca.me/)
-- [Design System](https://github.com/Shinydude100/Shinydude100.github.io/blob/main/design.md)
+## Discovery
+- /.well-known/agent-card.json
+- /.well-known/mcp/server-card.json
+- /.well-known/mcp.json
+- /schema.jsonld
+
+## Resources
+- /portfolio.md
+- /sitemap.xml
