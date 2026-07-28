@@ -1,8 +1,10 @@
 {
-  "agent": "daca.me Agent",
-  "description": "Public portfolio AI agent",
-  "name": "daca.me Agent",
+  "agent": "daca.me",
+  "description": "AI Systems Architect specializing in agentic web transformations and Cloudflare Worker MCP deployments",
+  "name": "daca.me",
   "version": "1.0.0",
+  "url": "https://daca.me",
+  "homepage": "https://daca.me",
   "supportedInterfaces": [
     {
       "type": "a2a",
