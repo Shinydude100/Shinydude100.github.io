@@ -1,9 +1,24 @@
 User-agent: *
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
 Sitemap: https://daca.me/sitemap.xml
 
-Content-Signal: ai-train=no, search=yes, ai-input=yes
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 LLM-Discovery: /llms.txt
 Agent-Card: /.well-known/agent-card.json
 MCP-Server: /.well-known/mcp/server-card.json
