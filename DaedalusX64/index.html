@@ -1,0 +1,168 @@
+daca.me
+Source Exhibits Documentation DaedalusX64 GitHub
+
+Open Source Heritage & Historical Engineering
+DaedalusX64: Reverse Engineering N64 Emulation
+A showcase of low-level C++ HLE microcode patches, Sony PSP GU hardware blend modes, and toolchain documentation authored by Hugo Luna (Shinydude100).
+
+The Origin Story
+When StrmnNrmn paused development on the original Daedalus PSP emulator after leaving for college, the community rallied on DCEmu UK to form DaedalusX64. Jumping directly into C++ with zero prior programming experience, I worked alongside team members Kreationz, Salvy, and Wally to reverse-engineer N64 color combiner equations and translate them into native PSP Graphical Unit (GU) instructions.
+📄 StrmnNrmn's Original Blog (2006)   📰 DCEmu UK DaedalusX64 Announcement   🏆 Repository Credits (Shinydude100)
+Source Code Exhibits & Microcode Fixes
+
+
+
+
+Exhibit 1: The Kokiri Sword Blade (*Zelda: Ocarina of Time*)
+N64 Color Combiner Key: 0x00177e6035fcfd7eLL
+C++ / PSP GU HLE
+
+The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry.
+
+Pipeline State: Unpatched (Flat Texture) Patched (BlendMode_0x0017...)
+
+
+Render State: EnvColour Blended via sceGuTexFunc(GU_TFX_BLEND, GU_TCC_RGBA)
+
+Source/HLEGraphics/BlendModes.cpp Mask: 0x00177e6035fcfd7eLL
+//Kokiri Sword Blade - Zelda OOT
+//case 0x00177e6035fcfd7eLL:
+//aRGB0: (Texel0       - Primitive   ) * PrimLODFrac  + Texel0
+//aA0  : (0             - 0            ) * 0            + 1
+//aRGB1: (Primitive     - Env          ) * Combined     + Env
+//aA1  : (0             - 0            ) * 0            + 1
+void BlendMode_0x00177e6035fcfd7eLL (BLEND_MODE_ARGS)
+{
+#ifdef CHECK_FIRST_CYCLE
+	if( num_cycles == 1 )
+	{
+		details.ColourAdjuster.SetRGB( details.EnvColour );
+		sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGB);
+	}
+	else
+#endif
+	{
+		details.ColourAdjuster.SetRGBA( details.EnvColour );
+		sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGBA);
+	}
+}
+
+
+
+Exhibit 2: Beginner's Sword & Cuccos (*Zelda: Ocarina of Time*)
+N64 Color Combiner Key: 0x0030fe045ffefdfeLL
+C++ / Shinydude100 & Wally & Salvy
+
+Handles the combiner math for the Kokiri Sword hilt-guard/bottom part and Cuccos ("Chikens"). Instead of forcing a dual-pass overhead, this patch passes `details.PrimColour` into the colour adjuster, sets `sceGuTexEnvColor` to `details.EnvColour`, and invokes `GU_TFX_MODULATE`.
+
+Source/HLEGraphics/BlendModes.cpp Mask: 0x0030fe045ffefdfeLL
+//Beginner's sword on Legend of Zelda: OOT (bottom part) and Chikens
+//aRGB0: (Primitive     - Env          ) * Texel0        + Env
+//aA0  : (0             - 0            ) * 0            + 1
+//aRGB1: (Combined      - 0            ) * Shade         + 0
+//aA1  : (0             - 0            ) * 0            + 1
+void BlendMode_0x0030fe045ffefdfeLL( BLEND_MODE_ARGS )
+{
+	// By Shinydude100 & Wally & Salvy : P
+	details.ColourAdjuster.SetRGB( details.PrimColour );
+	sceGuTexEnvColor( details.EnvColour.GetColour() );
+	sceGuTexFunc(GU_TFX_MODULATE,GU_TCC_RGBA);
+}
+
+
+
+Exhibit 3: Alpha Channel & Blend Mode Exploration
+In-Code Reverse Engineering Comments
+C++ / Kreationz & Shinydude100
+
+This snippet preserves the exact inline comments written during real-time debugging on PSP hardware—capturing the trial-and-error process of testing hardware alpha flags and blend modes.
+
+Source/HLEGraphics/BlendModes.cpp Author Tag & Debug Notes
+// By Kreationz & Shinydude100
+
+	details.ColourAdjuster.SetAOpaque(); //Opaque still isn't doing much on the Alpha..?
+	details.ColourAdjuster.SetRGB( details.EnvColour );
+	sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGBA); //Not sure if BLEND is doing anything?
+}
+
+
+
+Exhibit 4: Partial-Flashing Bomb Item (*Super Smash Bros.*)
+N64 Color Combiner Key: 0x00127eacf0fff238LL
+C++ / HLE Animation
+
+Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.*
+
+Bomb Animation: Unpatched (Static / Glitched) Patched (Animated Flash)
+
+
+Render State: Animated Env_Alpha Combined Pulse
+
+Source/HLEGraphics/BlendModes.cpp Mask: 0x00127eacf0fff238LL
+//SSB Bomb Partial-Flashing Animation
+//case 0x00127eacf0fff238LL:
+//aRGB0: (Texel0       - 0            ) * Shade        + 0
+//aA0  : (0             - 0            ) * 0            + Texel0
+//aRGB1: (Env           - Combined     ) * Env_Alpha    + Combined
+//aA1  : (0             - 0            ) * 0            + Combined
+void BlendMode_0x00127eacf0fff238LL( BLEND_MODE_ARGS )
+{
+Developer Toolchain & Documentation
+
+
+
+Windows 32-Bit Compilation Guide
+Windows XP/Vista Readme by: Shinydude100/Kreationz
+Toolchain / MinPSPw
+
+An intact excerpt from the original DaedalusX64 developer documentation, guiding community contributors through setting up the MinPSPw toolchain and Visual C++ 2008 Express Edition environment.
+
+Data/PSP/readme_win32.txt Shinydude100/Kreationz
+***************
+*Windows 32Bit*
+***************
+
+Compiling DaedalusX64 for PSP on Windows
+
+-----------------Before Compiling-----------------
+Make sure you have:
+
+1.PSP DevKit (Latest) (MinPSPw may be used)
+2.Visual C++ 2008 Express Edition*
+3.Latest SVN Source code
+
+*NOTE: 
+
+	On Windows; installing MinPSPw requires you to Open Visual C++ 08 and build Dx64 under the
+	SAME account that you installed MinPSPw, if not, the build will fail! It has something to
+	do with the "enviornment variable setup that MinPSPw makes for that certain account.
+	(This does not affect anyone who has only 1 account, only for multi account users.)
+	
+	(If you have any ADMINISTRATIVE problems under Windows Vista when using Visual 
+            C++ 2008 Express Edition; make sure:
+	
+	-a. You're an Administrator
+	-b. Right-Click on Visual C++ 2008 and select "Run as Administrator" 
+	(Some Programs needs these rights manually elevated--Don't ask Why -.- )		
+	
+-----------------When Compiling-----------------
+
+1. Browse for your DaedalusX64 SourceCode
+2. Open the DaedalusX64.sln
+3. Once its opened; Right-Click on "DaedalusPSP" and select "Set as Start-up Project"
+4. Hit the Green Arrow and it will begin to build, or right click on DaedalusPSP and select: Build.
+5.It take a bit of time to build and you should get an error message saying that it cannot run EBOOT.PBP
+6. Congratulations! You've just Compiled The Best N64 Emulator that is Available for the PSP!**
+
+**NOTE: IF for any reason you're ingenious enough to delete any prx's just build them in C++ by 
+rightclicking them and selecting build. If for any reason you cannot compile this eboot and you're 
+CERTAIN that you have the latest sdk,devkits, and admin rights, the make sure you didn't accidentally
+modify any of the source-code, in this case; delete the entire folder containing DaedalusX64 and Download
+the revision once again.
+
+Thanks a TON and I hope I was of some help to many DaedalusX64 community members, Much Love--Shinydude100
+
+Windows XP/Vista Readme by: Shinydude100/Kreationz
+
+Hosted on GitHub Pages | Domain: daca.me
+DaedalusX64 is an open-source Nintendo 64 emulator for portable devices.
