@@ -1,124 +1,277 @@
-daca.me
-Source Exhibits Documentation DaedalusX64 GitHub
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Luna // DaedalusX64 Low-Level Telemetry & Reverse Engineering</title>
+    <meta name="description" content="Agentic telemetry and low-level C++ HLE microcode reverse engineering exhibits for DaedalusX64 on Sony PSP by Hugo Luna (Shinydude100).">
+    <meta name="author" content="Hugo Luna (Shinydude100)">
+    
+    <!-- Schema.org Agentic Metadata -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "DaedalusX64 Low-Level HLE Graphics Reverse Engineering",
+      "author": {
+        "@type": "Person",
+        "name": "Hugo Luna",
+        "alternateName": "Shinydude100",
+        "url": "https://daca.me"
+      },
+      "about": [
+        { "@type": "SoftwareSourceCode", "name": "DaedalusX64", "codeRepository": "https://github.com/DaedalusX64/daedalus", "programmingLanguage": "C++" }
+      ],
+      "publisher": { "@type": "Person", "name": "Hugo Luna" }
+    }
+    </script>
 
-Open Source Heritage & Historical Engineering
-DaedalusX64: Reverse Engineering N64 Emulation
-A showcase of low-level C++ HLE microcode patches, Sony PSP GU hardware blend modes, and toolchain documentation authored by Hugo Luna (Shinydude100).
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-The Origin Story
-When StrmnNrmn paused development on the original Daedalus PSP emulator after leaving for college, the community rallied on DCEmu UK to form DaedalusX64. Jumping directly into C++ with zero prior programming experience, I worked alongside team members Kreationz, Salvy, and Wally to reverse-engineer N64 color combiner equations and translate them into native PSP Graphical Unit (GU) instructions.
-📄 StrmnNrmn's Original Blog (2006)   📰 DCEmu UK DaedalusX64 Announcement   🏆 Repository Credits (Shinydude100)
-Source Code Exhibits & Microcode Fixes
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --bg-card: #0b0f19;
+            --bg-code: #111827;
+            --accent-green: #10b981;
+            --accent-cyan: #06b6d4;
+            --accent-rose: #f43f5e;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; line-height: 1.6; }
+        .skip-link { position: absolute; top: -40px; left: 0; background: var(--accent-cyan); color: #000; padding: 8px; z-index: 1000; transition: top 0.2s; }
+        .skip-link:focus { top: 0; }
+        
+        header { border-bottom: 1px solid var(--border-color); background: rgba(3, 7, 18, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 0.95rem; color: var(--accent-green); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .back-btn { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent-cyan); text-decoration: none; border: 1px solid rgba(6, 182, 212, 0.3); padding: 0.4rem 0.8rem; border-radius: 6px; background: rgba(6, 182, 212, 0.05); transition: all 0.2s ease; }
+        .back-btn:hover { background: rgba(6, 182, 212, 0.15); border-color: var(--accent-cyan); }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+        .node-badge { font-family: 'Fira Code', monospace; color: var(--accent-green); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem; }
+        .status-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+        
+        h1 { font-size: 2.75rem; font-weight: 800; line-height: 1.15; margin-bottom: 1rem; color: #fff; letter-spacing: -0.02em; }
+        .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 850px; margin-bottom: 2.5rem; }
+        
+        .telemetry-banner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.75rem; margin-bottom: 3rem; }
+        .telemetry-banner h2 { font-size: 1.25rem; color: #fff; margin-bottom: 0.75rem; font-family: 'Fira Code', monospace; }
+        .telemetry-banner p { color: var(--text-muted); font-size: 0.98rem; margin-bottom: 1.25rem; }
+        .history-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .history-link { font-family: 'Fira Code', monospace; font-size: 0.82rem; color: var(--accent-cyan); text-decoration: none; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 0.5rem 0.9rem; border-radius: 6px; transition: all 0.2s ease; }
+        .history-link:hover { border-color: var(--accent-cyan); background: rgba(6, 182, 212, 0.1); }
+        
+        .exhibit-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 2.5rem; overflow: hidden; }
+        .card-header { padding: 1.25rem 1.75rem; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .card-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
+        .card-body { padding: 1.75rem; }
+        .card-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
+        
+        .comparison-box { background: #000; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1.5rem; overflow: hidden; }
+        .controls { display: flex; gap: 0.5rem; padding: 0.65rem 1rem; background: #070a12; border-bottom: 1px solid var(--border-color); align-items: center; font-family: 'Fira Code', monospace; font-size: 0.8rem; }
+        .btn-toggle { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.35rem 0.8rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-family: 'Fira Code', monospace; transition: all 0.2s ease; }
+        .btn-toggle.active { background: var(--accent-green); color: #000; font-weight: 700; border-color: var(--accent-green); }
+        
+        .preview-area { min-height: 200px; padding: 1.5rem; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111827 0%, #030712 100%); position: relative; }
+        
+        .asset-img { max-height: 180px; max-width: 100%; border-radius: 6px; transition: all 0.3s ease; object-fit: contain; }
+        .asset-img.unpatched-glitch { filter: grayscale(0.85) contrast(0.5) brightness(0.7) opacity(0.6); transform: scale(0.98); }
+        .asset-img.patched { filter: none; transform: scale(1); }
 
+        /* Fallback CSS graphics if webp images are not yet present */
+        .fallback-blade { width: 150px; height: 12px; border-radius: 2px 8px 8px 2px; transition: all 0.3s ease; }
+        .fallback-blade.unpatched-glitch { background: #4b5563; filter: grayscale(0.8) contrast(0.5); }
+        .fallback-blade.patched { background: linear-gradient(90deg, #9ca3af 0%, #f3f4f6 50%, #38bdf8 100%); box-shadow: 0 0 18px rgba(56, 189, 248, 0.5); }
+        
+        .fallback-bomb { width: 80px; height: 80px; border-radius: 50%; transition: all 0.3s ease; }
+        .fallback-bomb.unpatched-glitch { background: #374151; border: 2px dashed #9ca3af; }
+        .fallback-bomb.patched { background: radial-gradient(circle at 30% 30%, #f43f5e 0%, #9f1239 70%, #4c0519 100%); box-shadow: 0 0 22px rgba(244, 63, 94, 0.6); animation: pulse-bomb 1s infinite alternate; }
+        @keyframes pulse-bomb { 0% { transform: scale(0.98); } 100% { transform: scale(1.05); } }
 
+        .code-box { background: var(--bg-code); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .code-title { background: rgba(0,0,0,0.4); padding: 0.5rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.78rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+        pre { padding: 1.25rem; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 0.88rem; color: #f3f4f6; line-height: 1.55; }
+        .c-comment { color: #6b7280; font-style: italic; }
+        .c-keyword { color: #f43f5e; font-weight: 600; }
+        .c-func { color: #38bdf8; }
+        
+        details.exhibit-card summary { cursor: pointer; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.95rem; padding: 1.25rem 1.75rem; background: rgba(255,255,255,0.02); }
+        footer { border-top: 1px solid var(--border-color); padding: 3rem 0; margin-top: 5rem; text-align: center; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--text-muted); }
+        footer a { color: var(--accent-green); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-Exhibit 1: The Kokiri Sword Blade (*Zelda: Ocarina of Time*)
-N64 Color Combiner Key: 0x00177e6035fcfd7eLL
-C++ / PSP GU HLE
+    <header>
+        <div class="nav-container">
+            <a href="https://daca.me" class="logo">
+                <span class="status-dot"></span> HUGO LUNA // SYSTEMS SEC
+            </a>
+            <a href="https://daca.me" class="back-btn">[ ← BACK TO CORE TELEMETRY ]</a>
+        </div>
+    </header>
 
-The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry.
+    <main id="main-content" class="container" data-agent-context="daedalusx64-reverse-engineering">
+        <div class="node-badge">
+            <span class="status-dot"></span> NODE-02 // DAEDALUSX64_REVERSE_ENGINEERING
+        </div>
+        <h1>DaedalusX64: Low-Level Graphics Telemetry</h1>
+        <p class="subtitle">
+            Reverse engineering Nintendo 64 color combiners, PSP Sony GU blend hardware, and HLE microcode patches.
+        </p>
 
-Pipeline State: Unpatched (Flat Texture) Patched (BlendMode_0x0017...)
+        <section class="telemetry-banner" data-agent-section="archival-context">
+            <h2>// ARCHIVAL_CONTEXT</h2>
+            <p>
+                When StrmnNrmn paused Daedalus PSP, the community created DaedalusX64. Jumping straight into C++ with no prior programming experience, I authored custom blend mode handlers for complex N64 color combiner states.
+            </p>
+            <div class="history-links">
+                <a href="https://strmnnrmn.blogspot.com/" target="_blank" class="history-link" rel="noopener">StrmnNrmn's Original Blog (2006)</a>
+                <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" class="history-link" rel="noopener">DCEmu UK Announcement</a>
+                <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" class="history-link" rel="noopener">Repository Credits (Shinydude100)</a>
+            </div>
+        </section>
 
-
-Render State: EnvColour Blended via sceGuTexFunc(GU_TFX_BLEND, GU_TCC_RGBA)
-
-Source/HLEGraphics/BlendModes.cpp Mask: 0x00177e6035fcfd7eLL
-//Kokiri Sword Blade - Zelda OOT
-//case 0x00177e6035fcfd7eLL:
-//aRGB0: (Texel0       - Primitive   ) * PrimLODFrac  + Texel0
-//aA0  : (0             - 0            ) * 0            + 1
-//aRGB1: (Primitive     - Env          ) * Combined     + Env
-//aA1  : (0             - 0            ) * 0            + 1
-void BlendMode_0x00177e6035fcfd7eLL (BLEND_MODE_ARGS)
+        <!-- EXHIBIT 1 -->
+        <article class="exhibit-card" data-agent-exhibit="kokiri-sword-zelda-oot">
+            <div class="card-header">
+                <div class="card-title">NODE-D01 // Kokiri Sword Blade (Zelda OOT)</div>
+                <span class="node-badge">Mask: 0x00177e6035fcfd7eLL</span>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">Translating N64 2-cycle combiner math into PSP Sony GU blending logic (`sceGuTexFunc`).</p>
+                <div class="comparison-box">
+                    <div class="controls">
+                        <span>Pipeline Simulation:</span>
+                        <button class="btn-toggle" onclick="setEx('ex1', false, this)">Unpatched (Glitch Simulation)</button>
+                        <button class="btn-toggle active" onclick="setEx('ex1', true, this)">Patched (BlendMode_0x0017...)</button>
+                    </div>
+                    <div class="preview-area">
+                        <img id="ex1-img" src="assets/kokiri_sword.webp" alt="Kokiri Sword Render" class="asset-img patched" onerror="this.style.display='none'; document.getElementById('ex1-fallback').style.display='block';">
+                        <div id="ex1-fallback" class="fallback-blade patched" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="code-box">
+                    <div class="code-title">Source/HLEGraphics/BlendModes.cpp</div>
+                    <pre><code><span class="c-comment">//Kokiri Sword Blade - Zelda OOT</span>
+<span class="c-comment">//case 0x00177e6035fcfd7eLL:</span>
+<span class="c-comment">//aRGB0: (Texel0       - Primitive   ) * PrimLODFrac  + Texel0</span>
+<span class="c-comment">//aA0  : (0             - 0            ) * 0            + 1</span>
+<span class="c-comment">//aRGB1: (Primitive     - Env          ) * Combined     + Env</span>
+<span class="c-comment">//aA1  : (0             - 0            ) * 0            + 1</span>
+<span class="c-keyword">void</span> <span class="c-func">BlendMode_0x00177e6035fcfd7eLL</span> (BLEND_MODE_ARGS)
 {
-#ifdef CHECK_FIRST_CYCLE
-	if( num_cycles == 1 )
+<span class="c-keyword">#ifdef</span> CHECK_FIRST_CYCLE
+	<span class="c-keyword">if</span>( num_cycles == 1 )
 	{
-		details.ColourAdjuster.SetRGB( details.EnvColour );
-		sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGB);
+		details.ColourAdjuster.<span class="c-func">SetRGB</span>( details.EnvColour );
+		<span class="c-func">sceGuTexFunc</span>(GU_TFX_BLEND,GU_TCC_RGB);
 	}
-	else
-#endif
+	<span class="c-keyword">else</span>
+<span class="c-keyword">#endif</span>
 	{
-		details.ColourAdjuster.SetRGBA( details.EnvColour );
-		sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGBA);
+		details.ColourAdjuster.<span class="c-func">SetRGBA</span>( details.EnvColour );
+		<span class="c-func">sceGuTexFunc</span>(GU_TFX_BLEND,GU_TCC_RGBA);
 	}
-}
+}</code></pre>
+                </div>
+            </div>
+        </article>
 
-
-
-Exhibit 2: Beginner's Sword & Cuccos (*Zelda: Ocarina of Time*)
-N64 Color Combiner Key: 0x0030fe045ffefdfeLL
-C++ / Shinydude100 & Wally & Salvy
-
-Handles the combiner math for the Kokiri Sword hilt-guard/bottom part and Cuccos ("Chikens"). Instead of forcing a dual-pass overhead, this patch passes `details.PrimColour` into the colour adjuster, sets `sceGuTexEnvColor` to `details.EnvColour`, and invokes `GU_TFX_MODULATE`.
-
-Source/HLEGraphics/BlendModes.cpp Mask: 0x0030fe045ffefdfeLL
-//Beginner's sword on Legend of Zelda: OOT (bottom part) and Chikens
-//aRGB0: (Primitive     - Env          ) * Texel0        + Env
-//aA0  : (0             - 0            ) * 0            + 1
-//aRGB1: (Combined      - 0            ) * Shade         + 0
-//aA1  : (0             - 0            ) * 0            + 1
-void BlendMode_0x0030fe045ffefdfeLL( BLEND_MODE_ARGS )
+        <!-- EXHIBIT 2 -->
+        <article class="exhibit-card" data-agent-exhibit="beginners-sword-cuccos-zelda-oot">
+            <div class="card-header">
+                <div class="card-title">NODE-D02 // Beginner's Sword & Cuccos (Zelda OOT)</div>
+                <span class="node-badge">Mask: 0x0030fe045ffefdfeLL</span>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">Custom combiner mapping for the sword hilt-guard and Cuccos using `sceGuTexEnvColor` & `GU_TFX_MODULATE`.</p>
+                <div class="code-box">
+                    <div class="code-title">Source/HLEGraphics/BlendModes.cpp</div>
+                    <pre><code><span class="c-comment">//Beginner's sword on Legend of Zelda: OOT (bottom part) and Chikens</span>
+<span class="c-comment">//aRGB0: (Primitive     - Env          ) * Texel0        + Env</span>
+<span class="c-comment">//aA0  : (0             - 0            ) * 0            + 1</span>
+<span class="c-comment">//aRGB1: (Combined      - 0            ) * Shade         + 0</span>
+<span class="c-comment">//aA1  : (0             - 0            ) * 0            + 1</span>
+<span class="c-keyword">void</span> <span class="c-func">BlendMode_0x0030fe045ffefdfeLL</span>( BLEND_MODE_ARGS )
 {
-	// By Shinydude100 & Wally & Salvy : P
-	details.ColourAdjuster.SetRGB( details.PrimColour );
-	sceGuTexEnvColor( details.EnvColour.GetColour() );
-	sceGuTexFunc(GU_TFX_MODULATE,GU_TCC_RGBA);
-}
+	<span class="c-comment">// By Shinydude100 & Wally & Salvy : P</span>
+	details.ColourAdjuster.<span class="c-func">SetRGB</span>( details.PrimColour );
+	<span class="c-func">sceGuTexEnvColor</span>( details.EnvColour.<span class="c-func">GetColour</span>() );
+	<span class="c-func">sceGuTexFunc</span>(GU_TFX_MODULATE,GU_TCC_RGBA);
+}</code></pre>
+                </div>
+            </div>
+        </article>
 
+        <!-- EXHIBIT 3 -->
+        <article class="exhibit-card" data-agent-exhibit="alpha-channel-debugging">
+            <div class="card-header">
+                <div class="card-title">NODE-D03 // Alpha Channel & Blend Mode Debugging</div>
+                <span class="node-badge">Author: Kreationz & Shinydude100</span>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">Trial-and-error debugging notes preserved verbatim from PSP hardware testing.</p>
+                <div class="code-box">
+                    <div class="code-title">Source/HLEGraphics/BlendModes.cpp</div>
+                    <pre><code><span class="c-comment">// By Kreationz & Shinydude100</span>
 
+	details.ColourAdjuster.<span class="c-func">SetAOpaque</span>(); <span class="c-comment">//Opaque still isn't doing much on the Alpha..?</span>
+	details.ColourAdjuster.<span class="c-func">SetRGB</span>( details.EnvColour );
+	<span class="c-func">sceGuTexFunc</span>(GU_TFX_BLEND,GU_TCC_RGBA); <span class="c-comment">//Not sure if BLEND is doing anything?</span>
+}</code></pre>
+                </div>
+            </div>
+        </article>
 
-Exhibit 3: Alpha Channel & Blend Mode Exploration
-In-Code Reverse Engineering Comments
-C++ / Kreationz & Shinydude100
+        <!-- EXHIBIT 4 -->
+        <article class="exhibit-card" data-agent-exhibit="smash-bros-bomb-flashing">
+            <div class="card-header">
+                <div class="card-title">NODE-D04 // Partial-Flashing Bomb Animation (Super Smash Bros)</div>
+                <span class="node-badge">Mask: 0x00127eacf0fff238LL</span>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">Restoring animated environment alpha pulsing for Super Smash Bros bomb items.</p>
+                <div class="comparison-box">
+                    <div class="controls">
+                        <span>Animation State:</span>
+                        <button class="btn-toggle" onclick="setEx('ex4', false, this)">Unpatched (Glitch Simulation)</button>
+                        <button class="btn-toggle active" onclick="setEx('ex4', true, this)">Patched (Animated Pulse)</button>
+                    </div>
+                    <div class="preview-area">
+                        <img id="ex4-img" src="assets/ssb_bomb.webp" alt="SSB Bomb Render" class="asset-img patched" onerror="this.style.display='none'; document.getElementById('ex4-fallback').style.display='block';">
+                        <div id="ex4-fallback" class="fallback-bomb patched" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="code-box">
+                    <div class="code-title">Source/HLEGraphics/BlendModes.cpp</div>
+                    <pre><code><span class="c-comment">//SSB Bomb Partial-Flashing Animation</span>
+<span class="c-comment">//case 0x00127eacf0fff238LL:</span>
+<span class="c-comment">//aRGB0: (Texel0       - 0            ) * Shade        + 0</span>
+<span class="c-comment">//aA0  : (0             - 0            ) * 0            + Texel0</span>
+<span class="c-comment">//aRGB1: (Env           - Combined     ) * Env_Alpha    + Combined</span>
+<span class="c-comment">//aA1  : (0             - 0            ) * 0            + Combined</span>
+<span class="c-keyword">void</span> <span class="c-func">BlendMode_0x00127eacf0fff238LL</span>( BLEND_MODE_ARGS )
+{</code></pre>
+                </div>
+            </div>
+        </article>
 
-This snippet preserves the exact inline comments written during real-time debugging on PSP hardware—capturing the trial-and-error process of testing hardware alpha flags and blend modes.
-
-Source/HLEGraphics/BlendModes.cpp Author Tag & Debug Notes
-// By Kreationz & Shinydude100
-
-	details.ColourAdjuster.SetAOpaque(); //Opaque still isn't doing much on the Alpha..?
-	details.ColourAdjuster.SetRGB( details.EnvColour );
-	sceGuTexFunc(GU_TFX_BLEND,GU_TCC_RGBA); //Not sure if BLEND is doing anything?
-}
-
-
-
-Exhibit 4: Partial-Flashing Bomb Item (*Super Smash Bros.*)
-N64 Color Combiner Key: 0x00127eacf0fff238LL
-C++ / HLE Animation
-
-Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.*
-
-Bomb Animation: Unpatched (Static / Glitched) Patched (Animated Flash)
-
-
-Render State: Animated Env_Alpha Combined Pulse
-
-Source/HLEGraphics/BlendModes.cpp Mask: 0x00127eacf0fff238LL
-//SSB Bomb Partial-Flashing Animation
-//case 0x00127eacf0fff238LL:
-//aRGB0: (Texel0       - 0            ) * Shade        + 0
-//aA0  : (0             - 0            ) * 0            + Texel0
-//aRGB1: (Env           - Combined     ) * Env_Alpha    + Combined
-//aA1  : (0             - 0            ) * 0            + Combined
-void BlendMode_0x00127eacf0fff238LL( BLEND_MODE_ARGS )
-{
-Developer Toolchain & Documentation
-
-
-
-Windows 32-Bit Compilation Guide
-Windows XP/Vista Readme by: Shinydude100/Kreationz
-Toolchain / MinPSPw
-
-An intact excerpt from the original DaedalusX64 developer documentation, guiding community contributors through setting up the MinPSPw toolchain and Visual C++ 2008 Express Edition environment.
-
-Data/PSP/readme_win32.txt Shinydude100/Kreationz
-***************
+        <!-- EXHIBIT 5: ARCHIVED DOCS -->
+        <details class="exhibit-card" data-agent-exhibit="win32-compilation-readme">
+            <summary>[ + ] ARCHIVED TOOLCHAIN DOCS // WIN32_COMPILATION_GUIDE_2009.TXT</summary>
+            <div class="card-body">
+                <div class="code-box">
+                    <div class="code-title">Data/PSP/readme_win32.txt</div>
+                    <pre><code>***************
 *Windows 32Bit*
 ***************
 
@@ -150,7 +303,7 @@ Make sure you have:
 1. Browse for your DaedalusX64 SourceCode
 2. Open the DaedalusX64.sln
 3. Once its opened; Right-Click on "DaedalusPSP" and select "Set as Start-up Project"
-4. Hit the Green Arrow and it will begin to build, or right click on DaedalusPSP and select: Build.
+4. Hit the Green Arrow and it will begin to build, or right click on DaedalusPSP laurels and select: Build.
 5.It take a bit of time to build and you should get an error message saying that it cannot run EBOOT.PBP
 6. Congratulations! You've just Compiled The Best N64 Emulator that is Available for the PSP!**
 
@@ -162,7 +315,38 @@ the revision once again.
 
 Thanks a TON and I hope I was of some help to many DaedalusX64 community members, Much Love--Shinydude100
 
-Windows XP/Vista Readme by: Shinydude100/Kreationz
+Windows XP/Vista Readme by: Shinydude100/Kreationz</code></pre>
+                </div>
+            </div>
+        </details>
 
-Hosted on GitHub Pages | Domain: daca.me
-DaedalusX64 is an open-source Nintendo 64 emulator for portable devices.
+    </main>
+
+    <footer>
+        <div class="container" style="padding-top:0; padding-bottom:0;">
+            <p>© 2026 Hugo Luna // <a href="https://daca.me" target="_blank">daca.me</a> | Repository: <a href="https://github.com/Shinydude100/Shinydude100.github.io" target="_blank" rel="noopener">Shinydude100.github.io</a></p>
+            <p style="margin-top:0.4rem; font-size:0.8rem; color:#6b7280;">DaedalusX64 is an open-source Nintendo 64 emulator for portable systems.</p>
+        </div>
+    </footer>
+
+    <script>
+        function setEx(id, isP, btn) {
+            const btns = btn.parentElement.querySelectorAll('.btn-toggle');
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (id === 'ex1') {
+                const img = document.getElementById('ex1-img');
+                const fallback = document.getElementById('ex1-fallback');
+                img.className = isP ? 'asset-img patched' : 'asset-img unpatched-glitch';
+                fallback.className = isP ? 'fallback-blade patched' : 'fallback-blade unpatched-glitch';
+            } else if (id === 'ex4') {
+                const img = document.getElementById('ex4-img');
+                const fallback = document.getElementById('ex4-fallback');
+                img.className = isP ? 'asset-img patched' : 'asset-img unpatched-glitch';
+                fallback.className = isP ? 'fallback-bomb patched' : 'fallback-bomb unpatched-glitch';
+            }
+        }
+    </script>
+</body>
+</html>
