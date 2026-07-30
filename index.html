@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; connect-src 'self' https://api.github.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://api.github.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests;">
 
     <title>Hugo Luna // Systems Infrastructure Lead & Security Architect</title>
     <meta name="description" content="High-availability network environments, low-level system engineering, and enterprise endpoint security architecture.">
     <link rel="alternate" type="application/ld+json" href="/schema.jsonld">
     <link rel="mcp" href="/mcp">
-    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Hugo Luna",
       "url": "https://daca.me",
-      "jobTitle": "AI Systems Architect & Security Engineer",
+      "jobTitle": "AI Systems Architect & Software Engineer",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Irving",
@@ -32,36 +31,44 @@
         "Model Context Protocol",
         "Agentic AI",
         "Systems Architecture",
-        "Security Engineering",
-        "Reverse Engineering"
+        "Security Engineering"
       ]
     }
     </script>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 font-family=%22monospace%22 fill=%22%23fde047%22>💻</text></svg>">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-
     <style>
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('./fonts/inter-v20-latin-regular.woff2') format('woff2');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('./fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Space Grotesk';
+            src: url('./fonts/space-grotesk-v22-latin-regular.woff2') format('woff2');
+            font-display: swap;
+        }
+
         :root {
-            --bg-pure: #07090e;
-            --bg-card: rgba(15, 22, 36, 0.65);
-            --accent: #fde047;
-            --accent-glow: rgba(253, 224, 71, 0.18);
-            --cyan: #38bdf8;
-            --emerald: #10b981;
-            --text-main: #f1f5f9;
+            --bg-pure: #090B10;
+            --bg-card: rgba(17, 24, 39, 0.45);
+            --accent: #FDE047;
+            --text-main: #E2E8F0;
             --text-muted: #94a3b8;
-            --border-glow: rgba(51, 65, 85, 0.45);
+            --border-glow: rgba(51, 65, 85, 0.35);
             --warning: #f97316;
             --font-sans: 'Space Grotesk', sans-serif;
             --font-body: 'Inter', sans-serif;
-            --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
-            --radius-sm: 6px;
-            --radius-md: 12px;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius-sm: 4px;
+            --radius-md: 8px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,18 +76,20 @@
 
         ::selection { background: var(--accent); color: var(--bg-pure); }
 
-        /* Hardware Accelerated Input Processing Pointer */
+        /* Hardware Accelerated Input Processing Pointer Overrides */
         @media (pointer: fine) {
             html.sys-cursor-active { cursor: none; }
             html.sys-cursor-active a, html.sys-cursor-active button { cursor: none; }
+
+            /* Defensive A11y: Safely restore default tracking if keyboard navigation takes focus */
             html.sys-cursor-active *:focus-visible { cursor: auto !important; }
 
             .ptr-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--accent); pointer-events: none; z-index: 10001; border-radius: 50%; transform: translate3d(-50%,-50%,0); will-change: transform; mix-blend-mode: difference; }
             .ptr-aura { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1px solid var(--accent); pointer-events: none; z-index: 10000; border-radius: 50%; transform: translate3d(-50%,-50%,0); will-change: transform; transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s; }
-            .ptr-aura.interacting { width: 52px; height: 52px; background: rgba(253, 224, 71, 0.1); border-color: #ffffff; }
+            .ptr-aura.interacting { width: 52px; height: 52px; background: rgba(253, 224, 71, 0.08); border-color: #ffffff; }
         }
 
-        /* Keyboard Focus */
+        /* Keyboard Accessibility Focus Indicators */
         a:focus-visible, button:focus-visible {
             outline: 2px solid var(--accent) !important;
             outline-offset: 4px !important;
@@ -100,7 +109,9 @@
             text-decoration: none;
             transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .skip-link:focus { top: 0; }
+        .skip-link:focus {
+            top: 0;
+        }
 
         .sr-only {
             position: absolute;
@@ -114,30 +125,30 @@
             border: 0;
         }
 
-        /* Matrix Backplane & Container */
-        #matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.35; }
+        /* High-DPI Layer Bounds & Mobile Bar Protection */
+        #matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.4; }
         #app-wrapper { position: relative; z-index: 2; width: 100%; }
-        .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
         /* Navigation Architecture */
         .sys-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; border-bottom: 1px solid transparent; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .sys-header.scrolled { background: rgba(7, 9, 14, 0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(51, 65, 85, 0.4); }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 85px; }
-        .sys-logo { font-family: var(--font-mono); font-weight: 700; text-decoration: none; color: #fff; font-size: 1.1rem; letter-spacing: -0.03em; }
+        .sys-header.scrolled { background: rgba(9, 11, 16, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(51, 65, 85, 0.3); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 90px; position: relative; }
+        .sys-logo { font-family: var(--font-mono); font-weight: 700; text-decoration: none; color: #fff; font-size: 1.15rem; letter-spacing: -0.05em; }
         .sys-logo span { color: var(--accent); }
 
-        .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
-        .nav-item a { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; text-decoration: none; color: var(--text-muted); transition: color 0.3s; position: relative; padding: 0.5rem 0; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+        .nav-item a { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--text-muted); transition: color 0.3s; position: relative; padding: 0.5rem 0; }
         .nav-item a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .nav-item a:hover::after, .nav-item.active a::after { transform: scaleX(1); transform-origin: left; }
         .nav-item a:hover, .nav-item.active a { color: var(--accent); }
 
-        /* Hero Pipeline */
+        /* Hero Pipeline & Native Staging Animations */
         @keyframes sysRevealFade {
             from { opacity: 0; transform: translate3d(0, 20px, 0); }
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
-        .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 85px; }
+        .hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
         .hero-core { width: 100%; text-align: left; }
 
         @media (min-width: 769px) {
@@ -148,328 +159,338 @@
             .sys-reveal:nth-child(4) { animation-delay: 0.55s; }
         }
 
-        .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(15, 22, 36, 0.7); border: 1px solid var(--border-glow); padding: 0.55rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); margin-bottom: 2.2rem; backdrop-filter: blur(8px); }
-        .sys-status-indicator { width: 7px; height: 7px; background: var(--emerald); border-radius: 50%; box-shadow: 0 0 12px var(--emerald); }
+        .sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(17, 24, 39, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
+        .sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
 
-        .hero-title { font-family: var(--font-sans); font-size: clamp(2.4rem, 5.5vw, 5.2rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
-        .hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.6); }
+        .hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
+        .hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
 
-        .hero-desc { max-width: 820px; margin-bottom: 3rem; }
+        .hero-desc { max-width: 800px; margin-bottom: 3.5rem; min-height: 80px; }
 
         .btn-stack { display: flex; gap: 1.25rem; flex-wrap: wrap; }
-        .btn-primitive { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 1.1rem 2.2rem; border-radius: var(--radius-md); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; min-width: 220px; }
-        .btn-primitive.primary { background: var(--accent); color: var(--bg-pure); box-shadow: 0 4px 25px rgba(253, 224, 71, 0.15); }
-        .btn-primitive.primary:hover { background: #fff; box-shadow: 0 12px 35px rgba(255, 255, 255, 0.22); transform: translate3d(0, -2px, 0); }
-        .btn-primitive.secondary { background: rgba(15, 22, 36, 0.5); color: var(--text-main); border: 1px solid var(--border-glow); backdrop-filter: blur(8px); }
-        .btn-primitive.secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--text-muted); transform: translate3d(0, -2px, 0); }
+        .btn-primitive { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 1.15rem 2rem; border-radius: var(--radius-md); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; min-width: 240px; }
+        .btn-primitive.primary { background: var(--accent); color: var(--bg-pure); box-shadow: 0 4px 25px rgba(253, 224, 71, 0.12); }
+        .btn-primitive.primary:hover { background: #fff; box-shadow: 0 12px 35px rgba(255, 255, 255, 0.18); transform: translate3d(0, -2px, 0); }
+        .btn-primitive.secondary { background: rgba(17, 24, 39, 0.3); color: var(--text-main); border: 1px solid var(--border-glow); backdrop-filter: blur(4px); }
+        .btn-primitive.secondary:hover { background: rgba(17, 24, 39, 0.7); border-color: var(--text-muted); transform: translate3d(0, -2px, 0); }
 
         /* Layout Framework */
-        .section-padding { padding: 8rem 0; }
-        .section-header { margin-bottom: 5rem; }
-        .section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.85rem; display: block; }
-        .section-title { font-family: var(--font-sans); font-size: clamp(1.8rem, 3.5vw, 3.2rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+        .section-padding { padding: 9rem 0; }
+        .section-header { margin-bottom: 5.5rem; }
+        .section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block; }
+        .section-title { font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 900; color: #fff; letter-spacing: -0.02em; }
 
-        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
         .matrix-cell { perspective: 1200px; }
 
-        /* Interactive Physics Card */
+        /* ================= CORE PHYSICS ================= */
         .interactive-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: var(--radius-md);
-            padding: 2.2rem 2rem 1.8rem;
-            min-height: 420px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+          background: var(--bg-card);
+          border: 1px solid var(--border-glow);
+          border-radius: var(--radius-md);
+          padding: 2rem 2rem 1.75rem;
+          min-height: 400px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transform-style: preserve-3d;
+          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+          position: relative;
+          overflow: hidden;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          font-family: var(--font-body);
         }
         .interactive-card:hover {
-            border-color: var(--accent);
-            background: rgba(18, 28, 45, 0.85);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(253, 224, 71, 0.1);
+          border-color: var(--accent);
+          background: rgba(17, 24, 39, 0.8);
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(253, 224, 71, 0.08);
         }
         .interactive-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(400px circle at var(--m-x, 0px) var(--m-y, 0px), rgba(253, 224, 71, 0.08), transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 3;
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(400px circle at var(--m-x, 0px) var(--m-y, 0px), rgba(253, 224, 71, 0.08), transparent 60%);
+          opacity: 0;
+          transition: opacity 0.3s;
+          pointer-events: none;
+          z-index: 3;
         }
         .interactive-card:hover::before { opacity: 1; }
 
+        /* ================= TECHNICAL OVERLAYS ================= */
         .card-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border-glow) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
-            background-size: 28px 28px;
-            opacity: 0.12;
-            pointer-events: none;
-            mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
-            -webkit-mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(var(--border-glow) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
+          background-size: 28px 28px;
+          opacity: 0.15;
+          pointer-events: none;
+          mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
+          -webkit-mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
         }
         .card-scanline {
-            position: absolute; inset: 0;
-            background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(226, 232, 240, 0.02) 3px 4px);
-            pointer-events: none;
+          position: absolute; inset: 0;
+          background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(226, 232, 240, 0.02) 3px 4px);
+          pointer-events: none;
         }
         .corner-brackets { position: absolute; inset: 0; pointer-events: none; }
-        .cb { position: absolute; width: 12px; height: 12px; border: 1px solid var(--accent); opacity: 0.35; transition: opacity 0.3s; }
+        .cb { position: absolute; width: 12px; height: 12px; border: 1px solid var(--accent); opacity: 0.4; transition: opacity 0.3s; }
         .interactive-card:hover .cb { opacity: 0.9; }
-        .cb-tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
-        .cb-tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
-        .cb-bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
-        .cb-br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+        .cb-tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+        .cb-tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+        .cb-bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
+        .cb-br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
 
-        /* Widget Status Topbar */
+        /* ================= TOP STATUS BAR ================= */
         .widget-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 0.85rem;
-            margin-bottom: 1.25rem;
-            border-bottom: 1px solid var(--border-glow);
-            transform: translateZ(30px);
-            font-family: var(--font-mono);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 0.85rem;
+          margin-bottom: 1.25rem;
+          border-bottom: 1px solid var(--border-glow);
+          transform: translateZ(30px);
+          font-family: var(--font-mono);
         }
         .topbar-id { display: flex; align-items: center; gap: 0.55rem; }
         .status-led {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: var(--emerald);
-            box-shadow: 0 0 8px var(--emerald);
-            animation: pulse-led 2s ease-in-out infinite;
+          width: 8px; height: 8px; border-radius: 50%;
+          background: var(--accent);
+          box-shadow: 0 0 8px var(--accent), 0 0 2px var(--accent);
+          animation: pulse-led 1.8s ease-in-out infinite;
         }
-        @keyframes pulse-led { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .topbar-node { font-size: 0.65rem; letter-spacing: 0.12em; color: var(--text-main); }
+        @keyframes pulse-led { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+        .topbar-node { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--text-main); }
         .topbar-status {
-            font-size: 0.6rem; letter-spacing: 0.16em;
-            color: var(--emerald);
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 0.2rem 0.55rem; border-radius: var(--radius-sm);
+          font-size: 0.58rem; letter-spacing: 0.16em;
+          color: var(--accent);
+          background: rgba(253, 224, 71, 0.08);
+          border: 1px solid rgba(253, 224, 71, 0.25);
+          padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);
         }
 
+        /* ================= BODY ================= */
         .card-body { transform: translateZ(25px); }
         .card-index {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--accent);
-            margin-bottom: 1.2rem;
-            display: block;
-            letter-spacing: 0.08em;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          color: var(--accent);
+          margin-bottom: 1.5rem;
+          display: block;
+          letter-spacing: 0.08em;
         }
         .card-heading {
-            font-family: var(--font-sans);
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-            line-height: 1.25;
+          font-family: var(--font-sans);
+          font-size: 1.45rem;
+          font-weight: 700;
+          color: var(--text-main);
+          margin-bottom: 1rem;
+          letter-spacing: -0.01em;
+          line-height: 1.2;
         }
         .card-heading span {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 0.35rem;
-            font-weight: 400;
-            letter-spacing: 0.02em;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          color: var(--accent);
+          display: block;
+          margin-bottom: 0.35rem;
+          font-weight: 400;
+          letter-spacing: 0.02em;
         }
         .card-text {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.65;
-            margin-bottom: 1.5rem;
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          line-height: 1.65;
+          margin-bottom: 1.5rem;
         }
 
-        /* Metrics Readouts */
+        /* ================= METRIC READOUTS ================= */
         .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 1.35rem;
-            transform: translateZ(35px);
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.75rem;
+          margin-bottom: 1.35rem;
+          transform: translateZ(35px);
         }
         .metric {
-            background: var(--bg-pure);
-            border: 1px solid var(--border-glow);
-            border-radius: var(--radius-sm);
-            padding: 0.6rem 0.65rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
+          background: var(--bg-pure);
+          border: 1px solid var(--border-glow);
+          border-radius: var(--radius-sm);
+          padding: 0.6rem 0.65rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
         }
         .metric-label {
-            font-family: var(--font-mono);
-            font-size: 0.55rem;
-            letter-spacing: 0.12em;
-            color: var(--text-muted);
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.12em;
+          color: var(--text-muted);
         }
         .metric-value {
-            font-family: var(--font-mono);
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-main);
-            line-height: 1;
+          font-family: var(--font-mono);
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--text-main);
+          line-height: 1;
         }
         .metric-value small { font-size: 0.6rem; color: var(--text-muted); font-weight: 400; margin-left: 1px; }
         .metric-warn { color: var(--warning); }
         .metric-bar {
-            height: 3px;
-            background: rgba(226, 232, 240, 0.08);
-            border-radius: 2px;
-            overflow: hidden;
+          height: 3px;
+          background: rgba(226, 232, 240, 0.08);
+          border-radius: 2px;
+          overflow: hidden;
         }
         .metric-bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
         .metric-bar i.warn { background: var(--warning); }
 
-        /* Activity Graph */
+        /* ================= ACTIVITY GRAPH ================= */
         .activity-graph {
-            background: var(--bg-pure);
-            border: 1px solid var(--border-glow);
-            border-radius: var(--radius-sm);
-            padding: 0.7rem 0.75rem 0.6rem;
-            transform: translateZ(30px);
+          background: var(--bg-pure);
+          border: 1px solid var(--border-glow);
+          border-radius: var(--radius-sm);
+          padding: 0.7rem 0.75rem 0.6rem;
+          transform: translateZ(30px);
         }
         .graph-header {
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 0.55rem;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            margin-bottom: 0.55rem;
+          display: flex;
+          justify-content: space-between;
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.1em;
+          color: var(--text-muted);
+          margin-bottom: 0.55rem;
         }
-        .graph-live { color: var(--emerald); }
+        .graph-live { color: var(--accent); }
         .graph-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 44px;
+          display: flex;
+          align-items: flex-end;
+          gap: 3px;
+          height: 44px;
         }
         .graph-bars i {
-            flex: 1;
-            background: linear-gradient(to top, rgba(253, 224, 71, 0.25), var(--accent));
-            border-radius: 1px;
-            opacity: 0.7;
-            transition: opacity 0.3s;
+          flex: 1;
+          background: linear-gradient(to top, rgba(253, 224, 71, 0.25), var(--accent));
+          border-radius: 1px;
+          opacity: 0.7;
+          transition: opacity 0.3s;
         }
         .interactive-card:hover .graph-bars i { opacity: 1; }
         .graph-bars i:last-child { background: var(--warning); }
 
+        /* ================= FOOTER ================= */
         .card-footer {
-            margin-top: 1.35rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-glow);
-            transform: translateZ(15px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
+          margin-top: 1.35rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--border-glow);
+          transform: translateZ(15px);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
         }
         .footer-nodes { display: flex; align-items: center; gap: 5px; }
         .node-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: rgba(226, 232, 240, 0.15);
+          width: 7px; height: 7px; border-radius: 50%;
+          background: rgba(226, 232, 240, 0.15);
         }
-        .node-dot.on { background: var(--emerald); box-shadow: 0 0 6px var(--emerald); }
-        .node-dot.warn { background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+        .node-dot.on { background: var(--accent); box-shadow: 0 0 6px rgba(253, 224, 71, 0.6); }
+        .node-dot.warn { background: var(--warning); box-shadow: 0 0 6px rgba(249, 115, 22, 0.6); }
         .node-cluster {
-            font-family: var(--font-mono);
-            font-size: 0.58rem;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            margin-left: 0.5rem;
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.1em;
+          color: var(--text-muted);
+          margin-left: 0.5rem;
         }
         .sys-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            background: rgba(253, 224, 71, 0.08);
-            border: 1px solid rgba(253, 224, 71, 0.3);
-            padding: 0.4rem 0.75rem;
-            border-radius: var(--radius-sm);
-            color: var(--accent);
-            letter-spacing: 0.08em;
-            white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: var(--font-mono);
+          font-size: 0.6rem;
+          text-transform: uppercase;
+          background: rgba(253, 224, 71, 0.06);
+          border: 1px solid rgba(253, 224, 71, 0.25);
+          padding: 0.4rem 0.7rem;
+          border-radius: var(--radius-sm);
+          color: var(--accent);
+          letter-spacing: 0.08em;
+          white-space: nowrap;
         }
         .badge-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 6px var(--accent);
+          width: 5px; height: 5px; border-radius: 50%;
+          background: var(--accent);
+          box-shadow: 0 0 6px var(--accent);
         }
 
-        /* Tool Monolith */
-        .tool-monolith { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: var(--radius-md); padding: 3.5rem; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-        .tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+        /* Tech Stack Monolith */
+        .tool-monolith { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: var(--radius-md); padding: 4rem; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 2.5rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
         .tool-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: #fff; }
-        .sys-tag-stable { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--emerald); font-family: var(--font-mono); font-size: 0.7rem; padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); }
-        .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3rem; max-width: 880px; }
+        .sys-tag-stable { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); }
+        .tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-width: 850px; }
 
         .manifesto-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3.5rem; }
-        .manifesto-node { background: rgba(7, 9, 14, 0.5); border: 1px solid var(--border-glow); padding: 2.2rem; border-radius: var(--radius-md); }
+        .manifesto-node { background: rgba(9, 11, 16, 0.4); border: 1px solid var(--border-glow); padding: 2.5rem; border-radius: var(--radius-md); }
         .manifesto-node.warn { border-left: 3px solid var(--warning); }
-        .node-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .node-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .node-list { list-style: none; }
-        .node-list li { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.85rem; padding-left: 1.4rem; position: relative; line-height: 1.5; }
-        .node-list li::before { content: '⚡'; position: absolute; left: 0; font-size: 0.7rem; top: 2px; color: var(--accent); }
+        .node-list li { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem; padding-left: 1.25rem; position: relative; line-height: 1.5; }
+        .node-list li::before { content: '🖲️'; position: absolute; left: 0; font-size: 0.65rem; top: 2px; }
 
-        /* Terminal Emulator */
-        .sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid #333333; border-radius: 10px; overflow: hidden; margin-bottom: 3rem; font-family: 'Consolas', 'Fira Code', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
-        .terminal-header { background: #1a1a1a; color: #ffffff; height: 36px; font-size: 12px; font-family: var(--font-sans); display: flex; align-items: center; justify-content: space-between; user-select: none; }
-        .terminal-header-title { display: flex; align-items: center; padding-left: 12px; gap: 8px; }
+        /* PowerShell Terminal Emulator Styling */
+        .sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid #333333; border-radius: 8px; overflow: hidden; margin-bottom: 3.5rem; font-family: 'Consolas', 'JetBrains Mono', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
+        .terminal-header { background: #000000; color: #ffffff; height: 32px; font-size: 12px; font-weight: normal; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+        .terminal-header-title { display: flex; align-items: center; padding-left: 10px; gap: 8px; }
         .terminal-header-title svg { width: 14px; height: 14px; fill: currentColor; }
 
         .terminal-controls { display: flex; height: 100%; }
-        .win-btn { width: 46px; height: 100%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background-color 0.1s; }
+        .win-btn { width: 46px; height: 100%; display: flex; justify-content: center; align-items: center; cursor: default; transition: background-color 0.1s; }
         .win-btn:hover { background-color: #333333; }
         .win-btn.close:hover { background-color: #e81123; color: white; }
         .win-btn svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1; fill: none; }
 
-        .terminal-body { padding: 0; display: flex; flex-direction: column; max-height: 420px; overflow-y: auto; }
-        .terminal-body::-webkit-scrollbar { width: 10px; background: #0c0c0c; }
-        .terminal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        .terminal-body { padding: 0; display: flex; flex-direction: column; max-height: 400px; overflow-y: auto; overflow-x: hidden; }
+        .terminal-body::-webkit-scrollbar { width: 12px; background: #0c0c0c; }
+        .terminal-body::-webkit-scrollbar-thumb { background: #4d4d4d; border: 3px solid #0c0c0c; border-radius: 6px; }
+        .terminal-body::-webkit-scrollbar-thumb:hover { background: #7a7a7a; border-width: 2px; }
 
-        .terminal-log { padding: 1rem 1.25rem; color: #cccccc; font-size: 13px; line-height: 1.5; min-height: 120px; }
-        .terminal-log p { margin-bottom: 0.3rem; }
-        .log-critical { color: var(--accent); }
-        .log-success { color: var(--emerald); }
+        .terminal-log { padding: 4px 8px; color: #cccccc; font-size: 14px; line-height: 1.2; min-height: 120px; }
+        .terminal-log p { margin-bottom: 0.2rem; }
+        .log-critical { color: #fde047; }
+        .log-success { color: #10b981; }
 
-        .ps-progress { background: #012456; color: #0eeaff; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; display: none; }
+        /* The Blue Write-Progress Banner */
+        .ps-progress { background: #012456; color: #0eeaff; padding: 1rem 1.5rem; font-size: 0.85rem; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; display: none; }
         .ps-progress.active { display: block; background: #2B88D8; color: #ffffff; }
-        .ps-title { margin-bottom: 0.2rem; font-weight: bold; }
-        .ps-stage { margin-bottom: 0.2rem; padding-left: 1rem; }
-        .ps-bar { padding-left: 1rem; letter-spacing: 1px; color: var(--accent); }
+        .ps-title { margin-bottom: 0.2rem; }
+        .ps-stage { margin-bottom: 0.2rem; padding-left: 1.5rem; }
+        .ps-bar { padding-left: 1.5rem; letter-spacing: 1px; color: #fde047; }
 
-        .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(24px, 1fr)); gap: 4px; padding: 1.25rem; }
-        .memory-node { height: 24px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; color: #444; transition: all 0.2s; border-radius: 2px; }
+        /* Hexadecimal Memory Grid */
+        .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(22px, 1fr)); gap: 4px; padding: 1.5rem; }
+        .memory-node { height: 22px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #333; transition: color 0.2s; }
         .memory-node::after { content: '00'; }
-        .memory-node.safe { color: var(--emerald); }
+
+        .memory-node.safe { color: #10b981; }
         .memory-node.safe::after { content: 'FF'; }
-        .memory-node.corrupt { background: var(--warning); color: #000; font-weight: bold; animation: terminalGlitch 0.15s infinite; }
+
+        .memory-node.corrupt { background: #f97316; color: #000; font-weight: bold; animation: terminalGlitch 0.15s infinite; }
         .memory-node.corrupt::after { content: 'XX'; }
-        .memory-node.scan { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 10px rgba(253, 224, 71, 0.5); }
+
+        .memory-node.scan { background: #fde047; color: #000; transform: scale(1.1); z-index: 2; font-weight: bold; box-shadow: 0 0 10px rgba(253, 224, 71, 0.4); }
         .memory-node.scan::after { content: '>>'; }
 
-        .terminal-legend { padding: 0.85rem 1.25rem; border-top: 1px dashed #333; display: flex; gap: 1.5rem; font-size: 0.75rem; color: #888; }
-        .terminal-legend .node { width: 10px; height: 10px; border-radius: 2px; }
-        .terminal-legend .node.safe { background: var(--emerald); }
-        .terminal-legend .node.corrupt { background: var(--warning); }
-        .terminal-legend .node.scan { background: var(--accent); }
+        .terminal-legend { padding: 1rem 1.5rem; border-top: 1px dashed #333; display: flex; gap: 1.5rem; font-size: 0.75rem; color: #888; }
+        .terminal-legend .node { width: 12px; height: 12px; }
+        .terminal-legend .node.safe { background: #10b981; }
+        .terminal-legend .node.corrupt { background: #f97316; }
+        .terminal-legend .node.scan { background: #fde047; }
 
         @keyframes terminalGlitch {
             0% { transform: translate(0) }
@@ -478,39 +499,80 @@
             100% { transform: translate(0) }
         }
 
-        .wmdt-screen { position: absolute; inset: 0; background: #0000aa; color: #ffffff; font-family: var(--font-mono); z-index: 10; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        /* WMDT Pre-OS Reboot Overlay */
+        .wmdt-screen { position: absolute; inset: 0; background: #0000aa; color: #ffffff; font-family: 'JetBrains Mono', monospace; z-index: 10; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .wmdt-screen.active { opacity: 1; pointer-events: auto; }
-        .wmdt-header { background: #aaaaaa; color: #000000; text-align: center; padding: 4px 0; font-size: 0.85rem; font-weight: bold; }
-        .wmdt-body { padding: 1.5rem; font-size: 0.85rem; line-height: 1.5; }
+        .wmdt-header { background: #aaaaaa; color: #000000; text-align: center; padding: 2px 0; font-size: 0.85rem; }
+        .wmdt-body { padding: 1.5rem; font-size: 0.85rem; line-height: 1.4; }
         .wmdt-yellow { color: #ffff55; }
-        .wmdt-progress-bar { background: #aaaaaa; height: 16px; width: 0%; margin-top: 8px; transition: width 0.1s linear; }
+        .wmdt-progress-bar { background: #aaaaaa; height: 14px; width: 0%; margin-top: 6px; transition: width 0.1s linear; }
 
-        .telemetry-row { display: flex; items-center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-        .counter-housing { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
-        .counter-housing span { color: var(--accent); font-weight: bold; }
+        /* Telemetry Row */
+        .telemetry-row { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+        .counter-housing { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
 
-        .prose-block { max-width: 850px; font-size: 1.12rem; line-height: 1.8; color: var(--text-main); }
-        .prose-block p { margin-bottom: 1.8rem; }
+        /* Typography & Prose */
+        .prose-block { max-width: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
+        .prose-block p { margin-bottom: 2rem; }
 
         .reveal-element { opacity: 0; transform: translate3d(0, 25px, 0); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
         .reveal-element.visible { opacity: 1; transform: translate3d(0, 0, 0); }
 
-        .sys-footer { border-top: 1px solid var(--border-glow); padding: 4.5rem 0; background: rgba(7, 9, 14, 0.95); }
-        .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
-        .footer-loc { color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+        .sys-footer { border-top: 1px solid var(--border-glow); padding: 5rem 0; background: rgba(9, 11, 16, 0.95); }
+        .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+        .footer-loc { color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.05em; }
 
         #mobile-toggle { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; }
 
+        /* Mobile Viewport Navigation Fixes */
         @media (max-width: 768px) {
-            #mobile-toggle { display: block; }
-            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-pure); flex-direction: column; padding: 2.5rem; border-bottom: 1px solid var(--border-glow); gap: 1.5rem; align-items: flex-start; }
-            .nav-links.active { display: flex; }
-            .section-padding { padding: 5rem 0; }
+            #mobile-toggle { display: block; z-index: 101; }
+            .nav-inner { position: relative; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: -2rem;
+                right: -2rem;
+                width: calc(100% + 4rem);
+                background: #090B10;
+                flex-direction: column;
+                padding: 2.5rem 2rem;
+                border-bottom: 1px solid var(--border-glow);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
+                gap: 1.5rem;
+                align-items: flex-start;
+                z-index: 200;
+            }
+            .nav-links.active { display: flex !important; }
+            .nav-item { width: 100%; }
+            .nav-item a { font-size: 0.85rem; padding: 0.6rem 0; display: block; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+            .section-padding { padding: 6rem 0; }
             .tool-monolith { padding: 2rem; }
             .telemetry-row { flex-direction: column; align-items: flex-start; width: 100%; }
             .btn-primitive { width: 100%; }
+
             .matrix-grid { grid-template-columns: 1fr; }
             .interactive-card { padding: 1.5rem; }
+            .memory-grid { padding: 1rem; gap: 2px; }
+            .terminal-log { padding: 4px; font-size: 12px; word-wrap: break-word; overflow-wrap: break-word; }
+            .ps-progress { padding: 0.75rem 1rem; font-size: 0.75rem; }
+            .terminal-legend { padding: 0.75rem 1rem; gap: 1rem; flex-wrap: wrap; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 1rem; }
+            .section-padding { padding: 4rem 0; }
+            .interactive-card { padding: 1.25rem; min-height: 320px; }
+            .tool-monolith { padding: 1.25rem; }
+            .memory-grid { padding: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(18px, 1fr)); }
+            .memory-node { height: 18px; font-size: 0.6rem; }
+            .terminal-log { font-size: 11px; }
+            .ps-progress { padding: 0.5rem; font-size: 0.7rem; }
+            .ps-stage { padding-left: 0.5rem; }
+            .ps-bar { padding-left: 0.5rem; }
+            .terminal-legend { padding: 0.5rem; gap: 0.5rem; font-size: 0.65rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -553,8 +615,6 @@
         </header>
 
         <main id="main-content" tabindex="-1" style="outline: none;">
-            
-            <!-- Hero Section -->
             <section id="hero" class="hero-viewport">
                 <div class="container">
                     <div class="hero-core">
@@ -566,28 +626,29 @@
                             I Engineer Hardened Networks &<br>
                             <em>High-Performance Workstations.</em>
                         </h1>
-                        <p class="hero-desc text-slate-300 text-lg leading-relaxed sys-reveal">
-                            Specializing in zero-trust infrastructure, low-level reverse engineering, and custom high-throughput compute topologies across enterprise environments.
+                        <div class="hero-desc sys-reveal" aria-hidden="true">
+                        </div>
+                        <p class="sr-only">
+                            &gt; initializing secure environment telemetry monitoring platforms...
+                            &gt; assessing deployment base metrics for 170+ enterprise network nodes... [OK]
+                            &gt; zero-trust authentication policies enforced and structural auditing active. [OK]
                         </p>
                         <div class="btn-stack sys-reveal">
-                            <a href="#contact" class="btn-primitive primary" aria-label="Connect with Hugo" title="Connect with Hugo">./connect_with_hugo.sh</a>
+                            <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh" aria-label="Connect with Hugo" title="Connect with Hugo">./connect_with_hugo.sh</a>
                             <a href="#services" class="btn-primitive secondary" aria-label="View Technical Capabilities" title="View Technical Capabilities">view_technical_capabilities</a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Services / Expertise -->
             <section id="services" class="section-padding">
                 <div class="container">
                     <div class="section-header reveal-element">
                         <span class="section-tag">// CORE EXPERTISE</span>
-                        <h2 class="section-title">Infrastructure Security Metrics</h2>
+                        <h2 class="section-title decrypt-trigger">Infrastructure Security Metrics</h2>
                     </div>
 
                     <div class="matrix-grid">
-                        
-                        <!-- Card 1 -->
                         <div class="matrix-cell reveal-element">
                             <div class="interactive-card">
                                 <div class="card-grid" aria-hidden="true"></div>
@@ -638,7 +699,8 @@
                                             <i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
                                             <i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
                                             <i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-                                            <i style="height:68%"></i><i style="height:90%"></i>
+                                            <i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
+                                            <i style="height:48%"></i><i style="height:82%"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -654,7 +716,6 @@
                             </div>
                         </div>
 
-                        <!-- Card 2 -->
                         <div class="matrix-cell reveal-element" style="transition-delay: 0.1s;">
                             <div class="interactive-card">
                                 <div class="card-grid" aria-hidden="true"></div>
@@ -677,44 +738,58 @@
                                     <h3 class="card-heading"><span>Hardware Synthesis</span>Low-Level Optimization</h3>
                                     <p class="card-text">Deep system exploration, execution tracing, and resource management. Leveraging comprehensive reverse engineering experience to maximize software capability against bare-metal hardware constraints.</p>
 
-                                    <!-- Featured Exhibit Badge -->
-                                    <div style="margin: 1rem 0; padding: 0.85rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;">
-                                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--emerald); font-weight: 700; margin-bottom: 0.35rem;">🎮 FEATURED OPEN SOURCE EXHIBIT</div>
-                                        <a href="/DaedalusX64/" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: #030712; background: var(--emerald); padding: 0.45rem 0.85rem; border-radius: 4px; text-decoration: none;">
+                                    <div style="margin: 1.25rem 0; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;">
+                                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #10b981; font-weight: 700; margin-bottom: 0.4rem;">🎮 FEATURED OPEN SOURCE EXHIBIT</div>
+                                        <a href="/DaedalusX64/" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: #030712; background: #10b981; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
                                             ▶ ./launch_daedalusx64_telemetry.sh
                                         </a>
                                     </div>
 
                                     <div class="metric-grid" aria-hidden="true">
                                         <div class="metric">
-                                            <span class="metric-label">INSTRUCTIONS</span>
-                                            <span class="metric-value">60<small>FPS</small></span>
-                                            <span class="metric-bar"><i style="width:100%"></i></span>
+                                            <span class="metric-label">UPTIME</span>
+                                            <span class="metric-value">99.992<small>%</small></span>
+                                            <span class="metric-bar"><i style="width:99%"></i></span>
                                         </div>
                                         <div class="metric">
-                                            <span class="metric-label">HLE MATCH</span>
-                                            <span class="metric-value">100<small>%</small></span>
-                                            <span class="metric-bar"><i style="width:100%"></i></span>
+                                            <span class="metric-label">LATENCY</span>
+                                            <span class="metric-value">12<small>ms</small></span>
+                                            <span class="metric-bar"><i style="width:22%"></i></span>
                                         </div>
                                         <div class="metric">
-                                            <span class="metric-label">CACHE</span>
-                                            <span class="metric-value">0.12<small>ms</small></span>
-                                            <span class="metric-bar"><i style="width:15%"></i></span>
+                                            <span class="metric-label">LOAD</span>
+                                            <span class="metric-value metric-warn">0.74</span>
+                                            <span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-graph" aria-hidden="true">
+                                        <div class="graph-header">
+                                            <span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+                                        </div>
+                                        <div class="graph-bars">
+                                            <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
+                                            <i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
+                                            <i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
+                                            <i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
+                                            <i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
+                                            <i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
+                                            <i style="height:48%"></i><i style="height:82%"></i>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-nodes" aria-hidden="true">
                                         <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-dot on"></span><span class="node-dot warn"></span>
                                         <span class="node-dot on"></span><span class="node-dot on"></span>
-                                        <span class="node-cluster">PSP GU HLE</span>
+                                        <span class="node-cluster">6/6 NODES</span>
                                     </div>
-                                    <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Microcode HLE</span>
+                                    <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Low-Level Optimization</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card 3 -->
                         <div class="matrix-cell reveal-element" style="transition-delay: 0.2s;">
                             <div class="interactive-card">
                                 <div class="card-grid" aria-hidden="true"></div>
@@ -734,48 +809,62 @@
 
                                 <div class="card-body">
                                     <span class="card-index">03 // PROACTIVE GOVERNANCE</span>
-                                    <h3 class="card-heading"><span>Defensive Systems</span>Endpoint Protection & IR</h3>
+                                    <h3 class="card-heading"><span>Defensive Systems</span>Endpoint Protection &amp; IR</h3>
                                     <p class="card-text">Enforcing logical access parameters, asset controls, and Zero Trust security models. Developing automated configuration monitoring routines to neutralize system configuration drift and vulnerability footprints.</p>
 
                                     <div class="metric-grid" aria-hidden="true">
                                         <div class="metric">
-                                            <span class="metric-label">ZERO TRUST</span>
-                                            <span class="metric-value">ACTIVE</span>
-                                            <span class="metric-bar"><i style="width:100%"></i></span>
+                                            <span class="metric-label">UPTIME</span>
+                                            <span class="metric-value">99.992<small>%</small></span>
+                                            <span class="metric-bar"><i style="width:99%"></i></span>
                                         </div>
                                         <div class="metric">
-                                            <span class="metric-label">DRIFT</span>
-                                            <span class="metric-value">0.00<small>%</small></span>
-                                            <span class="metric-bar"><i style="width:0%"></i></span>
+                                            <span class="metric-label">LATENCY</span>
+                                            <span class="metric-value">12<small>ms</small></span>
+                                            <span class="metric-bar"><i style="width:22%"></i></span>
                                         </div>
                                         <div class="metric">
-                                            <span class="metric-label">SEIM</span>
-                                            <span class="metric-value">NOMINAL</span>
-                                            <span class="metric-bar"><i style="width:95%"></i></span>
+                                            <span class="metric-label">LOAD</span>
+                                            <span class="metric-value metric-warn">0.74</span>
+                                            <span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-graph" aria-hidden="true">
+                                        <div class="graph-header">
+                                            <span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+                                        </div>
+                                        <div class="graph-bars">
+                                            <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
+                                            <i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
+                                            <i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
+                                            <i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
+                                            <i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
+                                            <i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
+                                            <i style="height:48%"></i><i style="height:82%"></i>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-nodes" aria-hidden="true">
                                         <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-dot on"></span><span class="node-dot warn"></span>
                                         <span class="node-dot on"></span><span class="node-dot on"></span>
-                                        <span class="node-cluster">ZERO TRUST</span>
+                                        <span class="node-cluster">6/6 NODES</span>
                                     </div>
-                                    <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Endpoint Defense</span>
+                                    <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Zero Trust Architecture</span>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
 
-            <!-- Bare Metal Platforms -->
             <section id="pc-builds" class="section-padding">
                 <div class="container">
                     <div class="section-header reveal-element">
                         <span class="section-tag">// BARE-METAL PLATFORMS</span>
-                        <h2 class="section-title">High-Throughput Workstations</h2>
+                        <h2 class="section-title decrypt-trigger">High-Throughput Workstations</h2>
                     </div>
 
                     <div class="matrix-grid">
@@ -800,8 +889,47 @@
                                     <span class="card-index">0X // COMPUTE CORE</span>
                                     <h3 class="card-heading">High-Availability Creative Nodes</h3>
                                     <p class="card-text">Bespoke workstation computing environments tailored to bypass execution limits in multi-threaded rendering, non-linear video compilation pipelines, and heavy visual asset generation.</p>
+
+                                    <div class="metric-grid" aria-hidden="true">
+                                        <div class="metric">
+                                            <span class="metric-label">UPTIME</span>
+                                            <span class="metric-value">99.992<small>%</small></span>
+                                            <span class="metric-bar"><i style="width:99%"></i></span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="metric-label">LATENCY</span>
+                                            <span class="metric-value">12<small>ms</small></span>
+                                            <span class="metric-bar"><i style="width:22%"></i></span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="metric-label">LOAD</span>
+                                            <span class="metric-value metric-warn">0.74</span>
+                                            <span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-graph" aria-hidden="true">
+                                        <div class="graph-header">
+                                            <span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+                                        </div>
+                                        <div class="graph-bars">
+                                            <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
+                                            <i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
+                                            <i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
+                                            <i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
+                                            <i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
+                                            <i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
+                                            <i style="height:48%"></i><i style="height:82%"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-footer">
+                                    <div class="footer-nodes" aria-hidden="true">
+                                        <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-dot on"></span><span class="node-dot warn"></span>
+                                        <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-cluster">6/6 NODES</span>
+                                    </div>
                                     <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Media Workstations</span>
                                 </div>
                             </div>
@@ -819,7 +947,7 @@
                                 <div class="widget-topbar" aria-hidden="true">
                                     <div class="topbar-id">
                                         <span class="status-led"></span>
-                                        <span class="topbar-node">NODE-EDGE</span>
+                                        <span class="topbar-node">NODE-RX</span>
                                     </div>
                                     <div class="topbar-status">ONLINE</div>
                                 </div>
@@ -828,8 +956,47 @@
                                     <span class="card-index">0X // COMPUTE CORE</span>
                                     <h3 class="card-heading">Hardened Edge Compute Nodes</h3>
                                     <p class="card-text">High-performance target builds optimized for localized processing tasks, secure edge data collections, isolated runtime tools, and specialized memory-bus configurations.</p>
+
+                                    <div class="metric-grid" aria-hidden="true">
+                                        <div class="metric">
+                                            <span class="metric-label">UPTIME</span>
+                                            <span class="metric-value">99.992<small>%</small></span>
+                                            <span class="metric-bar"><i style="width:99%"></i></span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="metric-label">LATENCY</span>
+                                            <span class="metric-value">12<small>ms</small></span>
+                                            <span class="metric-bar"><i style="width:22%"></i></span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="metric-label">LOAD</span>
+                                            <span class="metric-value metric-warn">0.74</span>
+                                            <span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-graph" aria-hidden="true">
+                                        <div class="graph-header">
+                                            <span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+                                        </div>
+                                        <div class="graph-bars">
+                                            <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
+                                            <i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
+                                            <i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
+                                            <i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
+                                            <i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
+                                            <i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
+                                            <i style="height:48%"></i><i style="height:82%"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-footer">
+                                    <div class="footer-nodes" aria-hidden="true">
+                                        <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-dot on"></span><span class="node-dot warn"></span>
+                                        <span class="node-dot on"></span><span class="node-dot on"></span>
+                                        <span class="node-cluster">6/6 NODES</span>
+                                    </div>
                                     <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Compute Topologies</span>
                                 </div>
                             </div>
@@ -838,12 +1005,11 @@
                 </div>
             </section>
 
-            <!-- Automated System Controls / PowerShell Visualizer -->
             <section id="tools" class="section-padding">
                 <div class="container">
                     <div class="section-header reveal-element">
                         <span class="section-tag">// INFRASTRUCTURE SCRIPTS</span>
-                        <h2 class="section-title">Automated System Controls</h2>
+                        <h2 class="section-title decrypt-trigger">Automated System Controls</h2>
                     </div>
 
                     <div class="tool-monolith reveal-element">
@@ -875,7 +1041,6 @@
                             </div>
                         </div>
 
-                        <!-- PowerShell Terminal Emulator -->
                         <div class="sys-visualizer terminal-mode reveal-element" aria-hidden="true">
                             <div class="terminal-header">
                                 <div class="terminal-header-title">
@@ -883,38 +1048,25 @@
                                     <span>Administrator: System Rescue Launcher</span>
                                 </div>
                                 <div class="terminal-controls">
-                                    <div class="win-btn minimize" title="Minimize"><svg viewBox="0 0 10 10"><path d="M1 5h8"/></svg></div>
-                                    <div class="win-btn maximize" title="Maximize"><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7"/></svg></div>
-                                    <div class="win-btn close" title="Close"><svg viewBox="0 0 10 10"><path d="M1 1l8 8m0-8L1 9"/></svg></div>
+                                    <div class="win-btn minimize" title="Minimize (Disabled in visualizer)" role="button" aria-label="Minimize (Disabled in visualizer)" aria-disabled="true"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 5h8"/></svg></div>
+                                    <div class="win-btn maximize" title="Maximize (Disabled in visualizer)" role="button" aria-label="Maximize (Disabled in visualizer)" aria-disabled="true"><svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1.5" y="1.5" width="7" height="7"/></svg></div>
+                                    <div class="win-btn close" title="Close (Disabled in visualizer)" role="button" aria-label="Close (Disabled in visualizer)" aria-disabled="true"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8m0-8L1 9"/></svg></div>
                                 </div>
                             </div>
                             <div class="terminal-body">
                                 <div class="terminal-log" id="terminal-log">
-                                    <p class="log-critical">PS C:\SYSTEM32&gt; ./win_maintenance_routine.ps1 -Elevated -Verbose</p>
-                                    <p>[+] Initializing System Rescue Environment...</p>
-                                    <p>[+] Parsing BSOD BugCheck Logs... (3 Event ID 1001 found)</p>
-                                    <p class="log-success">[✓] DISM Health Check: Component Store Repair Complete.</p>
-                                    <p class="log-success">[✓] SFC Scan: OS Integrity Verified. 0 Corrupted Files.</p>
+                                    <p>Launching System Rescue Utility...</p>
+                                    <br>
                                 </div>
 
-                                <div class="ps-progress active" id="vis-progress-bar">
+                                <div class="ps-progress" id="vis-progress-bar">
                                     <div class="ps-title">System Rescue & Maintenance</div>
-                                    <div class="ps-stage" id="vis-status-text">Stage 4 of 6: Verifying Memory Bus Pages</div>
-                                    <div class="ps-bar">[oooooooooooooooooooooooooooooo                    ]</div>
+                                    <div class="ps-stage" id="vis-status-text">Stage 1 of 6: Extracting BSOD Logs</div>
+                                    <div class="ps-bar">[oooooooooooooo                                    ]</div>
                                 </div>
 
                                 <div class="memory-grid" id="memory-grid">
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node scan"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node corrupt"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node safe"></div>
-                                    <div class="memory-node safe"></div>
-                                </div>
+                                    </div>
 
                                 <div class="vis-legend terminal-legend">
                                     <div class="legend-item"><div class="node safe"></div> <span>[VERIFIED]</span></div>
@@ -922,26 +1074,42 @@
                                     <div class="legend-item"><div class="node scan"></div> <span>[DISM_OVR]</span></div>
                                 </div>
                             </div>
+
+                            <div class="wmdt-screen" id="wmdt-screen">
+                                <div class="wmdt-header">Windows Memory Diagnostics Tool</div>
+                                <div class="wmdt-body">
+                                    <p>Windows is checking for memory problems...<br>This might take several minutes.</p>
+                                    <br>
+                                    <p>Running test pass 1 of 2: <span id="wmdt-pass-pct">0</span>% complete<br>
+                                    Overall test status: <span id="wmdt-overall-pct">00</span>% complete</p>
+                                    <div class="wmdt-progress-bar" id="wmdt-bar"></div>
+                                    <br>
+                                    <p>Status:<br><span class="wmdt-yellow">No problems have been detected yet.</span></p>
+                                    <br>
+                                    <p class="wmdt-yellow">Although the test may appear inactive at times, it is still running. Please wait until testing is complete...</p>
+                                    <br><br>
+                                    <p>Windows will restart the computer automatically. Test results will be displayed again after you log on.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="telemetry-row">
-                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP">
+                            <a href="https://github.com/Shinydude100/Shinydude100.github.io/releases" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" id="download-btn" class="btn-primitive primary" aria-label="Download Binary Payload ZIP (opens in a new tab)" title="Download Binary Payload ZIP (opens in a new tab)">
                                 pull_binary_payload.zip
                             </a>
                             <div class="counter-housing">
-                                TOTAL TELEMETRY VERIFICATIONS: <span id="download-counter">VERIFIED_STABLE</span>
+                                TOTAL TELEMETRY VERIFICATIONS: <span id="download-counter">RESOLVING_METRICS...</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- About / Track Record -->
             <section id="about" class="section-padding">
                 <div class="container">
                     <div class="section-header reveal-element">
                         <span class="section-tag">// PROFILE TELEMETRY</span>
-                        <h2 class="section-title">Technical Leadership Overview</h2>
+                        <h2 class="section-title decrypt-trigger">Technical Leadership Overview</h2>
                     </div>
                     <div class="prose-block reveal-element">
                         <p>
@@ -954,22 +1122,20 @@
                 </div>
             </section>
 
-            <!-- Contact -->
             <section id="contact" class="section-padding">
                 <div class="container">
                     <div class="reveal-element" style="text-align: center; max-width: 750px; margin: 0 auto;">
                         <span class="section-tag">// SECURE REQUISITIONS</span>
-                        <h2 class="section-title" style="margin-bottom:2rem">Open Infrastructure Communications</h2>
+                        <h2 class="section-title decrypt-trigger" style="margin-bottom:2rem">Open Infrastructure Communications</h2>
                         <p class="card-text" style="margin-bottom:3.5rem">Initialize a secure connection to exchange technical architecture blueprints, project proposals, or critical network engineering requirements directly with the lab.</p>
                         <div class="btn-stack" style="justify-content: center;">
-                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
-                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF">pull_sanitized_resume.pdf [52KB]</a>
-                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn">linkedin://verify_identity</a>
+                            <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com" title="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
+                            <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF (52KB)" title="Download Sanitized Resume PDF (52KB)">pull_sanitized_resume.pdf [52KB]</a>
+                            <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="btn-primitive secondary" aria-label="Verify Identity on LinkedIn (opens in a new tab)" title="Verify Identity on LinkedIn (opens in a new tab)">linkedin://verify_identity</a>
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
 
         <footer class="sys-footer">
@@ -982,116 +1148,35 @@
         </footer>
     </div>
 
-    <!-- Canvas Backplane & Interactive Motion Script -->
+    <!-- Mobile Navigation Toggle Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Scroll Reveal Observer
-            const observerOptions = { threshold: 0.15 };
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.reveal-element').forEach(el => revealObserver.observe(el));
-
-            // Header Scroll Effect
-            const header = document.getElementById('site-header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 40) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            });
-
-            // Mobile Menu Toggle
-            const toggle = document.getElementById('mobile-toggle');
-            const menu = document.getElementById('menu-box');
+        document.addEventListener('DOMContentLoaded', function() {
+            var toggle = document.getElementById('mobile-toggle');
+            var menu = document.getElementById('menu-box');
             if (toggle && menu) {
-                toggle.addEventListener('click', () => {
-                    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-                    toggle.setAttribute('aria-expanded', !expanded);
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                    toggle.setAttribute('aria-expanded', !isExpanded);
                     menu.classList.toggle('active');
                 });
-            }
 
-            // Interactive Card 3D Physics & Mouse Glow
-            document.querySelectorAll('.interactive-card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    card.style.setProperty('--m-x', `${x}px`);
-                    card.style.setProperty('--m-y', `${y}px`);
-
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -6;
-                    const rotateY = ((x - centerX) / centerX) * 6;
-
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-                });
-            });
-
-            // Pointer Aura Follower
-            const ptrDot = document.querySelector('.ptr-dot');
-            const ptrAura = document.querySelector('.ptr-aura');
-            if (ptrDot && ptrAura && window.matchMedia('(pointer: fine)').matches) {
-                document.documentElement.classList.add('sys-cursor-active');
-                window.addEventListener('mousemove', (e) => {
-                    ptrDot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-                    ptrAura.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-                });
-
-                document.querySelectorAll('a, button, .interactive-card').forEach(interactive => {
-                    interactive.addEventListener('mouseenter', () => ptrAura.classList.add('interacting'));
-                    interactive.addEventListener('mouseleave', () => ptrAura.classList.remove('interacting'));
-                });
-            }
-
-            // Matrix Backplane Canvas Grid
-            const canvas = document.getElementById('matrix-backplane');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                let width = canvas.width = window.innerWidth;
-                let height = canvas.height = window.innerHeight;
-
-                window.addEventListener('resize', () => {
-                    width = canvas.width = window.innerWidth;
-                    height = canvas.height = window.innerHeight;
-                });
-
-                const cols = Math.floor(width / 30);
-                const ypos = Array(cols).fill(0);
-
-                function drawMatrix() {
-                    ctx.fillStyle = 'rgba(7, 9, 14, 0.1)';
-                    ctx.fillRect(0, 0, width, height);
-
-                    ctx.fillStyle = '#fde047';
-                    ctx.font = '10px Fira Code, monospace';
-
-                    ypos.forEach((y, index) => {
-                        const text = String.fromCharCode(Math.floor(Math.random() * 128));
-                        const x = index * 30;
-                        ctx.fillText(text, x, y);
-
-                        if (y > 100 + Math.random() * 10000) {
-                            ypos[index] = 0;
-                        } else {
-                            ypos[index] = y + 12;
-                        }
+                // Close menu when clicking navigation link
+                var navLinks = menu.querySelectorAll('a');
+                navLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        menu.classList.remove('active');
+                        toggle.setAttribute('aria-expanded', 'false');
                     });
-                }
+                });
 
-                setInterval(drawMatrix, 50);
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+                        menu.classList.remove('active');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
             }
         });
     </script>
