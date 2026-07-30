@@ -69,21 +69,20 @@
 
     <style>
         :root {
-            --bg-dark: #07090e;
-            --bg-card: #0f141f;
-            --bg-code: #131926;
-            --accent-green: #10b981;
-            --accent-green-glow: rgba(16, 185, 129, 0.4);
-            --accent-blue: #3b82f6;
-            --accent-cyan: #38bdf8;
-            --accent-gold: #f59e0b;
-            --accent-pink: #ec4899;
-            --text-main: #f1f5f9;
+            --bg-dark: #030508;
+            --bg-card: #0b0f19;
+            --bg-code: #0f1422;
+            --accent-green: #00e676;
+            --accent-green-glow: rgba(0, 230, 118, 0.4);
+            --accent-cyan: #00f0ff;
+            --accent-cyan-glow: rgba(0, 240, 255, 0.4);
+            --accent-gold: #ffb300;
+            --accent-magenta: #ff2a6d;
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
-            --border-glow: rgba(59, 130, 246, 0.3);
-            --psp-body-bg: linear-gradient(145deg, #1c2333 0%, #0d121c 100%);
-            --psp-bezel-border: #2d3748;
+            --psp-chassis-bg: linear-gradient(165deg, #182030 0%, #0a0e17 100%);
+            --psp-bezel-border: #2a364f;
         }
 
         * {
@@ -96,7 +95,7 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
+            line-height: 1.65;
             padding: 0;
             margin: 0;
             overflow-x: hidden;
@@ -105,10 +104,10 @@
 
         /* Top Agent-Native Header Banner */
         .agent-banner {
-            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
-            border-bottom: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 0.5rem 1rem;
-            font-size: 0.78rem;
+            background: linear-gradient(90deg, rgba(0, 230, 118, 0.12) 0%, rgba(0, 240, 255, 0.12) 100%);
+            border-bottom: 1px solid rgba(0, 230, 118, 0.25);
+            padding: 0.45rem 1rem;
+            font-size: 0.76rem;
             text-align: center;
             font-family: 'Fira Code', monospace;
             color: var(--accent-green);
@@ -138,7 +137,7 @@
 
         header {
             border-bottom: 1px solid var(--border-color);
-            background: rgba(7, 9, 14, 0.92);
+            background: rgba(3, 5, 8, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             position: sticky;
@@ -159,7 +158,7 @@
         .logo {
             font-family: 'Orbitron', sans-serif;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             letter-spacing: -0.01em;
             color: var(--text-main);
             text-decoration: none;
@@ -175,7 +174,7 @@
 
         .nav-links {
             display: flex;
-            gap: 1.2rem;
+            gap: 1.25rem;
             align-items: center;
         }
 
@@ -215,10 +214,10 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(0, 230, 118, 0.1);
             color: var(--accent-green);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            padding: 0.35rem 0.8rem;
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            padding: 0.35rem 0.85rem;
             border-radius: 9999px;
             font-size: 0.78rem;
             font-weight: 600;
@@ -228,7 +227,7 @@
         }
 
         h1 {
-            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            font-size: clamp(1.8rem, 5.5vw, 3.5rem);
             font-weight: 900;
             line-height: 1.15;
             letter-spacing: -0.03em;
@@ -251,7 +250,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 0.8rem;
-            background: rgba(15, 20, 31, 0.85);
+            background: rgba(11, 15, 25, 0.85);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1rem;
@@ -371,7 +370,7 @@
 
         .history-link-card:hover {
             border-color: var(--accent-green);
-            background: rgba(16, 185, 129, 0.08);
+            background: rgba(0, 230, 118, 0.08);
             color: #fff;
         }
 
@@ -442,9 +441,9 @@
         }
 
         .tag {
-            background: rgba(59, 130, 246, 0.15);
+            background: rgba(0, 240, 255, 0.12);
             color: var(--accent-cyan);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.3);
             font-size: 0.72rem;
             font-weight: 600;
             padding: 0.25rem 0.65rem;
@@ -471,10 +470,10 @@
         }
 
         /* ------------------------------------------------------------- */
-        /* RESPONSIVE PSP CONSOLE CONTAINER & COMPARISON SLIDER          */
+        /* RESPONSIVE DUAL-MODE PSP CONSOLE SIMULATION (DESKTOP & MOBILE)*/
         /* ------------------------------------------------------------- */
         
-        /* DESKTOP MODE (min-width: 769px): Full PSP-1000 Hardware Overlay */
+        /* DESKTOP MODE (min-width: 769px): Physical PSP-1000 Overlay Image Frame */
         @media (min-width: 769px) {
             .psp-hardware-frame {
                 position: relative;
@@ -515,14 +514,23 @@
                 display: flex;
                 flex-direction: column;
             }
+
+            .psp-mobile-controls-chassis {
+                display: none;
+            }
         }
 
-        /* MOBILE MODE (max-width: 768px): Sleek Full-Width Bezel Viewport */
+        /* MOBILE MODE (max-width: 768px): Tactile Console Unit with Controls */
         @media (max-width: 768px) {
             .psp-hardware-frame {
                 position: relative;
                 width: 100%;
                 margin: 1.25rem 0;
+                background: var(--psp-chassis-bg);
+                border: 2px solid var(--psp-bezel-border);
+                border-radius: 20px;
+                padding: 0.8rem;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
             }
 
             .psp-chassis-overlay-img {
@@ -531,14 +539,91 @@
 
             .psp-screen-viewport {
                 width: 100%;
-                border: 2px solid var(--psp-bezel-border);
-                border-radius: 12px;
+                border: 2px solid #1e293b;
+                border-radius: 10px;
                 overflow: hidden;
                 background: #030509;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+                box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
                 display: flex;
                 flex-direction: column;
             }
+
+            /* Tactile Mobile Controls Chassis */
+            .psp-mobile-controls-chassis {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem 0.5rem 0.2rem;
+                margin-top: 0.5rem;
+            }
+
+            /* Left Tactile D-Pad */
+            .mobile-dpad-container {
+                width: 70px;
+                height: 70px;
+                position: relative;
+            }
+
+            .m-dpad-btn {
+                position: absolute;
+                background: #151d2e;
+                border: 1px solid #334155;
+                border-radius: 4px;
+                box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-muted);
+                font-size: 0.65rem;
+                cursor: pointer;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .m-dpad-btn:active {
+                background: var(--accent-cyan);
+                color: #000;
+            }
+
+            .m-dpad-up { top: 0; left: 24px; width: 22px; height: 26px; border-radius: 5px 5px 0 0; }
+            .m-dpad-down { bottom: 0; left: 24px; width: 22px; height: 26px; border-radius: 0 0 5px 5px; }
+            .m-dpad-left { top: 24px; left: 0; width: 26px; height: 22px; border-radius: 5px 0 0 5px; }
+            .m-dpad-right { top: 24px; right: 0; width: 26px; height: 22px; border-radius: 0 5px 5px 0; }
+            .m-dpad-center { top: 24px; left: 24px; width: 22px; height: 22px; background: #0b0f19; border: none; }
+
+            /* Right Tactile Action Buttons */
+            .mobile-action-container {
+                width: 70px;
+                height: 70px;
+                position: relative;
+            }
+
+            .m-face-btn {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: radial-gradient(circle at 30% 30%, #202b3d 0%, #0e1422 80%);
+                border: 1px solid #334155;
+                box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 3px 6px rgba(0,0,0,0.6);
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.7rem;
+                font-weight: 800;
+                cursor: pointer;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .m-face-btn:active {
+                transform: scale(0.92);
+            }
+
+            .m-btn-triangle { top: 0; left: 23px; color: #34d399; }
+            .m-btn-circle { top: 23px; right: 0; color: #f87171; }
+            .m-btn-cross { bottom: 0; left: 23px; color: #60a5fa; }
+            .m-btn-square { top: 23px; left: 0; color: #f472b6; }
         }
 
         .psp-screen-header-bar {
@@ -574,7 +659,7 @@
         .comparison-slider-box {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 250px;
             background: #05070a;
             overflow: hidden;
             touch-action: pan-y;
@@ -654,14 +739,14 @@
 
         /* Patched Shader Glow Styling */
         .layer-patched .comparison-img {
-            filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.6)) brightness(110%);
+            filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.6)) brightness(110%);
         }
 
         .patched-glow-bg {
             position: absolute;
             width: 160px;
             height: 160px;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, transparent 70%);
             pointer-events: none;
             border-radius: 50%;
         }
@@ -683,16 +768,16 @@
 
         .badge-left {
             left: 8px;
-            background: rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: rgba(255, 42, 109, 0.25);
+            color: #ff2a6d;
+            border: 1px solid rgba(255, 42, 109, 0.5);
         }
 
         .badge-right {
             right: 8px;
-            background: rgba(16, 185, 129, 0.3);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.5);
+            background: rgba(0, 230, 118, 0.25);
+            color: #00e676;
+            border: 1px solid rgba(0, 230, 118, 0.5);
         }
 
         /* Slider Divider Line & Touch Handle */
@@ -718,7 +803,7 @@
             background: #0f172a;
             border: 2px solid var(--accent-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.8), inset 0 0 6px rgba(255,255,255,0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.8), inset 0 0 6px rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -779,7 +864,7 @@
         }
 
         .preset-chip:hover, .preset-chip.active {
-            background: rgba(56, 189, 248, 0.18);
+            background: rgba(0, 240, 255, 0.18);
             color: var(--accent-cyan);
             border-color: var(--accent-cyan);
         }
@@ -1020,6 +1105,24 @@
 
                             <!-- Physical Overlay Image of PSP-1000 Console Chassis (Visible on Desktop) -->
                             <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
+
+                            <!-- Tactile Mobile Controls Chassis (Visible on Mobile) -->
+                            <div class="psp-mobile-controls-chassis">
+                                <div class="mobile-dpad-container">
+                                    <div class="m-dpad-btn m-dpad-up" onclick="setComparisonPreset('ex1', 50)">▲</div>
+                                    <div class="m-dpad-btn m-dpad-left" onclick="setComparisonPreset('ex1', 0)">◀</div>
+                                    <div class="m-dpad-btn m-dpad-right" onclick="setComparisonPreset('ex1', 100)">▶</div>
+                                    <div class="m-dpad-btn m-dpad-down" onclick="setComparisonPreset('ex1', 50)">▼</div>
+                                    <div class="m-dpad-btn m-dpad-center"></div>
+                                </div>
+
+                                <div class="mobile-action-container">
+                                    <div class="m-face-btn m-btn-triangle" onclick="setComparisonPreset('ex1', 50)">▲</div>
+                                    <div class="m-face-btn m-btn-square" onclick="setComparisonPreset('ex1', 0)">■</div>
+                                    <div class="m-face-btn m-btn-circle" onclick="setComparisonPreset('ex1', 100)">●</div>
+                                    <div class="m-face-btn m-btn-cross" onclick="setComparisonPreset('ex1', 50)">✕</div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- CODE CONTAINER -->
@@ -1192,6 +1295,24 @@
 
                             <!-- Physical Overlay Image of PSP-1000 Console Chassis (Visible on Desktop) -->
                             <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
+
+                            <!-- Tactile Mobile Controls Chassis (Visible on Mobile) -->
+                            <div class="psp-mobile-controls-chassis">
+                                <div class="mobile-dpad-container">
+                                    <div class="m-dpad-btn m-dpad-up" onclick="setComparisonPreset('ex4', 50)">▲</div>
+                                    <div class="m-dpad-btn m-dpad-left" onclick="setComparisonPreset('ex4', 0)">◀</div>
+                                    <div class="m-dpad-btn m-dpad-right" onclick="setComparisonPreset('ex4', 100)">▶</div>
+                                    <div class="m-dpad-btn m-dpad-down" onclick="setComparisonPreset('ex4', 50)">▼</div>
+                                    <div class="m-dpad-btn m-dpad-center"></div>
+                                </div>
+
+                                <div class="mobile-action-container">
+                                    <div class="m-face-btn m-btn-triangle" onclick="setComparisonPreset('ex4', 50)">▲</div>
+                                    <div class="m-face-btn m-btn-square" onclick="setComparisonPreset('ex4', 0)">■</div>
+                                    <div class="m-face-btn m-btn-circle" onclick="setComparisonPreset('ex4', 100)">●</div>
+                                    <div class="m-face-btn m-btn-cross" onclick="setComparisonPreset('ex4', 50)">✕</div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- CODE CONTAINER -->
