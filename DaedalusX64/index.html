@@ -8,7 +8,7 @@
     <!-- SEO & Social Meta -->
     <meta name="description" content="Interactive gamified showcase of low-level C++ HLE microcode patches, PSP GU hardware blend modes, and toolchain docs by Hugo Luna (Shinydude100).">
     <meta property="og:title" content="DaedalusX64 Microcode Exhibit — daca.me">
-    <meta property="og:description" content="Explore low-level N64 color combiner patches and PSP GU hardware blend modes with interactive comparison sliders inside a retro PSP container.">
+    <meta property="og:description" content="Explore low-level N64 color combiner patches and PSP GU hardware blend modes with interactive comparison sliders framed inside a realistic Sony PSP-1000 console.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://daca.me/DaedalusX64/">
 
@@ -419,171 +419,61 @@
         }
 
         /* ------------------------------------------------------------- */
-        /* SLEEK PSP / RETRO ARCADE SVG CONTAINER FRAME & SLIDER         */
+        /* PSP-1000 HARDWARE CHASSIS CONTAINER & INTERACTIVE SLIDER     */
         /* ------------------------------------------------------------- */
-        .psp-container-frame {
-            margin: 2rem 0;
-            background: var(--psp-body-bg);
-            border: 2px solid var(--psp-bezel-border);
-            border-radius: 28px;
-            padding: 1.8rem 1.5rem 1.2rem;
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.8),
-                inset 0 2px 4px rgba(255, 255, 255, 0.1),
-                inset 0 -3px 8px rgba(0, 0, 0, 0.7);
+        .psp-hardware-frame {
             position: relative;
+            width: 100%;
+            max-width: 860px;
+            margin: 2.5rem auto;
+            aspect-ratio: 860 / 380;
             user-select: none;
             -webkit-user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Top Glossy Shoulder Triggers */
-        .psp-shoulder-triggers {
+        /* PSP-1000 Hardware Image Overlay */
+        .psp-chassis-overlay-img {
             position: absolute;
-            top: -14px;
-            left: 5%;
-            right: 5%;
-            display: flex;
-            justify-content: space-between;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
             pointer-events: none;
+            z-index: 10;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
         }
 
-        .psp-shoulder-btn {
-            width: 90px;
-            height: 16px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px 8px 0 0;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 -2px 10px rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.65rem;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 0.1em;
-        }
-
-        .psp-chassis-grid {
-            display: grid;
-            grid-template-columns: 80px 1fr 80px;
-            gap: 1.2rem;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .psp-chassis-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .psp-controls-left, .psp-controls-right {
-                display: none !important;
-            }
-        }
-
-        /* PSP Left Controls (D-Pad) */
-        .psp-controls-left {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .psp-dpad {
-            width: 64px;
-            height: 64px;
-            position: relative;
-        }
-
-        .dpad-btn {
+        /* Screen Viewport Fitted Exactly Inside the PSP-1000 Hardware Frame */
+        .psp-screen-viewport {
             position: absolute;
-            background: #111622;
-            border: 1px solid #2d3748;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.5);
+            top: 12.2%;
+            left: 20.8%;
+            width: 58.4%;
+            height: 75.6%;
+            z-index: 5;
             border-radius: 4px;
-        }
-
-        .dpad-up { top: 0; left: 22px; width: 20px; height: 24px; border-radius: 5px 5px 0 0; }
-        .dpad-down { bottom: 0; left: 22px; width: 20px; height: 24px; border-radius: 0 0 5px 5px; }
-        .dpad-left { top: 22px; left: 0; width: 24px; height: 20px; border-radius: 5px 0 0 5px; }
-        .dpad-right { top: 22px; right: 0; width: 24px; height: 20px; border-radius: 0 5px 5px 0; }
-        .dpad-center { top: 22px; left: 22px; width: 20px; height: 20px; background: #0a0d16; border: none; }
-
-        .psp-analog-nub {
-            width: 42px;
-            height: 42px;
-            background: radial-gradient(circle at 30% 30%, #2a3447 0%, #111622 70%);
-            border-radius: 50%;
-            border: 2px solid #2d3748;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.15), 0 4px 8px rgba(0,0,0,0.6);
-            position: relative;
-        }
-
-        .psp-analog-nub::after {
-            content: '';
-            position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border-radius: 50%;
-            background: repeating-radial-gradient(circle, #1a2233, #1a2233 2px, #0e1320 2px, #0e1320 4px);
-        }
-
-        /* PSP Right Controls (Action Buttons) */
-        .psp-controls-right {
+            overflow: hidden;
+            background: #030509;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .psp-action-grid {
-            width: 68px;
-            height: 68px;
-            position: relative;
-        }
-
-        .psp-btn-face {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #252e42 0%, #0f1420 80%);
-            border: 1px solid #334155;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 3px 6px rgba(0,0,0,0.5);
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 800;
-            font-family: sans-serif;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .btn-triangle { top: 0; left: 23px; color: #34d399; text-shadow: 0 0 5px rgba(52, 211, 153, 0.5); }
-        .btn-circle { top: 23px; right: 0; color: #f87171; text-shadow: 0 0 5px rgba(248, 113, 113, 0.5); }
-        .btn-cross { bottom: 0; left: 23px; color: #60a5fa; text-shadow: 0 0 5px rgba(96, 165, 250, 0.5); }
-        .btn-square { top: 23px; left: 0; color: #f472b6; text-shadow: 0 0 5px rgba(244, 114, 182, 0.5); }
-
-        /* PSP Center Screen Box */
-        .psp-screen-wrapper {
-            background: #000;
-            border: 3px solid #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(0, 0, 0, 0.8);
-            position: relative;
         }
 
         .psp-screen-header-bar {
             background: rgba(15, 23, 42, 0.95);
             border-bottom: 1px solid #1e293b;
-            padding: 0.4rem 0.8rem;
+            padding: 0.35rem 0.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-family: 'Fira Code', monospace;
             font-size: 0.72rem;
             color: var(--text-muted);
+            z-index: 6;
         }
 
         .psp-screen-title {
@@ -602,21 +492,15 @@
             box-shadow: 0 0 6px var(--accent-green);
         }
 
-        /* TOUCH-FRIENDLY COMPARISON SLIDER COMPONENT */
+        /* TOUCH-FRIENDLY COMPARISON SLIDER BOX */
         .comparison-slider-box {
             position: relative;
+            flex: 1;
             width: 100%;
-            height: 320px;
             background: #05070a;
             overflow: hidden;
             touch-action: pan-y;
             cursor: ew-resize;
-        }
-
-        @media (max-width: 600px) {
-            .comparison-slider-box {
-                height: 250px;
-            }
         }
 
         .slider-layer {
@@ -656,8 +540,8 @@
         }
 
         .comparison-img {
-            max-width: 80%;
-            max-height: 75%;
+            max-width: 82%;
+            max-height: 80%;
             object-fit: contain;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
             transition: transform 0.2s ease;
@@ -665,7 +549,7 @@
 
         /* Unpatched Glitch Filter Styling */
         .layer-unpatched .comparison-img {
-            filter: grayscale(80%) contrast(150%) brightness(60%) blur(0.5px);
+            filter: grayscale(85%) contrast(160%) brightness(55%) blur(0.5px);
             opacity: 0.85;
         }
 
@@ -674,8 +558,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: repeating-linear-gradient(
                 0deg,
-                rgba(0, 0, 0, 0.4),
-                rgba(0, 0, 0, 0.4) 2px,
+                rgba(0, 0, 0, 0.45),
+                rgba(0, 0, 0, 0.45) 2px,
                 transparent 2px,
                 rgba(0, 0, 0, 0) 4px
             );
@@ -689,8 +573,8 @@
 
         .patched-glow-bg {
             position: absolute;
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
             pointer-events: none;
             border-radius: 50%;
@@ -699,11 +583,11 @@
         /* Layer Badges */
         .layer-badge {
             position: absolute;
-            top: 12px;
-            padding: 0.35rem 0.75rem;
+            top: 10px;
+            padding: 0.3rem 0.65rem;
             border-radius: 6px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 0.05em;
             pointer-events: none;
@@ -712,15 +596,15 @@
         }
 
         .badge-left {
-            left: 12px;
-            background: rgba(239, 68, 68, 0.2);
+            left: 10px;
+            background: rgba(239, 68, 68, 0.25);
             color: #f87171;
             border: 1px solid rgba(239, 68, 68, 0.4);
         }
 
         .badge-right {
-            right: 12px;
-            background: rgba(16, 185, 129, 0.2);
+            right: 10px;
+            background: rgba(16, 185, 129, 0.25);
             color: #34d399;
             border: 1px solid rgba(16, 185, 129, 0.4);
         }
@@ -743,8 +627,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             background: #0f172a;
             border: 2px solid var(--accent-cyan);
             border-radius: 50%;
@@ -772,32 +656,33 @@
         .slider-controls-bar {
             background: rgba(15, 23, 42, 0.95);
             border-top: 1px solid #1e293b;
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 0.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            z-index: 6;
         }
 
         .slider-status-readout {
             font-family: 'Fira Code', monospace;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
         }
 
         .slider-preset-group {
             display: flex;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .preset-chip {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 0.25rem 0.6rem;
+            padding: 0.2rem 0.55rem;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-family: 'Fira Code', monospace;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -807,40 +692,6 @@
             background: rgba(56, 189, 248, 0.15);
             color: var(--accent-cyan);
             border-color: var(--accent-cyan);
-        }
-
-        /* PSP Bottom Hardware Buttons */
-        .psp-bottom-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-            padding: 0 0.5rem;
-        }
-
-        .psp-brand-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 900;
-            letter-spacing: 0.25em;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .psp-button-row {
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        .psp-oval-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.4);
-            padding: 0.15rem 0.6rem;
-            border-radius: 10px;
-            font-size: 0.62rem;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            letter-spacing: 0.05em;
         }
 
         /* Code Block Container */
@@ -1004,108 +855,70 @@
                     </div>
                     <div class="exhibit-body">
                         <p class="exhibit-description">
-                            The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry. Swipe or drag the comparison handle below to view the unpatched glitch versus the patched render.
+                            The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry. Swipe or drag the comparison handle inside the PSP-1000 console screen below to view the unpatched glitch versus the patched render.
                         </p>
 
-                        <!-- PSP SVG CONTAINER FRAME WITH COMPARISON SLIDER -->
-                        <div class="psp-container-frame">
-                            <div class="psp-shoulder-triggers">
-                                <div class="psp-shoulder-btn">L TRIGGER</div>
-                                <div class="psp-shoulder-btn">R TRIGGER</div>
-                            </div>
-                            
-                            <div class="psp-chassis-grid">
-                                <!-- Left D-Pad -->
-                                <div class="psp-controls-left">
-                                    <div class="psp-dpad">
-                                        <div class="dpad-btn dpad-up"></div>
-                                        <div class="dpad-btn dpad-right"></div>
-                                        <div class="dpad-btn dpad-down"></div>
-                                        <div class="dpad-btn dpad-left"></div>
-                                        <div class="dpad-btn dpad-center"></div>
+                        <!-- PSP-1000 PHYSICAL CONSOLE CHASSIS CONTAINER FRAME -->
+                        <div class="psp-hardware-frame">
+                            <!-- Screen Viewport Fitted Inside PSP-1000 Hardware Frame -->
+                            <div class="psp-screen-viewport">
+                                <div class="psp-screen-header-bar">
+                                    <div class="psp-screen-title">
+                                        <span class="psp-live-dot"></span>
+                                        <span>PSP GU DISPLAY ENGINE // ZELDA: OOT</span>
                                     </div>
-                                    <div class="psp-analog-nub"></div>
+                                    <span>60.0 FPS</span>
                                 </div>
 
-                                <!-- Center Screen -->
-                                <div class="psp-screen-wrapper">
-                                    <div class="psp-screen-header-bar">
-                                        <div class="psp-screen-title">
-                                            <span class="psp-live-dot"></span>
-                                            <span>PSP GU DISPLAY ENGINE // ZELDA: OOT</span>
+                                <!-- COMPARISON SLIDER -->
+                                <div class="comparison-slider-box" id="slider-ex1">
+                                    <!-- Unpatched Layer (Left) -->
+                                    <div class="slider-layer layer-unpatched">
+                                        <div class="glitch-scanlines"></div>
+                                        <div class="slider-visual-content">
+                                            <picture>
+                                                <source srcset="assets/kokiri_sword.webp" type="image/webp">
+                                                <img src="assets/kokiri_sword.webp" alt="Kokiri Sword Unpatched Glitch" class="comparison-img">
+                                            </picture>
                                         </div>
-                                        <span>60.0 FPS</span>
+                                        <span class="layer-badge badge-left">UNPATCHED GLITCH</span>
                                     </div>
 
-                                    <!-- COMPARISON SLIDER -->
-                                    <div class="comparison-slider-box" id="slider-ex1">
-                                        <!-- Unpatched Layer (Left) -->
-                                        <div class="slider-layer layer-unpatched">
-                                            <div class="glitch-scanlines"></div>
-                                            <div class="slider-visual-content">
-                                                <picture>
-                                                    <source srcset="assets/kokiri_sword.webp" type="image/webp">
-                                                    <img src="DaedalusX64/assets/kokiri_sword.webp" alt="Kokiri Sword Unpatched Glitch" class="comparison-img">
-                                                </picture>
-                                            </div>
-                                            <span class="layer-badge badge-left">UNPATCHED GLITCH</span>
+                                    <!-- Patched Layer (Right) -->
+                                    <div class="slider-layer layer-patched" id="layer-patched-ex1" style="clip-path: inset(0 0 0 50%);">
+                                        <div class="patched-glow-bg"></div>
+                                        <div class="slider-visual-content">
+                                            <picture>
+                                                <source srcset="assets/kokiri_sword.webp" type="image/webp">
+                                                <img src="assets/kokiri_sword.webp" alt="Kokiri Sword Patched Render" class="comparison-img">
+                                            </picture>
                                         </div>
-
-                                        <!-- Patched Layer (Right) -->
-                                        <div class="slider-layer layer-patched" id="layer-patched-ex1" style="clip-path: inset(0 0 0 50%);">
-                                            <div class="patched-glow-bg"></div>
-                                            <div class="slider-visual-content">
-                                                <picture>
-                                                    <source srcset="assets/kokiri_sword.webp" type="image/webp">
-                                                    <img src="DaedalusX64/assets/kokiri_sword.webp" alt="Kokiri Sword Patched Render" class="comparison-img">
-                                                </picture>
-                                            </div>
-                                            <span class="layer-badge badge-right">PATCHED RENDER</span>
-                                        </div>
-
-                                        <!-- Divider Line & Drag Handle -->
-                                        <div class="slider-divider-line" id="divider-ex1" style="left: 50%;">
-                                            <div class="slider-handle-knob">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
-                                            </div>
-                                        </div>
-
-                                        <!-- Range Input Overlay -->
-                                        <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex1', this.value)">
+                                        <span class="layer-badge badge-right">PATCHED RENDER</span>
                                     </div>
 
-                                    <div class="slider-controls-bar">
-                                        <span class="slider-status-readout" id="readout-ex1">SWIPE COMPARISON: 50% SPLIT</span>
-                                        <div class="slider-preset-group">
-                                            <button class="preset-chip" onclick="setComparisonPreset('ex1', 0)">0% Glitch</button>
-                                            <button class="preset-chip active" id="preset-50-ex1" onclick="setComparisonPreset('ex1', 50)">50% Split</button>
-                                            <button class="preset-chip" onclick="setComparisonPreset('ex1', 100)">100% Patched</button>
+                                    <!-- Divider Line & Drag Handle -->
+                                    <div class="slider-divider-line" id="divider-ex1" style="left: 50%;">
+                                        <div class="slider-handle-knob">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
                                         </div>
                                     </div>
+
+                                    <!-- Range Input Overlay -->
+                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex1', this.value)">
                                 </div>
 
-                                <!-- Right Action Buttons -->
-                                <div class="psp-controls-right">
-                                    <div class="psp-action-grid">
-                                        <div class="psp-btn-face btn-triangle">▲</div>
-                                        <div class="psp-btn-face btn-circle">●</div>
-                                        <div class="psp-btn-face btn-cross">✕</div>
-                                        <div class="psp-btn-face btn-square">■</div>
+                                <div class="slider-controls-bar">
+                                    <span class="slider-status-readout" id="readout-ex1">SWIPE: 50% SPLIT</span>
+                                    <div class="slider-preset-group">
+                                        <button class="preset-chip" onclick="setComparisonPreset('ex1', 0)">0% Glitch</button>
+                                        <button class="preset-chip active" id="preset-50-ex1" onclick="setComparisonPreset('ex1', 50)">50% Split</button>
+                                        <button class="preset-chip" onclick="setComparisonPreset('ex1', 100)">100% Patched</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Bottom Console Branding -->
-                            <div class="psp-bottom-controls">
-                                <span class="psp-brand-logo">SONY</span>
-                                <div class="psp-button-row">
-                                    <span class="psp-oval-btn">HOME</span>
-                                    <span class="psp-oval-btn">VOL -</span>
-                                    <span class="psp-oval-btn">VOL +</span>
-                                    <span class="psp-oval-btn">SELECT</span>
-                                    <span class="psp-oval-btn">START</span>
-                                </div>
-                            </div>
+                            <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
+                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
                         </div>
 
                         <!-- CODE CONTAINER -->
@@ -1214,108 +1027,70 @@
                     </div>
                     <div class="exhibit-body">
                         <p class="exhibit-description">
-                            Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.* Use the interactive slider below to inspect the unpatched corrupted frame state versus the fully patched animation render.
+                            Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.* Use the interactive slider inside the PSP-1000 screen below to inspect the unpatched corrupted frame state versus the fully patched animation render.
                         </p>
 
-                        <!-- PSP SVG CONTAINER FRAME WITH COMPARISON SLIDER -->
-                        <div class="psp-container-frame">
-                            <div class="psp-shoulder-triggers">
-                                <div class="psp-shoulder-btn">L TRIGGER</div>
-                                <div class="psp-shoulder-btn">R TRIGGER</div>
-                            </div>
-                            
-                            <div class="psp-chassis-grid">
-                                <!-- Left D-Pad -->
-                                <div class="psp-controls-left">
-                                    <div class="psp-dpad">
-                                        <div class="dpad-btn dpad-up"></div>
-                                        <div class="dpad-btn dpad-right"></div>
-                                        <div class="dpad-btn dpad-down"></div>
-                                        <div class="dpad-btn dpad-left"></div>
-                                        <div class="dpad-btn dpad-center"></div>
+                        <!-- PSP-1000 PHYSICAL CONSOLE CHASSIS CONTAINER FRAME -->
+                        <div class="psp-hardware-frame">
+                            <!-- Screen Viewport Fitted Inside PSP-1000 Hardware Frame -->
+                            <div class="psp-screen-viewport">
+                                <div class="psp-screen-header-bar">
+                                    <div class="psp-screen-title">
+                                        <span class="psp-live-dot"></span>
+                                        <span>PSP GU DISPLAY ENGINE // SUPER SMASH BROS</span>
                                     </div>
-                                    <div class="psp-analog-nub"></div>
+                                    <span>60.0 FPS</span>
                                 </div>
 
-                                <!-- Center Screen -->
-                                <div class="psp-screen-wrapper">
-                                    <div class="psp-screen-header-bar">
-                                        <div class="psp-screen-title">
-                                            <span class="psp-live-dot"></span>
-                                            <span>PSP GU DISPLAY ENGINE // SUPER SMASH BROS</span>
+                                <!-- COMPARISON SLIDER -->
+                                <div class="comparison-slider-box" id="slider-ex4">
+                                    <!-- Unpatched Layer (Left) -->
+                                    <div class="slider-layer layer-unpatched">
+                                        <div class="glitch-scanlines"></div>
+                                        <div class="slider-visual-content">
+                                            <picture>
+                                                <source srcset="assets/ssb_bomb.webp" type="image/webp">
+                                                <img src="assets/ssb_bomb.webp" alt="SSB Bomb Unpatched Glitch" class="comparison-img">
+                                            </picture>
                                         </div>
-                                        <span>60.0 FPS</span>
+                                        <span class="layer-badge badge-left">UNPATCHED GLITCH</span>
                                     </div>
 
-                                    <!-- COMPARISON SLIDER -->
-                                    <div class="comparison-slider-box" id="slider-ex4">
-                                        <!-- Unpatched Layer (Left) -->
-                                        <div class="slider-layer layer-unpatched">
-                                            <div class="glitch-scanlines"></div>
-                                            <div class="slider-visual-content">
-                                                <picture>
-                                                    <source srcset="assets/ssb_bomb.webp" type="image/webp">
-                                                    <img src="DaedalusX64/assets/ssb_bomb.webp" alt="SSB Bomb Unpatched Glitch" class="comparison-img">
-                                                </picture>
-                                            </div>
-                                            <span class="layer-badge badge-left">UNPATCHED GLITCH</span>
+                                    <!-- Patched Layer (Right) -->
+                                    <div class="slider-layer layer-patched" id="layer-patched-ex4" style="clip-path: inset(0 0 0 50%);">
+                                        <div class="patched-glow-bg" style="background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, transparent 70%);"></div>
+                                        <div class="slider-visual-content">
+                                            <picture>
+                                                <source srcset="assets/ssb_bomb.webp" type="image/webp">
+                                                <img src="assets/ssb_bomb.webp" alt="SSB Bomb Patched Render" class="comparison-img">
+                                            </picture>
                                         </div>
-
-                                        <!-- Patched Layer (Right) -->
-                                        <div class="slider-layer layer-patched" id="layer-patched-ex4" style="clip-path: inset(0 0 0 50%);">
-                                            <div class="patched-glow-bg" style="background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, transparent 70%);"></div>
-                                            <div class="slider-visual-content">
-                                                <picture>
-                                                    <source srcset="assets/ssb_bomb.webp" type="image/webp">
-                                                    <img src="DaedalusX64/assets/ssb_bomb.webp" alt="SSB Bomb Patched Render" class="comparison-img">
-                                                </picture>
-                                            </div>
-                                            <span class="layer-badge badge-right">PATCHED RENDER</span>
-                                        </div>
-
-                                        <!-- Divider Line & Drag Handle -->
-                                        <div class="slider-divider-line" id="divider-ex4" style="left: 50%;">
-                                            <div class="slider-handle-knob">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
-                                            </div>
-                                        </div>
-
-                                        <!-- Range Input Overlay -->
-                                        <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex4', this.value)">
+                                        <span class="layer-badge badge-right">PATCHED RENDER</span>
                                     </div>
 
-                                    <div class="slider-controls-bar">
-                                        <span class="slider-status-readout" id="readout-ex4">SWIPE COMPARISON: 50% SPLIT</span>
-                                        <div class="slider-preset-group">
-                                            <button class="preset-chip" onclick="setComparisonPreset('ex4', 0)">0% Glitch</button>
-                                            <button class="preset-chip active" id="preset-50-ex4" onclick="setComparisonPreset('ex4', 50)">50% Split</button>
-                                            <button class="preset-chip" onclick="setComparisonPreset('ex4', 100)">100% Patched</button>
+                                    <!-- Divider Line & Drag Handle -->
+                                    <div class="slider-divider-line" id="divider-ex4" style="left: 50%;">
+                                        <div class="slider-handle-knob">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
                                         </div>
                                     </div>
+
+                                    <!-- Range Input Overlay -->
+                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex4', this.value)">
                                 </div>
 
-                                <!-- Right Action Buttons -->
-                                <div class="psp-controls-right">
-                                    <div class="psp-action-grid">
-                                        <div class="psp-btn-face btn-triangle">▲</div>
-                                        <div class="psp-btn-face btn-circle">●</div>
-                                        <div class="psp-btn-face btn-cross">✕</div>
-                                        <div class="psp-btn-face btn-square">■</div>
+                                <div class="slider-controls-bar">
+                                    <span class="slider-status-readout" id="readout-ex4">SWIPE: 50% SPLIT</span>
+                                    <div class="slider-preset-group">
+                                        <button class="preset-chip" onclick="setComparisonPreset('ex4', 0)">0% Glitch</button>
+                                        <button class="preset-chip active" id="preset-50-ex4" onclick="setComparisonPreset('ex4', 50)">50% Split</button>
+                                        <button class="preset-chip" onclick="setComparisonPreset('ex4', 100)">100% Patched</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Bottom Console Branding -->
-                            <div class="psp-bottom-controls">
-                                <span class="psp-brand-logo">SONY</span>
-                                <div class="psp-button-row">
-                                    <span class="psp-oval-btn">HOME</span>
-                                    <span class="psp-oval-btn">VOL -</span>
-                                    <span class="psp-oval-btn">VOL +</span>
-                                    <span class="psp-oval-btn">SELECT</span>
-                                    <span class="psp-oval-btn">START</span>
-                                </div>
-                            </div>
+                            <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
+                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
                         </div>
 
                         <!-- CODE CONTAINER -->
@@ -1435,7 +1210,7 @@ Windows XP/Vista Readme by: Shinydude100/Kreationz</code></pre>
             }
 
             if (readout) {
-                readout.textContent = `SWIPE COMPARISON: ${val}% SPLIT`;
+                readout.textContent = `SWIPE: ${val}% SPLIT`;
             }
 
             const presets = document.querySelectorAll(`#slider-${id} ~ .slider-controls-bar .preset-chip`);
