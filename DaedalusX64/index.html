@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>DaedalusX64 — Reverse Engineering N64 Emulation | Hugo Luna (daca.me)</title>
     
     <!-- SEO & Social Meta -->
     <meta name="description" content="Interactive gamified showcase of low-level C++ HLE microcode patches, PSP GU hardware blend modes, and toolchain docs by Hugo Luna (Shinydude100).">
     <meta property="og:title" content="DaedalusX64 Microcode Exhibit — daca.me">
-    <meta property="og:description" content="Explore low-level N64 color combiner patches and PSP GU hardware blend modes with interactive comparison sliders framed inside a realistic Sony PSP-1000 console.">
+    <meta property="og:description" content="Explore low-level N64 color combiner patches and PSP GU hardware blend modes with interactive comparison sliders framed inside a responsive PSP console UI.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://daca.me/DaedalusX64/">
 
@@ -100,6 +100,7 @@
             padding: 0;
             margin: 0;
             overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
         /* Top Agent-Native Header Banner */
@@ -107,15 +108,16 @@
             background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
             border-bottom: 1px solid rgba(16, 185, 129, 0.3);
             padding: 0.5rem 1rem;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             text-align: center;
             font-family: 'Fira Code', monospace;
             color: var(--accent-green);
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0.75rem;
-            letter-spacing: 0.03em;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            letter-spacing: 0.02em;
         }
 
         .agent-badge-pulse {
@@ -126,6 +128,7 @@
             display: inline-block;
             box-shadow: 0 0 10px var(--accent-green);
             animation: pulse-dot 1.5s infinite alternate;
+            flex-shrink: 0;
         }
 
         @keyframes pulse-dot {
@@ -135,8 +138,9 @@
 
         header {
             border-bottom: 1px solid var(--border-color);
-            background: rgba(7, 9, 14, 0.9);
+            background: rgba(7, 9, 14, 0.92);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -145,22 +149,23 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 0.85rem 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
             font-weight: 800;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             letter-spacing: -0.01em;
             color: var(--text-main);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
         .logo span {
@@ -170,16 +175,17 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.2rem;
             align-items: center;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .nav-links a:hover {
@@ -189,12 +195,18 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2.5rem 1.5rem;
+            padding: 1.5rem 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2.5rem 1.5rem;
+            }
         }
 
         /* Hero Section */
         .hero {
-            padding: 2.5rem 0 2rem;
+            padding: 1.5rem 0 1rem;
             text-align: left;
             position: relative;
         }
@@ -202,48 +214,58 @@
         .badge-hero {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             background: rgba(16, 185, 129, 0.1);
             color: var(--accent-green);
             border: 1px solid rgba(16, 185, 129, 0.25);
-            padding: 0.35rem 0.9rem;
+            padding: 0.35rem 0.8rem;
             border-radius: 9999px;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
             font-family: 'Fira Code', monospace;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
 
         h1 {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
             font-weight: 900;
-            line-height: 1.1;
+            line-height: 1.15;
             letter-spacing: -0.03em;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            font-size: 1.15rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
             color: var(--text-muted);
             max-width: 850px;
-            margin-bottom: 2rem;
-            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            line-height: 1.65;
         }
 
         /* HUD Live Status Bar */
         .hud-status-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            background: rgba(15, 20, 31, 0.8);
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            background: rgba(15, 20, 31, 0.85);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 3rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
             backdrop-filter: blur(8px);
+        }
+
+        @media (min-width: 768px) {
+            .hud-status-bar {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+                padding: 1.2rem 1.5rem;
+                margin-bottom: 3rem;
+            }
         }
 
         .hud-item {
@@ -253,21 +275,21 @@
         }
 
         .hud-label {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-family: 'Fira Code', monospace;
             text-transform: uppercase;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
 
         .hud-value {
-            font-size: 1.05rem;
+            font-size: clamp(0.88rem, 2.5vw, 1.05rem);
             font-weight: 700;
             font-family: 'Orbitron', 'Fira Code', monospace;
             color: var(--accent-cyan);
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .hud-value.green { color: var(--accent-green); }
@@ -277,12 +299,20 @@
         .origin-story-banner {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 3.5rem;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
             position: relative;
             overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .origin-story-banner {
+                padding: 2rem;
+                border-radius: 16px;
+                margin-bottom: 3.5rem;
+            }
         }
 
         .origin-story-banner::before {
@@ -296,182 +326,230 @@
         }
 
         .origin-story-banner h2 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .origin-story-banner p {
             color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            margin-bottom: 1rem;
         }
 
         .history-links {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+
+        @media (min-width: 640px) {
+            .history-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
         }
 
         .history-link-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
-            padding: 0.75rem 1.25rem;
-            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
             text-decoration: none;
             color: var(--text-main);
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            transition: all 0.25s ease;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
         }
 
         .history-link-card:hover {
             border-color: var(--accent-green);
             background: rgba(16, 185, 129, 0.08);
-            transform: translateY(-2px);
             color: #fff;
         }
 
         /* Exhibits Grid */
         .section-title {
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
             font-weight: 800;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--text-main);
             letter-spacing: -0.02em;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         .exhibit-grid {
             display: flex;
             flex-direction: column;
-            gap: 3.5rem;
+            gap: 2.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .exhibit-grid {
+                gap: 3.5rem;
+            }
         }
 
         .exhibit-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
-            transition: border-color 0.3s ease;
-        }
-
-        .exhibit-card:hover {
-            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
         }
 
         .exhibit-header {
-            padding: 1.5rem 2rem;
+            padding: 1.1rem 1.25rem;
             background: rgba(255, 255, 255, 0.02);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        @media (min-width: 640px) {
+            .exhibit-header {
+                padding: 1.4rem 1.8rem;
+                flex-direction: row;
+                align-items: center;
+            }
         }
 
         .exhibit-title-group h3 {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--text-main);
+            line-height: 1.3;
         }
 
         .exhibit-meta {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-family: 'Fira Code', monospace;
             color: var(--accent-gold);
-            margin-top: 0.3rem;
+            margin-top: 0.25rem;
+            word-break: break-all;
         }
 
         .tag {
             background: rgba(59, 130, 246, 0.15);
             color: var(--accent-cyan);
             border: 1px solid rgba(56, 189, 248, 0.3);
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            padding: 0.3rem 0.75rem;
-            border-radius: 8px;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
             font-family: 'Fira Code', monospace;
+            white-space: nowrap;
         }
 
         .exhibit-body {
-            padding: 2rem;
+            padding: 1.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .exhibit-body {
+                padding: 1.8rem;
+            }
         }
 
         .exhibit-description {
             color: var(--text-muted);
-            margin-bottom: 1.8rem;
-            font-size: 0.98rem;
-            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            font-size: 0.92rem;
+            line-height: 1.65;
         }
 
         /* ------------------------------------------------------------- */
-        /* PSP-1000 HARDWARE CHASSIS CONTAINER & INTERACTIVE SLIDER     */
+        /* RESPONSIVE PSP CONSOLE CONTAINER & COMPARISON SLIDER          */
         /* ------------------------------------------------------------- */
-        .psp-hardware-frame {
-            position: relative;
-            width: 100%;
-            max-width: 860px;
-            margin: 2.5rem auto;
-            aspect-ratio: 860 / 380;
-            user-select: none;
-            -webkit-user-select: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        /* DESKTOP MODE (min-width: 769px): Full PSP-1000 Hardware Overlay */
+        @media (min-width: 769px) {
+            .psp-hardware-frame {
+                position: relative;
+                width: 100%;
+                max-width: 860px;
+                margin: 2rem auto;
+                aspect-ratio: 860 / 380;
+                user-select: none;
+                -webkit-user-select: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .psp-chassis-overlay-img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                pointer-events: none;
+                z-index: 10;
+                filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
+            }
+
+            .psp-screen-viewport {
+                position: absolute;
+                top: 12.2%;
+                left: 20.8%;
+                width: 58.4%;
+                height: 75.6%;
+                z-index: 5;
+                border-radius: 4px;
+                overflow: hidden;
+                background: #030509;
+                box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
+                display: flex;
+                flex-direction: column;
+            }
         }
 
-        /* PSP-1000 Hardware Image Overlay */
-        .psp-chassis-overlay-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-            z-index: 10;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
-        }
+        /* MOBILE MODE (max-width: 768px): Sleek Full-Width Bezel Viewport */
+        @media (max-width: 768px) {
+            .psp-hardware-frame {
+                position: relative;
+                width: 100%;
+                margin: 1.25rem 0;
+            }
 
-        /* Screen Viewport Fitted Exactly Inside the PSP-1000 Hardware Frame */
-        .psp-screen-viewport {
-            position: absolute;
-            top: 12.2%;
-            left: 20.8%;
-            width: 58.4%;
-            height: 75.6%;
-            z-index: 5;
-            border-radius: 4px;
-            overflow: hidden;
-            background: #030509;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
+            .psp-chassis-overlay-img {
+                display: none !important;
+            }
+
+            .psp-screen-viewport {
+                width: 100%;
+                border: 2px solid var(--psp-bezel-border);
+                border-radius: 12px;
+                overflow: hidden;
+                background: #030509;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+                display: flex;
+                flex-direction: column;
+            }
         }
 
         .psp-screen-header-bar {
             background: rgba(15, 23, 42, 0.95);
             border-bottom: 1px solid #1e293b;
-            padding: 0.35rem 0.8rem;
+            padding: 0.4rem 0.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             z-index: 6;
         }
@@ -495,12 +573,19 @@
         /* TOUCH-FRIENDLY COMPARISON SLIDER BOX */
         .comparison-slider-box {
             position: relative;
-            flex: 1;
             width: 100%;
+            height: 260px;
             background: #05070a;
             overflow: hidden;
             touch-action: pan-y;
             cursor: ew-resize;
+        }
+
+        @media (min-width: 769px) {
+            .comparison-slider-box {
+                height: 100%;
+                min-height: 220px;
+            }
         }
 
         .slider-layer {
@@ -537,13 +622,14 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            padding: 0.5rem;
         }
 
         .comparison-img {
-            max-width: 82%;
+            max-width: 85%;
             max-height: 80%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.8));
             transition: transform 0.2s ease;
         }
 
@@ -573,8 +659,8 @@
 
         .patched-glow-bg {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
             pointer-events: none;
             border-radius: 50%;
@@ -583,30 +669,30 @@
         /* Layer Badges */
         .layer-badge {
             position: absolute;
-            top: 10px;
-            padding: 0.3rem 0.65rem;
-            border-radius: 6px;
+            top: 8px;
+            padding: 0.25rem 0.55rem;
+            border-radius: 5px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
             pointer-events: none;
             z-index: 5;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
         }
 
         .badge-left {
-            left: 10px;
-            background: rgba(239, 68, 68, 0.25);
+            left: 8px;
+            background: rgba(239, 68, 68, 0.3);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.4);
+            border: 1px solid rgba(239, 68, 68, 0.5);
         }
 
         .badge-right {
-            right: 10px;
-            background: rgba(16, 185, 129, 0.25);
+            right: 8px;
+            background: rgba(16, 185, 129, 0.3);
             color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.4);
+            border: 1px solid rgba(16, 185, 129, 0.5);
         }
 
         /* Slider Divider Line & Touch Handle */
@@ -627,8 +713,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 34px;
-            height: 34px;
+            width: 38px;
+            height: 38px;
             background: #0f172a;
             border: 2px solid var(--accent-cyan);
             border-radius: 50%;
@@ -650,13 +736,14 @@
             cursor: ew-resize;
             z-index: 20;
             margin: 0;
+            touch-action: pan-y;
         }
 
         /* Slider Control Bar under Screen */
         .slider-controls-bar {
             background: rgba(15, 23, 42, 0.95);
             border-top: 1px solid #1e293b;
-            padding: 0.5rem 0.8rem;
+            padding: 0.5rem 0.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -667,29 +754,32 @@
 
         .slider-status-readout {
             font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
         }
 
         .slider-preset-group {
             display: flex;
-            gap: 0.35rem;
+            gap: 0.3rem;
         }
 
         .preset-chip {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 0.2rem 0.55rem;
+            padding: 0.25rem 0.55rem;
             border-radius: 6px;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-family: 'Fira Code', monospace;
             cursor: pointer;
             transition: all 0.2s ease;
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
         }
 
         .preset-chip:hover, .preset-chip.active {
-            background: rgba(56, 189, 248, 0.15);
+            background: rgba(56, 189, 248, 0.18);
             color: var(--accent-cyan);
             border-color: var(--accent-cyan);
         }
@@ -700,29 +790,32 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
             position: relative;
         }
 
         .code-header {
             background: rgba(0, 0, 0, 0.4);
-            padding: 0.75rem 1.25rem;
+            padding: 0.6rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             font-family: 'Fira Code', monospace;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 0.4rem;
         }
 
         pre {
-            padding: 1.25rem 1.5rem;
+            padding: 1rem 1.2rem;
             overflow-x: auto;
             font-family: 'Fira Code', monospace;
-            font-size: 0.88rem;
-            line-height: 1.65;
+            font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+            line-height: 1.6;
             color: #f1f5f9;
+            -webkit-overflow-scrolling: touch;
         }
 
         .code-comment { color: #64748b; font-style: italic; }
@@ -735,19 +828,27 @@
         .doc-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 3.5rem;
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-top: 2.5rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 768px) {
+            .doc-card {
+                padding: 2rem;
+                border-radius: 16px;
+                margin-top: 3.5rem;
+            }
         }
 
         footer {
             border-top: 1px solid var(--border-color);
-            padding: 3.5rem 0;
-            margin-top: 6rem;
+            padding: 2.5rem 1rem;
+            margin-top: 4rem;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             background: rgba(0, 0, 0, 0.4);
         }
 
@@ -767,17 +868,17 @@
     <div class="agent-banner">
         <span class="agent-badge-pulse"></span>
         <span>100/100 Level 5 Agent-Native Certified (Cloudflare Radar)</span>
-        <span style="opacity: 0.5;">|</span>
-        <span>daca.me AI Operational Layer Active</span>
+        <span style="opacity: 0.4;">|</span>
+        <span>daca.me AI Layer Active</span>
     </div>
 
     <header>
         <div class="nav-container">
             <a href="https://daca.me" class="logo">daca<span>.me</span></a>
             <div class="nav-links">
-                <a href="#exhibits">Source Exhibits</a>
-                <a href="#docs">Documentation</a>
-                <a href="https://github.com/DaedalusX64/daedalus" target="_blank">DaedalusX64 GitHub</a>
+                <a href="#exhibits">Exhibits</a>
+                <a href="#docs">Docs</a>
+                <a href="https://github.com/DaedalusX64/daedalus" target="_blank">GitHub</a>
             </div>
         </div>
     </header>
@@ -788,7 +889,7 @@
         <section class="hero">
             <div class="badge-hero">
                 <span>⚡ N64 HLE MICROCODE EXHIBIT</span>
-                <span>// PSP GU HARDWARE PIPELINE</span>
+                <span>// PSP GU PIPELINE</span>
             </div>
             <h1>DaedalusX64: Reverse Engineering N64 Emulation</h1>
             <p class="subtitle">
@@ -799,15 +900,15 @@
             <div class="hud-status-bar">
                 <div class="hud-item">
                     <span class="hud-label">Emulator Core</span>
-                    <span class="hud-value green"><span class="agent-badge-pulse"></span> DaedalusX64 HLE</span>
+                    <span class="hud-value green"><span class="agent-badge-pulse"></span> DaedalusX64</span>
                 </div>
                 <div class="hud-item">
                     <span class="hud-label">Target Hardware</span>
-                    <span class="hud-value">Sony PSP-1000/2000</span>
+                    <span class="hud-value">Sony PSP-1000</span>
                 </div>
                 <div class="hud-item">
                     <span class="hud-label">Render Backend</span>
-                    <span class="hud-value gold">PSP GU (Allegrex R4000)</span>
+                    <span class="hud-value gold">PSP GU HLE</span>
                 </div>
                 <div class="hud-item">
                     <span class="hud-label">Agent Rating</span>
@@ -826,7 +927,7 @@
                         📄 StrmnNrmn's Original Blog (2006)
                     </a>
                     <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" class="history-link-card">
-                        📰 DCEmu UK DaedalusX64 Announcement
+                        📰 DCEmu UK Announcement
                     </a>
                     <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" class="history-link-card">
                         🏆 Repository Credits (Shinydude100)
@@ -855,12 +956,12 @@
                     </div>
                     <div class="exhibit-body">
                         <p class="exhibit-description">
-                            The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry. Swipe or drag the comparison handle inside the PSP-1000 console screen below to view the unpatched glitch versus the patched render.
+                            The N64 RSP emitted a specific 2-cycle combiner equation for Link's Kokiri Sword blade mesh. On PSP hardware, standard rendering paths lacked native support for this combiner equation, resulting in flat or unshaded sword geometry. Swipe or drag the comparison handle inside the PSP display below to view the unpatched glitch versus the patched render.
                         </p>
 
-                        <!-- PSP-1000 PHYSICAL CONSOLE CHASSIS CONTAINER FRAME -->
+                        <!-- PSP CONSOLE CONTAINER FRAME -->
                         <div class="psp-hardware-frame">
-                            <!-- Screen Viewport Fitted Inside PSP-1000 Hardware Frame -->
+                            <!-- Screen Viewport -->
                             <div class="psp-screen-viewport">
                                 <div class="psp-screen-header-bar">
                                     <div class="psp-screen-title">
@@ -917,7 +1018,7 @@
                                 </div>
                             </div>
 
-                            <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
+                            <!-- Physical Overlay Image of PSP-1000 Console Chassis (Visible on Desktop) -->
                             <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
                         </div>
 
@@ -1027,12 +1128,12 @@
                     </div>
                     <div class="exhibit-body">
                         <p class="exhibit-description">
-                            Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.* Use the interactive slider inside the PSP-1000 screen below to inspect the unpatched corrupted frame state versus the fully patched animation render.
+                            Resolves the flashing item animation and alpha/env blending state for the Bomb item in *Super Smash Bros.* Use the interactive slider inside the PSP display below to inspect the unpatched corrupted frame state versus the fully patched animation render.
                         </p>
 
-                        <!-- PSP-1000 PHYSICAL CONSOLE CHASSIS CONTAINER FRAME -->
+                        <!-- PSP CONSOLE CONTAINER FRAME -->
                         <div class="psp-hardware-frame">
-                            <!-- Screen Viewport Fitted Inside PSP-1000 Hardware Frame -->
+                            <!-- Screen Viewport -->
                             <div class="psp-screen-viewport">
                                 <div class="psp-screen-header-bar">
                                     <div class="psp-screen-title">
@@ -1089,7 +1190,7 @@
                                 </div>
                             </div>
 
-                            <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
+                            <!-- Physical Overlay Image of PSP-1000 Console Chassis (Visible on Desktop) -->
                             <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
                         </div>
 
@@ -1125,7 +1226,7 @@
                     <span>🛠️</span>
                     <span>Developer Toolchain & Documentation</span>
                 </h2>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1.25rem;">
                     An intact excerpt from the original DaedalusX64 developer documentation, guiding community contributors through setting up the MinPSPw toolchain and Visual C++ 2008 Express Edition environment.
                 </p>
 
