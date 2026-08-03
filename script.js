@@ -11,7 +11,9 @@ function getSecureRandom() {
 }
 
 // Global Motion & State Controls
-const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.sysPrefersReducedMotion = (typeof window !== 'undefined' && window.matchMedia) 
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+    : false;
 
 // =================================================================
 // Fluid GPU-bound Interpolated Vector Pointer Engine
@@ -105,7 +107,7 @@ function initConsoleTyping() {
                 characterIdx = 0;
                 setTimeout(printLogLine, 350);
             } else {
-                setTimeout(printLogLine, prefersReducedMotion ? 0 : 12);
+                setTimeout(printLogLine, window.sysPrefersReducedMotion ? 0 : 12);
             }
         }
     }
@@ -131,7 +133,7 @@ function initCallGlitchText() {
 // Text Matrix Decryption Engine
 // =================================================================
 function initTextDecryption() {
-    if (prefersReducedMotion) {
+    if (window.sysPrefersReducedMotion) {
         document.querySelectorAll('.decrypt-trigger').forEach(el => el.style.visibility = 'visible');
         return;
     }
@@ -180,7 +182,7 @@ function initTextDecryption() {
 // Inertial Matrix Card Parallax
 // =================================================================
 function initParallaxArchitecture() {
-    if (prefersReducedMotion) return;
+    if (window.sysPrefersReducedMotion) return;
     document.querySelectorAll('.interactive-card').forEach(card => {
         let isTicking = false;
 
@@ -222,7 +224,7 @@ function initRescueVisualizer() {
     const passPct = document.getElementById('wmdt-pass-pct');
     const overallPct = document.getElementById('wmdt-overall-pct');
 
-    if (!grid || !statusTxt || !logArea || !wmdtScreen || prefersReducedMotion) return;
+    if (!grid || !statusTxt || !logArea || !wmdtScreen || window.sysPrefersReducedMotion) return;
 
     const totalNodes = 104;
     const nodes = [];
@@ -414,7 +416,6 @@ function initDynamicTelemetry() {
             });
         })
         .catch(() => {
-            // Graceful fallback to client performance timing if API route fails or 404s
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
             document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
                 el.textContent = `${latency}ms`;
@@ -474,11 +475,10 @@ function initWebMCP() {
 }
 
 // =================================================================
-// Runtime Core Execution Mount (Fail-Safe Order)
+// Runtime Core Execution Mount
 // =================================================================
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. GUARANTEED UN-HIDE: Ensure .reveal-element is never stuck at opacity: 0
         try {
             const revealEngine = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -493,11 +493,9 @@ if (typeof document !== 'undefined') {
             document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('visible'));
         }
 
-        // 2. Font Loading Safeguard
         const fontLink = document.getElementById('google-fonts-link');
         if (fontLink) fontLink.media = 'all';
 
-        // 3. Canvas Backplane Guard
         try {
             if (typeof MemoryBackplane !== 'undefined') {
                 new MemoryBackplane();
@@ -506,7 +504,6 @@ if (typeof document !== 'undefined') {
             console.warn('MemoryBackplane initialization bypassed:', e);
         }
 
-        // 4. Feature Initializers
         initCompositeCursor();
         initConsoleTyping();
         initCallGlitchText();
@@ -518,11 +515,9 @@ if (typeof document !== 'undefined') {
         initDynamicTelemetry();
         initWebMCP();
 
-        // 5. Dynamic Year Update
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
 
-        // 6. Mobile Navigation
         const toggle = document.getElementById('mobile-toggle');
         const menu = document.getElementById('menu-box');
 
@@ -560,7 +555,6 @@ if (typeof document !== 'undefined') {
             if (e.key === 'Escape') closeMobileMenu(true);
         });
 
-        // 7. ScrollSpy Observer
         const header = document.getElementById('site-header');
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-item');
@@ -604,7 +598,6 @@ if (typeof document !== 'undefined') {
 
         sections.forEach(section => scrollSpyObserver.observe(section));
 
-        // 8. Scroll Header Transformation
         let isScrolling = false;
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
