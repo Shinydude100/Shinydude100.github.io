@@ -24,7 +24,7 @@ function initCompositeCursor() {
     const aura = document.querySelector("[data-cursor-aura]");
 
     let tX = 0, tY = 0, dX = 0, dY = 0, aX = 0, aY = 0;
-    let isRunning = false; // Bolt Optimization: Pause animation loop when idle
+    let isRunning = false;
 
     const startCycle = () => {
         if (!isRunning) {
@@ -40,12 +40,10 @@ function initCompositeCursor() {
     });
 
     function cycle() {
-        // Bolt Optimization: Calculate distance to target
         const distDot = Math.abs(tX - dX) + Math.abs(tY - dY);
         const distAura = Math.abs(tX - aX) + Math.abs(tY - aY);
 
         if (distDot < 0.1 && distAura < 0.1) {
-            // Snap to exact position and pause loop
             dX = tX; dY = tY;
             aX = tX; aY = tY;
             if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
@@ -85,7 +83,6 @@ function initConsoleTyping() {
         "> zero-trust authentication policies enforced and structural auditing active. [OK]"
     ];
 
-    // 🛡️ Security Enhancement: Use textContent instead of innerHTML to prevent DOM-based XSS vectors
     descEl.textContent = '';
     let streamIdx = 0;
     let characterIdx = 0;
@@ -98,7 +95,9 @@ function initConsoleTyping() {
                 descEl.appendChild(lineNode);
             }
             const dynamicTargetNode = descEl.lastChild;
-            dynamicTargetNode.textContent = logStreams[streamIdx].substring(0, characterIdx + 1);
+            if (dynamicTargetNode) {
+                dynamicTargetNode.textContent = logStreams[streamIdx].substring(0, characterIdx + 1);
+            }
             characterIdx++;
 
             if (characterIdx >= logStreams[streamIdx].length) {
@@ -375,43 +374,39 @@ function initDynamicTelemetry() {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error(`Telemetry HTTP ${res.status}`);
+            return res.json();
+        })
         .then(data => {
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
 
-            // Real visitor latency
             document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
                 el.textContent = `${latency}ms`;
             });
 
-            // Real Cloudflare data center serving this visitor
             document.querySelectorAll('[data-telemetry="colo"]').forEach(el => {
                 el.textContent = data.colo || 'DFW';
             });
 
-            // Real visitor location
             document.querySelectorAll('[data-telemetry="region"]').forEach(el => {
                 el.textContent = data.city && data.country ? `${data.city}, ${data.country}` : 'DFW Metroplex';
             });
 
-            // Real TLS version
             document.querySelectorAll('[data-telemetry="tls"]').forEach(el => {
                 el.textContent = data.tlsVersion !== 'unknown' ? data.tlsVersion : 'TLSv1.3';
             });
 
-            // Real HTTP protocol
             document.querySelectorAll('[data-telemetry="protocol"]').forEach(el => {
                 el.textContent = data.httpProtocol !== 'unknown' ? data.httpProtocol : 'HTTP/3';
             });
 
-            // Real ASN / ISP
             document.querySelectorAll('[data-telemetry="asn"]').forEach(el => {
                 if (data.asOrganization && data.asOrganization !== 'unknown') {
                     el.textContent = `AS${data.asn} (${data.asOrganization})`;
                 }
             });
 
-            // Real CF-RAY
             document.querySelectorAll('[data-telemetry="ray"]').forEach(el => {
                 if (data.ray && data.ray !== 'unknown') {
                     el.textContent = data.ray;
@@ -419,14 +414,13 @@ function initDynamicTelemetry() {
             });
         })
         .catch(() => {
-            // Fallback: client-side latency only
+            // Graceful fallback to client performance timing if API route fails or 404s
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
             document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
                 el.textContent = `${latency}ms`;
             });
         });
 
-    // Vary node load metrics using cryptographically secure random
     const nodeCards = document.querySelectorAll('.interactive-card, .node-card');
     nodeCards.forEach((card, index) => {
         const loadEl = card.querySelector('.node-load, [data-node-load]');
@@ -480,17 +474,39 @@ function initWebMCP() {
 }
 
 // =================================================================
-// Runtime Core Execution Mount
+// Runtime Core Execution Mount (Fail-Safe Order)
 // =================================================================
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
+        // 1. GUARANTEED UN-HIDE: Ensure .reveal-element is never stuck at opacity: 0
+        try {
+            const revealEngine = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealEngine.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.05 });
+            document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
+        } catch {
+            document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('visible'));
+        }
+
+        // 2. Font Loading Safeguard
         const fontLink = document.getElementById('google-fonts-link');
         if (fontLink) fontLink.media = 'all';
 
-        if (typeof MemoryBackplane !== 'undefined') {
-            new MemoryBackplane();
+        // 3. Canvas Backplane Guard
+        try {
+            if (typeof MemoryBackplane !== 'undefined') {
+                new MemoryBackplane();
+            }
+        } catch (e) {
+            console.warn('MemoryBackplane initialization bypassed:', e);
         }
 
+        // 4. Feature Initializers
         initCompositeCursor();
         initConsoleTyping();
         initCallGlitchText();
@@ -502,19 +518,11 @@ if (typeof document !== 'undefined') {
         initDynamicTelemetry();
         initWebMCP();
 
+        // 5. Dynamic Year Update
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
 
-        const revealEngine = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealEngine.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.05 });
-        document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
-
+        // 6. Mobile Navigation
         const toggle = document.getElementById('mobile-toggle');
         const menu = document.getElementById('menu-box');
 
@@ -552,6 +560,7 @@ if (typeof document !== 'undefined') {
             if (e.key === 'Escape') closeMobileMenu(true);
         });
 
+        // 7. ScrollSpy Observer
         const header = document.getElementById('site-header');
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-item');
@@ -595,6 +604,7 @@ if (typeof document !== 'undefined') {
 
         sections.forEach(section => scrollSpyObserver.observe(section));
 
+        // 8. Scroll Header Transformation
         let isScrolling = false;
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
