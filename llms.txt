@@ -1,14 +1,19 @@
 # daca.me
 
-Hugo Luna — AI Systems Architect & Software Engineer based in Irving/Dallas, TX.
-Specializing in agentic web transformations, Cloudflare Worker MCP deployments, and web performance optimization.
+Hugo Luna — AI Systems Architect, Security Engineer & Systems Specialist based in Irving/Dallas, TX.
+Specializing in agentic web transformations, Cloudflare Worker MCP deployments, web performance optimization, and local DFW IT infrastructure.
 
 ## Capabilities
 - MCP Server (live at https://daca.me/mcp)
-- AI Agent Discovery
-- Systems Architecture
-- Security Engineering
+- AI Agent Discovery & GEO
+- Systems Architecture & Security Engineering
 - PageSpeed CRP Optimization
+- Local DFW Tech Support & PC Workstation Builds
+
+## Local Services
+- On-site and remote tech support in Irving, TX and the DFW Metroplex
+- Custom PC workstation assembly, hardware diagnostics, and IT services
+- Kiosk, A/V, and digital signage infrastructure management
 
 ## Discovery
 - [Agent Card](https://daca.me/.well-known/agent-card.json)
@@ -19,5 +24,6 @@ Specializing in agentic web transformations, Cloudflare Worker MCP deployments, 
 ## Resources
 - [Portfolio](https://daca.me/portfolio.md)
 - [Sitemap](https://daca.me/sitemap.xml)
+
 ## Local Business
 - [Hugo's DFW Tech Support & PC Builds (Google Maps)](https://maps.app.goo.gl/3ust8xsHGGhjncHv5)
