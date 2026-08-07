@@ -25,7 +25,9 @@
         "Systems Architecture",
         "Security Engineering",
         "Linux Hardening",
-        "A/V Digital Signage Infrastructure"
+        "A/V Digital Signage Infrastructure",
+        "Nintendo 64 Emulation",
+        "Reverse Engineering"
       ],
       "founderOf": {
         "@type": "SoftwareApplication",
@@ -43,6 +45,8 @@
       "hasMap": "https://maps.app.goo.gl/3ust8xsHGGhjncHv5",
       "priceRange": "$$",
       "serviceType": [
+        "Tech Support Irving",
+        "DFW Tech Support",
         "Computer Support and Services",
         "Custom PC Workstation Builds",
         "A/V & Kiosk Infrastructure",
