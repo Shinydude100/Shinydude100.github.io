@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin CRM | Irving Computer & Tech Support</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --bg: #0B0F17;
+      --card-bg: #131B26;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #00E5FF;
+      --green: #00E676;
+      --orange: #FFB300;
+      --red: #F87171;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --font-mono: 'JetBrains Mono', monospace, ui-monospace, Consolas, monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Header */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .brand { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; }
+    .brand span { color: var(--accent); }
+
+    /* Immigration Tracker Card */
+    .tracker-card {
+      background: linear-gradient(135deg, rgba(19, 27, 38, 0.9) 0%, rgba(11, 15, 23, 0.9) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+    .tracker-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); }
+    .tracker-amount { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; color: var(--green); }
+    
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent) 0%, var(--green) 100%);
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    .tracker-sub { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Summary Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); }
+    .stat-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); }
+
+    /* Ticket Grid / Table */
+    .section-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 16px; }
+    
+    .ticket-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    .ticket-card:hover { border-color: rgba(255, 255, 255, 0.2); }
+
+    .ticket-id { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+    .ticket-time { font-family: var(--font-mono); font-size: 0.85rem; color: var(--green); margin-top: 4px; }
+    
+    .client-info strong { display: block; font-size: 1.05rem; }
+    .client-contacts { display: flex; gap: 12px; margin-top: 6px; }
+    .client-contacts a {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .issue-text { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
+
+    /* Actions */
+    .ticket-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: right;
+    }
+    .status-select, .paid-input {
+      background: #0B0F17;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .save-btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .save-btn:hover { background: var(--green); }
+
+    @media (max-width: 768px) {
+      .ticket-card { grid-template-columns: 1fr; gap: 14px; }
+      .ticket-actions { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="admin-header">
+      <div class="brand">
+        <span>IRVING TECH SUPPORT</span> // ADMIN CRM
+      </div>
+      <div>
+        <a href="https://daca.me/support/" style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none;">View Storefront →</a>
+      </div>
+    </div>
+
+    <!-- Live Legal Fund Tracker -->
+    <div class="tracker-card">
+      <div class="tracker-header">
+        <div class="tracker-title">// 245(i) & ADJUSTMENT OF STATUS LEGAL FUND</div>
+        <div class="tracker-amount" id="revenue-display">$0.00 / $4,000.00</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div id="progress-bar" class="progress-bar-fill"></div>
+      </div>
+      <div class="tracker-sub" id="progress-percent">0% of filing fees funded</div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Jobs</div>
+        <div class="stat-val" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Scheduled</div>
+        <div class="stat-val" id="stat-scheduled" style="color: var(--orange);">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-val" id="stat-completed" style="color: var(--green);">0</div>
+      </div>
+    </div>
+
+    <!-- Tickets Container -->
+    <div class="section-title">// CLIENT TICKETS & DISPATCH ROSTER</div>
+    <div id="tickets-container">
+      <div style="font-family: var(--font-mono); color: var(--accent); padding: 20px;">Loading live database records from Cloudflare D1...</div>
+    </div>
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch('/api/admin/appointments');
+        const data = await res.json();
+
+        // Update Tracker
+        const revenue = data.totalRevenue || 0;
+        const goal = data.targetGoal || 4000;
+        const pct = Math.min(100, Math.round((revenue / goal) * 100));
+
+        document.getElementById('revenue-display').textContent = `$${revenue.toFixed(2)} / $${goal.toFixed(2)}`;
+        document.getElementById('progress-bar').style.width = `${pct}%`;
+        document.getElementById('progress-percent').textContent = `${pct}% of USCIS legal & filing fees funded (${Math.max(0, Math.ceil((goal - revenue) / 125))} avg gigs remaining)`;
+
+        // Update Stats
+        const appts = data.appointments || [];
+        document.getElementById('stat-total').textContent = appts.length;
+        document.getElementById('stat-scheduled').textContent = appts.filter(a => a.status === 'SCHEDULED').length;
+        document.getElementById('stat-completed').textContent = appts.filter(a => a.status === 'COMPLETED').length;
+
+        // Render Cards
+        const container = document.getElementById('tickets-container');
+        if (appts.length === 0) {
+          container.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">No appointments logged in D1 database yet.</div>';
+          return;
+        }
+
+        container.innerHTML = appts.map(a => `
+          <div class="ticket-card" id="card-${a.ticket_number}">
+            <div>
+              <div class="ticket-id">${a.ticket_number}</div>
+              <div class="ticket-time">📅 ${a.appointment_date} @ ${formatTime(a.appointment_time)}</div>
+              <div style="font-size: 0.8rem; color: var(--accent); margin-top: 4px;">${a.service_type}</div>
+            </div>
+
+            <div class="client-info">
+              <strong>${a.client_name || 'Client'}</strong>
+              <div class="client-contacts">
+                <a href="tel:${a.client_phone}">📞 Call</a>
+                <a href="sms:${a.client_phone}">💬 Text</a>
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">${a.client_phone}</span>
+              </div>
+              <div class="issue-text"><strong>Issue:</strong> ${a.issue_description}</div>
+              ${a.device_model ? `<div style="font-size: 0.75rem; color: var(--text-muted);">Device: ${a.device_model}</div>` : ''}
+            </div>
+
+            <div class="ticket-actions">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Status:</label>
+                <select class="status-select" id="status-${a.ticket_number}">
+                  <option value="SCHEDULED" ${a.status === 'SCHEDULED' ? 'selected' : ''}>SCHEDULED</option>
+                  <option value="IN_PROGRESS" ${a.status === 'IN_PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
+                  <option value="COMPLETED" ${a.status === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
+                  <option value="CANCELLED" ${a.status === 'CANCELLED' ? 'selected' : ''}>CANCELLED</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Paid ($):</label>
+                <input type="number" step="0.01" class="paid-input" id="paid-${a.ticket_number}" value="${a.paid_amount || 0}" style="width: 90px;">
+              </div>
+
+              <button class="save-btn" onclick="updateTicket('${a.ticket_number}')">Save Update</button>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        document.getElementById('tickets-container').innerHTML = '<div style="color: var(--red); padding: 20px;">Error loading database records. Ensure you are authenticated.</div>';
+      }
+    }
+
+    async function updateTicket(ticketNumber) {
+      const status = document.getElementById(`status-${ticketNumber}`).value;
+      const paid = parseFloat(document.getElementById(`paid-${ticketNumber}`).value) || 0;
+
+      try {
+        const res = await fetch('/api/admin/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticket_number: ticketNumber, status: status, paid_amount: paid })
+        });
+        const resData = await res.json();
+        if (resData.success) {
+          alert(`Ticket ${ticketNumber} updated!`);
+          loadData();
+        } else {
+          alert('Error: ' + resData.error);
+        }
+      } catch (err) {
+        alert('Network update error.');
+      }
+    }
+
+    function formatTime(militaryTime) {
+      if (!militaryTime) return '';
+      const [h, m] = militaryTime.split(':');
+      let hour = parseInt(h, 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return `${hour}:${m} ${ampm}`;
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
