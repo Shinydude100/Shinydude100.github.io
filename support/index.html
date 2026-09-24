@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Irving Computer & Tech Support | Fast Local On-Site & Remote Repair</title>
+  <meta name="description" content="Local, professional computer repair, Wi-Fi networking, SSD upgrades, and virus removal in Irving, Las Colinas, and DFW. Call or text (972) 445-7413. Se habla Español.">
+  
+  <!-- Local OpenGraph & Schema -->
+  <link rel="canonical" href="https://daca.me/support/">
+  <meta property="og:title" content="Irving Computer & Tech Support | Local Repair & Diagnostics">
+  <meta property="og:description" content="Fast, reliable desktop/laptop repair, mesh Wi-Fi setup, and hardware upgrades in Irving, TX. Call or text (972) 445-7413.">
+  <meta property="og:url" content="https://daca.me/support/">
+  <meta property="og:type" content="website">
+
+  <!-- LocalBusiness Schema for Google Maps & Local SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ComputerRepairService",
+    "name": "Irving Computer & Tech Support",
+    "image": "https://daca.me/favicon.ico",
+    "@id": "https://daca.me/support/#localbiz",
+    "url": "https://daca.me/support/",
+    "telephone": "+1-972-445-7413",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Irving",
+      "addressRegion": "TX",
+      "postalCode": "75060",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 32.8140,
+      "longitude": -96.9489
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "20:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "10:00",
+        "closes": "18:00"
+      }
+    ],
+    "areaServed": [
+      {"@type": "City", "name": "Irving"},
+      {"@type": "City", "name": "Las Colinas"},
+      {"@type": "City", "name": "Coppell"},
+      {"@type": "City", "name": "Dallas"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0B0F17;
+      --card-bg: #131B26;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #00E5FF;
+      --accent-hover: #00B4D8;
+      --green: #00E676;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --font-mono: 'JetBrains Mono', monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Nav */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 23, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 0;
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand span { color: var(--accent); }
+    .nav-actions { display: flex; gap: 12px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: rgba(0, 230, 118, 0.1);
+      border: 1px solid rgba(0, 230, 118, 0.25);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--green);
+      margin-bottom: 24px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 60px 0 50px;
+      text-align: left;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+    .trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+    .trust-strip span { display: flex; align-items: center; gap: 6px; }
+
+    /* Section Headings */
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+
+    /* Services Grid */
+    .services { padding: 40px 0 60px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .card-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .price {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    /* Booking Card */
+    .booking-box {
+      background: linear-gradient(180deg, var(--card-bg) 0%, rgba(19, 27, 38, 0.5) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 12px;
+      padding: 40px 30px;
+      text-align: center;
+      margin: 40px 0 70px;
+    }
+    .booking-box h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .booking-box p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 28px;
+    }
+    .phone-highlight {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    /* Proof Section */
+    .pedigree {
+      border-top: 1px solid var(--border);
+      padding: 60px 0;
+    }
+    .pedigree-content {
+      background: rgba(11, 15, 23, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+    }
+    .pedigree-content h4 {
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .pedigree-content a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 30px; }
+      .phone-highlight { font-size: 1.4rem; }
+      .nav-actions .btn-outline { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header>
+    <div class="container nav-inner">
+      <a href="https://daca.me/support/" class="brand">
+        <span>IRVING TECH SUPPORT</span> // daca.me
+      </a>
+      <div class="nav-actions">
+        <a href="tel:9724457413" class="btn btn-primary">📞 (972) 445-7413</a>
+        <a href="sms:9724457413" class="btn btn-outline">💬 Text Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="status-badge">
+        <span class="pulse-dot"></span>
+        DISPATCH READY // SERVING IRVING, LAS COLINAS & DFW
+      </div>
+      <h1>Fast, Honest Computer Repair & Tech Support in Irving, TX.</h1>
+      <p>
+        On-site service and remote diagnostics for slow laptops, Blue Screen crashes, broken home Wi-Fi, and custom workstations. Direct, personal support with zero big-box retail markup. Se habla Español.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="tel:9724457413" class="btn btn-primary" style="padding: 14px 24px; font-size: 1rem;">
+          📞 Call (972) 445-7413
+        </a>
+        <a href="sms:9724457413" class="btn btn-outline" style="padding: 14px 24px; font-size: 1rem;">
+          💬 Text for Quick Estimate
+        </a>
+      </div>
+
+      <div class="trust-strip">
+        <span>✔ On-Site & Remote Available</span>
+        <span>✔ 10+ Years Systems Experience</span>
+        <span>✔ Transparent Pricing Before Work Starts</span>
+        <span>✔ Bilingual (English / Español)</span>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services" id="services">
+      <div class="section-title">// REPAIR & SUPPORT SERVICES</div>
+      <h2 class="section-heading">Common Problems We Solve Daily</h2>
+
+      <div class="grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div>
+            <div class="card-num">01 // DIAGNOSTICS & SPEED-UP</div>
+            <h3>Computer Repair & Crash Recovery</h3>
+            <p>
+              Fixing Blue Screens of Death (BSOD), system freezing, boot loops, virus and malware infections, and internal fan/thermal cleaning.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span class="price">$69 – $99</span>
+            <a href="sms:9724457413?body=Hi, I need help with a computer repair issue:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Request Fix</a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div>
+            <div class="card-num">02 // HARDWARE UPGRADES</div>
+            <h3>SSD Speed Swaps & Memory</h3>
+            <p>
+              Transform sluggish computers into sub-10-second booters. Complete, exact drive cloning to high-speed NVMe SSDs with zero loss of personal files.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span class="price">From $99 <span style="font-size: 0.75rem; color: var(--text-muted);">+ parts</span></span>
+            <a href="sms:9724457413?body=Hi, I want to upgrade my laptop/PC with an SSD:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Upgrade</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div>
+            <div class="card-num">03 // HOME & OFFICE NETWORK</div>
+            <h3>Wi-Fi & Mesh Network Setup</h3>
+            <p>
+              Eliminate dead spots, install secure Wi-Fi 6 mesh routers, fix persistent wireless printer connection drops, and optimize work-from-home bandwidth.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span class="price">$129 flat</span>
+            <a href="sms:9724457413?body=Hi, I need help setting up my Wi-Fi network:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Setup Wi-Fi</a>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div>
+            <div class="card-num">04 // CUSTOM HARDWARE</div>
+            <h3>Workstations & Custom Builds</h3>
+            <p>
+              High-performance PCs built for video editing (DaVinci Resolve / Premiere), creative studios, and gaming. Acoustic tuning and component upgrades.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span class="price">$149 consultation/build</span>
+            <a href="sms:9724457413?body=Hi, I am looking for a custom PC or workstation:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Build PC</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Immediate Action / Booking Box -->
+    <section class="booking-box">
+      <div class="section-title">// FAST LOCAL SERVICE</div>
+      <h2>Need Your Device Fixed?</h2>
+      <p>
+        Call or text with your computer's model and symptoms. Remote diagnostics and on-site visits scheduled throughout Irving, Las Colinas, and surrounding areas.
+      </p>
+      <a href="tel:9724457413" class="phone-highlight">(972) 445-7413</a>
+      <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="tel:9724457413" class="btn btn-primary" style="padding: 12px 24px;">Call Now</a>
+        <a href="sms:9724457413" class="btn btn-outline" style="padding: 12px 24px;">Text Device Symptoms</a>
+      </div>
+    </section>
+
+    <!-- Pedigree & Enterprise Proof (Protects and links to daca.me) -->
+    <section class="pedigree">
+      <div class="section-title">// ENGINEERING INTEGRITY</div>
+      <div class="pedigree-content">
+        <h4>Enterprise-Grade Skill. Neighborhood Care.</h4>
+        <p style="margin-bottom: 14px; color: var(--text-muted);">
+          When you call a big-box retail electronics store, your device is handed to a junior retail clerk following a basic script. At Irving Computer & Tech Support, your systems are diagnosed by an active systems infrastructure and security specialist.
+        </p>
+        <p style="color: var(--text-muted);">
+          Looking for my enterprise security architecture, DaedalusX64 open-source work, or live edge MCP telemetry? 
+          <a href="https://daca.me/">View the Main Systems Portfolio & Lab →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 8px;">
+        <strong>Irving Computer & Tech Support</strong> // 
+        <a href="tel:9724457413">(972) 445-7413</a> // 
+        Serving Irving, Las Colinas, Coppell, and DFW Metroplex.
+      </p>
+      <p style="margin-bottom: 8px;">
+        Hours: Mon–Fri: 9:00 AM – 8:00 PM | Sat: 9:00 AM – 7:00 PM | Sun: 10:00 AM – 6:00 PM
+      </p>
+      <p>
+        <a href="https://maps.app.goo.gl/AGKBVN5viHDWCX1f6?g_st=ac" target="_blank" rel="noopener">Find us on Google Maps</a> • 
+        <a href="https://daca.me/">daca.me Main Lab</a>
+      </p>
+      <p style="margin-top: 16px; font-size: 0.75rem; color: #64748B;">
+        © 2026 Irving Computer & Tech Support. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
