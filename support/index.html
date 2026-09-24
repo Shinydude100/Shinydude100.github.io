@@ -6,14 +6,13 @@
   <title>Irving Computer & Tech Support | Fast Local On-Site & Remote Repair</title>
   <meta name="description" content="Local, professional computer repair, Wi-Fi networking, SSD upgrades, and virus removal in Irving, Las Colinas, and DFW. Call or text (972) 445-7413. Se habla Español.">
   
-  <!-- Local OpenGraph & Schema -->
   <link rel="canonical" href="https://daca.me/support/">
   <meta property="og:title" content="Irving Computer & Tech Support | Local Repair & Diagnostics">
   <meta property="og:description" content="Fast, reliable desktop/laptop repair, mesh Wi-Fi setup, and hardware upgrades in Irving, TX. Call or text (972) 445-7413.">
   <meta property="og:url" content="https://daca.me/support/">
   <meta property="og:type" content="website">
 
-  <!-- LocalBusiness Schema for Google Maps & Local SEO -->
+  <!-- LocalBusiness Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,7 +87,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Container */
     .container {
       max-width: 1040px;
       margin: 0 auto;
@@ -114,12 +112,8 @@
       font-family: var(--font-mono);
       font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
       color: var(--text);
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
     .brand span { color: var(--accent); }
     .nav-actions { display: flex; gap: 12px; }
@@ -138,21 +132,10 @@
       transition: all 0.15s ease;
       cursor: pointer;
     }
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      border: 1px solid var(--accent);
-    }
+    .btn-primary { background: var(--accent); color: #000; border: 1px solid var(--accent); }
     .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
     /* Status Badge */
     .status-badge {
@@ -177,16 +160,13 @@
     }
 
     /* Hero */
-    .hero {
-      padding: 60px 0 50px;
-      text-align: left;
-    }
+    .hero { padding: 60px 0 50px; }
     .hero h1 {
       font-size: clamp(2.2rem, 5vw, 3.2rem);
       font-weight: 800;
       line-height: 1.15;
-      letter-spacing: -0.03em;
       margin-bottom: 18px;
+      letter-spacing: -0.03em;
     }
     .hero p {
       font-size: 1.15rem;
@@ -194,12 +174,7 @@
       max-width: 680px;
       margin-bottom: 32px;
     }
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 36px;
-    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
     .trust-strip {
       display: flex;
       flex-wrap: wrap;
@@ -209,26 +184,17 @@
       border-top: 1px solid var(--border);
       padding-top: 24px;
     }
-    .trust-strip span { display: flex; align-items: center; gap: 6px; }
 
-    /* Section Headings */
+    /* Services Grid */
+    .services { padding: 40px 0 60px; }
     .section-title {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--accent);
       margin-bottom: 12px;
     }
-    .section-heading {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 36px;
-    }
-
-    /* Services Grid */
-    .services { padding: 40px 0 60px; }
+    .section-heading { font-size: 1.8rem; font-weight: 700; margin-bottom: 36px; }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -244,26 +210,10 @@
       justify-content: space-between;
       transition: border-color 0.2s ease, transform 0.2s ease;
     }
-    .card:hover {
-      border-color: rgba(0, 229, 255, 0.4);
-      transform: translateY(-2px);
-    }
-    .card-num {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 10px;
-    }
-    .card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      flex-grow: 1;
-    }
+    .card:hover { border-color: rgba(0, 229, 255, 0.4); transform: translateY(-2px); }
+    .card-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); margin-bottom: 8px; }
+    .card h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    .card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; flex-grow: 1; }
     .card-footer {
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       padding-top: 16px;
@@ -271,46 +221,68 @@
       justify-content: space-between;
       align-items: center;
     }
-    .price {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--text);
-      font-size: 1.05rem;
-    }
+    .price { font-family: var(--font-mono); font-weight: 700; color: var(--text); }
 
-    /* Booking Card */
-    .booking-box {
-      background: linear-gradient(180deg, var(--card-bg) 0%, rgba(19, 27, 38, 0.5) 100%);
+    /* Interactive Booking Form */
+    .booking-section {
+      background: var(--card-bg);
       border: 1px solid rgba(0, 229, 255, 0.3);
       border-radius: 12px;
-      padding: 40px 30px;
-      text-align: center;
+      padding: 40px;
       margin: 40px 0 70px;
     }
-    .booking-box h2 {
-      font-size: 2rem;
-      margin-bottom: 12px;
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 24px;
     }
-    .booking-box p {
-      color: var(--text-muted);
-      max-width: 600px;
-      margin: 0 auto 28px;
-    }
-    .phone-highlight {
-      font-family: var(--font-mono);
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--accent);
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label {
       display: block;
-      margin-bottom: 20px;
-      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      background: #0B0F17;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .form-control:focus { outline: none; border-color: var(--accent); }
+    
+    .slots-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      min-height: 40px;
+    }
+    .slot-btn {
+      background: #0B0F17;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .slot-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 700;
     }
 
-    /* Proof Section */
-    .pedigree {
-      border-top: 1px solid var(--border);
-      padding: 60px 0;
-    }
+    /* Pedigree */
+    .pedigree { border-top: 1px solid var(--border); padding: 60px 0; }
     .pedigree-content {
       background: rgba(11, 15, 23, 0.6);
       border: 1px solid var(--border);
@@ -319,16 +291,9 @@
       font-family: var(--font-mono);
       font-size: 0.88rem;
     }
-    .pedigree-content h4 {
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-    .pedigree-content a {
-      color: var(--accent);
-      text-decoration: underline;
-    }
+    .pedigree-content h4 { color: var(--accent); margin-bottom: 12px; }
+    .pedigree-content a { color: var(--accent); text-decoration: underline; }
 
-    /* Footer */
     footer {
       border-top: 1px solid var(--border);
       padding: 40px 0;
@@ -336,12 +301,10 @@
       color: var(--text-muted);
       text-align: center;
     }
-    footer a { color: var(--text-muted); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
+      .booking-grid { grid-template-columns: 1fr; }
       .hero { padding: 40px 0 30px; }
-      .phone-highlight { font-size: 1.4rem; }
       .nav-actions .btn-outline { display: none; }
     }
   </style>
@@ -379,8 +342,8 @@
         <a href="tel:9724457413" class="btn btn-primary" style="padding: 14px 24px; font-size: 1rem;">
           📞 Call (972) 445-7413
         </a>
-        <a href="sms:9724457413" class="btn btn-outline" style="padding: 14px 24px; font-size: 1rem;">
-          💬 Text for Quick Estimate
+        <a href="#book" class="btn btn-outline" style="padding: 14px 24px; font-size: 1rem;">
+          ⚡ Book Service Online
         </a>
       </div>
 
@@ -398,83 +361,129 @@
       <h2 class="section-heading">Common Problems We Solve Daily</h2>
 
       <div class="grid">
-        <!-- Card 1 -->
         <div class="card">
           <div>
             <div class="card-num">01 // DIAGNOSTICS & SPEED-UP</div>
             <h3>Computer Repair & Crash Recovery</h3>
-            <p>
-              Fixing Blue Screens of Death (BSOD), system freezing, boot loops, virus and malware infections, and internal fan/thermal cleaning.
-            </p>
+            <p>Fixing Blue Screens of Death (BSOD), boot loops, malware removal, and thermal cleaning.</p>
           </div>
           <div class="card-footer">
             <span class="price">$69 – $99</span>
-            <a href="sms:9724457413?body=Hi, I need help with a computer repair issue:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Request Fix</a>
+            <a href="#book" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Book Fix</a>
           </div>
         </div>
 
-        <!-- Card 2 -->
         <div class="card">
           <div>
             <div class="card-num">02 // HARDWARE UPGRADES</div>
             <h3>SSD Speed Swaps & Memory</h3>
-            <p>
-              Transform sluggish computers into sub-10-second booters. Complete, exact drive cloning to high-speed NVMe SSDs with zero loss of personal files.
-            </p>
+            <p>Transform sluggish computers into sub-10-second booters. Exact drive cloning with zero data loss.</p>
           </div>
           <div class="card-footer">
             <span class="price">From $99 <span style="font-size: 0.75rem; color: var(--text-muted);">+ parts</span></span>
-            <a href="sms:9724457413?body=Hi, I want to upgrade my laptop/PC with an SSD:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Upgrade</a>
+            <a href="#book" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Upgrade</a>
           </div>
         </div>
 
-        <!-- Card 3 -->
         <div class="card">
           <div>
             <div class="card-num">03 // HOME & OFFICE NETWORK</div>
             <h3>Wi-Fi & Mesh Network Setup</h3>
-            <p>
-              Eliminate dead spots, install secure Wi-Fi 6 mesh routers, fix persistent wireless printer connection drops, and optimize work-from-home bandwidth.
-            </p>
+            <p>Eliminate dead zones, install secure Wi-Fi 6 mesh routers, and fix printer connectivity drops.</p>
           </div>
           <div class="card-footer">
             <span class="price">$129 flat</span>
-            <a href="sms:9724457413?body=Hi, I need help setting up my Wi-Fi network:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Setup Wi-Fi</a>
+            <a href="#book" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Setup Wi-Fi</a>
           </div>
         </div>
 
-        <!-- Card 4 -->
         <div class="card">
           <div>
             <div class="card-num">04 // CUSTOM HARDWARE</div>
             <h3>Workstations & Custom Builds</h3>
-            <p>
-              High-performance PCs built for video editing (DaVinci Resolve / Premiere), creative studios, and gaming. Acoustic tuning and component upgrades.
-            </p>
+            <p>High-performance PCs built for DaVinci Resolve editing, creative studios, and gaming.</p>
           </div>
           <div class="card-footer">
             <span class="price">$149 consultation/build</span>
-            <a href="sms:9724457413?body=Hi, I am looking for a custom PC or workstation:" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Build PC</a>
+            <a href="#book" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Build PC</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Immediate Action / Booking Box -->
-    <section class="booking-box">
-      <div class="section-title">// FAST LOCAL SERVICE</div>
-      <h2>Need Your Device Fixed?</h2>
-      <p>
-        Call or text with your computer's model and symptoms. Remote diagnostics and on-site visits scheduled throughout Irving, Las Colinas, and surrounding areas.
-      </p>
-      <a href="tel:9724457413" class="phone-highlight">(972) 445-7413</a>
-      <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-        <a href="tel:9724457413" class="btn btn-primary" style="padding: 12px 24px;">Call Now</a>
-        <a href="sms:9724457413" class="btn btn-outline" style="padding: 12px 24px;">Text Device Symptoms</a>
+    <!-- LIVE INTERACTIVE BOOKING ENGINE -->
+    <section class="booking-section" id="book">
+      <div class="section-title">// AUTOMATED APPOINTMENT DISPATCH</div>
+      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">Schedule a Diagnostic or Service Call</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Pick a date to check live availability. Need urgent help? Call or text <a href="tel:9724457413" style="color: var(--accent); text-decoration: none;">(972) 445-7413</a> directly.</p>
+
+      <div id="booking-container">
+        <form id="booking-form" class="booking-grid">
+          <!-- Column 1: Date & Time -->
+          <div>
+            <div class="form-group">
+              <label for="service_type">Select Service Needed</label>
+              <select id="service_type" class="form-control">
+                <option value="Computer Repair & Diagnostic">Computer Repair & Diagnostic ($69–$99)</option>
+                <option value="SSD / RAM Hardware Upgrade">SSD / RAM Speed Upgrade ($99 + parts)</option>
+                <option value="Wi-Fi & Mesh Network Setup">Wi-Fi & Mesh Network Setup ($129)</option>
+                <option value="Custom PC / Workstation Build">Custom PC / Workstation Build ($149)</option>
+                <option value="Other / Remote Tech Consultation">Other / Remote Tech Consultation</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="appointment_date">Choose Preferred Date</label>
+              <input type="date" id="appointment_date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label>Available Appointment Slots</label>
+              <div id="slots-wrapper" class="slots-container">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Select a date above to load live open slots...</span>
+              </div>
+              <input type="hidden" id="selected_time" required>
+            </div>
+          </div>
+
+          <!-- Column 2: Client Info -->
+          <div>
+            <div class="form-group">
+              <label for="client_name">Your Full Name</label>
+              <input type="text" id="client_name" class="form-control" placeholder="Jane Doe" required>
+            </div>
+
+            <div class="form-group">
+              <label for="client_phone">Phone Number (Call or Text)</label>
+              <input type="tel" id="client_phone" class="form-control" placeholder="(972) 555-0123" required>
+            </div>
+
+            <div class="form-group">
+              <label for="device_model">Device Model (Optional)</label>
+              <input type="text" id="device_model" class="form-control" placeholder="e.g. Dell Inspiron 15, Custom Desktop">
+            </div>
+
+            <div class="form-group">
+              <label for="issue_description">Describe the Issue</label>
+              <textarea id="issue_description" class="form-control" rows="3" placeholder="What symptoms are you noticing? (Blue screen, slow boot, no Wi-Fi, etc.)" required></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; padding: 12px;">Confirm & Dispatch Appointment</button>
+          </div>
+        </form>
+
+        <!-- Success Confirmation Display -->
+        <div id="booking-success" style="display: none; padding: 30px; text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">✅</div>
+          <h3 style="font-size: 1.6rem; color: var(--green); margin-bottom: 8px;">Appointment Confirmed!</h3>
+          <p id="success-ticket" style="font-family: var(--font-mono); font-size: 1.2rem; color: var(--accent); margin-bottom: 16px;"></p>
+          <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 24px;">Your service ticket has been routed to dispatch. Hugo will follow up via text at your phone number prior to your appointment window.</p>
+          <a href="https://daca.me/support/" class="btn btn-outline">Done</a>
+        </div>
       </div>
     </section>
 
-    <!-- Pedigree & Enterprise Proof (Protects and links to daca.me) -->
+    <!-- Pedigree & Enterprise Proof -->
     <section class="pedigree">
       <div class="section-title">// ENGINEERING INTEGRITY</div>
       <div class="pedigree-content">
@@ -511,6 +520,109 @@
       </p>
     </div>
   </footer>
+
+  <!-- Frontend Client Logic (Pure Vanilla JS, CSP-Compliant) -->
+  <script>
+    const dateInput = document.getElementById('appointment_date');
+    const slotsWrapper = document.getElementById('slots-wrapper');
+    const selectedTimeInput = document.getElementById('selected_time');
+    const bookingForm = document.getElementById('booking-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+
+    // Listen for date change -> Query Cloudflare Worker
+    dateInput.addEventListener('change', async (e) => {
+      const selectedDate = e.target.value;
+      if (!selectedDate) return;
+
+      slotsWrapper.innerHTML = '<span style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem;">Checking live schedule...</span>';
+      selectedTimeInput.value = '';
+
+      try {
+        const res = await fetch(`/api/availability?date=${selectedDate}`);
+        const data = await res.json();
+
+        slotsWrapper.innerHTML = '';
+
+        if (!data.available) {
+          slotsWrapper.innerHTML = `<span style="color: #F87171; font-size: 0.85rem;">⚠️ ${data.reason || "No available slots for this date. Please choose another day."}</span>`;
+          return;
+        }
+
+        data.slots.forEach(slot => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'slot-btn';
+          btn.textContent = formatTime(slot);
+          btn.onclick = () => {
+            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedTimeInput.value = slot;
+          };
+          slotsWrapper.appendChild(btn);
+        });
+      } catch (err) {
+        slotsWrapper.innerHTML = '<span style="color: #F87171; font-size: 0.85rem;">Error loading schedule. Please text (972) 445-7413 directly.</span>';
+      }
+    });
+
+    function formatTime(militaryTime) {
+      const [h, m] = militaryTime.split(':');
+      let hour = parseInt(h, 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return `${hour}:${m} ${ampm}`;
+    }
+
+    // Submit Booking
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!selectedTimeInput.value) {
+        alert('Please select an appointment time slot.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Securing Appointment...';
+
+      const payload = {
+        service_type: document.getElementById('service_type').value,
+        appointment_date: dateInput.value,
+        appointment_time: selectedTimeInput.value,
+        name: document.getElementById('client_name').value,
+        phone: document.getElementById('client_phone').value,
+        device_model: document.getElementById('device_model').value,
+        issue_description: document.getElementById('issue_description').value
+      };
+
+      try {
+        const res = await fetch('/api/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          document.getElementById('booking-form').style.display = 'none';
+          document.getElementById('success-ticket').textContent = `Ticket ID: ${result.ticket}`;
+          document.getElementById('booking-success').style.display = 'block';
+        } else {
+          alert('Booking error: ' + (result.error || 'Please call or text directly.'));
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm & Dispatch Appointment';
+        }
+      } catch (err) {
+        alert('Connection error. Please call or text (972) 445-7413.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Confirm & Dispatch Appointment';
+      }
+    });
+  </script>
 
 </body>
 </html>
