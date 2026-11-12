@@ -45,3 +45,7 @@
 ## 2026-07-14 - Contrast Ratio for Subtle Elements
 **Learning:** Subtle UI elements (like `.footer-loc` with `rgba(255,255,255,0.15)`) often fail WCAG contrast requirements against dark backgrounds.
 **Action:** When designing subtle text, ensure the calculated luminance contrast ratio against the background color meets at least WCAG 4.5:1 (e.g., using `rgba(255,255,255,0.5)` on deep dark backgrounds).
+
+## 2026-11-12 - Chrome Modern Web Guidance Form Ergonomics & WebMCP Agentic Feedback
+**Learning:** Native `:invalid` CSS selectors fire before a user interacts with an input, creating premature red error states, while fixed-row `<textarea>` elements clip multi-line diagnostic descriptions and `font-size < 16px` triggers forced viewport auto-zoom on iOS Safari. Furthermore, dynamic time-slot buttons lacked `aria-pressed` state and `<fieldset><legend>` grouping.
+**Action:** Style validation exclusively with `:user-invalid` and `:user-valid` paired with adjacent `.error-msg` hints, apply `field-sizing: content` (`min-block-size: 3lh; max-block-size: 10lh; width: 100%; height: auto;`) on `<textarea>`, enforce `font-size: max(1rem, 1em)` and `min-height: 48px` on form controls, wrap slot buttons in `<fieldset><legend>` with `aria-pressed`, and style `:tool-form-active` / `:tool-submit-active` for WebMCP agent transparency.

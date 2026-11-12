@@ -371,16 +371,20 @@ async function runPipelineTelemetry() {
 // =================================================================
 function initDynamicTelemetry() {
     const pingStart = performance.now();
+    const telemetryController = new AbortController();
+    const telemetryTimeoutId = setTimeout(() => telemetryController.abort(), 5000);
 
     fetch('/api/telemetry', {
         method: 'GET',
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json' },
+        signal: telemetryController.signal
     })
         .then(res => {
             if (!res.ok) throw new Error(`Telemetry HTTP ${res.status}`);
             return res.json();
         })
         .then(data => {
+            if (!data || typeof data !== 'object') return;
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
 
             document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
@@ -396,11 +400,11 @@ function initDynamicTelemetry() {
             });
 
             document.querySelectorAll('[data-telemetry="tls"]').forEach(el => {
-                el.textContent = data.tlsVersion !== 'unknown' ? data.tlsVersion : 'TLSv1.3';
+                el.textContent = data.tlsVersion && data.tlsVersion !== 'unknown' ? data.tlsVersion : 'TLSv1.3';
             });
 
             document.querySelectorAll('[data-telemetry="protocol"]').forEach(el => {
-                el.textContent = data.httpProtocol !== 'unknown' ? data.httpProtocol : 'HTTP/3';
+                el.textContent = data.httpProtocol && data.httpProtocol !== 'unknown' ? data.httpProtocol : 'HTTP/3';
             });
 
             document.querySelectorAll('[data-telemetry="asn"]').forEach(el => {
@@ -420,6 +424,9 @@ function initDynamicTelemetry() {
             document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
                 el.textContent = `${latency}ms`;
             });
+        })
+        .finally(() => {
+            clearTimeout(telemetryTimeoutId);
         });
 
     const nodeCards = document.querySelectorAll('.interactive-card, .node-card');
@@ -446,31 +453,69 @@ function initDynamicTelemetry() {
 }
 
 // =================================================================
-// WebMCP Integration for Agentic Browsing
+// WebMCP Integration for Agentic Browsing (document.modelContext)
 // =================================================================
 function initWebMCP() {
-    if (typeof navigator !== 'undefined' && navigator.modelContext) {
-        const registerWebMCPTool = () => {
-            try {
-                navigator.modelContext.registerTool({
-                    name: 'get_portfolio_info',
-                    description: 'Returns basic information about the site',
-                    execute: () => {
-                        return {
-                            title: typeof document !== 'undefined' ? document.title : '',
-                            url: typeof window !== 'undefined' ? window.location.href : ''
-                        };
-                    }
-                });
-            } catch (e) {
-                console.error('Failed to register WebMCP tool:', e);
-            }
-        };
-        if (typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined') {
-            window.requestIdleCallback(registerWebMCPTool);
-        } else {
-            setTimeout(registerWebMCPTool, 0);
+    const mc = (typeof document !== 'undefined' && document.modelContext) ||
+        (typeof navigator !== 'undefined' && navigator.modelContext);
+    if (!mc || typeof mc.registerTool !== 'function') return;
+
+    const webMcpController = new AbortController();
+    const registerWebMCPTools = () => {
+        try {
+            mc.registerTool({
+                name: 'get_portfolio_info',
+                description: 'Returns systems architecture, security engineering, and edge MCP metadata for Hugo Luna at daca.me. Use when an agent needs site identity or discovery endpoints.',
+                inputSchema: { type: 'object', properties: {} },
+                execute() {
+                    return {
+                        title: typeof document !== 'undefined' ? document.title : '',
+                        url: typeof window !== 'undefined' ? window.location.href : '',
+                        architect: 'Hugo Luna',
+                        location: 'Irving / Dallas-Fort Worth, TX',
+                        endpoints: {
+                            mcp_manifest: '/.well-known/mcp.json',
+                            llms_txt: '/llms.txt',
+                            schema_jsonld: '/schema.jsonld',
+                            support_booking: '/support/',
+                            daedalus_lab: '/DaedalusX64/'
+                        }
+                    };
+                },
+                annotations: { readOnlyHint: true }
+            }, { signal: webMcpController.signal });
+
+            mc.registerTool({
+                name: 'get_services_and_pricing',
+                description: 'Lists consulting and local DFW technical support offerings and pricing from Hugo Luna. Use when the user asks about services, rates, or booking.',
+                inputSchema: { type: 'object', properties: {} },
+                execute() {
+                    return {
+                        enterprise_consulting: [
+                            { name: 'Agentic Web Transformations', price: '$5,000–$10,000' },
+                            { name: 'Cloudflare Worker MCP Deployments', price: 'Custom' },
+                            { name: 'PageSpeed & Critical Rendering Path Optimization', price: 'Custom' }
+                        ],
+                        dfw_local_support: [
+                            { name: 'Computer Repair & Crash Recovery', price: '$69–$99' },
+                            { name: 'SSD / RAM Speed Upgrade', price: 'From $99 + parts' },
+                            { name: 'Wi-Fi & Mesh Network Setup', price: '$129 flat' },
+                            { name: 'Workstations & Custom Builds', price: '$149 consultation/build' }
+                        ],
+                        booking_url: 'https://daca.me/support/#book'
+                    };
+                },
+                annotations: { readOnlyHint: true }
+            }, { signal: webMcpController.signal });
+        } catch (e) {
+            console.error('Failed to register WebMCP tools:', e);
         }
+    };
+
+    if (typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined') {
+        window.requestIdleCallback(registerWebMCPTools);
+    } else {
+        setTimeout(registerWebMCPTools, 0);
     }
 }
 
