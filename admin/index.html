@@ -38,14 +38,45 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: var(--bg);
+      background-color: #080c14;
+      background-image:
+        radial-gradient(ellipse 70% 45% at 15% 0%, rgba(0, 229, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 65% 40% at 85% 15%, rgba(0, 230, 118, 0.05), transparent 55%),
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
       color: var(--text);
       font-family: var(--font-sans);
-      padding: 20px;
+      padding: 24px 20px 48px;
       line-height: 1.5;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; }
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      z-index: 200;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        @keyframes grow-progress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+        #scroll-progress {
+          animation: grow-progress linear both;
+          animation-timeline: scroll(root block);
+        }
+      }
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; }
 
     /* Accessible Status Banner */
     .admin-banner {
@@ -71,26 +102,52 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.25);
       padding-bottom: 16px;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .brand { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; }
     .brand span { color: var(--accent); }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .refresh-btn {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 7px 14px;
+      min-height: 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .refresh-btn:hover { background: var(--accent); color: #080c14; }
+    .refresh-btn:disabled { opacity: 0.55; cursor: wait; }
 
     /* Immigration Tracker Card */
     .tracker-card {
-      background: linear-gradient(135deg, rgba(19, 27, 38, 0.9) 0%, rgba(11, 15, 23, 0.9) 100%);
-      border: 1px solid rgba(0, 229, 255, 0.3);
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.85) 0%, rgba(8, 12, 20, 0.92) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.32);
       border-radius: 10px;
       padding: 24px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
     }
     .tracker-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     .tracker-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); }
     .tracker-amount { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; color: var(--green); }
@@ -116,23 +173,75 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: rgba(17, 24, 39, 0.72);
+      border: 1px solid rgba(0, 229, 255, 0.22);
       border-radius: 8px;
       padding: 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); }
     .stat-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); }
 
+    /* CRM Filter & Search Toolbar */
+    .crm-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: rgba(17, 24, 39, 0.72);
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+    }
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .filter-pill {
+      background: rgba(8, 12, 20, 0.85);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 7px 12px;
+      min-height: 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-pill:hover { border-color: var(--accent); color: var(--text); }
+    .filter-pill[aria-pressed="true"] {
+      background: rgba(0, 229, 255, 0.16);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .search-input {
+      background: #080c14;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 8px 12px;
+      min-height: 38px;
+      min-width: 240px;
+      border-radius: 6px;
+    }
+    .search-input:focus { border-color: var(--accent); outline: none; }
+
     /* Ticket Grid / Table */
-    .section-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 16px; }
+    .section-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
     
     .ticket-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: rgba(17, 24, 39, 0.74);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 16px;
@@ -140,14 +249,17 @@
       grid-template-columns: 1fr 1.5fr 1fr;
       gap: 20px;
       align-items: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease;
     }
-    .ticket-card:hover { border-color: rgba(255, 255, 255, 0.2); }
+    .ticket-card:hover { border-color: rgba(0, 229, 255, 0.4); }
 
     .ticket-id { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 1.1rem; }
     .ticket-time { font-family: var(--font-mono); font-size: 0.85rem; color: var(--green); margin-top: 4px; }
     
     .client-info strong { display: block; font-size: 1.05rem; }
-    .client-contacts { display: flex; gap: 12px; margin-top: 6px; }
+    .client-contacts { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
     .client-contacts a {
       font-size: 0.8rem;
       color: var(--accent);
@@ -166,7 +278,7 @@
       text-align: right;
     }
     .status-select, .paid-input {
-      background: #0B0F17;
+      background: #080c14;
       border: 1px solid var(--border);
       color: var(--text);
       padding: 6px 10px;
@@ -187,7 +299,7 @@
       cursor: pointer;
     }
     .save-btn:hover { background: var(--green); }
-    .save-btn:focus-visible, .status-select:focus-visible, .paid-input:focus-visible {
+    .save-btn:focus-visible, .status-select:focus-visible, .paid-input:focus-visible, .filter-pill:focus-visible, .search-input:focus-visible, .refresh-btn:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
@@ -195,6 +307,7 @@
     @media (max-width: 768px) {
       .ticket-card { grid-template-columns: 1fr; gap: 14px; }
       .ticket-actions { text-align: left; }
+      .search-input { width: 100%; min-width: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -206,6 +319,7 @@
   </style>
 </head>
 <body>
+  <div id="scroll-progress" aria-hidden="true"></div>
 
   <main class="container">
     <!-- Header -->
@@ -213,7 +327,8 @@
       <div class="brand">
         <span>IRVING TECH SUPPORT</span> // ADMIN CRM
       </div>
-      <div>
+      <div class="header-actions">
+        <button type="button" id="refresh-crm-btn" class="refresh-btn">↻ Sync D1</button>
         <a href="/support/" style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none;">View Storefront →</a>
       </div>
     </header>
@@ -249,7 +364,17 @@
     </div>
 
     <!-- Tickets Container -->
-    <div class="section-title">// CLIENT TICKETS & DISPATCH ROSTER</div>
+    <div class="section-title">// CLIENT TICKETS &amp; DISPATCH ROSTER</div>
+    <div class="crm-toolbar" role="region" aria-label="Ticket Filter and Search Controls">
+      <div class="filter-pills" role="group" aria-label="Filter by Ticket Status">
+        <button type="button" class="filter-pill" data-status-filter="ALL" aria-pressed="true">ALL</button>
+        <button type="button" class="filter-pill" data-status-filter="SCHEDULED" aria-pressed="false">SCHEDULED</button>
+        <button type="button" class="filter-pill" data-status-filter="IN_PROGRESS" aria-pressed="false">IN PROGRESS</button>
+        <button type="button" class="filter-pill" data-status-filter="COMPLETED" aria-pressed="false">COMPLETED</button>
+        <button type="button" class="filter-pill" data-status-filter="CANCELLED" aria-pressed="false">CANCELLED</button>
+      </div>
+      <input type="search" id="ticket-search" class="search-input" placeholder="Search client, phone, ticket, device..." aria-label="Search tickets by client name, phone, ticket ID, or device">
+    </div>
     <div id="tickets-container" aria-live="polite">
       <div style="font-family: var(--font-mono); color: var(--accent); padding: 20px;">Loading live database records from Cloudflare D1...</div>
     </div>

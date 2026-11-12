@@ -171,7 +171,7 @@ describe('MemoryBackplane', () => {
             expect(mockCtx.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
 
             // We can assert the mocked context properties
-            expect(mockCtx.font).toBe("600 10px 'Fira Code', monospace");
+            expect(mockCtx.font).toBe("600 10px 'JetBrains Mono', monospace");
 
             // Check chars render
             // stream.y gets recalculated to getSecureRandom() * window.innerHeight = 0.25 * 800 = 200

@@ -116,34 +116,100 @@
 }
 
 :root {
+    --in-oklab: ;
+    --in-oklch: ;
     --bg-pure: #090B10;
-    --bg-card: rgba(17, 24, 39, 0.45);
+    --bg-elevated: #0d121c;
+    --bg-card: rgba(17, 24, 39, 0.68);
+    --bg-card-hover: rgba(17, 24, 39, 0.9);
     --accent: #FDE047;
+    --accent-cyan: #00E5FF;
+    --accent-green: #10b981;
     --text-main: #E2E8F0;
     --text-muted: #94a3b8;
-    --border-glow: rgba(51, 65, 85, 0.35);
+    --border-glow: rgba(51, 65, 85, 0.48);
+    --border-bright: rgba(253, 224, 71, 0.38);
     --warning: #f97316;
     --font-sans: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --radius-sm: 4px;
     --radius-md: 8px;
+    --scrollbar-thumb: #475569;
+    --scrollbar-track: #090B10;
+    color-scheme: dark;
+}
+
+@supports (background: linear-gradient(in oklab, white, black)) {
+    :root {
+        --in-oklab: in oklab;
+        --in-oklch: in oklch;
+    }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; background: var(--bg-pure); font-family: var(--font-body); color: var(--text-main); overflow-x: hidden; }
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 110px;
+    background: var(--bg-pure);
+    font-family: var(--font-body);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+}
+@supports not (scrollbar-color: auto) {
+    html::-webkit-scrollbar { width: 10px; height: 10px; }
+    html::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 5px; }
+    html::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+}
+
+body {
+    background-color: var(--bg-pure);
+    background-image:
+        radial-gradient(ellipse 80% 50% at 50% -15%, rgba(253, 224, 71, 0.08), transparent 70%),
+        radial-gradient(ellipse 60% 45% at 85% 20%, rgba(0, 229, 255, 0.05), transparent 65%);
+}
+
 h1, h2, h3, h4, .hero-title, .section-title, .card-heading { text-wrap: balance; }
-.card-text, .tool-desc, .prose-block p, .node-list li { text-wrap: pretty; }
+.card-text, .tool-desc, .prose-block p, .node-list li { text-wrap: pretty; overflow-wrap: break-word; }
 #pc-builds, #tools, #about, #contact { content-visibility: auto; contain-intrinsic-size: auto none auto 700px; }
 
 ::selection { background: var(--accent); color: var(--bg-pure); }
+
+/* Top Viewport Scroll Progress Indicator */
+#scroll-progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right var(--in-oklab), var(--accent), var(--accent-green), var(--accent-cyan));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 10003;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(253, 224, 71, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+        @keyframes grow-progress {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        #scroll-progress {
+            animation: grow-progress auto linear;
+            animation-timeline: scroll(block root);
+        }
+    }
+}
 
 /* Hardware Accelerated Input Processing Pointer Overrides */
 @media (pointer: fine) {
     html.sys-cursor-active { cursor: none; }
     html.sys-cursor-active a, html.sys-cursor-active button { cursor: none; }
-
-    /* Defensive A11y: Safely restore default tracking if keyboard navigation takes focus */
     html.sys-cursor-active *:focus-visible { cursor: auto !important; }
 
     .ptr-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--accent); pointer-events: none; z-index: 10001; border-radius: 50%; transform: translate3d(-50%,-50%,0); will-change: transform; mix-blend-mode: difference; }
@@ -152,7 +218,7 @@ h1, h2, h3, h4, .hero-title, .section-title, .card-heading { text-wrap: balance;
 }
 
 /* Keyboard Accessibility Focus Indicators */
-a:focus-visible, button:focus-visible {
+a:focus-visible, button:focus-visible, [role="tab"]:focus-visible {
     outline: 2px solid var(--accent) !important;
     outline-offset: 4px !important;
 }
@@ -163,17 +229,15 @@ a:focus-visible, button:focus-visible {
     left: 0;
     background: var(--accent);
     color: var(--bg-pure);
-    padding: 12px 24px;
-    z-index: 10002;
+    padding: 0.75rem 1.5rem;
+    z-index: 10005;
     font-family: var(--font-mono);
     font-weight: 700;
     font-size: 0.85rem;
     text-decoration: none;
     transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.skip-link:focus {
-    top: 0;
-}
+.skip-link:focus { top: 0; }
 
 .sr-only {
     position: absolute;
@@ -188,123 +252,591 @@ a:focus-visible, button:focus-visible {
 }
 
 /* High-DPI Layer Bounds & Mobile Bar Protection */
-#matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.4; }
+#matrix-backplane { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; opacity: 0.35; }
 #app-wrapper { position: relative; z-index: 2; width: 100%; }
-.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
 
-/* Navigation Architecture */
-.sys-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; border-bottom: 1px solid transparent; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-.sys-header.scrolled { background: rgba(9, 11, 16, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(51, 65, 85, 0.3); }
-.nav-inner { display: flex; justify-content: space-between; align-items: center; height: 90px; position: relative; }
-.sys-logo { font-family: var(--font-mono); font-weight: 700; text-decoration: none; color: #fff; font-size: 1.15rem; letter-spacing: -0.05em; }
+/* Navigation Architecture & Top Telemetry Ticker */
+.sys-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(9, 11, 16, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.35);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.sys-header.scrolled {
+    background: rgba(9, 11, 16, 0.92);
+    border-bottom-color: rgba(253, 224, 71, 0.25);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+}
+
+.edge-telemetry-strip {
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    background: rgba(3, 5, 9, 0.75);
+    padding: 0.35rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+.edge-strip-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.edge-strip-group {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    flex-wrap: wrap;
+}
+.edge-kv { display: inline-flex; align-items: center; gap: 0.35rem; }
+.edge-kv strong { color: var(--text-main); font-weight: 600; }
+.edge-kv .live-val { color: var(--accent); font-weight: 700; }
+.edge-kv .ok-val { color: var(--accent-green); font-weight: 700; }
+.edge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); display: inline-block; }
+
+.nav-inner { display: flex; justify-content: space-between; align-items: center; min-block-size: 72px; position: relative; gap: 1rem; }
+.sys-logo { font-family: var(--font-mono); font-weight: 700; text-decoration: none; color: #fff; font-size: 1.05rem; letter-spacing: -0.04em; display: inline-flex; align-items: center; gap: 0.5rem; }
 .sys-logo span { color: var(--accent); }
+.logo-badge {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-sm);
+    background: rgba(253, 224, 71, 0.1);
+    border: 1px solid rgba(253, 224, 71, 0.3);
+    color: var(--accent);
+    letter-spacing: 0.06em;
+}
 
-.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-.nav-item a { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--text-muted); transition: color 0.3s; position: relative; padding: 0.5rem 0; }
-.nav-item a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-.nav-item a:hover::after, .nav-item.active a::after { transform: scaleX(1); transform-origin: left; }
+.nav-links { display: flex; gap: 1.65rem; list-style: none; align-items: center; position: relative; }
+.nav-item a { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; color: var(--text-muted); transition: color 0.25s; position: relative; padding: 0.45rem 0; display: inline-flex; align-items: center; gap: 0.35rem; }
 .nav-item a:hover, .nav-item.active a { color: var(--accent); }
+.nav-item.nav-pill a {
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-sm);
+    background: rgba(17, 24, 39, 0.8);
+    border: 1px solid var(--border-glow);
+    color: var(--text-main);
+}
+.nav-item.nav-pill a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(253, 224, 71, 0.08);
+}
 
-/* Hero Pipeline & Native Staging Animations */
+/* CSS Anchor Positioning Active Nav Indicator + Fallback */
+@supports (position-anchor: --active-nav) {
+    .nav-item.active { anchor-name: --active-nav; }
+    .nav-links::before {
+        content: '';
+        position: absolute;
+        position-anchor: --active-nav;
+        inset-block-start: calc(anchor(bottom) - 2px);
+        inset-inline-start: anchor(left);
+        inset-inline-end: anchor(right);
+        border-block-end: 2px solid var(--accent);
+        pointer-events: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .nav-links::before { transition: inset 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+    }
+}
+@supports not (position-anchor: --active-nav) {
+    .nav-item:not(.nav-pill) a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; border-block-end: 2px solid var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .nav-item:not(.nav-pill) a:hover::after, .nav-item.active:not(.nav-pill) a::after { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Hero Pipeline & 2-Column Command Deck */
 @keyframes sysRevealFade {
-    from { opacity: 0; transform: translate3d(0, 20px, 0); }
+    from { opacity: 0; transform: translate3d(0, 18px, 0); }
     to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-.hero-viewport { min-height: 100dvh; display: flex; align-items: center; position: relative; padding-top: 90px; }
+.hero-viewport {
+    min-block-size: 100dvh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 8.5rem 0 4.5rem;
+}
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 3rem;
+    align-items: center;
+    width: 100%;
+}
 .hero-core { width: 100%; text-align: left; }
 
 @media (min-width: 769px) {
-    .sys-reveal { opacity: 0; animation: sysRevealFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .sys-reveal:nth-child(1) { animation-delay: 0.1s; }
-    .sys-reveal:nth-child(2) { animation-delay: 0.25s; }
-    .sys-reveal:nth-child(3) { animation-delay: 0.4s; }
-    .sys-reveal:nth-child(4) { animation-delay: 0.55s; }
+    .sys-reveal { opacity: 0; animation: sysRevealFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .sys-reveal:nth-child(1) { animation-delay: 0.08s; }
+    .sys-reveal:nth-child(2) { animation-delay: 0.18s; }
+    .sys-reveal:nth-child(3) { animation-delay: 0.28s; }
+    .sys-reveal:nth-child(4) { animation-delay: 0.38s; }
+    .sys-reveal:nth-child(5) { animation-delay: 0.48s; }
 }
 
-.sys-status-pill { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(17, 24, 39, 0.6); border: 1px solid var(--border-glow); padding: 0.5rem 1.25rem; border-radius: 100px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); margin-bottom: 2.5rem; }
-.sys-status-indicator { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+.sys-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: linear-gradient(90deg var(--in-oklab), rgba(17, 24, 39, 0.88), rgba(16, 185, 129, 0.1));
+    border: 1px solid rgba(253, 224, 71, 0.3);
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+.sys-status-indicator { width: 7px; height: 7px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 10px var(--accent-green); }
 
-.hero-title { font-size: clamp(2.2rem, 5.5vw, 5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 2rem; }
-.hero-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
+.hero-title {
+    font-family: var(--font-sans);
+    font-size: clamp(2.1rem, 1.35rem + 3.2vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+.hero-title em {
+    font-style: normal;
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(253, 224, 71, 0.35);
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+}
 
-.hero-desc { max-width: 800px; margin-bottom: 3.5rem; min-height: 80px; }
+/* Recessed Console Shell around .hero-desc */
+.hero-console-shell {
+    background: rgba(6, 9, 15, 0.82);
+    border: 1px solid var(--border-glow);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.15rem;
+    margin-bottom: 1.75rem;
+    max-width: 68ch;
+    box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.hero-console-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    padding-bottom: 0.45rem;
+    margin-bottom: 0.55rem;
+    letter-spacing: 0.08em;
+}
+.hero-console-bar span:last-child { color: var(--accent-green); }
+.hero-desc { min-block-size: 4.5rem; }
 
 /* Semantically Isolated Native Terminal Outputs */
-.console-line { font-family: var(--font-mono); font-size: clamp(0.72rem, 1.5vw, 0.85rem); letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.6; text-align: left; }
+.console-line { font-family: var(--font-mono); font-size: clamp(0.72rem, 0.65rem + 0.25vw, 0.82rem); letter-spacing: 0.03em; color: #cbd5e1; margin-bottom: 0.35rem; line-height: 1.5; text-align: left; }
 
-.btn-stack { display: flex; gap: 1.25rem; flex-wrap: wrap; }
-.btn-primitive { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 1.15rem 2rem; border-radius: var(--radius-md); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; min-width: 240px; }
-.btn-primitive.primary { background: var(--accent); color: var(--bg-pure); box-shadow: 0 4px 25px rgba(253, 224, 71, 0.12); }
-.btn-primitive.primary:hover { background: #fff; box-shadow: 0 12px 35px rgba(255, 255, 255, 0.18); transform: translate3d(0, -2px, 0); }
-.btn-primitive.secondary { background: rgba(17, 24, 39, 0.3); color: var(--text-main); border: 1px solid var(--border-glow); backdrop-filter: blur(4px); }
-.btn-primitive.secondary:hover { background: rgba(17, 24, 39, 0.7); border-color: var(--text-muted); transform: translate3d(0, -2px, 0); }
+.btn-stack { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.btn-primitive {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.95rem 1.6rem;
+    min-block-size: 48px;
+    border-radius: var(--radius-sm);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+.btn-primitive.primary {
+    background: var(--accent);
+    color: var(--bg-pure);
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 25px rgba(253, 224, 71, 0.16);
+}
+.btn-primitive.primary:hover {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.22);
+    transform: translate3d(0, -2px, 0);
+}
+.btn-primitive.secondary {
+    background: rgba(17, 24, 39, 0.6);
+    color: var(--text-main);
+    border: 1px solid var(--border-glow);
+    backdrop-filter: blur(8px);
+}
+.btn-primitive.secondary:hover {
+    background: rgba(17, 24, 39, 0.92);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translate3d(0, -2px, 0);
+}
+
+/* Hero KPI Strip */
+.hero-kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-glow);
+}
+.kpi-cell {
+    background: rgba(13, 18, 28, 0.72);
+    border: 1px solid rgba(51, 65, 85, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.75rem;
+}
+.kpi-val {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+    margin-bottom: 0.2rem;
+}
+.kpi-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--text-main);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.kpi-sub {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+}
+
+/* Right Column: Interactive Hero Command Deck HUD */
+.hero-hud-panel {
+    background: linear-gradient(160deg var(--in-oklab), rgba(17, 24, 39, 0.88), rgba(9, 11, 16, 0.94));
+    border: 1px solid rgba(253, 224, 71, 0.28);
+    border-radius: var(--radius-md);
+    padding: 1.35rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+.hud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.85rem;
+    margin-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border-glow);
+    font-family: var(--font-mono);
+}
+.hud-title-group { display: flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; color: #fff; font-weight: 700; letter-spacing: 0.06em; }
+.hud-badge {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: var(--accent-green);
+    letter-spacing: 0.08em;
+}
+
+/* Accessible Tabbed Interface inside HUD */
+.hud-tablist {
+    display: flex;
+    gap: 0.35rem;
+    border-bottom: 1px solid var(--border-glow);
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.hud-tab {
+    flex: none;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    padding: 0.55rem 0.75rem;
+    min-block-size: 38px;
+    cursor: pointer;
+    position: relative;
+    letter-spacing: 0.06em;
+    transition: color 0.2s, background-color 0.2s;
+}
+.hud-tab:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.03); }
+.hud-tab[aria-selected="true"] {
+    color: var(--accent);
+    background: rgba(253, 224, 71, 0.06);
+}
+.hud-tab[aria-selected="true"]::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    border-block-end: 3px solid var(--accent);
+}
+
+.hud-panel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+/* Topology Nodes inside Tab 1 */
+.topology-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.topo-node {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background: rgba(9, 11, 16, 0.78);
+    border: 1px solid var(--border-glow);
+    border-left: 3px solid var(--accent-green);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    transition: border-color 0.25s, transform 0.25s, background-color 0.25s;
+}
+.topo-node.pulsing {
+    border-color: var(--accent);
+    background: rgba(253, 224, 71, 0.1);
+    transform: translateX(4px);
+}
+.topo-node-left { display: flex; flex-direction: column; gap: 0.15rem; }
+.topo-node-name { color: #fff; font-weight: 700; font-size: 0.72rem; }
+.topo-node-desc { color: var(--text-muted); font-size: 0.62rem; }
+.topo-node-stat {
+    color: var(--accent);
+    font-size: 0.64rem;
+    background: rgba(253, 224, 71, 0.08);
+    border: 1px solid rgba(253, 224, 71, 0.25);
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-sm);
+}
+
+.hud-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(51, 65, 85, 0.35);
+    flex-wrap: wrap;
+}
+.hud-ping-btn {
+    background: rgba(253, 224, 71, 0.12);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.45rem 0.85rem;
+    min-block-size: 38px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+.hud-ping-btn:hover { background: var(--accent); color: var(--bg-pure); }
+.hud-ping-readout {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--accent-green);
+}
+
+/* MCP Tab & Copy Button Component */
+.mcp-endpoint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+}
+.mcp-endpoint-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.65rem;
+    background: rgba(9, 11, 16, 0.75);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+}
+.mcp-endpoint-item code { color: var(--accent-cyan); }
+.mcp-endpoint-item span { color: var(--text-muted); font-size: 0.6rem; }
+
+.code-copy-box {
+    background: #05070b;
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: #cbd5e1;
+}
+.code-copy-box pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    flex: 1;
+}
+.copy-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    position: relative;
+    flex: none;
+}
+.copy-button {
+    min-inline-size: 32px;
+    min-block-size: 32px;
+    padding: 0.3rem 0.55rem;
+    background: rgba(17, 24, 39, 0.9);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.copy-button:hover { border-color: var(--accent); background: rgba(253, 224, 71, 0.12); }
+.copy-button[data-copied] { border-color: var(--accent-green); color: var(--accent-green); }
+.copy-tip {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--accent-green);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+}
+.copy-button[data-copied] + .copy-tip,
+.copy-button[data-failed] + .copy-tip {
+    opacity: 1;
+}
+
+/* Sentinel Checklist Tab */
+.sec-audit-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+}
+.sec-audit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.65rem;
+    background: rgba(9, 11, 16, 0.75);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+}
+.sec-audit-row strong { color: var(--text-main); font-weight: 600; }
+.sec-audit-tag { color: var(--accent-green); font-size: 0.6rem; }
 
 /* Layout Framework */
-.section-padding { padding: 9rem 0; }
-.section-header { margin-bottom: 5.5rem; }
-.section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block; }
-.section-title { font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+.section-padding { padding: 7.5rem 0; position: relative; }
+.section-header {
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.35);
+    padding-bottom: 1.75rem;
+}
+.section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.65rem; display: block; }
+.section-title { font-family: var(--font-sans); font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.85rem); font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.15; }
+.section-subtitle { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); max-width: 44ch; text-align: right; }
 
-.matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-.matrix-cell { perspective: 1200px; }
-
+.matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+.matrix-cell { perspective: 1200px; container-type: inline-size; }
 
 /* ================= CORE PHYSICS ================= */
 .interactive-card {
-background: var(--bg-card);
-border: 1px solid var(--border-glow);
-border-radius: var(--radius-md);
-padding: 2rem 2rem 1.75rem;
-min-height: 400px;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-transform-style: preserve-3d;
-transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-position: relative;
-overflow: hidden;
-backdrop-filter: blur(16px);
--webkit-backdrop-filter: blur(16px);
-font-family: var(--font-body);
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 2rem 2rem 1.75rem;
+    min-block-size: 430px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    font-family: var(--font-body);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
 }
 .interactive-card:hover {
-border-color: var(--accent);
-background: rgba(17, 24, 39, 0.8);
-box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(253, 224, 71, 0.08);
+    border-color: var(--accent);
+    background: var(--bg-card-hover);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(253, 224, 71, 0.12);
 }
 .interactive-card::before {
-content: '';
-position: absolute;
-inset: 0;
-background: radial-gradient(400px circle at var(--m-x, 0px) var(--m-y, 0px), rgba(253, 224, 71, 0.08), transparent 60%);
-opacity: 0;
-transition: opacity 0.3s;
-pointer-events: none;
-z-index: 3;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px circle at var(--m-x, 0px) var(--m-y, 0px), rgba(253, 224, 71, 0.1), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 3;
 }
 .interactive-card:hover::before { opacity: 1; }
 
 /* ================= TECHNICAL OVERLAYS ================= */
 .card-grid {
-position: absolute;
-inset: 0;
-background-image:
-linear-gradient(var(--border-glow) 1px, transparent 1px),
-linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
-background-size: 28px 28px;
-opacity: 0.15;
-pointer-events: none;
-mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
--webkit-mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--border-glow) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.15;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 70% 0%, #000 0%, transparent 75%);
 }
 .card-scanline {
-position: absolute; inset: 0;
-background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(226, 232, 240, 0.02) 3px 4px);
-pointer-events: none;
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(226, 232, 240, 0.02) 3px 4px);
+    pointer-events: none;
 }
 .corner-brackets { position: absolute; inset: 0; pointer-events: none; }
 .cb { position: absolute; width: 12px; height: 12px; border: 1px solid var(--accent); opacity: 0.4; transition: opacity 0.3s; }
-.interactive-card:hover .cb { opacity: 0.9; }
+.interactive-card:hover .cb { opacity: 0.95; }
 .cb-tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
 .cb-tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
 .cb-bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
@@ -312,204 +844,275 @@ pointer-events: none;
 
 /* ================= TOP STATUS BAR ================= */
 .widget-topbar {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding-bottom: 0.85rem;
-margin-bottom: 1.25rem;
-border-bottom: 1px solid var(--border-glow);
-transform: translateZ(30px);
-font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.85rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-glow);
+    transform: translateZ(30px);
+    font-family: var(--font-mono);
 }
 .topbar-id { display: flex; align-items: center; gap: 0.55rem; }
 .status-led {
-width: 8px; height: 8px; border-radius: 50%;
-background: var(--accent);
-box-shadow: 0 0 8px var(--accent), 0 0 2px var(--accent);
-animation: pulse-led 1.8s ease-in-out infinite;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent), 0 0 2px var(--accent);
+    animation: pulse-led 1.8s ease-in-out infinite;
 }
+.status-led.cyan { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
+.status-led.green { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
 @keyframes pulse-led { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-.topbar-node { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--text-main); }
+.topbar-node { font-size: 0.64rem; letter-spacing: 0.12em; color: var(--text-main); font-weight: 600; }
 .topbar-status {
-font-size: 0.58rem; letter-spacing: 0.16em;
-color: var(--accent);
-background: rgba(253, 224, 71, 0.08);
-border: 1px solid rgba(253, 224, 71, 0.25);
-padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);
+    font-size: 0.58rem; letter-spacing: 0.14em;
+    color: var(--accent);
+    background: rgba(253, 224, 71, 0.08);
+    border: 1px solid rgba(253, 224, 71, 0.25);
+    padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);
 }
 
 /* ================= BODY ================= */
 .card-body { transform: translateZ(25px); }
 .card-index {
-font-family: var(--font-mono);
-font-size: 0.68rem;
-color: var(--accent);
-margin-bottom: 1.5rem;
-display: block;
-letter-spacing: 0.08em;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+    letter-spacing: 0.08em;
 }
 .card-heading {
-font-family: var(--font-sans);
-font-size: 1.45rem;
-font-weight: 700;
-color: var(--text-main);
-margin-bottom: 1rem;
-letter-spacing: -0.01em;
-line-height: 1.2;
+    font-family: var(--font-sans);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
 }
 .card-heading span {
-font-family: var(--font-mono);
-font-size: 0.82rem;
-color: var(--accent);
-display: block;
-margin-bottom: 0.35rem;
-font-weight: 400;
-letter-spacing: 0.02em;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
 }
 .card-text {
-color: var(--text-muted);
-font-size: 0.9rem;
-line-height: 1.65;
-margin-bottom: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    margin-bottom: 1.25rem;
+}
+
+/* Domain Spec Chip Row inside Cards */
+.card-spec-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+}
+.spec-pill {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: #cbd5e1;
+    background: rgba(9, 11, 16, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    padding: 0.22rem 0.5rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
 }
 
 /* ================= METRIC READOUTS ================= */
 .metric-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 0.75rem;
-margin-bottom: 1.35rem;
-transform: translateZ(35px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    margin-bottom: 1.15rem;
+    transform: translateZ(35px);
+}
+@container (max-width: 310px) {
+    .metric-grid { grid-template-columns: 1fr; }
 }
 .metric {
-background: var(--bg-pure);
-border: 1px solid var(--border-glow);
-border-radius: var(--radius-sm);
-padding: 0.6rem 0.65rem;
-display: flex;
-flex-direction: column;
-gap: 0.35rem;
+    background: var(--bg-pure);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
 }
 .metric-label {
-font-family: var(--font-mono);
-font-size: 0.55rem;
-letter-spacing: 0.12em;
-color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
 }
 .metric-value {
-font-family: var(--font-mono);
-font-size: 1.05rem;
-font-weight: 700;
-color: var(--text-main);
-line-height: 1;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1;
 }
 .metric-value small { font-size: 0.6rem; color: var(--text-muted); font-weight: 400; margin-left: 1px; }
 .metric-warn { color: var(--warning); }
+.metric-ok { color: var(--accent-green); }
+.metric-cyan { color: var(--accent-cyan); }
 .metric-bar {
-height: 3px;
-background: rgba(226, 232, 240, 0.08);
-border-radius: 2px;
-overflow: hidden;
+    height: 3px;
+    background: rgba(226, 232, 240, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
 }
 .metric-bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
 .metric-bar i.warn { background: var(--warning); }
+.metric-bar i.ok { background: var(--accent-green); }
+.metric-bar i.cyan { background: var(--accent-cyan); }
 
 /* ================= ACTIVITY GRAPH ================= */
 .activity-graph {
-background: var(--bg-pure);
-border: 1px solid var(--border-glow);
-border-radius: var(--radius-sm);
-padding: 0.7rem 0.75rem 0.6rem;
-transform: translateZ(30px);
+    background: var(--bg-pure);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.75rem 0.55rem;
+    transform: translateZ(30px);
 }
 .graph-header {
-display: flex;
-justify-content: space-between;
-font-family: var(--font-mono);
-font-size: 0.55rem;
-letter-spacing: 0.1em;
-color: var(--text-muted);
-margin-bottom: 0.55rem;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
 }
 .graph-live { color: var(--accent); }
+.graph-live.green { color: var(--accent-green); }
+.graph-live.cyan { color: var(--accent-cyan); }
 .graph-bars {
-display: flex;
-align-items: flex-end;
-gap: 3px;
-height: 44px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
 }
 .graph-bars i {
-flex: 1;
-background: linear-gradient(to top, rgba(253, 224, 71, 0.25), var(--accent));
-border-radius: 1px;
-opacity: 0.7;
-transition: opacity 0.3s;
+    flex: 1;
+    background: linear-gradient(to top var(--in-oklab), rgba(253, 224, 71, 0.2), var(--accent));
+    border-radius: 1px;
+    opacity: 0.72;
+    transition: opacity 0.3s;
+}
+.graph-bars.cyan-bars i {
+    background: linear-gradient(to top var(--in-oklab), rgba(0, 229, 255, 0.18), var(--accent-cyan));
+}
+.graph-bars.green-bars i {
+    background: linear-gradient(to top var(--in-oklab), rgba(16, 185, 129, 0.2), var(--accent-green));
 }
 .interactive-card:hover .graph-bars i { opacity: 1; }
 .graph-bars i:last-child { background: var(--warning); }
 
 /* ================= FOOTER ================= */
 .card-footer {
-margin-top: 1.35rem;
-padding-top: 1rem;
-border-top: 1px solid var(--border-glow);
-transform: translateZ(15px);
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--border-glow);
+    transform: translateZ(15px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 .footer-nodes { display: flex; align-items: center; gap: 5px; }
 .node-dot {
-width: 7px; height: 7px; border-radius: 50%;
-background: rgba(226, 232, 240, 0.15);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(226, 232, 240, 0.15);
 }
 .node-dot.on { background: var(--accent); box-shadow: 0 0 6px rgba(253, 224, 71, 0.6); }
+.node-dot.ok { background: var(--accent-green); box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
 .node-dot.warn { background: var(--warning); box-shadow: 0 0 6px rgba(249, 115, 22, 0.6); }
 .node-cluster {
-font-family: var(--font-mono);
-font-size: 0.55rem;
-letter-spacing: 0.1em;
-color: var(--text-muted);
-margin-left: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-left: 0.4rem;
 }
 .sys-badge {
-display: inline-flex;
-align-items: center;
-gap: 0.4rem;
-font-family: var(--font-mono);
-font-size: 0.6rem;
-text-transform: uppercase;
-background: rgba(253, 224, 71, 0.06);
-border: 1px solid rgba(253, 224, 71, 0.25);
-padding: 0.4rem 0.7rem;
-border-radius: var(--radius-sm);
-color: var(--accent);
-letter-spacing: 0.08em;
-white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    background: rgba(253, 224, 71, 0.06);
+    border: 1px solid rgba(253, 224, 71, 0.25);
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+}
+a.sys-badge:hover {
+    background: var(--accent);
+    color: var(--bg-pure);
 }
 .badge-dot {
-width: 5px; height: 5px; border-radius: 50%;
-background: var(--accent);
-box-shadow: 0 0 6px var(--accent);
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
 }
 
 /* Tech Stack Monolith */
-.tool-monolith { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: var(--radius-md); padding: 4rem; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 2.5rem; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
-.tool-title { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700; color: #fff; }
-.sys-tag-stable { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); }
-.tool-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.65; margin-bottom: 3.5rem; max-width: 850px; }
+.tool-monolith {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 3.25rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.5);
+}
+.tool-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glow); padding-bottom: 1.75rem; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.tool-title { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: #fff; }
+.tool-badges { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.sys-tag-stable { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); }
+.tool-desc { font-size: 1.02rem; color: var(--text-main); line-height: 1.65; margin-bottom: 2rem; max-width: 75ch; }
 
-.manifesto-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3.5rem; }
-.manifesto-node { background: rgba(9, 11, 16, 0.4); border: 1px solid var(--border-glow); padding: 2.5rem; border-radius: var(--radius-md); }
+/* 6-Stage Execution Pipeline Strip */
+.pipeline-stages {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+.pipe-step {
+    background: rgba(9, 11, 16, 0.75);
+    border: 1px solid var(--border-glow);
+    border-top: 2px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.65rem;
+    font-family: var(--font-mono);
+}
+.pipe-step-num { font-size: 0.58rem; color: var(--accent); display: block; margin-bottom: 0.15rem; }
+.pipe-step-name { font-size: 0.66rem; color: var(--text-main); font-weight: 600; }
+
+.manifesto-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.25rem; }
+.manifesto-node { background: rgba(9, 11, 16, 0.55); border: 1px solid var(--border-glow); padding: 1.75rem; border-radius: var(--radius-md); }
 .manifesto-node.warn { border-left: 3px solid var(--warning); }
-.node-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.node-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .node-list { list-style: none; }
-.node-list li { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem; padding-left: 1.25rem; position: relative; line-height: 1.5; }
-.node-list li::before { content: '🖲️'; position: absolute; left: 0; font-size: 0.65rem; top: 2px; }
+.node-list li { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.7rem; padding-left: 1.25rem; position: relative; line-height: 1.5; }
+.node-list li::before { content: '▸'; color: var(--accent); position: absolute; left: 0; font-family: var(--font-mono); font-weight: 700; }
+
 /* PowerShell Terminal Emulator Styling */
-.sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid #333333; border-radius: 8px; overflow: hidden; margin-bottom: 3.5rem; font-family: 'Consolas', 'JetBrains Mono', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
+.sys-visualizer.terminal-mode { background: #0c0c0c; border: 1px solid #333333; border-radius: 8px; overflow: hidden; margin-bottom: 2.5rem; font-family: 'Consolas', 'JetBrains Mono', monospace; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; }
 .terminal-header { background: #000000; color: #ffffff; height: 32px; font-size: 12px; font-weight: normal; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; align-items: center; justify-content: space-between; user-select: none; }
 .terminal-header-title { display: flex; align-items: center; padding-left: 10px; gap: 8px; }
 .terminal-header-title svg { width: 14px; height: 14px; fill: currentColor; }
@@ -538,7 +1141,7 @@ box-shadow: 0 0 6px var(--accent);
     .terminal-body::-webkit-scrollbar-thumb:hover { background: #7a7a7a; border-width: 2px; }
 }
 
-.terminal-log { padding: 4px 8px; color: #cccccc; font-size: 14px; line-height: 1.2; min-height: 120px; }
+.terminal-log { padding: 8px 12px; color: #cccccc; font-size: 0.85rem; line-height: 1.35; min-height: 120px; }
 .terminal-log p { margin-bottom: 0.2rem; }
 .log-critical { color: #fde047; }
 .log-success { color: #10b981; }
@@ -552,29 +1155,28 @@ box-shadow: 0 0 6px var(--accent);
 
 /* Hexadecimal Memory Grid */
 .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(22px, 1fr)); gap: 4px; padding: 1.5rem; }
-.memory-node { height: 22px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #333; transition: color 0.2s; }
+.memory-node { height: 22px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #475569; transition: color 0.2s; }
 .memory-node::after { content: '00'; }
-
 .memory-node.safe { color: #10b981; }
 .memory-node.safe::after { content: 'FF'; }
-
 .memory-node.corrupt { background: #f97316; color: #000; font-weight: bold; animation: terminalGlitch 0.15s infinite; }
 .memory-node.corrupt::after { content: 'XX'; }
-
 .memory-node.scan { background: #fde047; color: #000; transform: scale(1.1); z-index: 2; font-weight: bold; box-shadow: 0 0 10px rgba(253, 224, 71, 0.4); }
 .memory-node.scan::after { content: '>>'; }
 
-.terminal-legend { padding: 1rem 1.5rem; border-top: 1px dashed #333; display: flex; gap: 1.5rem; font-size: 0.75rem; color: #888; }
-.terminal-legend .node { width: 12px; height: 12px; }
+.terminal-legend { padding: 1rem 1.5rem; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; font-size: 0.75rem; color: #94a3b8; flex-wrap: wrap; }
+.legend-items-wrap { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.legend-item { display: inline-flex; align-items: center; gap: 0.45rem; }
+.terminal-legend .node { width: 12px; height: 12px; border-radius: 2px; }
 .terminal-legend .node.safe { background: #10b981; }
 .terminal-legend .node.corrupt { background: #f97316; }
 .terminal-legend .node.scan { background: #fde047; }
 
 @keyframes terminalGlitch {
-0% { transform: translate(0) }
-33% { transform: translate(-1px, 1px) }
-66% { transform: translate(1px, -1px) }
-100% { transform: translate(0) }
+    0% { transform: translate(0) }
+    33% { transform: translate(-1px, 1px) }
+    66% { transform: translate(1px, -1px) }
+    100% { transform: translate(0) }
 }
 
 /* WMDT Pre-OS Reboot Overlay */
@@ -585,90 +1187,245 @@ box-shadow: 0 0 6px var(--accent);
 .wmdt-yellow { color: #ffff55; }
 .wmdt-progress-bar { background: #aaaaaa; height: 14px; width: 0%; margin-top: 6px; transition: width 0.1s linear; }
 
-/* Typography & Layout Optimization Safeguards */
-.prose-block { max-width: 850px; font-size: 1.15rem; line-height: 1.75; color: var(--text-main); }
-.prose-block p { margin-bottom: 2rem; }
+.telemetry-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-glow);
+}
+.counter-housing {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(9, 11, 16, 0.75);
+    border: 1px solid var(--border-glow);
+    padding: 0.75rem 1.15rem;
+    border-radius: var(--radius-sm);
+}
+.counter-housing span { color: var(--accent); font-weight: 700; }
 
-.reveal-element { opacity: 1; transform: none; transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
-.reveal-element.visible { opacity: 1; transform: translate3d(0, 0, 0); }
+/* Track Record / Engineering Dossier (#about) */
+.dossier-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 2.5rem;
+    align-items: start;
+}
+.prose-block { max-width: 65ch; font-size: 1.05rem; line-height: 1.75; color: var(--text-main); }
+.prose-block p { margin-bottom: 1.5rem; }
+
+.competency-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-top: 2rem;
+}
+.comp-card {
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid var(--border-glow);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+}
+.comp-card h3 {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.04em;
+}
+.comp-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.timeline-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.timeline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 1.35rem 1.5rem;
+    position: relative;
+    transition: border-color 0.25s;
+}
+.timeline-card:hover { border-color: var(--accent); }
+.timeline-era {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.35rem;
+    display: block;
+}
+.timeline-role {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.45rem;
+}
+.timeline-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+/* Command Dispatch Console (#contact) */
+.dispatch-console-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+}
+.dispatch-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.dispatch-card.primary-channel {
+    border-color: rgba(253, 224, 71, 0.35);
+    background: linear-gradient(155deg var(--in-oklab), rgba(17, 24, 39, 0.85), rgba(253, 224, 71, 0.04));
+}
+.dispatch-card.support-channel {
+    border-color: rgba(0, 229, 255, 0.32);
+    background: linear-gradient(155deg var(--in-oklab), rgba(17, 24, 39, 0.85), rgba(0, 229, 255, 0.04));
+}
+.dispatch-channel-tag {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.dispatch-card.support-channel .dispatch-channel-tag { color: var(--accent-cyan); }
+.dispatch-heading {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.65rem;
+}
+
+/* Scroll Entry Reveal Animations */
+.reveal-element {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-element.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
 
 .glitch { position: relative; display: inline-block; }
 
-.sys-footer { border-top: 1px solid var(--border-glow); padding: 5rem 0; background: rgba(9, 11, 16, 0.95); }
+.sys-footer { border-top: 1px solid var(--border-glow); padding: 4rem 0; background: rgba(6, 8, 12, 0.96); }
 .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
-.footer-loc { color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+.footer-loc { color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 0.05em; }
 
-#mobile-toggle { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; }
+#mobile-toggle { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; min-inline-size: 44px; min-block-size: 44px; }
 
-/* Mobile Navigation Rules matching commit 79f3f5b & script.js targeting */
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+    .hero-grid, .dossier-grid, .dispatch-console-grid {
+        grid-template-columns: 1fr;
+    }
+    .section-subtitle { text-align: left; }
+    .pipeline-stages { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 @media (max-width: 768px) {
-#mobile-toggle { display: block; z-index: 101; }
-.nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--bg-pure);
-    flex-direction: column;
-    padding: 2.5rem 2rem;
-    border-bottom: 1px solid var(--border-glow);
-    gap: 1.5rem;
-    align-items: flex-start;
-    z-index: 100;
-}
-.nav-links.active, .nav-links.open, #menu-box.active, #menu-box.open {
-    display: flex !important;
-}
+    .edge-telemetry-strip { display: none; }
+    #mobile-toggle { display: inline-flex; align-items: center; justify-content: center; z-index: 101; }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-pure);
+        flex-direction: column;
+        padding: 2rem;
+        border-bottom: 1px solid var(--border-glow);
+        gap: 1.25rem;
+        align-items: flex-start;
+        z-index: 100;
+    }
+    .nav-links.active, .nav-links.open, #menu-box.active, #menu-box.open {
+        display: flex !important;
+    }
 
-.section-padding { padding: 6rem 0; }
-.tool-monolith { padding: 2rem; }
-.telemetry-row { flex-direction: column; align-items: flex-start; width: 100%; }
-.btn-primitive { width: 100%; }
+    .hero-viewport { padding: 6.5rem 0 3.5rem; }
+    .hero-kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .competency-grid { grid-template-columns: 1fr; }
+    .pipeline-stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .section-padding { padding: 5rem 0; }
+    .tool-monolith { padding: 1.75rem; }
+    .telemetry-row { flex-direction: column; align-items: stretch; width: 100%; }
+    .btn-primitive { width: 100%; }
 
-.matrix-grid { grid-template-columns: 1fr; }
-.interactive-card { padding: 1.5rem; }
-.memory-grid { padding: 1rem; gap: 2px; }
-.terminal-log { padding: 4px; font-size: 12px; word-wrap: break-word; overflow-wrap: break-word; }
-.ps-progress { padding: 0.75rem 1rem; font-size: 0.75rem; }
-.terminal-legend { padding: 0.75rem 1rem; gap: 1rem; flex-wrap: wrap; }
+    .matrix-grid { grid-template-columns: 1fr; }
+    .interactive-card { padding: 1.5rem; }
+    .memory-grid { padding: 1rem; gap: 2px; }
+    .terminal-log { padding: 6px; font-size: 0.78rem; word-wrap: break-word; overflow-wrap: break-word; }
+    .ps-progress { padding: 0.75rem 1rem; font-size: 0.75rem; }
+    .terminal-legend { padding: 0.75rem 1rem; gap: 1rem; }
 }
 
 @media (max-width: 480px) {
-.container { padding: 0 1rem; }
-.section-padding { padding: 4rem 0; }
-.interactive-card { padding: 1.25rem; min-height: 320px; }
-.tool-monolith { padding: 1.25rem; }
-.memory-grid { padding: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(18px, 1fr)); }
-.memory-node { height: 18px; font-size: 0.6rem; }
-.terminal-log { font-size: 11px; }
-.ps-progress { padding: 0.5rem; font-size: 0.7rem; }
-.ps-stage { padding-left: 0.5rem; }
-.ps-bar { padding-left: 0.5rem; }
-.terminal-legend { padding: 0.5rem; gap: 0.5rem; font-size: 0.65rem; }
+    .container { padding: 0 1rem; }
+    .section-padding { padding: 4rem 0; }
+    .interactive-card { padding: 1.25rem; min-block-size: 320px; }
+    .tool-monolith, .dispatch-card { padding: 1.25rem; }
+    .memory-grid { padding: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(18px, 1fr)); }
+    .memory-node { height: 18px; font-size: 0.6rem; }
+    .terminal-log { font-size: 0.72rem; }
+    .ps-progress { padding: 0.5rem; font-size: 0.7rem; }
+    .ps-stage { padding-left: 0.5rem; }
+    .ps-bar { padding-left: 0.5rem; }
+    .terminal-legend { padding: 0.5rem; gap: 0.5rem; font-size: 0.65rem; }
 }
 
-@media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
-.hero-title { line-height: 1.12; letter-spacing: -0.04em; }
+@media (forced-colors: active) {
+    .interactive-card, .hero-hud-panel, .dispatch-card, .timeline-card {
+        border: 1px solid CanvasText;
+    }
+    .hud-tab[aria-selected="true"]::after {
+        border-block-end-color: Highlight;
+    }
 }
 
 /* Global prefers-reduced-motion for CSS */
 @media (prefers-reduced-motion: reduce) {
-html {
-scroll-behavior: auto !important;
-}
-*,
-*::before,
-*::after {
-animation-duration: 0.01ms !important;
-animation-iteration-count: 1 !important;
-transition-duration: 0.01ms !important;
-scroll-behavior: auto !important;
-}
+    html { scroll-behavior: auto !important; }
+    .reveal-element { opacity: 1 !important; transform: none !important; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 </style>
 </head>
 <body>
+<div id="scroll-progress" aria-hidden="true"></div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="ptr-dot" data-cursor-pointer aria-hidden="true"></div>
@@ -679,21 +1436,36 @@ scroll-behavior: auto !important;
 <div id="app-wrapper">
 
 <header id="site-header" class="sys-header">
+    <div class="edge-telemetry-strip" aria-hidden="true">
+        <div class="container edge-strip-inner">
+            <div class="edge-strip-group">
+                <span class="edge-kv"><span class="edge-dot"></span> <strong>EDGE_POP:</strong> <span class="live-val" data-telemetry="colo">DFW</span></span>
+                <span class="edge-kv"><strong>PROTO:</strong> <span data-telemetry="protocol">HTTP/3</span></span>
+                <span class="edge-kv"><strong>CIPHER:</strong> <span data-telemetry="tls">TLSv1.3</span></span>
+                <span class="edge-kv"><strong>RTT:</strong> <span class="live-val telemetry-latency">12ms</span></span>
+            </div>
+            <div class="edge-strip-group">
+                <span class="edge-kv"><strong>AGENTIC_BUS:</strong> <span class="ok-val">MCP v2025-03-26 [LVL_5]</span></span>
+                <span class="edge-kv"><strong>CSP:</strong> <span class="ok-val">STRICT_SELF</span></span>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="nav-inner">
             <a href="#hero" class="sys-logo" aria-label="Home Workspace" title="Home Workspace">
                 HUGO LUNA // <span>SYSTEMS SEC</span>
+                <span class="logo-badge" aria-hidden="true">DFW_CORE</span>
             </a>
             <button id="mobile-toggle" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="menu-box">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
             </button>
-            <nav>
+            <nav aria-label="Primary">
                 <ul id="menu-box" class="nav-links">
                     <li class="nav-item"><a href="#services" aria-label="Core Expertise" title="Core Expertise">Core_Expertise</a></li>
                     <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
                     <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
-                    <li class="nav-item"><a href="/DaedalusX64/" aria-label="DaedalusX64 Lab" title="DaedalusX64 Lab">DaedalusX64_Lab</a></li>
-                    <li class="nav-item"><a href="/support/" aria-label="DFW Tech Support and Booking" title="DFW Tech Support and Booking">DFW_Support</a></li>
+                    <li class="nav-item nav-pill"><a href="/DaedalusX64/" aria-label="DaedalusX64 Lab" title="DaedalusX64 Lab">DaedalusX64_Lab</a></li>
+                    <li class="nav-item nav-pill"><a href="/support/" aria-label="DFW Tech Support and Booking" title="DFW Tech Support and Booking">DFW_Support</a></li>
                     <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
                     <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                 </ul>
@@ -705,16 +1477,23 @@ scroll-behavior: auto !important;
 <main id="main-content" tabindex="-1" style="outline: none;">
 <section id="hero" class="hero-viewport">
 <div class="container">
+<div class="hero-grid">
 <div class="hero-core">
 <div class="sys-reveal sys-status-pill">
 <span class="sys-status-indicator" aria-hidden="true"></span>
 <span>INFRASTRUCTURE SECURITY // HIGH-AVAILABILITY ARCHITECT</span>
 </div>
 <h1 class="hero-title sys-reveal">
-I Engineer Hardened Networks &<br>
+I Engineer Hardened Networks &amp;<br>
 <em>High-Performance Workstations.</em>
 </h1>
-<div class="hero-desc sys-reveal" aria-hidden="true">
+<div class="hero-console-shell sys-reveal" aria-hidden="true">
+<div class="hero-console-bar">
+<span>tty0 // ZERO-TRUST TELEMETRY STREAM</span>
+<span>● AUDIT_ACTIVE</span>
+</div>
+<div class="hero-desc">
+</div>
 </div>
 <p class="sr-only">
 &gt; initializing secure environment telemetry monitoring platforms...
@@ -724,7 +1503,155 @@ I Engineer Hardened Networks &<br>
 <div class="btn-stack sys-reveal">
 <a href="#contact" class="btn-primitive primary" data-glitch-btn="./connect_with_hugo.sh" aria-label="Connect with Hugo" title="Connect with Hugo">./connect_with_hugo.sh</a>
 <a href="#services" class="btn-primitive secondary" aria-label="View Technical Capabilities" title="View Technical Capabilities">view_technical_capabilities</a>
+<a href="/support/" class="btn-primitive secondary" aria-label="Launch DFW Tech Support Storefront and Live Booking" title="Launch DFW Tech Support Storefront and Live Booking">dispatch_dfw_support</a>
 </div>
+<div class="hero-kpi-strip sys-reveal" aria-label="Key Architecture Benchmarks">
+<div class="kpi-cell">
+<div class="kpi-val">170+</div>
+<div class="kpi-label">Enterprise Nodes</div>
+<div class="kpi-sub">99.992% SLA Uptime</div>
+</div>
+<div class="kpi-cell">
+<div class="kpi-val">LVL 5</div>
+<div class="kpi-label">Agentic Readiness</div>
+<div class="kpi-sub">Cloudflare Edge MCP</div>
+</div>
+<div class="kpi-cell">
+<div class="kpi-val">60 FPS</div>
+<div class="kpi-label">DaedalusX64 Lab</div>
+<div class="kpi-sub">MIPS R4300i → VFPU</div>
+</div>
+<div class="kpi-cell">
+<div class="kpi-val">&lt; 15m</div>
+<div class="kpi-label">DFW Dispatch</div>
+<div class="kpi-sub">Irving &amp; Metroplex IR</div>
+</div>
+</div>
+</div>
+
+<!-- Right Column: Interactive Hero Command Deck & Live Edge/MCP Telemetry HUD -->
+<aside class="hero-hud-panel sys-reveal" aria-label="Live Edge and MCP Command Deck">
+<div class="card-grid" aria-hidden="true"></div>
+<div class="corner-brackets" aria-hidden="true">
+<span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+<span class="cb cb-bl"></span><span class="cb cb-br"></span>
+</div>
+
+<div class="hud-header">
+<div class="hud-title-group">
+<span class="status-led green" aria-hidden="true"></span>
+<span>COMMAND_DECK // DACA-EDGE-01</span>
+</div>
+<span class="hud-badge">LIVE TELEMETRY</span>
+</div>
+
+<div class="hud-tablist" role="tablist" aria-label="Command Deck Telemetry Views">
+<button type="button" role="tab" class="hud-tab" id="tab-btn-topology" aria-selected="true" data-hud-tab="panel-topology">01 // EDGE_TOPOLOGY</button>
+<button type="button" role="tab" class="hud-tab" id="tab-btn-mcp" aria-selected="false" data-hud-tab="panel-mcp">02 // MCP_AGENT_BUS</button>
+<button type="button" role="tab" class="hud-tab" id="tab-btn-sec" aria-selected="false" data-hud-tab="panel-sec">03 // SENTINEL_SHIELD</button>
+</div>
+
+<!-- Tab Panel 1: Live Edge Topology -->
+<div role="tabpanel" id="panel-topology" aria-labelledby="tab-btn-topology" tabindex="0">
+<div class="hud-panel-inner">
+<div class="topology-stack">
+<div class="topo-node" data-topo-node="0">
+<div class="topo-node-left">
+<span class="topo-node-name">01. CF_ANYCAST_EDGE [<span data-telemetry="colo">DFW</span>]</span>
+<span class="topo-node-desc">TLSv1.3 0-RTT Termination &amp; DDoS Mitigation</span>
+</div>
+<span class="topo-node-stat telemetry-latency">12ms</span>
+</div>
+<div class="topo-node" data-topo-node="1">
+<div class="topo-node-left">
+<span class="topo-node-name">02. DACA_MCP_WORKER_BUS</span>
+<span class="topo-node-desc">JSON-RPC 2.0 Agentic Discovery &amp; D1 Dispatch</span>
+</div>
+<span class="topo-node-stat">200 OK</span>
+</div>
+<div class="topo-node" data-topo-node="2">
+<div class="topo-node-left">
+<span class="topo-node-name">03. ENTERPRISE_FLEET_MESH</span>
+<span class="topo-node-desc">170+ Hardened Nodes · Zero-Trust VLAN Segmentation</span>
+</div>
+<span class="topo-node-stat">99.992%</span>
+</div>
+<div class="topo-node" data-topo-node="3">
+<div class="topo-node-left">
+<span class="topo-node-name">04. BARE_METAL_WORKSTATIONS</span>
+<span class="topo-node-desc">ECC Memory · NVMe RAID · Custom Thermal Profiles</span>
+</div>
+<span class="topo-node-stat">ONLINE</span>
+</div>
+</div>
+<div class="hud-action-row">
+<button type="button" id="hud-ping-btn" class="hud-ping-btn" aria-label="Run Live Edge Telemetry Ping" title="Run Live Edge Telemetry Ping">▶ ./ping_edge_telemetry.sh</button>
+<span id="hud-ping-readout" class="hud-ping-readout" role="status" aria-live="polite">RAY: <span data-telemetry="ray">VERIFIED_LOCAL</span></span>
+</div>
+</div>
+</div>
+
+<!-- Tab Panel 2: MCP Agent Bus -->
+<div role="tabpanel" id="panel-mcp" aria-labelledby="tab-btn-mcp" hidden="until-found">
+<div class="hud-panel-inner">
+<div class="mcp-endpoint-list">
+<div class="mcp-endpoint-item">
+<code>GET /.well-known/mcp.json</code>
+<span>Server Card v1.0</span>
+</div>
+<div class="mcp-endpoint-item">
+<code>POST /mcp</code>
+<span>JSON-RPC 2.0 Streamable HTTP</span>
+</div>
+<div class="mcp-endpoint-item">
+<code>GET /llms.txt</code>
+<span>Agentic Context Manifest</span>
+</div>
+<div class="mcp-endpoint-item">
+<code>TOOL: audit_domain_agent_readiness</code>
+<span>Read-Only</span>
+</div>
+</div>
+<div class="code-copy-box">
+<pre><code id="mcp-curl-snippet">curl -s https://daca.me/.well-known/mcp.json</code></pre>
+<span class="copy-wrap">
+<button type="button" class="copy-button" command="--copy" commandfor="mcp-curl-snippet" aria-label="Copy MCP cURL command">
+<span aria-hidden="true">⧉</span> Copy
+</button>
+<span class="copy-tip" role="status"></span>
+</span>
+</div>
+</div>
+</div>
+
+<!-- Tab Panel 3: Sentinel Shield -->
+<div role="tabpanel" id="panel-sec" aria-labelledby="tab-btn-sec" hidden="until-found">
+<div class="hud-panel-inner">
+<div class="sec-audit-grid">
+<div class="sec-audit-row">
+<strong>Content-Security-Policy</strong>
+<span class="sec-audit-tag">✔ script-src 'self'</span>
+</div>
+<div class="sec-audit-row">
+<strong>Zero-Trust Typography</strong>
+<span class="sec-audit-tag">✔ Local WOFF2 Only</span>
+</div>
+<div class="sec-audit-row">
+<strong>DOM XSS Surface</strong>
+<span class="sec-audit-tag">✔ 0 innerHTML Sinks</span>
+</div>
+<div class="sec-audit-row">
+<strong>Transport Hardening</strong>
+<span class="sec-audit-tag">✔ HSTS + COOP + DENY</span>
+</div>
+<div class="sec-audit-row">
+<strong>Entropy Engine</strong>
+<span class="sec-audit-tag">✔ WebCrypto CSPRNG</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
 </div>
 </div>
 </section>
@@ -732,13 +1659,16 @@ I Engineer Hardened Networks &<br>
 <section id="services" class="section-padding">
 <div class="container">
 <div class="section-header reveal-element">
+<div>
 <span class="section-tag">// CORE EXPERTISE</span>
 <h2 class="section-title decrypt-trigger">Infrastructure Security Metrics</h2>
+</div>
+<p class="section-subtitle">PRODUCTION TELEMETRY // ZERO SINGLE-POINT-OF-FAILURE TOPOLOGIES</p>
 </div>
 
 <div class="matrix-grid">
 <div class="matrix-cell reveal-element">
-<div class="interactive-card">
+<article class="interactive-card">
 <!-- Decorative technical overlays (non-interactive) -->
 <div class="card-grid" aria-hidden="true"></div>
 <div class="card-scanline" aria-hidden="true"></div>
@@ -751,65 +1681,71 @@ I Engineer Hardened Networks &<br>
 <div class="widget-topbar" aria-hidden="true">
 <div class="topbar-id">
 <span class="status-led"></span>
-<span class="topbar-node">NODE-01</span>
+<span class="topbar-node">NODE-01 // CLUSTER_HA</span>
 </div>
-<div class="topbar-status">ONLINE</div>
+<div class="topbar-status">BGP_ACTIVE</div>
 </div>
 
 <div class="card-body">
-<span class="card-index">01 // TELEMETRY & UPTIME</span>
+<span class="card-index">01 // TELEMETRY &amp; UPTIME</span>
 <h3 class="card-heading"><span>High-Availability</span>Systems Infrastructure</h3>
 <p class="card-text">Directing the complete operational lifecycle of multi-node distributed physical networks. Hardening systems to guarantee continuous service delivery, maximum runtime benchmarks, and minimal recovery constraints.</p>
+
+<div class="card-spec-pills" aria-label="High Availability Technologies">
+<span class="spec-pill">MULTI-WAN FAILOVER</span>
+<span class="spec-pill">802.1Q VLAN MESH</span>
+<span class="spec-pill">170+ FLEET NODES</span>
+</div>
 
 <!-- Live metric readouts -->
 <div class="metric-grid" aria-hidden="true">
 <div class="metric">
-<span class="metric-label">UPTIME</span>
+<span class="metric-label">SLA UPTIME</span>
 <span class="metric-value node-uptime">99.992<small>%</small></span>
 <span class="metric-bar"><i style="width:99%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LATENCY</span>
+<span class="metric-label">EDGE RTT</span>
 <span class="metric-value telemetry-latency">12<small>ms</small></span>
 <span class="metric-bar"><i style="width:22%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LOAD</span>
-<span class="metric-value node-load metric-warn">0.74</span>
-<span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+<span class="metric-label">LOAD AVG</span>
+<span class="metric-value node-load">0.34</span>
+<span class="metric-bar"><i class="ok" style="width:34%"></i></span>
 </div>
 </div>
 
 <!-- Activity graph / sparkline -->
 <div class="activity-graph" aria-hidden="true">
 <div class="graph-header">
-<span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+<span>CLUSTER THROUGHPUT · 10GbE</span><span class="graph-live">● 9.4 Gbps</span>
 </div>
 <div class="graph-bars">
-<i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
-<i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
-<i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
-<i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
-<i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-<i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
-<i style="height:48%"></i><i style="height:82%"></i>
+<i style="height:78%"></i><i style="height:82%"></i><i style="height:85%"></i>
+<i style="height:80%"></i><i style="height:88%"></i><i style="height:92%"></i>
+<i style="height:86%"></i><i style="height:95%"></i><i style="height:91%"></i>
+<i style="height:84%"></i><i style="height:89%"></i><i style="height:93%"></i>
+<i style="height:87%"></i><i style="height:90%"></i><i style="height:85%"></i>
+<i style="height:92%"></i><i style="height:96%"></i><i style="height:88%"></i>
+<i style="height:91%"></i><i style="height:94%"></i>
 </div>
 </div>
 </div>
 <div class="card-footer">
 <div class="footer-nodes" aria-hidden="true">
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-dot on"></span><span class="node-dot warn"></span>
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-cluster">6/6 NODES</span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-cluster">174/174 NODES</span>
 </div>
 <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>High Availability</span>
 </div>
-</div>
+</article>
 </div>
 
 <div class="matrix-cell reveal-element" style="transition-delay: 0.1s;">
-<div class="interactive-card">
+<article class="interactive-card">
 <!-- Decorative technical overlays (non-interactive) -->
 <div class="card-grid" aria-hidden="true"></div>
 <div class="card-scanline" aria-hidden="true"></div>
@@ -820,10 +1756,10 @@ I Engineer Hardened Networks &<br>
 
 <div class="widget-topbar" aria-hidden="true">
 <div class="topbar-id">
-<span class="status-led"></span>
-<span class="topbar-node">NODE-02</span>
+<span class="status-led green"></span>
+<span class="topbar-node">NODE-02 // MIPS_VFPU</span>
 </div>
-<div class="topbar-status">ONLINE</div>
+<div class="topbar-status">60.0_FPS</div>
 </div>
 
 <div class="card-body">
@@ -832,9 +1768,9 @@ I Engineer Hardened Networks &<br>
 <p class="card-text">Deep system exploration, execution tracing, and resource management. Leveraging comprehensive reverse engineering experience to maximize software capability against bare-metal hardware constraints.</p>
 
 <!-- DAEDALUSX64 FEATURE LAUNCH BOX -->
-<div style="margin: 1.25rem 0; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;">
-    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #10b981; font-weight: 700; margin-bottom: 0.4rem;">🎮 FEATURED OPEN SOURCE EXHIBIT</div>
-    <a href="/DaedalusX64/" aria-label="Launch DaedalusX64 Telemetry Lab" title="Launch DaedalusX64 Telemetry Lab" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: #030712; background: #10b981; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
+<div style="margin: 1rem 0 1.2rem; padding: 0.9rem 1rem; background: rgba(16, 185, 129, 0.09); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #10b981; font-weight: 700; margin-bottom: 0.45rem; letter-spacing: 0.04em;">🎮 N64 RDP → PSP GU MICROCODE LAB</div>
+    <a href="/DaedalusX64/" aria-label="Launch DaedalusX64 Telemetry Lab" title="Launch DaedalusX64 Telemetry Lab" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 700; color: #030712; background: #10b981; padding: 0.5rem 0.95rem; border-radius: 4px; text-decoration: none;">
         ▶ ./launch_daedalusx64_telemetry.sh
     </a>
 </div>
@@ -842,52 +1778,52 @@ I Engineer Hardened Networks &<br>
 <!-- Live metric readouts -->
 <div class="metric-grid" aria-hidden="true">
 <div class="metric">
-<span class="metric-label">UPTIME</span>
-<span class="metric-value node-uptime">99.992<small>%</small></span>
-<span class="metric-bar"><i style="width:99%"></i></span>
+<span class="metric-label">FRAME TIME</span>
+<span class="metric-value metric-ok">16.6<small>ms</small></span>
+<span class="metric-bar"><i class="ok" style="width:96%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LATENCY</span>
-<span class="metric-value telemetry-latency">12<small>ms</small></span>
-<span class="metric-bar"><i style="width:22%"></i></span>
+<span class="metric-label">VFPU SIMD</span>
+<span class="metric-value">98.4<small>%</small></span>
+<span class="metric-bar"><i style="width:98%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LOAD</span>
-<span class="metric-value node-load metric-warn">0.74</span>
-<span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+<span class="metric-label">EDRAM GU</span>
+<span class="metric-value metric-cyan">2.0<small>MB</small></span>
+<span class="metric-bar"><i class="cyan" style="width:68%"></i></span>
 </div>
 </div>
 
 <!-- Activity graph / sparkline -->
 <div class="activity-graph" aria-hidden="true">
 <div class="graph-header">
-<span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+<span>DYNAREC JIT FRAME PACING</span><span class="graph-live green">● LOCKED 60Hz</span>
 </div>
-<div class="graph-bars">
-<i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
-<i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
-<i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
-<i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
-<i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-<i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
-<i style="height:48%"></i><i style="height:82%"></i>
+<div class="graph-bars green-bars">
+<i style="height:62%"></i><i style="height:64%"></i><i style="height:60%"></i>
+<i style="height:63%"></i><i style="height:65%"></i><i style="height:62%"></i>
+<i style="height:64%"></i><i style="height:66%"></i><i style="height:63%"></i>
+<i style="height:61%"></i><i style="height:64%"></i><i style="height:65%"></i>
+<i style="height:62%"></i><i style="height:63%"></i><i style="height:64%"></i>
+<i style="height:65%"></i><i style="height:63%"></i><i style="height:62%"></i>
+<i style="height:64%"></i><i style="height:66%"></i>
 </div>
 </div>
 </div>
 <div class="card-footer">
 <div class="footer-nodes" aria-hidden="true">
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-dot on"></span><span class="node-dot warn"></span>
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-cluster">6/6 NODES</span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot on"></span><span class="node-dot ok"></span>
+<span class="node-cluster">ALLEGREX R4000</span>
 </div>
-<span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Low-Level Optimization</span>
+<a href="/DaedalusX64/" class="sys-badge" aria-label="Explore DaedalusX64 Microcode Exhibits" title="Explore DaedalusX64 Microcode Exhibits"><span class="badge-dot" aria-hidden="true"></span>Explore Lab →</a>
 </div>
-</div>
+</article>
 </div>
 
 <div class="matrix-cell reveal-element" style="transition-delay: 0.2s;">
-<div class="interactive-card">
+<article class="interactive-card">
 <!-- Decorative technical overlays (non-interactive) -->
 <div class="card-grid" aria-hidden="true"></div>
 <div class="card-scanline" aria-hidden="true"></div>
@@ -899,10 +1835,10 @@ I Engineer Hardened Networks &<br>
 <!-- Widget status bar -->
 <div class="widget-topbar" aria-hidden="true">
 <div class="topbar-id">
-<span class="status-led"></span>
-<span class="topbar-node">NODE-03</span>
+<span class="status-led cyan"></span>
+<span class="topbar-node">NODE-03 // ZERO_TRUST</span>
 </div>
-<div class="topbar-status">ONLINE</div>
+<div class="topbar-status">ENFORCED</div>
 </div>
 
 <div class="card-body">
@@ -910,51 +1846,57 @@ I Engineer Hardened Networks &<br>
 <h3 class="card-heading"><span>Defensive Systems</span>Endpoint Protection &amp; IR</h3>
 <p class="card-text">Enforcing logical access parameters, asset controls, and Zero Trust security models. Developing automated configuration monitoring routines to neutralize system configuration drift and vulnerability footprints.</p>
 
+<div class="card-spec-pills" aria-label="Security Governance Controls">
+<span class="spec-pill">CIS BENCHMARK L2</span>
+<span class="spec-pill">EDR TELEMETRY</span>
+<span class="spec-pill">STRICT CSP / HSTS</span>
+</div>
+
 <!-- Live metric readouts -->
 <div class="metric-grid" aria-hidden="true">
 <div class="metric">
-<span class="metric-label">UPTIME</span>
-<span class="metric-value node-uptime">99.992<small>%</small></span>
-<span class="metric-bar"><i style="width:99%"></i></span>
+<span class="metric-label">CFG DRIFT</span>
+<span class="metric-value metric-ok">0.00<small>%</small></span>
+<span class="metric-bar"><i class="ok" style="width:100%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LATENCY</span>
-<span class="metric-value telemetry-latency">12<small>ms</small></span>
-<span class="metric-bar"><i style="width:22%"></i></span>
+<span class="metric-label">IR MTTR</span>
+<span class="metric-value metric-cyan">4.2<small>m</small></span>
+<span class="metric-bar"><i class="cyan" style="width:18%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LOAD</span>
-<span class="metric-value node-load metric-warn">0.74</span>
-<span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+<span class="metric-label">THREAT BLOCK</span>
+<span class="metric-value">100<small>%</small></span>
+<span class="metric-bar"><i style="width:100%"></i></span>
 </div>
 </div>
 
 <!-- Activity graph / sparkline -->
 <div class="activity-graph" aria-hidden="true">
 <div class="graph-header">
-<span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+<span>ANOMALY CONTAINMENT · SIEM</span><span class="graph-live cyan">● ZERO BREACHES</span>
 </div>
-<div class="graph-bars">
-<i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
-<i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
-<i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
-<i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
-<i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-<i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
-<i style="height:48%"></i><i style="height:82%"></i>
+<div class="graph-bars cyan-bars">
+<i style="height:22%"></i><i style="height:18%"></i><i style="height:25%"></i>
+<i style="height:92%"></i><i style="height:30%"></i><i style="height:16%"></i>
+<i style="height:15%"></i><i style="height:20%"></i><i style="height:18%"></i>
+<i style="height:85%"></i><i style="height:28%"></i><i style="height:14%"></i>
+<i style="height:16%"></i><i style="height:19%"></i><i style="height:15%"></i>
+<i style="height:22%"></i><i style="height:17%"></i><i style="height:14%"></i>
+<i style="height:16%"></i><i style="height:12%"></i>
 </div>
 </div>
 </div>
 <div class="card-footer">
 <div class="footer-nodes" aria-hidden="true">
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-dot on"></span><span class="node-dot warn"></span>
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-cluster">6/6 NODES</span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-cluster">POLICY_LOCKED</span>
 </div>
 <span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Zero Trust Architecture</span>
 </div>
-</div>
+</article>
 </div>
 </div>
 </div>
@@ -963,13 +1905,16 @@ I Engineer Hardened Networks &<br>
 <section id="pc-builds" class="section-padding">
 <div class="container">
 <div class="section-header reveal-element">
+<div>
 <span class="section-tag">// BARE-METAL PLATFORMS</span>
 <h2 class="section-title decrypt-trigger">High-Throughput Workstations</h2>
+</div>
+<p class="section-subtitle">CUSTOM DFW BUILDS // SUSTAINED THERMAL &amp; PCIe 5.0 BANDWIDTH</p>
 </div>
 
 <div class="matrix-grid">
 <div class="matrix-cell reveal-element">
-<div class="interactive-card">
+<article class="interactive-card">
 <!-- Decorative technical overlays (non-interactive) -->
 <div class="card-grid" aria-hidden="true"></div>
 <div class="card-scanline" aria-hidden="true"></div>
@@ -982,65 +1927,71 @@ I Engineer Hardened Networks &<br>
 <div class="widget-topbar" aria-hidden="true">
 <div class="topbar-id">
 <span class="status-led"></span>
-<span class="topbar-node">NODE-RX</span>
+<span class="topbar-node">NODE-RX1 // STUDIO_PRO</span>
 </div>
-<div class="topbar-status">ONLINE</div>
+<div class="topbar-status">PCIe_5.0_X16</div>
 </div>
 
 <div class="card-body">
-<span class="card-index">0X // COMPUTE CORE</span>
-<h3 class="card-heading">High-Availability Creative Nodes</h3>
-<p class="card-text">Bespoke workstation computing environments tailored to bypass execution limits in multi-threaded rendering, non-linear video compilation pipelines, and heavy visual asset generation.</p>
+<span class="card-index">04 // CREATIVE &amp; CAD WORKSTATIONS</span>
+<h3 class="card-heading"><span>Sustained Render Pipelines</span>High-Availability Creative Nodes</h3>
+<p class="card-text">Bespoke workstation computing environments tailored to bypass execution limits in multi-threaded rendering, non-linear 8K DaVinci Resolve compilation pipelines, and heavy 3D asset generation without thermal throttling.</p>
+
+<div class="card-spec-pills" aria-label="Creative Workstation Specifications">
+<span class="spec-pill">NVMe GEN5 SCRATCH</span>
+<span class="spec-pill">24GB+ VRAM CUDA</span>
+<span class="spec-pill">10GbE NAS UPLINK</span>
+</div>
 
 <!-- Live metric readouts -->
 <div class="metric-grid" aria-hidden="true">
 <div class="metric">
-<span class="metric-label">UPTIME</span>
-<span class="metric-value node-uptime">99.992<small>%</small></span>
-<span class="metric-bar"><i style="width:99%"></i></span>
+<span class="metric-label">SEQ READ</span>
+<span class="metric-value">14.2<small>GB/s</small></span>
+<span class="metric-bar"><i style="width:95%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LATENCY</span>
-<span class="metric-value telemetry-latency">12<small>ms</small></span>
-<span class="metric-bar"><i style="width:22%"></i></span>
+<span class="metric-label">FULL LOAD ΔT</span>
+<span class="metric-value metric-ok">54<small>°C</small></span>
+<span class="metric-bar"><i class="ok" style="width:54%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LOAD</span>
-<span class="metric-value node-load metric-warn">0.74</span>
-<span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+<span class="metric-label">RENDER LOAD</span>
+<span class="metric-value node-load metric-warn">0.88</span>
+<span class="metric-bar"><i class="warn" style="width:88%"></i></span>
 </div>
 </div>
 
 <!-- Activity graph / sparkline -->
 <div class="activity-graph" aria-hidden="true">
 <div class="graph-header">
-<span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+<span>GPU / NVMe BUS SATURATION</span><span class="graph-live">● CUDA + OPTIX</span>
 </div>
 <div class="graph-bars">
-<i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
-<i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
-<i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
-<i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
-<i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-<i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
-<i style="height:48%"></i><i style="height:82%"></i>
+<i style="height:45%"></i><i style="height:68%"></i><i style="height:84%"></i>
+<i style="height:92%"></i><i style="height:96%"></i><i style="height:95%"></i>
+<i style="height:94%"></i><i style="height:98%"></i><i style="height:96%"></i>
+<i style="height:92%"></i><i style="height:95%"></i><i style="height:97%"></i>
+<i style="height:93%"></i><i style="height:91%"></i><i style="height:96%"></i>
+<i style="height:98%"></i><i style="height:94%"></i><i style="height:89%"></i>
+<i style="height:76%"></i><i style="height:85%"></i>
 </div>
 </div>
 </div>
 <div class="card-footer">
 <div class="footer-nodes" aria-hidden="true">
 <span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-dot on"></span><span class="node-dot warn"></span>
 <span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-cluster">6/6 NODES</span>
+<span class="node-dot on"></span><span class="node-dot ok"></span>
+<span class="node-cluster">BURN-IN VERIFIED</span>
 </div>
-<span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Media Workstations</span>
+<a href="/support/#book" class="sys-badge" aria-label="Commission a Custom Workstation Build" title="Commission a Custom Workstation Build"><span class="badge-dot" aria-hidden="true"></span>Commission Build →</a>
 </div>
-</div>
+</article>
 </div>
 
 <div class="matrix-cell reveal-element" style="transition-delay: 0.1s;">
-<div class="interactive-card">
+<article class="interactive-card">
 <!-- Decorative technical overlays (non-interactive) -->
 <div class="card-grid" aria-hidden="true"></div>
 <div class="card-scanline" aria-hidden="true"></div>
@@ -1052,62 +2003,68 @@ I Engineer Hardened Networks &<br>
 <!-- Widget status bar -->
 <div class="widget-topbar" aria-hidden="true">
 <div class="topbar-id">
-<span class="status-led"></span>
-<span class="topbar-node">NODE-RX</span>
+<span class="status-led cyan"></span>
+<span class="topbar-node">NODE-RX2 // EDGE_KVM</span>
 </div>
-<div class="topbar-status">ONLINE</div>
+<div class="topbar-status">IOMMU_ISOLATED</div>
 </div>
 
 <div class="card-body">
-<span class="card-index">0X // COMPUTE CORE</span>
-<h3 class="card-heading">Hardened Edge Compute Nodes</h3>
-<p class="card-text">High-performance target builds optimized for localized processing tasks, secure edge data collections, isolated runtime tools, and specialized memory-bus configurations.</p>
+<span class="card-index">05 // LOCAL AI &amp; VIRTUALIZATION</span>
+<h3 class="card-heading"><span>Isolated Runtime Fabrics</span>Hardened Edge Compute Nodes</h3>
+<p class="card-text">High-performance target builds optimized for localized LLM inference, Proxmox/KVM hypervisor clusters, hardware IOMMU passthrough, and encrypted memory-bus configurations.</p>
+
+<div class="card-spec-pills" aria-label="Edge Compute Specifications">
+<span class="spec-pill">DDR5 ECC REG</span>
+<span class="spec-pill">KVM / IOMMU</span>
+<span class="spec-pill">TPM 2.0 LUKS</span>
+</div>
 
 <!-- Live metric readouts -->
 <div class="metric-grid" aria-hidden="true">
 <div class="metric">
-<span class="metric-label">UPTIME</span>
-<span class="metric-value node-uptime">99.992<small>%</small></span>
-<span class="metric-bar"><i style="width:99%"></i></span>
+<span class="metric-label">RAND IOPS</span>
+<span class="metric-value metric-cyan">1.42<small>M</small></span>
+<span class="metric-bar"><i class="cyan" style="width:92%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LATENCY</span>
-<span class="metric-value telemetry-latency">12<small>ms</small></span>
-<span class="metric-bar"><i style="width:22%"></i></span>
+<span class="metric-label">ACOUSTIC</span>
+<span class="metric-value metric-ok">21<small>dBA</small></span>
+<span class="metric-bar"><i class="ok" style="width:24%"></i></span>
 </div>
 <div class="metric">
-<span class="metric-label">LOAD</span>
-<span class="metric-value node-load metric-warn">0.74</span>
-<span class="metric-bar"><i class="warn" style="width:74%"></i></span>
+<span class="metric-label">MEM ALLOC</span>
+<span class="metric-value node-mem">42.5<small>%</small></span>
+<span class="metric-bar"><i style="width:43%"></i></span>
 </div>
 </div>
 
 <!-- Activity graph / sparkline -->
 <div class="activity-graph" aria-hidden="true">
 <div class="graph-header">
-<span>THROUGHPUT · 60s</span><span class="graph-live">● LIVE</span>
+<span>TENSOR &amp; VM QUEUE DEPTH</span><span class="graph-live cyan">● 0 PACKET DROP</span>
 </div>
-<div class="graph-bars">
-<i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i>
-<i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i>
-<i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i>
-<i style="height:45%"></i><i style="height:65%"></i><i style="height:88%"></i>
-<i style="height:52%"></i><i style="height:78%"></i><i style="height:42%"></i>
-<i style="height:68%"></i><i style="height:90%"></i><i style="height:58%"></i>
-<i style="height:48%"></i><i style="height:82%"></i>
+<div class="graph-bars cyan-bars">
+<i style="height:40%"></i><i style="height:48%"></i><i style="height:52%"></i>
+<i style="height:75%"></i><i style="height:68%"></i><i style="height:60%"></i>
+<i style="height:55%"></i><i style="height:82%"></i><i style="height:78%"></i>
+<i style="height:62%"></i><i style="height:58%"></i><i style="height:70%"></i>
+<i style="height:88%"></i><i style="height:74%"></i><i style="height:60%"></i>
+<i style="height:64%"></i><i style="height:72%"></i><i style="height:68%"></i>
+<i style="height:56%"></i><i style="height:62%"></i>
 </div>
 </div>
 </div>
 <div class="card-footer">
 <div class="footer-nodes" aria-hidden="true">
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-dot on"></span><span class="node-dot warn"></span>
-<span class="node-dot on"></span><span class="node-dot on"></span>
-<span class="node-cluster">6/6 NODES</span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-dot ok"></span><span class="node-dot ok"></span>
+<span class="node-cluster">ECC_VERIFIED</span>
 </div>
-<span class="sys-badge"><span class="badge-dot" aria-hidden="true"></span>Compute Topologies</span>
+<a href="/support/#book" class="sys-badge" aria-label="Configure Edge Compute Node" title="Configure Edge Compute Node"><span class="badge-dot" aria-hidden="true"></span>Configure Node →</a>
 </div>
-</div>
+</article>
 </div>
 </div>
 </div>
@@ -1116,36 +2073,85 @@ I Engineer Hardened Networks &<br>
 <section id="tools" class="section-padding">
 <div class="container">
 <div class="section-header reveal-element">
+<div>
 <span class="section-tag">// INFRASTRUCTURE SCRIPTS</span>
 <h2 class="section-title decrypt-trigger">Automated System Controls</h2>
 </div>
+<p class="section-subtitle">UNATTENDED KERNEL &amp; COMPONENT STORE REMEDIATION</p>
+</div>
 
 <div class="tool-monolith reveal-element">
+<div class="corner-brackets" aria-hidden="true">
+<span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+<span class="cb cb-bl"></span><span class="cb cb-br"></span>
+</div>
+
 <div class="tool-meta">
+<div>
 <h3 class="tool-title">win_maintenance_routine.ps1</h3>
+</div>
+<div class="tool-badges">
 <span class="sys-tag-stable">PRODUCTION_STABLE</span>
+<span class="sys-badge">POWERSHELL 5.1 / 7+</span>
+</div>
 </div>
 <p class="tool-desc">
 An automated PowerShell asset deployment built for system administrators resolving critical BSOD errors and corrupted states. It orchestrates deep OS image repairs, parses live BugCheck crash logs, safely extracts raw memory dumps for WinDbg analysis, and alters registry memory management to purge corrupted Nonpaged Area caches natively.
 </p>
 
+<!-- 6-Stage Execution Pipeline -->
+<div class="pipeline-stages" aria-label="Six-Stage Remediation Pipeline">
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 01</span>
+<span class="pipe-step-name">BugCheck Log Parse</span>
+</div>
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 02</span>
+<span class="pipe-step-name">DISM Image Restore</span>
+</div>
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 03</span>
+<span class="pipe-step-name">SFC WinSxS Verify</span>
+</div>
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 04</span>
+<span class="pipe-step-name">PageFile Zero-Flush</span>
+</div>
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 05</span>
+<span class="pipe-step-name">Minidump Extraction</span>
+</div>
+<div class="pipe-step">
+<span class="pipe-step-num">STAGE 06</span>
+<span class="pipe-step-name">WMDT Pre-OS Test</span>
+</div>
+</div>
+
 <div class="manifesto-layout">
 <div class="manifesto-node">
 <h4 class="node-label">// Integrated Directives</h4>
 <ul class="node-list">
-<li>Extracts BSOD crash parameters & isolates Minidumps (.dmp)</li>
-<li>Executes Component Store (DISM) & active OS Integrity (SFC) repairs</li>
+<li>Extracts BSOD crash parameters &amp; isolates Minidumps (.dmp)</li>
+<li>Executes Component Store (DISM) &amp; active OS Integrity (SFC) repairs</li>
 <li>Forces paging file clearance to remediate Nonpaged Area faults</li>
 <li>Automatically queues native hardware memory diagnostics</li>
 </ul>
 </div>
 <div class="manifesto-node warn">
-<h4 class="node-label" style="color:var(--warning)">// Execution Constraints</h4>
+<h4 class="node-label" style="color:var(--warning)">// Execution Constraints &amp; Quick Invoke</h4>
 <ul class="node-list">
-<li>Demands strictly elevated administrative context</li>
-<li>Requires direct Windows Event Viewer API access</li>
-<li>Forces local registry memory management overrides</li>
+<li>Demands strictly elevated administrative context (Run as Administrator)</li>
+<li>Requires direct Windows Event Viewer API &amp; local registry overrides</li>
 </ul>
+<div class="code-copy-box" style="margin-top: 1rem;">
+<pre><code id="ps1-cmd-code">powershell -ExecutionPolicy Bypass -File .\win_maintenance_routine.ps1</code></pre>
+<span class="copy-wrap">
+<button type="button" class="copy-button" command="--copy" commandfor="ps1-cmd-code" aria-label="Copy PowerShell elevation command">
+<span aria-hidden="true">⧉</span> Copy
+</button>
+<span class="copy-tip" role="status"></span>
+</span>
+</div>
 </div>
 </div>
 
@@ -1168,7 +2174,7 @@ An automated PowerShell asset deployment built for system administrators resolvi
 </div>
 
 <div class="ps-progress" id="vis-progress-bar">
-<div class="ps-title">System Rescue & Maintenance</div>
+<div class="ps-title">System Rescue &amp; Maintenance</div>
 <div class="ps-stage" id="vis-status-text">Stage 1 of 6: Extracting BSOD Logs</div>
 <div class="ps-bar">[oooooooooooooo                                    ]</div>
 </div>
@@ -1177,9 +2183,12 @@ An automated PowerShell asset deployment built for system administrators resolvi
 </div>
 
 <div class="vis-legend terminal-legend">
-<div class="legend-item"><div class="node safe"></div> <span>[VERIFIED]</span></div>
-<div class="legend-item"><div class="node corrupt"></div> <span>[PAGE_FAULT]</span></div>
-<div class="legend-item"><div class="node scan"></div> <span>[DISM_OVR]</span></div>
+<div class="legend-items-wrap">
+<div class="legend-item"><div class="node safe"></div> <span>[VERIFIED_0xFF]</span></div>
+<div class="legend-item"><div class="node corrupt"></div> <span>[PAGE_FAULT_0xXX]</span></div>
+<div class="legend-item"><div class="node scan"></div> <span>[DISM_REPAIR]</span></div>
+</div>
+<span>104 NONPAGED CLUSTERS MONITORED</span>
 </div>
 </div>
 
@@ -1216,32 +2225,117 @@ TOTAL TELEMETRY VERIFICATIONS: <span id="download-counter">RESOLVING_METRICS...<
 <section id="about" class="section-padding">
 <div class="container">
 <div class="section-header reveal-element">
+<div>
 <span class="section-tag">// PROFILE TELEMETRY</span>
 <h2 class="section-title decrypt-trigger">Technical Leadership Overview</h2>
 </div>
-<div class="prose-block reveal-element">
+<p class="section-subtitle">DALLAS-FORT WORTH METROPLEX // BILINGUAL OPERATIONS (EN / ES)</p>
+</div>
+
+<div class="dossier-grid">
+<div class="reveal-element">
+<div class="prose-block">
 <p>
-Operating within complex structural environments spanning distributed system networks across the Dallas-Fort Worth Metroplex. Backed by a proven history of directing the lifecycle of high-availability enterprise environments, stabilizing endpoint security states, and executing low-level software tracing optimizations, I eliminate structural single-point network failures.
+Operating within mission-critical environments spanning distributed physical and cloud networks across the Dallas-Fort Worth Metroplex. Backed by a proven track record directing the lifecycle of 170+ enterprise network nodes, stabilizing endpoint security states, and executing bare-metal tracing optimizations, I engineer systems that eliminate single-point network failures.
 </p>
 <p>
-From low-level reverse engineering and virtualization architecture development to managing multi-layered configurations, enforcing SLA compliance, and orchestrating critical incident response frameworks during massive service interruptions, my design methodologies blend operational security with engineering depth. Bilingual operations fully deployed in English and Spanish.
+From co-developing N64-to-PSP microcode translations on <strong>DaedalusX64</strong> to architecting Cloudflare Edge Model Context Protocol (MCP) infrastructure and orchestrating rapid incident response frameworks, my methodology pairs low-level systems mastery with defense-in-depth governance.
 </p>
+</div>
+
+<div class="competency-grid" aria-label="Core Architecture Competencies">
+<div class="comp-card">
+<h3>01 // ENTERPRISE NETWORKING</h3>
+<p>Multi-site VLAN segmentation, BGP/WAN failover, Wi-Fi 6E/7 mesh architecture, and 170+ node fleet telemetry.</p>
+</div>
+<div class="comp-card">
+<h3>02 // ZERO-TRUST &amp; SECOPS</h3>
+<p>Endpoint hardening, CIS benchmark enforcement, strict CSP/HSTS edge policies, and rapid BSOD/kernel incident recovery.</p>
+</div>
+<div class="comp-card">
+<h3>03 // LOW-LEVEL &amp; C++ LABS</h3>
+<p>MIPS R4300i &amp; Sony Allegrex VFPU reverse engineering, GPU microcode combiners, and memory dump analysis.</p>
+</div>
+<div class="comp-card">
+<h3>04 // AGENTIC EDGE &amp; MCP</h3>
+<p>Cloudflare Workers, D1/Durable Objects, JSON-RPC 2.0 Model Context Protocol servers, and WebMCP browser tools.</p>
+</div>
+</div>
+</div>
+
+<div class="timeline-stack reveal-element">
+<article class="timeline-card">
+<span class="timeline-era">2026 // CLOUDFLARE EDGE &amp; AGENTIC WEB</span>
+<h3 class="timeline-role">Level 5 Agent-Native Infrastructure Architect</h3>
+<p class="timeline-desc">Engineered zero-framework edge MCP discovery (`/.well-known/mcp.json`, `/llms.txt`, `daca-mcp-server`) with 100/100/100/100 PageSpeed and D1 automated dispatch.</p>
+</article>
+<article class="timeline-card">
+<span class="timeline-era">ENTERPRISE FLEET OPERATIONS // DFW METROPLEX</span>
+<h3 class="timeline-role">Systems Infrastructure Lead &amp; Endpoint Security</h3>
+<p class="timeline-desc">Directed high-availability operations across 170+ distributed network nodes, A/V digital signage fleets, and automated PowerShell OS remediation pipelines.</p>
+</article>
+<article class="timeline-card">
+<span class="timeline-era">2006 – PRESENT // OPEN SOURCE EMULATION</span>
+<h3 class="timeline-role">DaedalusX64 Core Contributor (Shinydude100)</h3>
+<p class="timeline-desc">Reverse-engineered N64 Reality Display Processor (RDP) color combiner equations into native Sony PSP GU hardware instructions alongside Kreationz, Salvy, and Wally.</p>
+</article>
+</div>
 </div>
 </div>
 </section>
 
 <section id="contact" class="section-padding">
 <div class="container">
-<div class="reveal-element" style="text-align: center; max-width: 750px; margin: 0 auto;">
+<div class="section-header reveal-element">
+<div>
 <span class="section-tag">// SECURE REQUISITIONS</span>
-<h2 class="section-title decrypt-trigger" style="margin-bottom:2rem">Open Infrastructure Communications</h2>
-<p class="card-text" style="margin-bottom:3.5rem">Initialize a secure connection to exchange technical architecture blueprints, project proposals, or critical network engineering requirements directly with the lab.</p>
-<div class="btn-stack" style="justify-content: center;">
+<h2 class="section-title decrypt-trigger">Open Infrastructure Communications</h2>
+</div>
+<p class="section-subtitle">SELECT DISPATCH CHANNEL // ENTERPRISE CONSULTING OR LOCAL DFW SUPPORT</p>
+</div>
+
+<div class="dispatch-console-grid reveal-element">
+<!-- Channel 1: Enterprise Architecture & Security Requisitions -->
+<article class="dispatch-card primary-channel">
+<div>
+<span class="dispatch-channel-tag">CHANNEL 01 // ENTERPRISE ARCHITECTURE &amp; SECURITY</span>
+<h3 class="dispatch-heading">Systems &amp; Edge MCP Consulting</h3>
+<p class="card-text">Initialize a direct connection to exchange infrastructure blueprints, Cloudflare Worker MCP deployments, endpoint security audits, or senior systems engineering proposals.</p>
+<div class="code-copy-box" style="margin-bottom: 1.25rem;">
+<pre><code id="contact-email-code">hugo.luna.sec@gmail.com</code></pre>
+<span class="copy-wrap">
+<button type="button" class="copy-button" command="--copy" commandfor="contact-email-code" aria-label="Copy Hugo Luna email address">
+<span aria-hidden="true">⧉</span> Copy Email
+</button>
+<span class="copy-tip" role="status"></span>
+</span>
+</div>
+</div>
+<div class="btn-stack" style="margin-bottom: 0;">
 <a href="mailto:hugo.luna.sec@gmail.com" class="btn-primitive primary" aria-label="Email hugo.luna.sec@gmail.com" title="Email hugo.luna.sec@gmail.com">hugo.luna.sec@gmail.com</a>
 <a href="./HL Resume 2026.pdf" download class="btn-primitive secondary" aria-label="Download Sanitized Resume PDF (52KB)" title="Download Sanitized Resume PDF (52KB)">pull_sanitized_resume.pdf [52KB]</a>
 <a href="https://www.linkedin.com/in/hugoaluna" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="btn-primitive secondary" aria-label="Visit LinkedIn Profile (opens in a new tab)" title="Visit LinkedIn Profile (opens in a new tab)">LinkedIn</a>
+</div>
+</article>
+
+<!-- Channel 2: Local DFW Tech Support & Custom Workstations -->
+<article class="dispatch-card support-channel">
+<div>
+<span class="dispatch-channel-tag">CHANNEL 02 // IRVING, LAS COLINAS &amp; DFW METROPLEX</span>
+<h3 class="dispatch-heading">On-Site &amp; Remote Tech Support</h3>
+<p class="card-text">Need immediate BSOD crash recovery, NVMe SSD speed upgrades, Wi-Fi 6/7 mesh installation, or a custom workstation build in DFW? Check live appointment slots online or call directly. Se habla Español.</p>
+<div class="card-spec-pills">
+<span class="spec-pill">📞 (972) 445-7413</span>
+<span class="spec-pill">UPFRONT FLAT PRICING</span>
+<span class="spec-pill">SAME-DAY DISPATCH</span>
+</div>
+</div>
+<div class="btn-stack" style="margin-bottom: 0;">
+<a href="/support/#book" class="btn-primitive primary" style="background: var(--accent-cyan); border-color: var(--accent-cyan);" aria-label="Book DFW Tech Support Online" title="Book DFW Tech Support Online">⚡ ./book_dfw_dispatch.sh</a>
+<a href="tel:9724457413" class="btn-primitive secondary" aria-label="Call (972) 445-7413" title="Call (972) 445-7413">Call (972) 445-7413</a>
 <a href="https://maps.app.goo.gl/3ust8xsHGGhjncHv5" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="btn-primitive secondary" aria-label="Hugo's DFW Tech Support & PC Builds on Google Maps (opens in a new tab)" title="Hugo's DFW Tech Support & PC Builds on Google Maps (opens in a new tab)">Google Maps Profile</a>
 </div>
+</article>
 </div>
 </div>
 </section>

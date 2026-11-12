@@ -59,6 +59,69 @@
     return `${hour}:${minute} ${ampm}`;
   }
 
+  const serviceSelect = document.getElementById('service_type');
+  const bookingSection = document.getElementById('book');
+  const summaryService = document.getElementById('summary-service');
+  const summaryWindow = document.getElementById('summary-window');
+
+  function updateBookingSummary() {
+    if (summaryService && serviceSelect) {
+      summaryService.textContent = serviceSelect.value || 'Computer Repair & Diagnostic';
+    }
+    if (summaryWindow) {
+      const dateVal = dateInput ? dateInput.value : '';
+      const timeVal = selectedTimeInput ? selectedTimeInput.value : '';
+      if (dateVal && timeVal) {
+        summaryWindow.textContent = `${dateVal} @ ${formatTime(timeVal)}`;
+      } else if (dateVal) {
+        summaryWindow.textContent = `${dateVal} (pick a slot)`;
+      } else {
+        summaryWindow.textContent = 'Select date & time slot';
+      }
+    }
+  }
+
+  if (serviceSelect) {
+    serviceSelect.addEventListener('change', updateBookingSummary);
+  }
+
+  document.querySelectorAll('[data-select-service]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const targetService = btn.getAttribute('data-select-service');
+      if (serviceSelect && targetService) {
+        serviceSelect.value = targetService;
+        updateBookingSummary();
+      }
+      if (bookingSection) {
+        e.preventDefault();
+        bookingSection.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        bookingSection.classList.add('is-highlighted');
+        setTimeout(() => bookingSection.classList.remove('is-highlighted'), 1600);
+        if (dateInput) {
+          setTimeout(() => dateInput.focus({ preventScroll: true }), 350);
+        }
+      }
+    });
+  });
+
+  const progressEl = document.getElementById('scroll-progress');
+  const supportsScrollTimeline = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'scroll()');
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (progressEl && !supportsScrollTimeline && !prefersReduced) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+          progressEl.style.transform = `scaleX(${pct})`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
   function selectSlot(slotValue, activeBtn) {
     if (!slotsWrapper || !selectedTimeInput) return;
     slotsWrapper.querySelectorAll('.slot-btn').forEach((btn) => {
@@ -68,6 +131,7 @@
     });
     selectedTimeInput.value = slotValue;
     setFeedback('', 'info');
+    updateBookingSummary();
   }
 
   async function fetchAvailabilityForDate(selectedDate, externalSignal) {
@@ -168,6 +232,7 @@
 
     dateInput.addEventListener('change', (e) => {
       const selectedDate = e.target.value;
+      updateBookingSummary();
       if (!selectedDate) return;
       fetchAvailabilityForDate(selectedDate);
     });
