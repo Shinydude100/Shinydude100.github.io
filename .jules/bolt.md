@@ -53,3 +53,7 @@
 ## 2026-07-20 - Refactoring Array Searches
 **Learning:** Using built-in array methods like `.find()` makes code cleaner and more readable than manual `for...of` loops, though they carry a minor performance cost in micro-benchmarks due to callback overhead.
 **Action:** Prefer `.find()` for searching arrays when performance difference is negligible compared to the maintainability benefits.
+
+## 2026-11-12 - Speculation Rules, Content-Visibility, and Self-Hosted Subroute Fonts
+**Learning:** Sub-routes (`/support`, `/DaedalusX64`) were still loading external Google Fonts over the network while `/` already had `Inter`, `JetBrains Mono`, and `Space Grotesk` `.woff2` binaries self-hosted in `/fonts/`. Additionally, heavy below-the-fold sections (`#pc-builds`, `#tools`, `#about`, `#contact`) were laid out synchronously during initial page load, and multi-page navigation lacked speculative prefetching.
+**Action:** Point all sub-route `@font-face` declarations to `../fonts/*.woff2` with zero external font links, apply `content-visibility: auto; contain-intrinsic-size: auto none auto 700px;` to below-the-fold sections (never above-the-fold hero sections), and declare `<script type="speculationrules">` with `"eagerness": "moderate"` for high-probability internal sub-routes.

@@ -79,8 +79,25 @@
 </script>
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 font-family=%22monospace%22 fill=%22%23fde047%22>💻</text></svg>">
+<script type="speculationrules">
+{
+  "prefetch": [
+    {
+      "tag": "daca-subpages-prefetch",
+      "urls": ["/support/", "/DaedalusX64/"],
+      "eagerness": "moderate"
+    }
+  ]
+}
+</script>
 
 <style>
+
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+}
 
 @font-face {
     font-family: 'Inter';
@@ -115,6 +132,9 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: var(--bg-pure); font-family: var(--font-body); color: var(--text-main); overflow-x: hidden; }
+h1, h2, h3, h4, .hero-title, .section-title, .card-heading { text-wrap: balance; }
+.card-text, .tool-desc, .prose-block p, .node-list li { text-wrap: pretty; }
+#pc-builds, #tools, #about, #contact { content-visibility: auto; contain-intrinsic-size: auto none auto 700px; }
 
 ::selection { background: var(--accent); color: var(--bg-pure); }
 
@@ -500,10 +520,23 @@ box-shadow: 0 0 6px var(--accent);
 .win-btn.close:hover { background-color: #e81123; color: white; }
 .win-btn svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1; fill: none; }
 
-.terminal-body { padding: 0; display: flex; flex-direction: column; max-height: 400px; overflow-y: auto; overflow-x: hidden; }
-.terminal-body::-webkit-scrollbar { width: 12px; background: #0c0c0c; }
-.terminal-body::-webkit-scrollbar-thumb { background: #4d4d4d; border: 3px solid #0c0c0c; border-radius: 6px; }
-.terminal-body::-webkit-scrollbar-thumb:hover { background: #7a7a7a; border-width: 2px; }
+.terminal-body {
+    --scrollbar-thumb: #4d4d4d;
+    --scrollbar-track: #0c0c0c;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+}
+@supports not (scrollbar-color: auto) {
+    .terminal-body::-webkit-scrollbar { width: 12px; background: var(--scrollbar-track); }
+    .terminal-body::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border: 3px solid var(--scrollbar-track); border-radius: 6px; }
+    .terminal-body::-webkit-scrollbar-thumb:hover { background: #7a7a7a; border-width: 2px; }
+}
 
 .terminal-log { padding: 4px 8px; color: #cccccc; font-size: 14px; line-height: 1.2; min-height: 120px; }
 .terminal-log p { margin-bottom: 0.2rem; }
@@ -660,6 +693,7 @@ scroll-behavior: auto !important;
                     <li class="nav-item"><a href="#pc-builds" aria-label="Bespoke Compute" title="Bespoke Compute">Bespoke_Compute</a></li>
                     <li class="nav-item"><a href="#tools" aria-label="System Automation" title="System Automation">Sys_Automation</a></li>
                     <li class="nav-item"><a href="/DaedalusX64/" aria-label="DaedalusX64 Lab" title="DaedalusX64 Lab">DaedalusX64_Lab</a></li>
+                    <li class="nav-item"><a href="/support/" aria-label="DFW Tech Support and Booking" title="DFW Tech Support and Booking">DFW_Support</a></li>
                     <li class="nav-item"><a href="#about" aria-label="Track Record" title="Track Record">Track_Record</a></li>
                     <li class="nav-item"><a href="#contact" aria-label="Initiate Contact" title="Initiate Contact">Contact_Init</a></li>
                 </ul>
@@ -800,7 +834,7 @@ I Engineer Hardened Networks &<br>
 <!-- DAEDALUSX64 FEATURE LAUNCH BOX -->
 <div style="margin: 1.25rem 0; padding: 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;">
     <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #10b981; font-weight: 700; margin-bottom: 0.4rem;">🎮 FEATURED OPEN SOURCE EXHIBIT</div>
-    <a href="/DaedalusX64/" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: #030712; background: #10b981; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
+    <a href="/DaedalusX64/" aria-label="Launch DaedalusX64 Telemetry Lab" title="Launch DaedalusX64 Telemetry Lab" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: #030712; background: #10b981; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
         ▶ ./launch_daedalusx64_telemetry.sh
     </a>
 </div>

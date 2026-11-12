@@ -81,6 +81,11 @@ export default {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "Referrer-Policy": "no-referrer",
+      "Cross-Origin-Opener-Policy": "same-origin",
       "X-Entity-Type": "Developer-Portfolio",
       "X-Agent-Readiness-Level": "5",
       "Link": '<https://daca.me/.well-known/mcp.json>; rel="mcp-manifest"'

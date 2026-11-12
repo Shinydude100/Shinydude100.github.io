@@ -12,10 +12,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://daca.me/DaedalusX64/">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <!-- Security Policy (Sentinel Hardened: Zero External Font/Script Requests) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+
+    <!-- Self-Hosted Fonts (Zero-Trust Local Fonts) -->
+    <link rel="preload" href="../fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/jetbrains-mono-v24-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/space-grotesk-v22-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Structured Data (JSON-LD) for TechArticle and SoftwareSourceCode -->
     <script type="application/ld+json">
@@ -68,6 +71,34 @@
     </script>
 
     <style>
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 300 900;
+            font-display: swap;
+            src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Fira Code';
+            font-style: normal;
+            font-weight: 400 700;
+            font-display: swap;
+            src: url('../fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Orbitron';
+            font-style: normal;
+            font-weight: 600 900;
+            font-display: swap;
+            src: url('../fonts/space-grotesk-v22-latin-regular.woff2') format('woff2');
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            @view-transition {
+                navigation: auto;
+            }
+        }
+
         :root {
             --bg-dark: #030508;
             --bg-card: #0b0f19;
@@ -88,6 +119,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        h1, h2, h3, .section-title {
+            text-wrap: balance;
+        }
+        p, .exhibit-description, .subtitle {
+            text-wrap: pretty;
         }
 
         body {
@@ -834,6 +872,15 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -852,7 +899,8 @@
             <div class="nav-links">
                 <a href="#exhibits">Exhibits</a>
                 <a href="#docs">Docs</a>
-                <a href="https://github.com/DaedalusX64/daedalus" target="_blank">GitHub</a>
+                <a href="/support/">Support</a>
+                <a href="https://github.com/DaedalusX64/daedalus" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">GitHub</a>
             </div>
         </div>
     </header>
@@ -897,13 +945,13 @@
                     When StrmnNrmn paused development on the original Daedalus PSP emulator after leaving for college, the community rallied on DCEmu UK to form <strong>DaedalusX64</strong>. Jumping directly into C++ with zero prior programming experience, I worked alongside team members Kreationz, Salvy, and Wally to reverse-engineer N64 color combiner equations and translate them into native PSP Graphical Unit (GU) instructions.
                 </p>
                 <div class="history-links">
-                    <a href="https://strmnnrmn.blogspot.com/" target="_blank" class="history-link-card">
+                    <a href="https://strmnnrmn.blogspot.com/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
                         📄 StrmnNrmn's Original Blog (2006)
                     </a>
-                    <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" class="history-link-card">
+                    <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
                         📰 DCEmu UK Announcement
                     </a>
-                    <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" class="history-link-card">
+                    <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
                         🏆 Repository Credits (Shinydude100)
                     </a>
                 </div>
@@ -979,21 +1027,21 @@
                                     </div>
 
                                     <!-- Range Input Overlay -->
-                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex1', this.value)">
+                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" data-slider-id="ex1" aria-label="Kokiri Sword Unpatched vs Patched Comparison Split">
                                 </div>
 
                                 <div class="slider-controls-bar">
                                     <span class="slider-status-readout" id="readout-ex1">SPLIT: 50%</span>
-                                    <div class="slider-preset-group">
-                                        <button class="preset-chip" onclick="setComparisonPreset('ex1', 0)">0%</button>
-                                        <button class="preset-chip active" id="preset-50-ex1" onclick="setComparisonPreset('ex1', 50)">50%</button>
-                                        <button class="preset-chip" onclick="setComparisonPreset('ex1', 100)">100%</button>
+                                    <div class="slider-preset-group" role="group" aria-label="Kokiri Sword Comparison Split Presets">
+                                        <button type="button" class="preset-chip" data-slider-id="ex1" data-preset-val="0" aria-pressed="false">0%</button>
+                                        <button type="button" class="preset-chip active" id="preset-50-ex1" data-slider-id="ex1" data-preset-val="50" aria-pressed="true">50%</button>
+                                        <button type="button" class="preset-chip" data-slider-id="ex1" data-preset-val="100" aria-pressed="false">100%</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
-                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
+                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img">
                         </div>
 
                         <!-- CODE CONTAINER -->
@@ -1151,21 +1199,21 @@
                                     </div>
 
                                     <!-- Range Input Overlay -->
-                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" oninput="updateComparisonSlider('ex4', this.value)">
+                                    <input type="range" min="0" max="100" value="50" class="comparison-range-input" data-slider-id="ex4" aria-label="Super Smash Bros Bomb Unpatched vs Patched Comparison Split">
                                 </div>
 
                                 <div class="slider-controls-bar">
                                     <span class="slider-status-readout" id="readout-ex4">SPLIT: 50%</span>
-                                    <div class="slider-preset-group">
-                                        <button class="preset-chip" onclick="setComparisonPreset('ex4', 0)">0%</button>
-                                        <button class="preset-chip active" id="preset-50-ex4" onclick="setComparisonPreset('ex4', 50)">50%</button>
-                                        <button class="preset-chip" onclick="setComparisonPreset('ex4', 100)">100%</button>
+                                    <div class="slider-preset-group" role="group" aria-label="Super Smash Bros Bomb Comparison Split Presets">
+                                        <button type="button" class="preset-chip" data-slider-id="ex4" data-preset-val="0" aria-pressed="false">0%</button>
+                                        <button type="button" class="preset-chip active" id="preset-50-ex4" data-slider-id="ex4" data-preset-val="50" aria-pressed="true">50%</button>
+                                        <button type="button" class="preset-chip" data-slider-id="ex4" data-preset-val="100" aria-pressed="false">100%</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Physical Overlay Image of PSP-1000 Console Chassis -->
-                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img" onerror="this.style.display='none'">
+                            <img src="assets/PSP-1000.png" alt="Sony PSP-1000 Console Chassis" class="psp-chassis-overlay-img">
                         </div>
 
                         <!-- CODE CONTAINER -->
@@ -1263,8 +1311,8 @@ Windows XP/Vista Readme by: Shinydude100/Kreationz</code></pre>
     <footer>
         <div class="container" style="padding-top:0; padding-bottom:0;">
             <p>
-                Hosted on <a href="https://github.com/Shinydude100/Shinydude100.github.io" target="_blank">GitHub Pages</a> | 
-                Domain: <a href="https://daca.me" target="_blank">daca.me</a>
+                Hosted on <a href="https://github.com/Shinydude100/Shinydude100.github.io" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">GitHub Pages</a> | 
+                Domain: <a href="https://daca.me" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">daca.me</a>
             </p>
             <p style="margin-top:0.6rem; font-size:0.85rem; color:#64748b;">
                 DaedalusX64 is an open-source Nintendo 64 emulator for portable devices. Developed by Hugo Luna (Shinydude100) & Community.
@@ -1273,34 +1321,6 @@ Windows XP/Vista Readme by: Shinydude100/Kreationz</code></pre>
     </footer>
 
     <!-- INTERACTIVE SLIDER LOGIC -->
-    <script>
-        function updateComparisonSlider(id, val) {
-            const patchedLayer = document.getElementById('layer-patched-' + id);
-            const divider = document.getElementById('divider-' + id);
-            const readout = document.getElementById('readout-' + id);
-
-            if (patchedLayer && divider) {
-                patchedLayer.style.clipPath = `inset(0 0 0 ${val}%)`;
-                divider.style.left = `${val}%`;
-            }
-
-            if (readout) {
-                readout.textContent = `SPLIT: ${val}%`;
-            }
-
-            const presets = document.querySelectorAll(`#slider-${id} ~ .slider-controls-bar .preset-chip`);
-            presets.forEach(chip => chip.classList.remove('active'));
-        }
-
-        function setComparisonPreset(id, val) {
-            const sliderBox = document.getElementById('slider-' + id);
-            if (!sliderBox) return;
-            const input = sliderBox.querySelector('.comparison-range-input');
-            if (input) {
-                input.value = val;
-                updateComparisonSlider(id, val);
-            }
-        }
-    </script>
+    <script src="daedalus.js" defer></script>
 </body>
 </html>

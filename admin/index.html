@@ -5,7 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin CRM | Irving Computer & Tech Support</title>
   <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
   <style>
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 800;
+      font-display: swap;
+      src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-style: normal;
+      font-weight: 400 800;
+      font-display: swap;
+      src: url('../fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2');
+    }
+
     :root {
       --bg: #0B0F17;
       --card-bg: #131B26;
@@ -30,6 +46,25 @@
     }
 
     .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Accessible Status Banner */
+    .admin-banner {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .admin-banner.success {
+      background: rgba(0, 230, 118, 0.12);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+    .admin-banner.error {
+      background: rgba(248, 113, 113, 0.12);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
 
     /* Header */
     .admin-header {
@@ -137,38 +172,53 @@
       padding: 6px 10px;
       border-radius: 4px;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: max(1rem, 1em);
+      min-height: 44px;
     }
     .save-btn {
       background: var(--accent);
       color: #000;
       border: none;
-      padding: 8px 12px;
+      padding: 10px 12px;
+      min-height: 44px;
       border-radius: 4px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       cursor: pointer;
     }
     .save-btn:hover { background: var(--green); }
+    .save-btn:focus-visible, .status-select:focus-visible, .paid-input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     @media (max-width: 768px) {
       .ticket-card { grid-template-columns: 1fr; gap: 14px; }
       .ticket-actions { text-align: left; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <main class="container">
     <!-- Header -->
-    <div class="admin-header">
+    <header class="admin-header">
       <div class="brand">
         <span>IRVING TECH SUPPORT</span> // ADMIN CRM
       </div>
       <div>
-        <a href="https://daca.me/support/" style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none;">View Storefront →</a>
+        <a href="/support/" style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none;">View Storefront →</a>
       </div>
-    </div>
+    </header>
+
+    <div id="admin-status-banner" class="admin-banner" role="status" aria-live="polite" hidden></div>
 
     <!-- Live Legal Fund Tracker -->
     <div class="tracker-card">
@@ -200,116 +250,11 @@
 
     <!-- Tickets Container -->
     <div class="section-title">// CLIENT TICKETS & DISPATCH ROSTER</div>
-    <div id="tickets-container">
+    <div id="tickets-container" aria-live="polite">
       <div style="font-family: var(--font-mono); color: var(--accent); padding: 20px;">Loading live database records from Cloudflare D1...</div>
     </div>
-  </div>
+  </main>
 
-  <script>
-    async function loadData() {
-      try {
-        const res = await fetch('/api/admin/appointments');
-        const data = await res.json();
-
-        // Update Tracker
-        const revenue = data.totalRevenue || 0;
-        const goal = data.targetGoal || 4000;
-        const pct = Math.min(100, Math.round((revenue / goal) * 100));
-
-        document.getElementById('revenue-display').textContent = `$${revenue.toFixed(2)} / $${goal.toFixed(2)}`;
-        document.getElementById('progress-bar').style.width = `${pct}%`;
-        document.getElementById('progress-percent').textContent = `${pct}% of USCIS legal & filing fees funded (${Math.max(0, Math.ceil((goal - revenue) / 125))} avg gigs remaining)`;
-
-        // Update Stats
-        const appts = data.appointments || [];
-        document.getElementById('stat-total').textContent = appts.length;
-        document.getElementById('stat-scheduled').textContent = appts.filter(a => a.status === 'SCHEDULED').length;
-        document.getElementById('stat-completed').textContent = appts.filter(a => a.status === 'COMPLETED').length;
-
-        // Render Cards
-        const container = document.getElementById('tickets-container');
-        if (appts.length === 0) {
-          container.innerHTML = '<div style="color: var(--text-muted); padding: 20px;">No appointments logged in D1 database yet.</div>';
-          return;
-        }
-
-        container.innerHTML = appts.map(a => `
-          <div class="ticket-card" id="card-${a.ticket_number}">
-            <div>
-              <div class="ticket-id">${a.ticket_number}</div>
-              <div class="ticket-time">📅 ${a.appointment_date} @ ${formatTime(a.appointment_time)}</div>
-              <div style="font-size: 0.8rem; color: var(--accent); margin-top: 4px;">${a.service_type}</div>
-            </div>
-
-            <div class="client-info">
-              <strong>${a.client_name || 'Client'}</strong>
-              <div class="client-contacts">
-                <a href="tel:${a.client_phone}">📞 Call</a>
-                <a href="sms:${a.client_phone}">💬 Text</a>
-                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">${a.client_phone}</span>
-              </div>
-              <div class="issue-text"><strong>Issue:</strong> ${a.issue_description}</div>
-              ${a.device_model ? `<div style="font-size: 0.75rem; color: var(--text-muted);">Device: ${a.device_model}</div>` : ''}
-            </div>
-
-            <div class="ticket-actions">
-              <div>
-                <label style="font-size: 0.75rem; color: var(--text-muted);">Status:</label>
-                <select class="status-select" id="status-${a.ticket_number}">
-                  <option value="SCHEDULED" ${a.status === 'SCHEDULED' ? 'selected' : ''}>SCHEDULED</option>
-                  <option value="IN_PROGRESS" ${a.status === 'IN_PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
-                  <option value="COMPLETED" ${a.status === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
-                  <option value="CANCELLED" ${a.status === 'CANCELLED' ? 'selected' : ''}>CANCELLED</option>
-                </select>
-              </div>
-
-              <div>
-                <label style="font-size: 0.75rem; color: var(--text-muted);">Paid ($):</label>
-                <input type="number" step="0.01" class="paid-input" id="paid-${a.ticket_number}" value="${a.paid_amount || 0}" style="width: 90px;">
-              </div>
-
-              <button class="save-btn" onclick="updateTicket('${a.ticket_number}')">Save Update</button>
-            </div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        document.getElementById('tickets-container').innerHTML = '<div style="color: var(--red); padding: 20px;">Error loading database records. Ensure you are authenticated.</div>';
-      }
-    }
-
-    async function updateTicket(ticketNumber) {
-      const status = document.getElementById(`status-${ticketNumber}`).value;
-      const paid = parseFloat(document.getElementById(`paid-${ticketNumber}`).value) || 0;
-
-      try {
-        const res = await fetch('/api/admin/update', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ticket_number: ticketNumber, status: status, paid_amount: paid })
-        });
-        const resData = await res.json();
-        if (resData.success) {
-          alert(`Ticket ${ticketNumber} updated!`);
-          loadData();
-        } else {
-          alert('Error: ' + resData.error);
-        }
-      } catch (err) {
-        alert('Network update error.');
-      }
-    }
-
-    function formatTime(militaryTime) {
-      if (!militaryTime) return '';
-      const [h, m] = militaryTime.split(':');
-      let hour = parseInt(h, 10);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      hour = hour % 12 || 12;
-      return `${hour}:${m} ${ampm}`;
-    }
-
-    loadData();
-  </script>
+  <script src="admin.js" defer></script>
 </body>
 </html>
