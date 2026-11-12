@@ -84,11 +84,14 @@
     }
 
     :root {
-      --bg: #0B0F17;
-      --card-bg: #131B26;
-      --border: rgba(255, 255, 255, 0.08);
+      --bg: #080c14;
+      --bg-elevated: #0d1320;
+      --card-bg: rgba(17, 24, 39, 0.72);
+      --border: rgba(255, 255, 255, 0.09);
+      --border-glow: rgba(0, 229, 255, 0.28);
       --accent: #00E5FF;
       --accent-hover: #00B4D8;
+      --gold: #fde047;
       --green: #00E676;
       --error: #F87171;
       --error-bg: rgba(248, 113, 113, 0.1);
@@ -102,6 +105,12 @@
     html { scroll-behavior: smooth; }
     body {
       background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 75% 50% at 15% 0%, rgba(0, 229, 255, 0.09), transparent 60%),
+        radial-gradient(ellipse 65% 45% at 88% 12%, rgba(0, 230, 118, 0.06), transparent 55%),
+        linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
       color: var(--text);
       font-family: var(--font-sans);
       line-height: 1.6;
@@ -110,6 +119,32 @@
 
     h1, h2, h3, h4 { text-wrap: balance; }
     p { text-wrap: pretty; }
+
+    /* Scroll Progress Bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      z-index: 200;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        @keyframes grow-progress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+        #scroll-progress {
+          animation: grow-progress linear both;
+          animation-timeline: scroll(root block);
+        }
+      }
+    }
 
     .skip-link {
       position: absolute;
@@ -133,36 +168,62 @@
     }
 
     .container {
-      max-width: 1040px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
+    /* Corner Brackets */
+    .corner-brackets { position: absolute; inset: 0; pointer-events: none; }
+    .cb { position: absolute; width: 10px; height: 10px; border-color: rgba(0, 229, 255, 0.45); border-style: solid; }
+    .cb-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .cb-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .cb-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .cb-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
     /* Nav */
     header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(11, 15, 23, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-glow);
+      background: rgba(8, 12, 20, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 16px 0;
+      padding: 14px 0;
     }
     .nav-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
     .brand {
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       color: var(--text);
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .brand span { color: var(--accent); }
-    .nav-actions { display: flex; gap: 12px; }
+    .nav-links-bar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+    .nav-links-bar a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .nav-links-bar a:hover { color: var(--accent); }
+    .nav-actions { display: flex; gap: 10px; }
 
     /* Buttons */
     .btn {
@@ -180,8 +241,8 @@
       cursor: pointer;
     }
     .btn-primary { background: var(--accent); color: #000; border: 1px solid var(--accent); }
-    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: 0 0 18px rgba(0, 229, 255, 0.35); }
+    .btn-outline { background: rgba(13, 19, 32, 0.7); color: var(--text); border: 1px solid var(--border); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
     .btn-lg { padding: 14px 24px; font-size: 1rem; min-height: 48px; }
     .btn-sm { padding: 6px 12px; font-size: 0.8rem; min-height: 36px; }
@@ -194,12 +255,12 @@
       gap: 8px;
       padding: 6px 12px;
       background: rgba(0, 230, 118, 0.1);
-      border: 1px solid rgba(0, 230, 118, 0.25);
+      border: 1px solid rgba(0, 230, 118, 0.3);
       border-radius: 999px;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--green);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .pulse-dot {
       width: 8px;
@@ -207,86 +268,213 @@
       background: var(--green);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--green);
+      flex-shrink: 0;
     }
 
-    /* Hero */
-    .hero { padding: 60px 0 50px; }
+    /* Hero 2-Column Command Layout */
+    .hero { padding: 54px 0 46px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
+      gap: 32px;
+      align-items: center;
+    }
     .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-size: clamp(2.1rem, 4.5vw, 3.1rem);
       font-weight: 800;
-      line-height: 1.15;
+      line-height: 1.12;
       margin-bottom: 18px;
       letter-spacing: -0.03em;
     }
     .hero p {
-      font-size: 1.15rem;
+      font-size: 1.08rem;
       color: var(--text-muted);
-      max-width: 680px;
-      margin-bottom: 32px;
+      max-width: 640px;
+      margin-bottom: 28px;
     }
-    .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 30px; }
     .trust-strip {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
-      font-size: 0.85rem;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
       color: var(--text-muted);
       border-top: 1px solid var(--border);
-      padding-top: 24px;
+      padding-top: 20px;
     }
 
+    /* Dispatch Status HUD */
+    .dispatch-hud {
+      position: relative;
+      background: linear-gradient(160deg, rgba(17, 24, 39, 0.88), rgba(8, 12, 20, 0.95));
+      border: 1px solid var(--border-glow);
+      border-radius: 10px;
+      padding: 22px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+    .hud-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+    .hud-tag {
+      background: rgba(0, 230, 118, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+    }
+    .hud-kv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hud-kv {
+      background: rgba(8, 12, 20, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+    .hud-kv-label { color: var(--text-muted); }
+    .hud-kv-val { color: var(--text); font-weight: 700; text-align: right; }
+    .hud-kv-val.ok { color: var(--green); }
+    .hud-kv-val.accent { color: var(--accent); }
+    .hud-sla-bar {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .hud-sla-bar strong { color: var(--gold); }
+
     /* Services Grid */
-    .services { padding: 40px 0 60px; }
+    .services { padding: 40px 0 54px; }
     .section-title {
       font-family: var(--font-mono);
       font-size: 0.85rem;
       letter-spacing: 0.1em;
       color: var(--accent);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-    .section-heading { font-size: 1.8rem; font-weight: 700; margin-bottom: 36px; }
+    .section-heading { font-size: 1.85rem; font-weight: 700; margin-bottom: 30px; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
     }
     .card {
+      position: relative;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .card:hover { border-color: rgba(0, 229, 255, 0.4); transform: translateY(-2px); }
-    .card-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); margin-bottom: 8px; }
-    .card h3 { font-size: 1.25rem; margin-bottom: 10px; }
-    .card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; flex-grow: 1; }
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+    .card-num { font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent); margin-bottom: 8px; }
+    .card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px; }
+    .card-checklist {
+      list-style: none;
+      margin-bottom: 18px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .card-checklist li::before { content: '▸ '; color: var(--green); }
     .card-footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
-    .price { font-family: var(--font-mono); font-weight: 700; color: var(--text); }
-    .price-sub { font-size: 0.75rem; color: var(--text-muted); }
+    .price { font-family: var(--font-mono); font-weight: 700; color: var(--text); font-size: 0.92rem; }
+    .price-sub { font-size: 0.72rem; color: var(--text-muted); }
 
     /* Interactive Booking Form */
     .booking-section {
+      position: relative;
       background: var(--card-bg);
-      border: 1px solid rgba(0, 229, 255, 0.3);
+      border: 1px solid var(--border-glow);
       border-radius: 12px;
-      padding: 40px;
-      margin: 40px 0 70px;
+      padding: 36px;
+      margin: 30px 0 60px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: box-shadow 0.35s ease, border-color 0.35s ease;
     }
+    .booking-section.is-highlighted {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(0, 230, 118, 0.25), 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .booking-summary-bar {
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: rgba(8, 12, 20, 0.85);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .booking-summary-bar strong { color: var(--accent); }
     .booking-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
-      margin-top: 24px;
+      margin-top: 22px;
+    }
+    .step-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed rgba(0, 229, 255, 0.3);
+      width: 100%;
     }
     .form-group { margin-block-end: 20px; text-align: left; }
     .fieldset-reset { border: 0; padding: 0; min-inline-size: 0; }
@@ -307,7 +495,7 @@
     .form-control {
       width: 100%;
       min-height: 48px;
-      background: #0B0F17;
+      background: #080c14;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 10px 14px;
@@ -367,7 +555,7 @@
     }
     .slot-status.is-error { color: var(--error); }
     .slot-btn {
-      background: #0B0F17;
+      background: #080c14;
       border: 1px solid var(--border);
       color: var(--text);
       padding: 10px 16px;
@@ -377,6 +565,7 @@
       font-size: 0.85rem;
       cursor: pointer;
     }
+    .slot-btn:hover { border-color: var(--accent); }
     .slot-btn.active {
       background: var(--accent);
       color: #000;
@@ -410,14 +599,15 @@
     /* Pedigree */
     .pedigree {
       border-top: 1px solid var(--border);
-      padding: 60px 0;
+      padding: 50px 0 60px;
       content-visibility: auto;
       contain-intrinsic-size: auto none auto 260px;
     }
     .pedigree-content {
-      background: rgba(11, 15, 23, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      position: relative;
+      background: rgba(13, 19, 32, 0.72);
+      border: 1px solid var(--border-glow);
+      border-radius: 10px;
       padding: 30px;
       font-family: var(--font-mono);
       font-size: 0.88rem;
@@ -431,12 +621,18 @@
       font-size: 0.85rem;
       color: var(--text-muted);
       text-align: center;
+      background: rgba(6, 9, 15, 0.9);
     }
     footer a { color: var(--accent); }
 
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
       .booking-grid { grid-template-columns: 1fr; }
-      .hero { padding: 40px 0 30px; }
+      .booking-section { padding: 24px 18px; }
+      .hero { padding: 36px 0 30px; }
+      .nav-links-bar { display: none; }
       .nav-actions .btn-outline { display: none; }
     }
 
@@ -452,6 +648,7 @@
   </style>
 </head>
 <body>
+  <div id="scroll-progress" aria-hidden="true"></div>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- Top Bar -->
@@ -460,6 +657,12 @@
       <a href="https://daca.me/support/" class="brand" aria-label="Irving Tech Support Home">
         <span>IRVING TECH SUPPORT</span> // daca.me
       </a>
+      <nav class="nav-links-bar" aria-label="Support Navigation">
+        <a href="/">daca.me Main Lab</a>
+        <a href="#services">Services</a>
+        <a href="#book">Live Booking</a>
+        <a href="/DaedalusX64/">DaedalusX64 Lab</a>
+      </nav>
       <div class="nav-actions">
         <a href="tel:9724457413" class="btn btn-primary" aria-label="Call (972) 445-7413">📞 (972) 445-7413</a>
         <a href="sms:9724457413" class="btn btn-outline" aria-label="Send SMS Text to (972) 445-7413">💬 Text Us</a>
@@ -472,29 +675,67 @@
     
     <!-- Hero Section -->
     <section class="hero">
-      <div class="status-badge">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        <span>DISPATCH READY // SERVING IRVING, LAS COLINAS &amp; DFW</span>
-      </div>
-      <h1>Fast, Honest Computer Repair &amp; Tech Support in Irving, TX.</h1>
-      <p>
-        On-site service and remote diagnostics for slow laptops, Blue Screen crashes, broken home Wi-Fi, and custom workstations. Direct, personal support with zero big-box retail markup. Se habla Español.
-      </p>
+      <div class="hero-grid">
+        <div>
+          <div class="status-badge">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span>DISPATCH READY // SERVING IRVING, LAS COLINAS &amp; DFW</span>
+          </div>
+          <h1>Fast, Honest Computer Repair &amp; Tech Support in Irving, TX.</h1>
+          <p>
+            On-site service and remote diagnostics for slow laptops, Blue Screen crashes, broken home Wi-Fi, and custom workstations. Direct, personal support with zero big-box retail markup. Se habla Español.
+          </p>
 
-      <div class="hero-ctas">
-        <a href="tel:9724457413" class="btn btn-primary btn-lg">
-          📞 Call (972) 445-7413
-        </a>
-        <a href="#book" class="btn btn-outline btn-lg">
-          ⚡ Book Service Online
-        </a>
-      </div>
+          <div class="hero-ctas">
+            <a href="tel:9724457413" class="btn btn-primary btn-lg">
+              📞 Call (972) 445-7413
+            </a>
+            <a href="#book" class="btn btn-outline btn-lg">
+              ⚡ Book Service Online
+            </a>
+          </div>
 
-      <div class="trust-strip">
-        <span>✔ On-Site &amp; Remote Available</span>
-        <span>✔ 10+ Years Systems Experience</span>
-        <span>✔ Transparent Pricing Before Work Starts</span>
-        <span>✔ Bilingual (English / Español)</span>
+          <div class="trust-strip">
+            <span>✔ On-Site &amp; Remote Available</span>
+            <span>✔ 10+ Years Systems Experience</span>
+            <span>✔ Transparent Pricing Before Work Starts</span>
+            <span>✔ Bilingual (English / Español)</span>
+          </div>
+        </div>
+
+        <!-- Live DFW Dispatch Status & Coverage Console -->
+        <aside class="dispatch-hud" aria-label="Live DFW Dispatch Status and Coverage">
+          <div class="corner-brackets" aria-hidden="true">
+            <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+            <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          </div>
+          <div class="hud-head">
+            <span>DISPATCH_CONSOLE // DFW-IRV-01</span>
+            <span class="hud-tag">ONLINE</span>
+          </div>
+          <div class="hud-kv-list">
+            <div class="hud-kv">
+              <span class="hud-kv-label">PRIMARY_ZONE</span>
+              <span class="hud-kv-val">Irving / Las Colinas</span>
+            </div>
+            <div class="hud-kv">
+              <span class="hud-kv-label">EXTENDED_DFW</span>
+              <span class="hud-kv-val">Coppell · Valley Ranch · Dallas</span>
+            </div>
+            <div class="hud-kv">
+              <span class="hud-kv-label">RESPONSE_SLA</span>
+              <span class="hud-kv-val ok">&lt; 15m Call / SMS</span>
+            </div>
+            <div class="hud-kv">
+              <span class="hud-kv-label">DIAGNOSTIC_POLICY</span>
+              <span class="hud-kv-val accent">$0 Hidden Fees</span>
+            </div>
+          </div>
+          <div class="hud-sla-bar">
+            <span>HOURS: M–F 9a–8p · Sat 9a–7p · Sun 10a–6p</span>
+            <strong>EN / ES</strong>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -504,61 +745,106 @@
       <h2 class="section-heading">Common Problems We Solve Daily</h2>
 
       <div class="grid">
-        <div class="card">
+        <article class="card">
+          <div class="corner-brackets" aria-hidden="true">
+            <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+            <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          </div>
           <div>
             <div class="card-num">01 // DIAGNOSTICS &amp; SPEED-UP</div>
             <h3>Computer Repair &amp; Crash Recovery</h3>
             <p>Fixing Blue Screens of Death (BSOD), boot loops, malware removal, and thermal cleaning.</p>
+            <ul class="card-checklist">
+              <li>Event Viewer &amp; Minidump crash trace</li>
+              <li>DISM / SFC OS corruption repair</li>
+              <li>Thermal paste &amp; fan dust service</li>
+            </ul>
           </div>
           <div class="card-footer">
             <span class="price">$69 – $99</span>
-            <a href="#book" class="btn btn-outline btn-sm">Book Fix</a>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Computer Repair &amp; Diagnostic">Book Fix</a>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
+        <article class="card">
+          <div class="corner-brackets" aria-hidden="true">
+            <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+            <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          </div>
           <div>
             <div class="card-num">02 // HARDWARE UPGRADES</div>
             <h3>SSD Speed Swaps &amp; Memory</h3>
             <p>Transform sluggish computers into sub-10-second booters. Exact drive cloning with zero data loss.</p>
+            <ul class="card-checklist">
+              <li>NVMe / SATA SSD sector-level clone</li>
+              <li>DDR4 / DDR5 dual-channel RAM tune</li>
+              <li>BIOS &amp; firmware optimization</li>
+            </ul>
           </div>
           <div class="card-footer">
             <span class="price">From $99 <span class="price-sub">+ parts</span></span>
-            <a href="#book" class="btn btn-outline btn-sm">Upgrade</a>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="SSD / RAM Hardware Upgrade">Upgrade</a>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
+        <article class="card">
+          <div class="corner-brackets" aria-hidden="true">
+            <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+            <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          </div>
           <div>
             <div class="card-num">03 // HOME &amp; OFFICE NETWORK</div>
             <h3>Wi-Fi &amp; Mesh Network Setup</h3>
             <p>Eliminate dead zones, install secure Wi-Fi 6 mesh routers, and fix printer connectivity drops.</p>
+            <ul class="card-checklist">
+              <li>Wi-Fi 6 / 6E mesh node placement</li>
+              <li>WPA3 security &amp; guest VLAN isolation</li>
+              <li>Static IP printer &amp; NAS binding</li>
+            </ul>
           </div>
           <div class="card-footer">
             <span class="price">$129 flat</span>
-            <a href="#book" class="btn btn-outline btn-sm">Setup Wi-Fi</a>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Wi-Fi &amp; Mesh Network Setup">Setup Wi-Fi</a>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
+        <article class="card">
+          <div class="corner-brackets" aria-hidden="true">
+            <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+            <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+          </div>
           <div>
             <div class="card-num">04 // CUSTOM HARDWARE</div>
             <h3>Workstations &amp; Custom Builds</h3>
             <p>High-performance PCs built for DaVinci Resolve editing, creative studios, and gaming.</p>
+            <ul class="card-checklist">
+              <li>Airflow &amp; acoustic fan-curve tuning</li>
+              <li>OCCT / Prime95 24-hour burn-in test</li>
+              <li>Clean Windows / Linux OS imaging</li>
+            </ul>
           </div>
           <div class="card-footer">
             <span class="price">$149 consultation/build</span>
-            <a href="#book" class="btn btn-outline btn-sm">Build PC</a>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Custom PC / Workstation Build">Build PC</a>
           </div>
-        </div>
+        </article>
       </div>
     </section>
 
     <!-- LIVE INTERACTIVE BOOKING ENGINE (WebMCP Declarative Form Enabled) -->
     <section class="booking-section" id="book">
+      <div class="corner-brackets" aria-hidden="true">
+        <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+        <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+      </div>
       <div class="section-title">// AUTOMATED APPOINTMENT DISPATCH</div>
       <h2 id="booking-heading" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">Schedule a Diagnostic or Service Call</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem;">Pick a date to check live availability. Need urgent help? Call or text <a href="tel:9724457413" style="color: var(--accent); text-decoration: none;">(972) 445-7413</a> directly.</p>
+
+      <div id="booking-summary-bar" class="booking-summary-bar" aria-live="polite">
+        <span>SERVICE: <strong id="summary-service">Computer Repair &amp; Diagnostic</strong></span>
+        <span>WINDOW: <strong id="summary-window">Select date &amp; time slot</strong></span>
+      </div>
 
       <div id="booking-container">
         <form id="booking-form"
@@ -570,6 +856,7 @@
               tooldescription="Schedule an on-site or remote computer repair, SSD upgrade, Wi-Fi setup, or custom PC build appointment in Irving and DFW.">
           <!-- Column 1: Date & Time -->
           <div>
+            <span class="step-badge">STEP 01 // SERVICE &amp; WINDOW</span>
             <div class="form-group">
               <label for="service_type">Select Service Needed <span class="req-star" aria-hidden="true">*</span></label>
               <select id="service_type" name="service_type" class="form-control" required>
@@ -598,6 +885,7 @@
 
           <!-- Column 2: Client Info -->
           <div>
+            <span class="step-badge">STEP 02 // DISPATCH DETAILS</span>
             <div class="form-group">
               <label for="client_name">Your Full Name <span class="req-star" aria-hidden="true">*</span></label>
               <input type="text" id="client_name" name="name" class="form-control" autocomplete="name" enterkeyhint="next" placeholder="Jane Doe" required>

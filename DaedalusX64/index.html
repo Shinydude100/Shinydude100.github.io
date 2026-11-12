@@ -128,8 +128,15 @@
             text-wrap: pretty;
         }
 
+        html { scroll-behavior: smooth; }
         body {
             background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(ellipse 70% 45% at 15% 0%, rgba(0, 240, 255, 0.08), transparent 60%),
+                radial-gradient(ellipse 65% 40% at 85% 15%, rgba(0, 230, 118, 0.06), transparent 55%),
+                linear-gradient(rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
             color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.65;
@@ -138,6 +145,103 @@
             overflow-x: hidden;
             -webkit-text-size-adjust: 100%;
         }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            z-index: 200;
+            pointer-events: none;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            @supports (animation-timeline: scroll()) {
+                @keyframes grow-progress {
+                    from { transform: scaleX(0); }
+                    to { transform: scaleX(1); }
+                }
+                #scroll-progress {
+                    animation: grow-progress linear both;
+                    animation-timeline: scroll(root block);
+                }
+            }
+        }
+
+        .exhibit-card, #docs { scroll-margin-top: 84px; }
+        .exhibit-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+        .exhibit-nav a {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(3, 5, 8, 0.75);
+            transition: all 0.15s ease;
+        }
+        .exhibit-nav a:hover, .exhibit-nav a:focus-visible {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .copy-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .copy-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--accent-cyan);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .copy-button:hover {
+            background: var(--accent-cyan);
+            color: #030508;
+        }
+        .copy-button[data-copied] {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            background: rgba(0, 230, 118, 0.14);
+        }
+        .copy-tip {
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 6px);
+            background: #0f172a;
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .copy-tip:empty { display: none; }
 
         /* Top Agent-Native Header Banner */
         .agent-banner {
@@ -962,13 +1066,21 @@
         <section id="exhibits">
             <h2 class="section-title">
                 <span>🕹️</span>
-                <span>Interactive Microcode Exhibits & Render Comparison</span>
+                <span>Interactive Microcode Exhibits &amp; Render Comparison</span>
             </h2>
+
+            <nav id="exhibit-nav" class="exhibit-nav" aria-label="Exhibit Quick-Jump Navigation">
+                <a href="#exhibit-1">01 // Kokiri Sword (Zelda OOT)</a>
+                <a href="#exhibit-2">02 // Cuccos &amp; Hilt (Zelda OOT)</a>
+                <a href="#exhibit-3">03 // Alpha Blend Exploration</a>
+                <a href="#exhibit-4">04 // Bomb Pulse (Smash Bros)</a>
+                <a href="#docs">05 // Win32 Toolchain Readme</a>
+            </nav>
 
             <div class="exhibit-grid">
 
                 <!-- EXHIBIT 1 -->
-                <div class="exhibit-card">
+                <div class="exhibit-card" id="exhibit-1">
                     <div class="exhibit-header">
                         <div class="exhibit-title-group">
                             <h3>Exhibit 1: The Kokiri Sword Blade (*Zelda: Ocarina of Time*)</h3>
@@ -1076,7 +1188,7 @@
                 </div>
 
                 <!-- EXHIBIT 2 -->
-                <div class="exhibit-card">
+                <div class="exhibit-card" id="exhibit-2">
                     <div class="exhibit-header">
                         <div class="exhibit-title-group">
                             <h3>Exhibit 2: Beginner's Sword & Cuccos (*Zelda: Ocarina of Time*)</h3>
@@ -1092,9 +1204,17 @@
                         <div class="code-container">
                             <div class="code-header">
                                 <span>Source/HLEGraphics/BlendModes.cpp</span>
-                                <span>Mask: 0x0030fe045ffefdfeLL</span>
+                                <span style="display: inline-flex; align-items: center; gap: 0.75rem;">
+                                    <span>Mask: 0x0030fe045ffefdfeLL</span>
+                                    <span class="copy-wrap">
+                                        <button type="button" class="copy-button" command="--copy" commandfor="code-ex2" aria-label="Copy Exhibit 2 C++ microcode">
+                                            <span aria-hidden="true">⧉</span> Copy C++
+                                        </button>
+                                        <span class="copy-tip" role="status"></span>
+                                    </span>
+                                </span>
                             </div>
-                            <pre><code><span class="code-comment">// Beginner's sword on Legend of Zelda: OOT (bottom part) and Chikens</span>
+                            <pre><code id="code-ex2"><span class="code-comment">// Beginner's sword on Legend of Zelda: OOT (bottom part) and Chikens</span>
 <span class="code-comment">// aRGB0: (Primitive     - Env          ) * Texel0        + Env</span>
 <span class="code-comment">// aA0  : (0             - 0            ) * 0            + 1</span>
 <span class="code-comment">// aRGB1: (Combined      - 0            ) * Shade         + 0</span>
@@ -1111,7 +1231,7 @@
                 </div>
 
                 <!-- EXHIBIT 3 -->
-                <div class="exhibit-card">
+                <div class="exhibit-card" id="exhibit-3">
                     <div class="exhibit-header">
                         <div class="exhibit-title-group">
                             <h3>Exhibit 3: Alpha Channel & Blend Mode Exploration</h3>
@@ -1127,9 +1247,17 @@
                         <div class="code-container">
                             <div class="code-header">
                                 <span>Source/HLEGraphics/BlendModes.cpp</span>
-                                <span>Author Tag & Debug Notes</span>
+                                <span style="display: inline-flex; align-items: center; gap: 0.75rem;">
+                                    <span>Author Tag &amp; Debug Notes</span>
+                                    <span class="copy-wrap">
+                                        <button type="button" class="copy-button" command="--copy" commandfor="code-ex3" aria-label="Copy Exhibit 3 C++ microcode">
+                                            <span aria-hidden="true">⧉</span> Copy C++
+                                        </button>
+                                        <span class="copy-tip" role="status"></span>
+                                    </span>
+                                </span>
                             </div>
-                            <pre><code><span class="code-comment">// By Kreationz & Shinydude100</span>
+                            <pre><code id="code-ex3"><span class="code-comment">// By Kreationz & Shinydude100</span>
 
 \tdetails.ColourAdjuster.<span class="code-function">SetAOpaque</span>(); <span class="code-comment">// Opaque still isn't doing much on the Alpha..?</span>
 \tdetails.ColourAdjuster.<span class="code-function">SetRGB</span>( details.EnvColour );
@@ -1220,9 +1348,17 @@
                         <div class="code-container">
                             <div class="code-header">
                                 <span>Source/HLEGraphics/BlendModes.cpp</span>
-                                <span>Mask: 0x00127eacf0fff238LL</span>
+                                <span style="display: inline-flex; align-items: center; gap: 0.75rem;">
+                                    <span>Mask: 0x00127eacf0fff238LL</span>
+                                    <span class="copy-wrap">
+                                        <button type="button" class="copy-button" command="--copy" commandfor="code-ex4" aria-label="Copy Exhibit 4 C++ microcode">
+                                            <span aria-hidden="true">⧉</span> Copy C++
+                                        </button>
+                                        <span class="copy-tip" role="status"></span>
+                                    </span>
+                                </span>
                             </div>
-                            <pre><code><span class="code-comment">// SSB Bomb Partial-Flashing Animation</span>
+                            <pre><code id="code-ex4"><span class="code-comment">// SSB Bomb Partial-Flashing Animation</span>
 <span class="code-comment">// case 0x00127eacf0fff238LL:</span>
 <span class="code-comment">// aRGB0: (Texel0       - 0            ) * Shade        + 0</span>
 <span class="code-comment">// aA0  : (0             - 0            ) * 0            + Texel0</span>

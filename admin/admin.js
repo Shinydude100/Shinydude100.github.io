@@ -1,6 +1,10 @@
 // Admin CRM — Irving Computer & Tech Support (daca.me/admin)
 // Sentinel Hardened: Safe DOM Node Construction (Stored DOM XSS Prevention), AbortController Timeouts, Accessible Status Banner
 
+let allAppointments = [];
+let activeStatusFilter = 'ALL';
+let searchQuery = '';
+
 document.addEventListener('DOMContentLoaded', () => {
   // Global Security Delegation for external links
   document.addEventListener('click', (e) => {
@@ -12,8 +16,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // CRM Status Filter Pills
+  const filterBtns = document.querySelectorAll('.filter-pill[data-status-filter]');
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeStatusFilter = btn.getAttribute('data-status-filter') || 'ALL';
+      filterBtns.forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      renderFilteredTickets();
+    });
+  });
+
+  // Live Ticket Search
+  const searchInput = document.getElementById('ticket-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = (e.target.value || '').trim().toLowerCase();
+      renderFilteredTickets();
+    });
+  }
+
+  // Manual D1 Sync Button
+  const refreshBtn = document.getElementById('refresh-crm-btn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '↻ Syncing...';
+      await loadData();
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = '↻ Sync D1';
+    });
+  }
+
+  // Scroll progress bar JS fallback
+  const progressEl = document.getElementById('scroll-progress');
+  const supportsScrollTimeline = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'scroll()');
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (progressEl && !supportsScrollTimeline && !prefersReduced) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+          progressEl.style.transform = `scaleX(${pct})`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
   loadData();
 });
+
+function renderFilteredTickets() {
+  const container = document.getElementById('tickets-container');
+  if (!container) return;
+  container.textContent = '';
+
+  const filtered = allAppointments.filter((a) => {
+    if (activeStatusFilter !== 'ALL' && a.status !== activeStatusFilter) {
+      return false;
+    }
+    if (searchQuery) {
+      const haystack = [
+        a.ticket_number,
+        a.client_name,
+        a.client_phone,
+        a.device_model,
+        a.service_type,
+        a.issue_description
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!haystack.includes(searchQuery)) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    const emptyEl = document.createElement('div');
+    emptyEl.style.color = 'var(--text-muted)';
+    emptyEl.style.padding = '20px';
+    emptyEl.style.fontFamily = 'var(--font-mono)';
+    emptyEl.textContent = allAppointments.length === 0
+      ? 'No appointments logged in D1 database yet.'
+      : 'No tickets match the current filter or search query.';
+    container.appendChild(emptyEl);
+    return;
+  }
+
+  // Sentinel Hardening: Build DOM nodes via DocumentFragment + textContent
+  const fragment = document.createDocumentFragment();
+  filtered.forEach((a) => {
+    fragment.appendChild(createTicketCard(a));
+  });
+  container.appendChild(fragment);
+}
 
 function showAdminBanner(message, isError = false) {
   const banner = document.getElementById('admin-status-banner');
@@ -74,33 +171,16 @@ async function loadData() {
     }
 
     // Update Stats
-    const appts = Array.isArray(data.appointments) ? data.appointments : [];
+    allAppointments = Array.isArray(data.appointments) ? data.appointments : [];
     const statTotal = document.getElementById('stat-total');
     const statScheduled = document.getElementById('stat-scheduled');
     const statCompleted = document.getElementById('stat-completed');
 
-    if (statTotal) statTotal.textContent = String(appts.length);
-    if (statScheduled) statScheduled.textContent = String(appts.filter((a) => a.status === 'SCHEDULED').length);
-    if (statCompleted) statCompleted.textContent = String(appts.filter((a) => a.status === 'COMPLETED').length);
+    if (statTotal) statTotal.textContent = String(allAppointments.length);
+    if (statScheduled) statScheduled.textContent = String(allAppointments.filter((a) => a.status === 'SCHEDULED').length);
+    if (statCompleted) statCompleted.textContent = String(allAppointments.filter((a) => a.status === 'COMPLETED').length);
 
-    if (!container) return;
-    container.textContent = '';
-
-    if (appts.length === 0) {
-      const emptyEl = document.createElement('div');
-      emptyEl.style.color = 'var(--text-muted)';
-      emptyEl.style.padding = '20px';
-      emptyEl.textContent = 'No appointments logged in D1 database yet.';
-      container.appendChild(emptyEl);
-      return;
-    }
-
-    // Sentinel Hardening: Build DOM nodes via DocumentFragment + textContent
-    const fragment = document.createDocumentFragment();
-    appts.forEach((a) => {
-      fragment.appendChild(createTicketCard(a));
-    });
-    container.appendChild(fragment);
+    renderFilteredTickets();
   } catch (err) {
     clearTimeout(timeoutId);
     if (container) {

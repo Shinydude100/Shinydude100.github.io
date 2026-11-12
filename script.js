@@ -369,6 +369,16 @@ async function runPipelineTelemetry() {
 // =================================================================
 // Real Edge Telemetry — Cloudflare Worker + Client-Side Hybrid
 // =================================================================
+function updateLatencyElements(latency) {
+    document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
+        if (el.firstChild && el.firstChild.nodeType === 3 && el.children.length > 0) {
+            el.firstChild.nodeValue = String(latency);
+        } else {
+            el.textContent = `${latency}ms`;
+        }
+    });
+}
+
 function initDynamicTelemetry() {
     const pingStart = performance.now();
     const telemetryController = new AbortController();
@@ -387,9 +397,7 @@ function initDynamicTelemetry() {
             if (!data || typeof data !== 'object') return;
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
 
-            document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
-                el.textContent = `${latency}ms`;
-            });
+            updateLatencyElements(latency);
 
             document.querySelectorAll('[data-telemetry="colo"]').forEach(el => {
                 el.textContent = data.colo || 'DFW';
@@ -421,9 +429,7 @@ function initDynamicTelemetry() {
         })
         .catch(() => {
             const latency = Math.max(1, Math.round(performance.now() - pingStart));
-            document.querySelectorAll('.telemetry-latency, [data-telemetry-latency], [data-telemetry="latency"]').forEach(el => {
-                el.textContent = `${latency}ms`;
-            });
+            updateLatencyElements(latency);
         })
         .finally(() => {
             clearTimeout(telemetryTimeoutId);
@@ -442,12 +448,20 @@ function initDynamicTelemetry() {
 
         if (uptimeEl && index > 0) {
             const dynamicUptime = (99.981 + (getSecureRandom() * 0.017)).toFixed(3);
-            uptimeEl.textContent = `${dynamicUptime}%`;
+            if (uptimeEl.firstChild && uptimeEl.firstChild.nodeType === 3 && uptimeEl.children.length > 0) {
+                uptimeEl.firstChild.nodeValue = dynamicUptime;
+            } else {
+                uptimeEl.textContent = `${dynamicUptime}%`;
+            }
         }
 
         if (memEl) {
             const dynamicMem = (38 + (index * 7) + (getSecureRandom() * 4)).toFixed(1);
-            memEl.textContent = `${dynamicMem}%`;
+            if (memEl.firstChild && memEl.firstChild.nodeType === 3 && memEl.children.length > 0) {
+                memEl.firstChild.nodeValue = dynamicMem;
+            } else {
+                memEl.textContent = `${dynamicMem}%`;
+            }
         }
     });
 }
@@ -520,6 +534,160 @@ function initWebMCP() {
 }
 
 // =================================================================
+// Hero Command Deck Tabs & Live Edge Telemetry Ping
+// =================================================================
+function initHeroCommandDeck() {
+    const tablist = document.querySelector('.hud-tablist[role="tablist"]');
+    if (tablist) {
+        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+        const panels = tabs
+            .map(tab => document.getElementById(tab.getAttribute('data-hud-tab') || ''))
+            .filter(Boolean);
+
+        const activateTab = (targetTab, shouldFocus = false) => {
+            const targetPanelId = targetTab.getAttribute('data-hud-tab');
+            tabs.forEach(tab => {
+                const isSelected = tab === targetTab;
+                tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+            });
+            panels.forEach(panel => {
+                if (panel.id === targetPanelId) {
+                    panel.removeAttribute('hidden');
+                } else {
+                    panel.setAttribute('hidden', 'until-found');
+                }
+            });
+            if (shouldFocus) targetTab.focus();
+        };
+
+        tabs.forEach((tab, idx) => {
+            tab.setAttribute('tabindex', tab.getAttribute('aria-selected') === 'true' ? '0' : '-1');
+            tab.addEventListener('click', () => activateTab(tab, false));
+            tab.addEventListener('keydown', (e) => {
+                let nextIdx = null;
+                if (e.key === 'ArrowRight') nextIdx = (idx + 1) % tabs.length;
+                else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + tabs.length) % tabs.length;
+                else if (e.key === 'Home') nextIdx = 0;
+                else if (e.key === 'End') nextIdx = tabs.length - 1;
+
+                if (nextIdx !== null) {
+                    e.preventDefault();
+                    activateTab(tabs[nextIdx], true);
+                }
+            });
+        });
+
+        panels.forEach(panel => {
+            panel.addEventListener('beforematch', () => {
+                const matchingTab = tabs.find(t => t.getAttribute('data-hud-tab') === panel.id);
+                if (matchingTab) activateTab(matchingTab, false);
+            });
+        });
+    }
+
+    const pingBtn = document.getElementById('hud-ping-btn');
+    const pingReadout = document.getElementById('hud-ping-readout');
+    if (pingBtn && pingReadout) {
+        pingBtn.addEventListener('click', async () => {
+            pingBtn.disabled = true;
+            pingReadout.textContent = 'PROBING_EDGE_POP...';
+
+            const topoNodes = document.querySelectorAll('.topo-node');
+            topoNodes.forEach((node, i) => {
+                node.classList.remove('pulsing');
+                if (!window.sysPrefersReducedMotion) {
+                    setTimeout(() => node.classList.add('pulsing'), i * 110);
+                    setTimeout(() => node.classList.remove('pulsing'), i * 110 + 700);
+                }
+            });
+
+            const pingStart = performance.now();
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+            try {
+                const res = await fetch('/api/telemetry', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    signal: controller.signal
+                });
+                const latency = Math.max(1, Math.round(performance.now() - pingStart));
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const colo = (data && data.colo) ? data.colo : 'DFW';
+                updateLatencyElements(latency);
+                pingReadout.textContent = `PING_OK // ${latency}ms // POP: ${colo}`;
+            } catch {
+                const latency = Math.max(1, Math.round(performance.now() - pingStart));
+                updateLatencyElements(latency);
+                pingReadout.textContent = `PING_LOCAL // ${latency}ms // CACHE_READY`;
+            } finally {
+                clearTimeout(timeoutId);
+                pingBtn.disabled = false;
+            }
+        });
+    }
+}
+
+// =================================================================
+// Invoker Commands Copy Button Engine (+ Legacy Fallback)
+// =================================================================
+function initCopyButtons() {
+    let toggle = false;
+    const handleCopy = async (button, target) => {
+        if (!button || !target) return;
+        const text = target.textContent.trim();
+        if (!text) return;
+
+        const tip = button.parentElement ? button.parentElement.querySelector('.copy-tip') : null;
+        clearTimeout(button._copyTimer);
+        delete button.dataset.copied;
+        delete button.dataset.failed;
+
+        try {
+            if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+                throw new Error('Clipboard API unavailable');
+            }
+            await navigator.clipboard.writeText(text);
+            button.dataset.copied = '';
+            if (tip) {
+                toggle = !toggle;
+                tip.textContent = `Copied to clipboard${toggle ? '\u00A0' : ''}`;
+            }
+        } catch {
+            button.dataset.failed = '';
+            if (tip) {
+                toggle = !toggle;
+                tip.textContent = `Press Ctrl+C to copy${toggle ? '\u00A0' : ''}`;
+            }
+        }
+
+        button._copyTimer = setTimeout(() => {
+            delete button.dataset.copied;
+            delete button.dataset.failed;
+            if (tip) tip.textContent = '';
+        }, 2000);
+    };
+
+    document.addEventListener('command', (e) => {
+        if (e.command === '--copy') {
+            handleCopy(e.source, e.target);
+        }
+    }, true);
+
+    if (!('CommandEvent' in window)) {
+        document.addEventListener('click', (e) => {
+            const btn = e.target && e.target.closest ? e.target.closest('button[command="--copy"]') : null;
+            if (!btn) return;
+            const targetId = btn.getAttribute('commandfor');
+            const target = targetId ? document.getElementById(targetId) : null;
+            handleCopy(btn, target);
+        });
+    }
+}
+
+// =================================================================
 // Runtime Core Execution Mount
 // =================================================================
 if (typeof document !== 'undefined') {
@@ -559,6 +727,8 @@ if (typeof document !== 'undefined') {
         initLinkSecurity();
         initDynamicTelemetry();
         initWebMCP();
+        initHeroCommandDeck();
+        initCopyButtons();
 
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
@@ -601,6 +771,8 @@ if (typeof document !== 'undefined') {
         });
 
         const header = document.getElementById('site-header');
+        const progressEl = document.getElementById('scroll-progress');
+        const supportsScrollTimeline = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'scroll()');
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-item');
 
@@ -650,6 +822,11 @@ if (typeof document !== 'undefined') {
                     if (header) {
                         window.scrollY > 40 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
                     }
+                    if (progressEl && !supportsScrollTimeline && !window.sysPrefersReducedMotion) {
+                        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                        const pct = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+                        progressEl.style.transform = `scaleX(${pct})`;
+                    }
                     isScrolling = false;
                 });
                 isScrolling = true;
@@ -662,6 +839,8 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         initTextDecryption,
         initParallaxArchitecture,
-        initCompositeCursor
+        initCompositeCursor,
+        initHeroCommandDeck,
+        initCopyButtons
     };
 }
