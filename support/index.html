@@ -709,6 +709,184 @@
     .cmd-item-hint { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; }
     .cmd-palette-empty { padding: 20px; text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); }
     .cmd-palette-foot { padding: 8px 16px; border-top: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); text-align: right; }
+
+    /* EN / ES Bilingual Toggle */
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      overflow: hidden;
+      background: rgba(13, 19, 32, 0.85);
+    }
+    .lang-btn {
+      min-height: 36px;
+      padding: 6px 10px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn[aria-pressed="true"] {
+      background: var(--accent);
+      color: #000;
+    }
+
+    /* Instant Quote Estimator */
+    .quote-section {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 20px 0 40px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.85fr;
+      gap: 28px;
+      margin-top: 20px;
+      align-items: start;
+    }
+    .quote-pills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .quote-pill {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .quote-pill input {
+      margin-top: 3px;
+      accent-color: var(--accent);
+    }
+    .quote-pill:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--text);
+    }
+    .quote-pill-title {
+      display: block;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.84rem;
+    }
+    .quote-pill-sub {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .quote-addons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .quote-addon {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .quote-addon:has(input:checked) {
+      border-color: var(--green);
+      background: rgba(0, 230, 118, 0.07);
+    }
+    .quote-addon-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quote-addon input { accent-color: var(--green); width: 16px; height: 16px; }
+    .quote-addon-price {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--green);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .quote-output-panel {
+      background: rgba(8, 12, 20, 0.92);
+      border: 1px solid var(--border-glow);
+      border-radius: 10px;
+      padding: 22px;
+      font-family: var(--font-mono);
+    }
+    .quote-output-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed rgba(0, 229, 255, 0.25);
+      margin-bottom: 14px;
+    }
+    .quote-total-label {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .quote-total-val {
+      font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .quote-breakdown {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .quote-breakdown li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .quote-breakdown strong { color: var(--text); }
+    .quote-note {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+    @media (max-width: 768px) {
+      .quote-grid { grid-template-columns: 1fr; }
+      .quote-section { padding: 24px 18px; }
+    }
   </style>
 </head>
 <body>
@@ -722,15 +900,20 @@
         <span>IRVING TECH SUPPORT</span> // daca.me
       </a>
       <nav class="nav-links-bar" aria-label="Support Navigation">
-        <a href="/">daca.me Main Lab</a>
-        <a href="#services">Services</a>
-        <a href="#book">Live Booking</a>
+        <a href="/" data-i18n="nav.main">daca.me Main Lab</a>
+        <a href="#services" data-i18n="nav.services">Services</a>
+        <a href="#quote-estimator" data-i18n="nav.quote">Quote Estimator</a>
+        <a href="#book" data-i18n="nav.book">Live Booking</a>
         <a href="/DaedalusX64/">DaedalusX64 Lab</a>
       </nav>
       <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+        </div>
         <button type="button" class="cmd-palette-trigger" data-open-command-palette aria-label="Open Command Palette (Ctrl+K)" title="Open Command Palette (Ctrl+K)">CMD <kbd>⌘K</kbd></button>
         <a href="tel:9724457413" class="btn btn-primary" aria-label="Call (972) 445-7413">📞 (972) 445-7413</a>
-        <a href="sms:9724457413" class="btn btn-outline" aria-label="Send SMS Text to (972) 445-7413">💬 Text Us</a>
+        <a href="sms:9724457413" class="btn btn-outline" aria-label="Send SMS Text to (972) 445-7413" data-i18n="nav.text">💬 Text Us</a>
       </div>
     </div>
   </header>
@@ -744,27 +927,27 @@
         <div>
           <div class="status-badge">
             <span class="pulse-dot" aria-hidden="true"></span>
-            <span>DISPATCH READY // SERVING IRVING, LAS COLINAS &amp; DFW</span>
+            <span data-i18n="hero.badge">DISPATCH READY // SERVING IRVING, LAS COLINAS &amp; DFW</span>
           </div>
-          <h1>Fast, Honest Computer Repair &amp; Tech Support in Irving, TX.</h1>
-          <p>
+          <h1 data-i18n="hero.title">Fast, Honest Computer Repair &amp; Tech Support in Irving, TX.</h1>
+          <p data-i18n="hero.subtitle">
             On-site service and remote diagnostics for slow laptops, Blue Screen crashes, broken home Wi-Fi, and custom workstations. Direct, personal support with zero big-box retail markup. Se habla Español.
           </p>
 
           <div class="hero-ctas">
-            <a href="tel:9724457413" class="btn btn-primary btn-lg">
+            <a href="tel:9724457413" class="btn btn-primary btn-lg" data-i18n="hero.ctaCall">
               📞 Call (972) 445-7413
             </a>
-            <a href="#book" class="btn btn-outline btn-lg">
+            <a href="#book" class="btn btn-outline btn-lg" data-i18n="hero.ctaBook">
               ⚡ Book Service Online
             </a>
           </div>
 
           <div class="trust-strip">
-            <span>✔ On-Site &amp; Remote Available</span>
-            <span>✔ 10+ Years Systems Experience</span>
-            <span>✔ Transparent Pricing Before Work Starts</span>
-            <span>✔ Bilingual (English / Español)</span>
+            <span data-i18n="trust.onsite">✔ On-Site &amp; Remote Available</span>
+            <span data-i18n="trust.exp">✔ 10+ Years Systems Experience</span>
+            <span data-i18n="trust.pricing">✔ Transparent Pricing Before Work Starts</span>
+            <span data-i18n="trust.bilingual">✔ Bilingual (English / Español)</span>
           </div>
         </div>
 
@@ -776,7 +959,7 @@
           </div>
           <div class="hud-head">
             <span>DISPATCH_CONSOLE // DFW-IRV-01</span>
-            <span class="hud-tag">ONLINE</span>
+            <span class="hud-tag" data-i18n="hud.online">ONLINE</span>
           </div>
           <div class="hud-kv-list">
             <div class="hud-kv">
@@ -789,15 +972,15 @@
             </div>
             <div class="hud-kv">
               <span class="hud-kv-label">RESPONSE_SLA</span>
-              <span class="hud-kv-val ok">&lt; 15m Call / SMS</span>
+              <span class="hud-kv-val ok" data-i18n="hud.sla">&lt; 15m Call / SMS</span>
             </div>
             <div class="hud-kv">
               <span class="hud-kv-label">DIAGNOSTIC_POLICY</span>
-              <span class="hud-kv-val accent">$0 Hidden Fees</span>
+              <span class="hud-kv-val accent" data-i18n="hud.fees">$0 Hidden Fees</span>
             </div>
           </div>
           <div class="hud-sla-bar">
-            <span>HOURS: M–F 9a–8p · Sat 9a–7p · Sun 10a–6p</span>
+            <span data-i18n="hud.hours">HOURS: M–F 9a–8p · Sat 9a–7p · Sun 10a–6p</span>
             <strong>EN / ES</strong>
           </div>
         </aside>
@@ -806,8 +989,8 @@
 
     <!-- Services Grid -->
     <section class="services" id="services">
-      <div class="section-title">// REPAIR &amp; SUPPORT SERVICES</div>
-      <h2 class="section-heading">Common Problems We Solve Daily</h2>
+      <div class="section-title" data-i18n="services.kicker">// REPAIR &amp; SUPPORT SERVICES</div>
+      <h2 class="section-heading" data-i18n="services.heading">Common Problems We Solve Daily</h2>
 
       <div class="grid">
         <article class="card">
@@ -816,18 +999,18 @@
             <span class="cb cb-bl"></span><span class="cb cb-br"></span>
           </div>
           <div>
-            <div class="card-num">01 // DIAGNOSTICS &amp; SPEED-UP</div>
-            <h3>Computer Repair &amp; Crash Recovery</h3>
-            <p>Fixing Blue Screens of Death (BSOD), boot loops, malware removal, and thermal cleaning.</p>
+            <div class="card-num" data-i18n="card1.num">01 // DIAGNOSTICS &amp; SPEED-UP</div>
+            <h3 data-i18n="card1.title">Computer Repair &amp; Crash Recovery</h3>
+            <p data-i18n="card1.desc">Fixing Blue Screens of Death (BSOD), boot loops, malware removal, and thermal cleaning.</p>
             <ul class="card-checklist">
-              <li>Event Viewer &amp; Minidump crash trace</li>
-              <li>DISM / SFC OS corruption repair</li>
-              <li>Thermal paste &amp; fan dust service</li>
+              <li data-i18n="card1.li1">Event Viewer &amp; Minidump crash trace</li>
+              <li data-i18n="card1.li2">DISM / SFC OS corruption repair</li>
+              <li data-i18n="card1.li3">Thermal paste &amp; fan dust service</li>
             </ul>
           </div>
           <div class="card-footer">
             <span class="price">$69 – $99</span>
-            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Computer Repair &amp; Diagnostic">Book Fix</a>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Computer Repair &amp; Diagnostic" data-i18n="card1.cta">Book Fix</a>
           </div>
         </article>
 
@@ -837,18 +1020,18 @@
             <span class="cb cb-bl"></span><span class="cb cb-br"></span>
           </div>
           <div>
-            <div class="card-num">02 // HARDWARE UPGRADES</div>
-            <h3>SSD Speed Swaps &amp; Memory</h3>
-            <p>Transform sluggish computers into sub-10-second booters. Exact drive cloning with zero data loss.</p>
+            <div class="card-num" data-i18n="card2.num">02 // HARDWARE UPGRADES</div>
+            <h3 data-i18n="card2.title">SSD Speed Swaps &amp; Memory</h3>
+            <p data-i18n="card2.desc">Transform sluggish computers into sub-10-second booters. Exact drive cloning with zero data loss.</p>
             <ul class="card-checklist">
-              <li>NVMe / SATA SSD sector-level clone</li>
-              <li>DDR4 / DDR5 dual-channel RAM tune</li>
-              <li>BIOS &amp; firmware optimization</li>
+              <li data-i18n="card2.li1">NVMe / SATA SSD sector-level clone</li>
+              <li data-i18n="card2.li2">DDR4 / DDR5 dual-channel RAM tune</li>
+              <li data-i18n="card2.li3">BIOS &amp; firmware optimization</li>
             </ul>
           </div>
           <div class="card-footer">
-            <span class="price">From $99 <span class="price-sub">+ parts</span></span>
-            <a href="#book" class="btn btn-outline btn-sm" data-select-service="SSD / RAM Hardware Upgrade">Upgrade</a>
+            <span class="price">$99+</span>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="SSD / RAM Hardware Upgrade" data-i18n="card2.cta">Upgrade</a>
           </div>
         </article>
 
@@ -858,18 +1041,18 @@
             <span class="cb cb-bl"></span><span class="cb cb-br"></span>
           </div>
           <div>
-            <div class="card-num">03 // HOME &amp; OFFICE NETWORK</div>
-            <h3>Wi-Fi &amp; Mesh Network Setup</h3>
-            <p>Eliminate dead zones, install secure Wi-Fi 6 mesh routers, and fix printer connectivity drops.</p>
+            <div class="card-num" data-i18n="card3.num">03 // HOME &amp; OFFICE NETWORK</div>
+            <h3 data-i18n="card3.title">Wi-Fi &amp; Mesh Network Setup</h3>
+            <p data-i18n="card3.desc">Eliminate dead zones, install secure Wi-Fi 6 mesh routers, and fix printer connectivity drops.</p>
             <ul class="card-checklist">
-              <li>Wi-Fi 6 / 6E mesh node placement</li>
-              <li>WPA3 security &amp; guest VLAN isolation</li>
-              <li>Static IP printer &amp; NAS binding</li>
+              <li data-i18n="card3.li1">Wi-Fi 6 / 6E mesh node placement</li>
+              <li data-i18n="card3.li2">WPA3 security &amp; guest VLAN isolation</li>
+              <li data-i18n="card3.li3">Static IP printer &amp; NAS binding</li>
             </ul>
           </div>
           <div class="card-footer">
-            <span class="price">$129 flat</span>
-            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Wi-Fi &amp; Mesh Network Setup">Setup Wi-Fi</a>
+            <span class="price">$129</span>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Wi-Fi &amp; Mesh Network Setup" data-i18n="card3.cta">Setup Wi-Fi</a>
           </div>
         </article>
 
@@ -879,20 +1062,116 @@
             <span class="cb cb-bl"></span><span class="cb cb-br"></span>
           </div>
           <div>
-            <div class="card-num">04 // CUSTOM HARDWARE</div>
-            <h3>Workstations &amp; Custom Builds</h3>
-            <p>High-performance PCs built for DaVinci Resolve editing, creative studios, and gaming.</p>
+            <div class="card-num" data-i18n="card4.num">04 // CUSTOM HARDWARE</div>
+            <h3 data-i18n="card4.title">Workstations &amp; Custom Builds</h3>
+            <p data-i18n="card4.desc">High-performance PCs built for DaVinci Resolve editing, creative studios, and gaming.</p>
             <ul class="card-checklist">
-              <li>Airflow &amp; acoustic fan-curve tuning</li>
-              <li>OCCT / Prime95 24-hour burn-in test</li>
-              <li>Clean Windows / Linux OS imaging</li>
+              <li data-i18n="card4.li1">Airflow &amp; acoustic fan-curve tuning</li>
+              <li data-i18n="card4.li2">OCCT / Prime95 24-hour burn-in test</li>
+              <li data-i18n="card4.li3">Clean Windows / Linux OS imaging</li>
             </ul>
           </div>
           <div class="card-footer">
-            <span class="price">$149 consultation/build</span>
-            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Custom PC / Workstation Build">Build PC</a>
+            <span class="price">$149</span>
+            <a href="#book" class="btn btn-outline btn-sm" data-select-service="Custom PC / Workstation Build" data-i18n="card4.cta">Build PC</a>
           </div>
         </article>
+      </div>
+    </section>
+
+    <!-- INSTANT QUOTE ESTIMATOR -->
+    <section class="quote-section" id="quote-estimator" aria-labelledby="quote-heading">
+      <div class="corner-brackets" aria-hidden="true">
+        <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
+        <span class="cb cb-bl"></span><span class="cb cb-br"></span>
+      </div>
+      <div class="section-title" data-i18n="quote.kicker">// TRANSPARENT PRICING ENGINE</div>
+      <h2 id="quote-heading" style="font-size: 1.7rem; font-weight: 700; margin-bottom: 6px;" data-i18n="quote.heading">Instant Service Quote Estimator</h2>
+      <p style="color: var(--text-muted); font-size: 0.94rem;" data-i18n="quote.subtitle">Configure your service, dispatch zone, and optional add-ons to preview your total before booking.</p>
+
+      <div class="quote-grid">
+        <div>
+          <div class="form-group">
+            <label for="quote-service" data-i18n="quote.serviceLabel">1. Primary Service</label>
+            <select id="quote-service" class="form-control">
+              <option value="Computer Repair & Diagnostic" data-base="79" data-i18n="quote.opt1">Computer Repair &amp; Crash Recovery ($79 base)</option>
+              <option value="SSD / RAM Hardware Upgrade" data-base="99" data-i18n="quote.opt2">SSD / RAM Speed Upgrade ($99 labor)</option>
+              <option value="Wi-Fi & Mesh Network Setup" data-base="129" data-i18n="quote.opt3">Wi-Fi &amp; Mesh Network Setup ($129 flat)</option>
+              <option value="Custom PC / Workstation Build" data-base="149" data-i18n="quote.opt4">Custom PC / Workstation Build ($149)</option>
+              <option value="Other / Remote Tech Consultation" data-base="49" data-i18n="quote.opt5">Remote Tech Consultation ($49)</option>
+            </select>
+          </div>
+
+          <fieldset class="form-group fieldset-reset">
+            <legend data-i18n="quote.zoneLabel">2. Dispatch Mode &amp; Zone</legend>
+            <div class="quote-pills">
+              <label class="quote-pill">
+                <input type="radio" name="quote_dispatch" value="remote" data-fee="0" checked>
+                <span>
+                  <span class="quote-pill-title" data-i18n="quote.zoneRemote">Remote / Drop-Off</span>
+                  <span class="quote-pill-sub">+$0</span>
+                </span>
+              </label>
+              <label class="quote-pill">
+                <input type="radio" name="quote_dispatch" value="irving" data-fee="0">
+                <span>
+                  <span class="quote-pill-title" data-i18n="quote.zoneIrving">On-Site Irving / Las Colinas</span>
+                  <span class="quote-pill-sub">+$0</span>
+                </span>
+              </label>
+              <label class="quote-pill">
+                <input type="radio" name="quote_dispatch" value="dfw" data-fee="20">
+                <span>
+                  <span class="quote-pill-title" data-i18n="quote.zoneDfw">Extended DFW Travel</span>
+                  <span class="quote-pill-sub">+$20</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-group fieldset-reset" style="margin-block-end: 0;">
+            <legend data-i18n="quote.addonsLabel">3. Optional Add-Ons</legend>
+            <div class="quote-addons">
+              <label class="quote-addon">
+                <span class="quote-addon-left">
+                  <input type="checkbox" class="quote-addon-cb" value="Same-Day Priority Dispatch" data-fee="30">
+                  <span data-i18n="quote.addonPriority">Same-Day Priority Dispatch</span>
+                </span>
+                <span class="quote-addon-price">+$30</span>
+              </label>
+              <label class="quote-addon">
+                <span class="quote-addon-left">
+                  <input type="checkbox" class="quote-addon-cb" value="Full Drive Backup / Clone" data-fee="35">
+                  <span data-i18n="quote.addonBackup">Full Drive Backup &amp; Verification</span>
+                </span>
+                <span class="quote-addon-price">+$35</span>
+              </label>
+              <label class="quote-addon">
+                <span class="quote-addon-left">
+                  <input type="checkbox" class="quote-addon-cb" value="Thermal Paste & Deep Clean" data-fee="25">
+                  <span data-i18n="quote.addonThermal">Thermal Paste &amp; Deep Fan Clean</span>
+                </span>
+                <span class="quote-addon-price">+$25</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <aside class="quote-output-panel" aria-live="polite">
+          <div class="quote-output-head">
+            <span>ESTIMATE_HUD // LIVE</span>
+            <span style="color: var(--green);" data-i18n="quote.noFees">$0 HIDDEN FEES</span>
+          </div>
+          <div class="quote-total-label" data-i18n="quote.totalLabel">ESTIMATED TOTAL (LABOR)</div>
+          <div id="quote-total-val" class="quote-total-val">$79</div>
+          <ul class="quote-breakdown">
+            <li><span data-i18n="quote.baseRow">Base Service:</span> <strong id="quote-base-val">$79</strong></li>
+            <li><span data-i18n="quote.dispatchRow">Dispatch / Travel:</span> <strong id="quote-dispatch-val">$0</strong></li>
+            <li><span data-i18n="quote.addonsRow">Selected Add-Ons:</span> <strong id="quote-addons-val">$0</strong></li>
+          </ul>
+          <button type="button" id="quote-apply-btn" class="btn btn-primary btn-block" data-i18n="quote.applyBtn">Lock Estimate &amp; Book Slot →</button>
+          <p class="quote-note" data-i18n="quote.note">Hardware parts (if needed) are quoted separately at exact cost before purchase.</p>
+        </aside>
       </div>
     </section>
 
@@ -902,13 +1181,13 @@
         <span class="cb cb-tl"></span><span class="cb cb-tr"></span>
         <span class="cb cb-bl"></span><span class="cb cb-br"></span>
       </div>
-      <div class="section-title">// AUTOMATED APPOINTMENT DISPATCH</div>
-      <h2 id="booking-heading" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">Schedule a Diagnostic or Service Call</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Pick a date to check live availability. Need urgent help? Call or text <a href="tel:9724457413" style="color: var(--accent); text-decoration: none;">(972) 445-7413</a> directly.</p>
+      <div class="section-title" data-i18n="book.kicker">// AUTOMATED APPOINTMENT DISPATCH</div>
+      <h2 id="booking-heading" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;" data-i18n="book.heading">Schedule a Diagnostic or Service Call</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;"><span data-i18n="book.subPre">Pick a date to check live availability. Need urgent help? Call or text</span> <a href="tel:9724457413" style="color: var(--accent); text-decoration: none;">(972) 445-7413</a> <span data-i18n="book.subPost">directly.</span></p>
 
       <div id="booking-summary-bar" class="booking-summary-bar" aria-live="polite">
-        <span>SERVICE: <strong id="summary-service">Computer Repair &amp; Diagnostic</strong></span>
-        <span>WINDOW: <strong id="summary-window">Select date &amp; time slot</strong></span>
+        <span><span data-i18n="book.sumSvc">SERVICE:</span> <strong id="summary-service">Computer Repair &amp; Diagnostic</strong></span>
+        <span><span data-i18n="book.sumWin">WINDOW:</span> <strong id="summary-window">Select date &amp; time slot</strong></span>
       </div>
 
       <div id="booking-container">
@@ -921,9 +1200,9 @@
               tooldescription="Schedule an on-site or remote computer repair, SSD upgrade, Wi-Fi setup, or custom PC build appointment in Irving and DFW.">
           <!-- Column 1: Date & Time -->
           <div>
-            <span class="step-badge">STEP 01 // SERVICE &amp; WINDOW</span>
+            <span class="step-badge" data-i18n="book.step1">STEP 01 // SERVICE &amp; WINDOW</span>
             <div class="form-group">
-              <label for="service_type">Select Service Needed <span class="req-star" aria-hidden="true">*</span></label>
+              <label for="service_type"><span data-i18n="book.lblService">Select Service Needed</span> <span class="req-star" aria-hidden="true">*</span></label>
               <select id="service_type" name="service_type" class="form-control" required>
                 <option value="Computer Repair & Diagnostic">Computer Repair &amp; Diagnostic ($69–$99)</option>
                 <option value="SSD / RAM Hardware Upgrade">SSD / RAM Speed Upgrade ($99 + parts)</option>
@@ -934,15 +1213,15 @@
             </div>
 
             <div class="form-group">
-              <label for="appointment_date">Choose Preferred Date <span class="req-star" aria-hidden="true">*</span></label>
+              <label for="appointment_date"><span data-i18n="book.lblDate">Choose Preferred Date</span> <span class="req-star" aria-hidden="true">*</span></label>
               <input type="date" id="appointment_date" name="appointment_date" class="form-control" toolparamdescription="Preferred service date in YYYY-MM-DD format" required>
-              <div class="error-msg" role="alert">❌ Please select a valid appointment date.</div>
+              <div class="error-msg" role="alert" data-i18n="book.errDate">❌ Please select a valid appointment date.</div>
             </div>
 
             <fieldset class="form-group fieldset-reset" toolparamdescription="Selected appointment time slot in 24-hour HH:MM format">
-              <legend>Available Appointment Slots <span class="req-star" aria-hidden="true">*</span></legend>
+              <legend><span data-i18n="book.lblSlots">Available Appointment Slots</span> <span class="req-star" aria-hidden="true">*</span></legend>
               <div id="slots-wrapper" class="slots-container" role="group" aria-live="polite">
-                <span class="slot-status">Select a date above to load live open slots...</span>
+                <span class="slot-status" data-i18n="book.slotPrompt">Select a date above to load live open slots...</span>
               </div>
               <input type="hidden" id="selected_time" name="appointment_time" required>
             </fieldset>
@@ -950,59 +1229,59 @@
 
           <!-- Column 2: Client Info -->
           <div>
-            <span class="step-badge">STEP 02 // DISPATCH DETAILS</span>
+            <span class="step-badge" data-i18n="book.step2">STEP 02 // DISPATCH DETAILS</span>
             <div class="form-group">
-              <label for="client_name">Your Full Name <span class="req-star" aria-hidden="true">*</span></label>
+              <label for="client_name"><span data-i18n="book.lblName">Your Full Name</span> <span class="req-star" aria-hidden="true">*</span></label>
               <input type="text" id="client_name" name="name" class="form-control" autocomplete="name" enterkeyhint="next" placeholder="Jane Doe" required>
-              <div class="error-msg" role="alert">❌ Please enter your full name.</div>
+              <div class="error-msg" role="alert" data-i18n="book.errName">❌ Please enter your full name.</div>
             </div>
 
             <div class="form-group">
-              <label for="client_phone">Phone Number (Call or Text) <span class="req-star" aria-hidden="true">*</span></label>
-              <span id="phone-hint" class="field-hint">Format: 10-digit US phone number for dispatch text updates</span>
+              <label for="client_phone"><span data-i18n="book.lblPhone">Phone Number (Call or Text)</span> <span class="req-star" aria-hidden="true">*</span></label>
+              <span id="phone-hint" class="field-hint" data-i18n="book.phoneHint">Format: 10-digit US phone number for dispatch text updates</span>
               <input type="tel" id="client_phone" name="phone" class="form-control" autocomplete="tel" inputmode="tel" enterkeyhint="next" aria-describedby="phone-hint" placeholder="(972) 555-0123" required>
-              <div class="error-msg" role="alert">❌ Please enter a valid phone number so dispatch can confirm your slot.</div>
+              <div class="error-msg" role="alert" data-i18n="book.errPhone">❌ Please enter a valid phone number so dispatch can confirm your slot.</div>
             </div>
 
             <div class="form-group">
-              <label for="device_model">Device Model (Optional)</label>
+              <label for="device_model" data-i18n="book.lblDevice">Device Model (Optional)</label>
               <input type="text" id="device_model" name="device_model" class="form-control" enterkeyhint="next" toolparamdescription="e.g., Dell Inspiron 15, MacBook Pro, Custom Desktop" placeholder="e.g. Dell Inspiron 15, Custom Desktop">
             </div>
 
             <div class="form-group">
-              <label for="issue_description">Describe the Issue <span class="req-star" aria-hidden="true">*</span></label>
-              <textarea id="issue_description" name="issue_description" class="form-control" rows="3" placeholder="What symptoms are you noticing? (Blue screen, slow boot, no Wi-Fi, etc.)" required></textarea>
-              <div class="error-msg" role="alert">❌ Please briefly describe the symptoms or service needed.</div>
+              <label for="issue_description"><span data-i18n="book.lblIssue">Describe the Issue</span> <span class="req-star" aria-hidden="true">*</span></label>
+              <textarea id="issue_description" name="issue_description" class="form-control" rows="3" placeholder="What symptoms are you noticing? (Blue screen, slow boot, no Wi-Fi, etc.)" data-i18n-placeholder="book.phIssue" required></textarea>
+              <div class="error-msg" role="alert" data-i18n="book.errIssue">❌ Please briefly describe the symptoms or service needed.</div>
             </div>
 
             <div id="form-feedback" class="form-feedback" role="alert" aria-live="assertive" hidden></div>
 
-            <button type="submit" id="submit-btn" class="btn btn-primary btn-block">Confirm &amp; Dispatch Appointment</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-block" data-i18n="book.submit">Confirm &amp; Dispatch Appointment</button>
           </div>
         </form>
 
         <!-- Success Confirmation Display -->
         <div id="booking-success" class="booking-success-box" tabindex="-1" role="status" aria-live="polite" hidden>
           <div style="font-size: 2.5rem; margin-bottom: 12px;" aria-hidden="true">✅</div>
-          <h3 style="font-size: 1.6rem; color: var(--green); margin-bottom: 8px;">Appointment Confirmed!</h3>
+          <h3 style="font-size: 1.6rem; color: var(--green); margin-bottom: 8px;" data-i18n="book.successTitle">Appointment Confirmed!</h3>
           <p id="success-ticket" style="font-family: var(--font-mono); font-size: 1.2rem; color: var(--accent); margin-bottom: 16px;"></p>
-          <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 24px;">Your service ticket has been routed to dispatch. Hugo will follow up via text at your phone number prior to your appointment window.</p>
-          <a href="https://daca.me/support/" class="btn btn-outline">Done</a>
+          <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 24px;" data-i18n="book.successDesc">Your service ticket has been routed to dispatch. Hugo will follow up via text at your phone number prior to your appointment window.</p>
+          <a href="https://daca.me/support/" class="btn btn-outline" data-i18n="book.done">Done</a>
         </div>
       </div>
     </section>
 
     <!-- Pedigree & Enterprise Proof -->
     <section class="pedigree">
-      <div class="section-title">// ENGINEERING INTEGRITY</div>
+      <div class="section-title" data-i18n="pedigree.kicker">// ENGINEERING INTEGRITY</div>
       <div class="pedigree-content">
-        <h4>Enterprise-Grade Skill. Neighborhood Care.</h4>
-        <p style="margin-bottom: 14px; color: var(--text-muted);">
+        <h4 data-i18n="pedigree.title">Enterprise-Grade Skill. Neighborhood Care.</h4>
+        <p style="margin-bottom: 14px; color: var(--text-muted);" data-i18n="pedigree.p1">
           When you call a big-box retail electronics store, your device is handed to a junior retail clerk following a basic script. At Irving Computer &amp; Tech Support, your systems are diagnosed by an active systems infrastructure and security specialist.
         </p>
         <p style="color: var(--text-muted);">
-          Looking for my enterprise security architecture, DaedalusX64 open-source work, or live edge MCP telemetry? 
-          <a href="https://daca.me/">View the Main Systems Portfolio &amp; Lab →</a>
+          <span data-i18n="pedigree.p2">Looking for my enterprise security architecture, DaedalusX64 open-source work, or live edge MCP telemetry?</span>
+          <a href="https://daca.me/" data-i18n="pedigree.link">View the Main Systems Portfolio &amp; Lab →</a>
         </p>
       </div>
     </section>
@@ -1015,17 +1294,17 @@
       <p style="margin-bottom: 8px;">
         <strong>Irving Computer &amp; Tech Support</strong> // 
         <a href="tel:9724457413">(972) 445-7413</a> // 
-        Serving Irving, Las Colinas, Coppell, and DFW Metroplex.
+        <span data-i18n="footer.serving">Serving Irving, Las Colinas, Coppell, and DFW Metroplex.</span>
       </p>
-      <p style="margin-bottom: 8px;">
+      <p style="margin-bottom: 8px;" data-i18n="footer.hours">
         Hours: Mon–Fri: 9:00 AM – 8:00 PM | Sat: 9:00 AM – 7:00 PM | Sun: 10:00 AM – 6:00 PM
       </p>
       <p>
-        <a href="https://maps.app.goo.gl/AGKBVN5viHDWCX1f6?g_st=ac" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Find us on Google Maps</a> • 
+        <a href="https://maps.app.goo.gl/AGKBVN5viHDWCX1f6?g_st=ac" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-i18n="footer.maps">Find us on Google Maps</a> • 
         <a href="https://daca.me/">daca.me Main Lab</a>
       </p>
       <p style="margin-top: 16px; font-size: 0.75rem; color: #94A3B8;">
-        © 2026 Irving Computer &amp; Tech Support. All rights reserved.
+        © 2026 Irving Computer &amp; Tech Support.
       </p>
     </div>
   </footer>

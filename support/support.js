@@ -64,6 +64,342 @@
   const summaryService = document.getElementById('summary-service');
   const summaryWindow = document.getElementById('summary-window');
 
+  const I18N = {
+    en: {
+      'nav.main': 'daca.me Main Lab',
+      'nav.services': 'Services',
+      'nav.quote': 'Quote Estimator',
+      'nav.book': 'Live Booking',
+      'nav.text': '💬 Text Us',
+      'hero.badge': 'DISPATCH READY // SERVING IRVING, LAS COLINAS & DFW',
+      'hero.title': 'Fast, Honest Computer Repair & Tech Support in Irving, TX.',
+      'hero.subtitle': 'On-site service and remote diagnostics for slow laptops, Blue Screen crashes, broken home Wi-Fi, and custom workstations. Direct, personal support with zero big-box retail markup. Se habla Español.',
+      'hero.ctaCall': '📞 Call (972) 445-7413',
+      'hero.ctaBook': '⚡ Book Service Online',
+      'trust.onsite': '✔ On-Site & Remote Available',
+      'trust.exp': '✔ 10+ Years Systems Experience',
+      'trust.pricing': '✔ Transparent Pricing Before Work Starts',
+      'trust.bilingual': '✔ Bilingual (English / Español)',
+      'hud.online': 'ONLINE',
+      'hud.sla': '< 15m Call / SMS',
+      'hud.fees': '$0 Hidden Fees',
+      'hud.hours': 'HOURS: M–F 9a–8p · Sat 9a–7p · Sun 10a–6p',
+      'services.kicker': '// REPAIR & SUPPORT SERVICES',
+      'services.heading': 'Common Problems We Solve Daily',
+      'card1.num': '01 // DIAGNOSTICS & SPEED-UP',
+      'card1.title': 'Computer Repair & Crash Recovery',
+      'card1.desc': 'Fixing Blue Screens of Death (BSOD), boot loops, malware removal, and thermal cleaning.',
+      'card1.li1': 'Event Viewer & Minidump crash trace',
+      'card1.li2': 'DISM / SFC OS corruption repair',
+      'card1.li3': 'Thermal paste & fan dust service',
+      'card1.cta': 'Book Fix',
+      'card2.num': '02 // HARDWARE UPGRADES',
+      'card2.title': 'SSD Speed Swaps & Memory',
+      'card2.desc': 'Transform sluggish computers into sub-10-second booters. Exact drive cloning with zero data loss.',
+      'card2.li1': 'NVMe / SATA SSD sector-level clone',
+      'card2.li2': 'DDR4 / DDR5 dual-channel RAM tune',
+      'card2.li3': 'BIOS & firmware optimization',
+      'card2.cta': 'Upgrade',
+      'card3.num': '03 // HOME & OFFICE NETWORK',
+      'card3.title': 'Wi-Fi & Mesh Network Setup',
+      'card3.desc': 'Eliminate dead zones, install secure Wi-Fi 6 mesh routers, and fix printer connectivity drops.',
+      'card3.li1': 'Wi-Fi 6 / 6E mesh node placement',
+      'card3.li2': 'WPA3 security & guest VLAN isolation',
+      'card3.li3': 'Static IP printer & NAS binding',
+      'card3.cta': 'Setup Wi-Fi',
+      'card4.num': '04 // CUSTOM HARDWARE',
+      'card4.title': 'Workstations & Custom Builds',
+      'card4.desc': 'High-performance PCs built for DaVinci Resolve editing, creative studios, and gaming.',
+      'card4.li1': 'Airflow & acoustic fan-curve tuning',
+      'card4.li2': 'OCCT / Prime95 24-hour burn-in test',
+      'card4.li3': 'Clean Windows / Linux OS imaging',
+      'card4.cta': 'Build PC',
+      'quote.kicker': '// TRANSPARENT PRICING ENGINE',
+      'quote.heading': 'Instant Service Quote Estimator',
+      'quote.subtitle': 'Configure your service, dispatch zone, and optional add-ons to preview your total before booking.',
+      'quote.serviceLabel': '1. Primary Service',
+      'quote.opt1': 'Computer Repair & Crash Recovery ($79 base)',
+      'quote.opt2': 'SSD / RAM Speed Upgrade ($99 labor)',
+      'quote.opt3': 'Wi-Fi & Mesh Network Setup ($129 flat)',
+      'quote.opt4': 'Custom PC / Workstation Build ($149)',
+      'quote.opt5': 'Remote Tech Consultation ($49)',
+      'quote.zoneLabel': '2. Dispatch Mode & Zone',
+      'quote.zoneRemote': 'Remote / Drop-Off',
+      'quote.zoneIrving': 'On-Site Irving / Las Colinas',
+      'quote.zoneDfw': 'Extended DFW Travel',
+      'quote.addonsLabel': '3. Optional Add-Ons',
+      'quote.addonPriority': 'Same-Day Priority Dispatch',
+      'quote.addonBackup': 'Full Drive Backup & Verification',
+      'quote.addonThermal': 'Thermal Paste & Deep Fan Clean',
+      'quote.noFees': '$0 HIDDEN FEES',
+      'quote.totalLabel': 'ESTIMATED TOTAL (LABOR)',
+      'quote.baseRow': 'Base Service:',
+      'quote.dispatchRow': 'Dispatch / Travel:',
+      'quote.addonsRow': 'Selected Add-Ons:',
+      'quote.applyBtn': 'Lock Estimate & Book Slot →',
+      'quote.note': 'Hardware parts (if needed) are quoted separately at exact cost before purchase.',
+      'book.kicker': '// AUTOMATED APPOINTMENT DISPATCH',
+      'book.heading': 'Schedule a Diagnostic or Service Call',
+      'book.subPre': 'Pick a date to check live availability. Need urgent help? Call or text',
+      'book.subPost': 'directly.',
+      'book.sumSvc': 'SERVICE:',
+      'book.sumWin': 'WINDOW:',
+      'book.step1': 'STEP 01 // SERVICE & WINDOW',
+      'book.lblService': 'Select Service Needed',
+      'book.lblDate': 'Choose Preferred Date',
+      'book.errDate': '❌ Please select a valid appointment date.',
+      'book.lblSlots': 'Available Appointment Slots',
+      'book.slotPrompt': 'Select a date above to load live open slots...',
+      'book.step2': 'STEP 02 // DISPATCH DETAILS',
+      'book.lblName': 'Your Full Name',
+      'book.errName': '❌ Please enter your full name.',
+      'book.lblPhone': 'Phone Number (Call or Text)',
+      'book.phoneHint': 'Format: 10-digit US phone number for dispatch text updates',
+      'book.errPhone': '❌ Please enter a valid phone number so dispatch can confirm your slot.',
+      'book.lblDevice': 'Device Model (Optional)',
+      'book.lblIssue': 'Describe the Issue',
+      'book.phIssue': 'What symptoms are you noticing? (Blue screen, slow boot, no Wi-Fi, etc.)',
+      'book.errIssue': '❌ Please briefly describe the symptoms or service needed.',
+      'book.submit': 'Confirm & Dispatch Appointment',
+      'book.successTitle': 'Appointment Confirmed!',
+      'book.successDesc': 'Your service ticket has been routed to dispatch. Hugo will follow up via text at your phone number prior to your appointment window.',
+      'book.done': 'Done',
+      'pedigree.kicker': '// ENGINEERING INTEGRITY',
+      'pedigree.title': 'Enterprise-Grade Skill. Neighborhood Care.',
+      'pedigree.p1': 'When you call a big-box retail electronics store, your device is handed to a junior retail clerk following a basic script. At Irving Computer & Tech Support, your systems are diagnosed by an active systems infrastructure and security specialist.',
+      'pedigree.p2': 'Looking for my enterprise security architecture, DaedalusX64 open-source work, or live edge MCP telemetry?',
+      'pedigree.link': 'View the Main Systems Portfolio & Lab →',
+      'footer.serving': 'Serving Irving, Las Colinas, Coppell, and DFW Metroplex.',
+      'footer.hours': 'Hours: Mon–Fri: 9:00 AM – 8:00 PM | Sat: 9:00 AM – 7:00 PM | Sun: 10:00 AM – 6:00 PM',
+      'footer.maps': 'Find us on Google Maps',
+      'dyn.pickSlot': 'pick a slot',
+      'dyn.selectWindow': 'Select date & time slot',
+      'dyn.checkingSlots': 'Checking live schedule...',
+      'dyn.securing': 'Securing Appointment...'
+    },
+    es: {
+      'nav.main': 'Laboratorio Principal',
+      'nav.services': 'Servicios',
+      'nav.quote': 'Cotizador',
+      'nav.book': 'Reservar Cita',
+      'nav.text': '💬 Enviar SMS',
+      'hero.badge': 'LISTO PARA DESPACHO // IRVING, LAS COLINAS Y DFW',
+      'hero.title': 'Reparación de Computadoras y Soporte Técnico Honesto en Irving, TX.',
+      'hero.subtitle': 'Servicio a domicilio y diagnóstico remoto para laptops lentas, pantallas azules (BSOD), Wi-Fi con fallas y estaciones de trabajo. Atención directa sin precios inflados. Se habla Español.',
+      'hero.ctaCall': '📞 Llamar (972) 445-7413',
+      'hero.ctaBook': '⚡ Reservar en Línea',
+      'trust.onsite': '✔ Servicio a Domicilio y Remoto',
+      'trust.exp': '✔ 10+ Años de Experiencia en Sistemas',
+      'trust.pricing': '✔ Precio Transparente Antes de Iniciar',
+      'trust.bilingual': '✔ Bilingüe (Inglés / Español)',
+      'hud.online': 'EN LÍNEA',
+      'hud.sla': '< 15m Llamada / SMS',
+      'hud.fees': '$0 Cargos Ocultos',
+      'hud.hours': 'HORARIO: L–V 9a–8p · Sáb 9a–7p · Dom 10a–6p',
+      'services.kicker': '// SERVICIOS DE REPARACIÓN Y SOPORTE',
+      'services.heading': 'Problemas Comunes Que Resolvemos Diario',
+      'card1.num': '01 // DIAGNÓSTICO Y OPTIMIZACIÓN',
+      'card1.title': 'Reparación de PC y Recuperación',
+      'card1.desc': 'Solución de pantallas azules (BSOD), reinicios en bucle, eliminación de virus y limpieza térmica.',
+      'card1.li1': 'Análisis de Minidump y visor de eventos',
+      'card1.li2': 'Reparación de sistema DISM / SFC',
+      'card1.li3': 'Pasta térmica y limpieza de ventiladores',
+      'card1.cta': 'Reservar',
+      'card2.num': '02 // MEJORAS DE HARDWARE',
+      'card2.title': 'Cambio a SSD y Memoria RAM',
+      'card2.desc': 'Convierte equipos lentos en arranques de menos de 10 segundos. Clonación exacta sin perder datos.',
+      'card2.li1': 'Clonación sector por sector NVMe / SATA',
+      'card2.li2': 'Ajuste de memoria RAM DDR4 / DDR5',
+      'card2.li3': 'Optimización de BIOS y firmware',
+      'card2.cta': 'Mejorar',
+      'card3.num': '03 // REDES DE HOGAR Y OFICINA',
+      'card3.title': 'Configuración Wi-Fi y Red Mesh',
+      'card3.desc': 'Elimina zonas sin señal, instala routers Wi-Fi 6 seguros y corrige desconexiones de impresoras.',
+      'card3.li1': 'Ubicación óptima de nodos Wi-Fi 6 / 6E',
+      'card3.li2': 'Seguridad WPA3 y red VLAN de invitados',
+      'card3.li3': 'IP estática para impresoras y NAS',
+      'card3.cta': 'Configurar Wi-Fi',
+      'card4.num': '04 // HARDWARE A LA MEDIDA',
+      'card4.title': 'Estaciones de Trabajo y PCs Custom',
+      'card4.desc': 'Equipos de alto rendimiento armados para edición DaVinci Resolve, estudios creativos y gaming.',
+      'card4.li1': 'Flujo de aire y curva silenciosa de ventiladores',
+      'card4.li2': 'Prueba de estabilidad OCCT / Prime95 24h',
+      'card4.li3': 'Instalación limpia de Windows / Linux',
+      'card4.cta': 'Armar PC',
+      'quote.kicker': '// MOTOR DE PRECIOS TRANSPARENTES',
+      'quote.heading': 'Cotizador Instantáneo de Servicio',
+      'quote.subtitle': 'Configura tu servicio, zona de atención y extras opcionales para ver el total antes de reservar.',
+      'quote.serviceLabel': '1. Servicio Principal',
+      'quote.opt1': 'Reparación y Diagnóstico de PC ($79 base)',
+      'quote.opt2': 'Mejora de SSD / Memoria RAM ($99 mano de obra)',
+      'quote.opt3': 'Configuración Wi-Fi y Red Mesh ($129 fijo)',
+      'quote.opt4': 'Armado de PC / Workstation ($149)',
+      'quote.opt5': 'Consulta Técnica Remota ($49)',
+      'quote.zoneLabel': '2. Modalidad y Zona de Atención',
+      'quote.zoneRemote': 'Remoto / Entrega en Taller',
+      'quote.zoneIrving': 'A Domicilio Irving / Las Colinas',
+      'quote.zoneDfw': 'Traslado DFW Extendido',
+      'quote.addonsLabel': '3. Extras Opcionales',
+      'quote.addonPriority': 'Atención Prioritaria el Mismo Día',
+      'quote.addonBackup': 'Respaldo Completo y Verificación de Disco',
+      'quote.addonThermal': 'Pasta Térmica y Limpieza Profunda',
+      'quote.noFees': '$0 CARGOS OCULTOS',
+      'quote.totalLabel': 'TOTAL ESTIMADO (MANO DE OBRA)',
+      'quote.baseRow': 'Servicio Base:',
+      'quote.dispatchRow': 'Traslado / Zona:',
+      'quote.addonsRow': 'Extras Seleccionados:',
+      'quote.applyBtn': 'Fijar Cotización y Reservar Cita →',
+      'quote.note': 'Las piezas de hardware (si se requieren) se cotizan aparte al costo exacto antes de comprar.',
+      'book.kicker': '// DESPACHO AUTOMATIZADO DE CITAS',
+      'book.heading': 'Programa un Diagnóstico o Servicio',
+      'book.subPre': 'Elige una fecha para ver disponibilidad en vivo. ¿Urgencia? Llama o envía SMS al',
+      'book.subPost': 'directamente.',
+      'book.sumSvc': 'SERVICIO:',
+      'book.sumWin': 'HORARIO:',
+      'book.step1': 'PASO 01 // SERVICIO Y HORARIO',
+      'book.lblService': 'Selecciona el Servicio',
+      'book.lblDate': 'Elige Fecha Preferida',
+      'book.errDate': '❌ Por favor selecciona una fecha válida.',
+      'book.lblSlots': 'Horarios Disponibles',
+      'book.slotPrompt': 'Selecciona una fecha arriba para cargar horarios...',
+      'book.step2': 'PASO 02 // DATOS DE CONTACTO',
+      'book.lblName': 'Nombre Completo',
+      'book.errName': '❌ Por favor ingresa tu nombre completo.',
+      'book.lblPhone': 'Teléfono (Llamada o SMS)',
+      'book.phoneHint': 'Formato: número de EE. UU. de 10 dígitos para confirmación por SMS',
+      'book.errPhone': '❌ Ingresa un teléfono válido para confirmar tu cita.',
+      'book.lblDevice': 'Modelo del Equipo (Opcional)',
+      'book.lblIssue': 'Describe el Problema',
+      'book.phIssue': '¿Qué síntomas notas? (Pantalla azul, lentitud, sin Wi-Fi, etc.)',
+      'book.errIssue': '❌ Describe brevemente los síntomas o el servicio requerido.',
+      'book.submit': 'Confirmar y Enviar Cita',
+      'book.successTitle': '¡Cita Confirmada!',
+      'book.successDesc': 'Tu ticket fue enviado a despacho. Hugo te enviará un mensaje de texto a tu número antes de tu horario.',
+      'book.done': 'Listo',
+      'pedigree.kicker': '// INTEGRIDAD DE INGENIERÍA',
+      'pedigree.title': 'Nivel Empresarial. Trato Cercano.',
+      'pedigree.p1': 'Cuando llamas a una gran tienda comercial, tu equipo termina con un empleado siguiendo un guion básico. En Irving Computer & Tech Support, tus sistemas son diagnosticados por un especialista activo en infraestructura y seguridad.',
+      'pedigree.p2': '¿Buscas mi arquitectura de seguridad empresarial, DaedalusX64 o telemetría MCP en el borde?',
+      'pedigree.link': 'Ver Portafolio Principal y Laboratorio →',
+      'footer.serving': 'Sirviendo a Irving, Las Colinas, Coppell y el Metroplex de DFW.',
+      'footer.hours': 'Horario: Lun–Vie: 9:00 AM – 8:00 PM | Sáb: 9:00 AM – 7:00 PM | Dom: 10:00 AM – 6:00 PM',
+      'footer.maps': 'Encuéntranos en Google Maps',
+      'dyn.pickSlot': 'elige horario',
+      'dyn.selectWindow': 'Selecciona fecha y horario',
+      'dyn.checkingSlots': 'Consultando horario en vivo...',
+      'dyn.securing': 'Confirmando Cita...'
+    }
+  };
+
+  let currentLang = 'en';
+  function t(key) {
+    return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en && I18N.en[key]) || key;
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang === 'es' ? 'es' : 'en';
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('.lang-btn[data-lang]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === currentLang ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key && I18N[currentLang][key]) {
+        el.textContent = I18N[currentLang][key];
+      }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key && I18N[currentLang][key]) {
+        el.setAttribute('placeholder', I18N[currentLang][key]);
+      }
+    });
+    try {
+      localStorage.setItem('daca_support_lang', currentLang);
+    } catch {}
+    updateBookingSummary();
+  }
+
+  document.querySelectorAll('.lang-btn[data-lang]').forEach((btn) => {
+    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+  });
+
+  // Instant Quote Estimator
+  const quoteServiceEl = document.getElementById('quote-service');
+  const quoteBaseVal = document.getElementById('quote-base-val');
+  const quoteDispatchVal = document.getElementById('quote-dispatch-val');
+  const quoteAddonsVal = document.getElementById('quote-addons-val');
+  const quoteTotalVal = document.getElementById('quote-total-val');
+  const quoteApplyBtn = document.getElementById('quote-apply-btn');
+
+  function getQuoteState() {
+    let base = 79;
+    let serviceName = 'Computer Repair & Diagnostic';
+    if (quoteServiceEl) {
+      const opt = quoteServiceEl.options[quoteServiceEl.selectedIndex];
+      serviceName = quoteServiceEl.value || serviceName;
+      base = parseInt(opt?.getAttribute('data-base') || '79', 10) || 79;
+    }
+    const checkedDispatch = document.querySelector('input[name="quote_dispatch"]:checked');
+    const dispatchFee = parseInt(checkedDispatch?.getAttribute('data-fee') || '0', 10) || 0;
+    const dispatchZone = checkedDispatch ? checkedDispatch.value : 'remote';
+
+    let addonsFee = 0;
+    const selectedAddons = [];
+    document.querySelectorAll('.quote-addon-cb:checked').forEach((cb) => {
+      addonsFee += parseInt(cb.getAttribute('data-fee') || '0', 10) || 0;
+      selectedAddons.push(cb.value);
+    });
+
+    return {
+      serviceName,
+      base,
+      dispatchFee,
+      dispatchZone,
+      addonsFee,
+      selectedAddons,
+      total: base + dispatchFee + addonsFee
+    };
+  }
+
+  function updateQuoteEstimator() {
+    const q = getQuoteState();
+    if (quoteBaseVal) quoteBaseVal.textContent = `$${q.base}`;
+    if (quoteDispatchVal) quoteDispatchVal.textContent = `$${q.dispatchFee}`;
+    if (quoteAddonsVal) quoteAddonsVal.textContent = `$${q.addonsFee}`;
+    if (quoteTotalVal) quoteTotalVal.textContent = `$${q.total}`;
+  }
+
+  if (quoteServiceEl) quoteServiceEl.addEventListener('change', updateQuoteEstimator);
+  document.querySelectorAll('input[name="quote_dispatch"], .quote-addon-cb').forEach((el) => {
+    el.addEventListener('change', updateQuoteEstimator);
+  });
+
+  if (quoteApplyBtn) {
+    quoteApplyBtn.addEventListener('click', () => {
+      const q = getQuoteState();
+      if (serviceSelect) {
+        serviceSelect.value = q.serviceName;
+        updateBookingSummary();
+      }
+      const issueEl = document.getElementById('issue_description');
+      if (issueEl) {
+        const addonsText = q.selectedAddons.length ? q.selectedAddons.join(', ') : 'None';
+        const tag = `[Quote Estimate: $${q.total} | Zone: ${q.dispatchZone} | Add-ons: ${addonsText}]`;
+        const cleaned = issueEl.value.replace(/\[Quote Estimate:[^\]]*\]\s*/g, '').trim();
+        issueEl.value = cleaned ? `${tag}\n${cleaned}` : `${tag} `;
+      }
+      if (bookingSection) {
+        bookingSection.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        bookingSection.classList.add('is-highlighted');
+        setTimeout(() => bookingSection.classList.remove('is-highlighted'), 1600);
+        if (dateInput) {
+          setTimeout(() => dateInput.focus({ preventScroll: true }), 350);
+        }
+      }
+    });
+  }
+
   function updateBookingSummary() {
     if (summaryService && serviceSelect) {
       summaryService.textContent = serviceSelect.value || 'Computer Repair & Diagnostic';
@@ -74,12 +410,21 @@
       if (dateVal && timeVal) {
         summaryWindow.textContent = `${dateVal} @ ${formatTime(timeVal)}`;
       } else if (dateVal) {
-        summaryWindow.textContent = `${dateVal} (pick a slot)`;
+        summaryWindow.textContent = `${dateVal} (${t('dyn.pickSlot')})`;
       } else {
-        summaryWindow.textContent = 'Select date & time slot';
+        summaryWindow.textContent = t('dyn.selectWindow');
       }
     }
   }
+
+  try {
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    const savedLang = urlLang || localStorage.getItem('daca_support_lang');
+    if (savedLang === 'es' || savedLang === 'en') {
+      setLanguage(savedLang);
+    }
+  } catch {}
+  updateQuoteEstimator();
 
   if (serviceSelect) {
     serviceSelect.addEventListener('change', updateBookingSummary);
