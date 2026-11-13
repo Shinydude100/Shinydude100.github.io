@@ -1,0 +1,262 @@
+/* =================================================================
+   daca.me/admin/ — Dispatch CRM Stylesheet
+   ================================================================= */
+
+@layer pages {
+  :root {
+    --bg: #080c14;
+    --card-bg: #131b26;
+    --border: rgba(255, 255, 255, 0.09);
+    --accent: #00e5ff;
+    --green: #00e676;
+    --orange: #ffb300;
+    --red: #f87171;
+    --text: #f8fafc;
+  }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 70% 45% at 15% 0%, rgba(0, 229, 255, 0.08), transparent 60%),
+      radial-gradient(ellipse 65% 40% at 85% 15%, rgba(0, 230, 118, 0.05), transparent 55%);
+    color: var(--text);
+    padding: 24px 20px 48px;
+  }
+
+  .container { max-width: 1120px; margin: 0 auto; }
+
+  .admin-banner {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .admin-banner.success {
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid var(--green);
+    color: var(--green);
+  }
+
+  .admin-banner.error {
+    background: rgba(248, 113, 113, 0.12);
+    border: 1px solid var(--red);
+    color: var(--red);
+  }
+
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.25);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
+  .brand span { color: var(--accent); }
+  .header-actions { display: flex; align-items: center; gap: 14px; }
+
+  .admin-storefront-link {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .admin-storefront-link:hover { text-decoration: underline; }
+
+  .refresh-btn {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 7px 14px;
+    min-block-size: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .refresh-btn:hover { background: var(--accent); color: #080c14; }
+  .refresh-btn:disabled { opacity: 0.55; cursor: wait; }
+
+  .tracker-card {
+    background: linear-gradient(145deg, rgba(17, 24, 39, 0.88) 0%, rgba(8, 12, 20, 0.94) 100%);
+    border: 1px solid rgba(0, 229, 255, 0.32);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tracker-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); }
+  .tracker-amount { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--green); }
+
+  .progress-bar-bg {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    height: 14px;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar-fill {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--green) 100%);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .tracker-sub { font-size: 0.82rem; color: var(--text-muted); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: rgba(17, 24, 39, 0.76);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); }
+  .stat-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); }
+  .stat-val--warn { color: var(--orange); }
+  .stat-val--ok { color: var(--green); }
+
+  .crm-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: rgba(17, 24, 39, 0.76);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+  }
+
+  .filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .filter-pill {
+    background: rgba(8, 12, 20, 0.85);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 7px 12px;
+    min-block-size: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .filter-pill:hover { border-color: var(--accent); color: var(--text); }
+
+  .filter-pill[aria-pressed="true"] {
+    background: rgba(0, 229, 255, 0.16);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .search-input {
+    background: #080c14;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 8px 12px;
+    min-block-size: 38px;
+    min-inline-size: 240px;
+    border-radius: 6px;
+  }
+
+  .search-input:focus { border-color: var(--accent); outline: none; }
+
+  .section-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
+
+  .ticket-card {
+    background: rgba(17, 24, 39, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 20px;
+    align-items: center;
+    transition: border-color 0.2s ease;
+  }
+
+  .ticket-card:hover { border-color: rgba(0, 229, 255, 0.4); }
+  .ticket-id { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+  .ticket-time { font-family: var(--font-mono); font-size: 0.85rem; color: var(--green); margin-top: 4px; }
+  .client-info strong { display: block; font-size: 1.05rem; }
+  .client-contacts { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+
+  .client-contacts a {
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .issue-text { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
+  .ticket-actions { display: flex; flex-direction: column; gap: 10px; text-align: right; }
+
+  .status-select,
+  .paid-input {
+    background: #080c14;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: max(1rem, 1em);
+    min-block-size: 44px;
+  }
+
+  .save-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 12px;
+    min-block-size: 44px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .save-btn:hover { background: var(--green); }
+  .tickets-loading { font-family: var(--font-mono); color: var(--accent); padding: 20px; }
+
+  @media (max-width: 768px) {
+    .ticket-card { grid-template-columns: 1fr; gap: 14px; }
+    .ticket-actions { text-align: left; }
+    .search-input { width: 100%; min-inline-size: 0; }
+  }
+}
