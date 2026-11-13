@@ -932,21 +932,69 @@ function initNodeInspector() {
 }
 
 // =================================================================
+// Case Studies Native <details> Accordion Controls
+// =================================================================
+function initCaseStudyAccordion() {
+    const list = document.getElementById('case-studies-list');
+    const toggleBtn = document.getElementById('case-studies-toggle-all');
+    if (!list) return;
+
+    const getItems = () => Array.from(list.querySelectorAll(':scope > details'));
+
+    const syncToggleButtonState = () => {
+        if (!toggleBtn) return;
+        const items = getItems();
+        const allOpen = items.length > 0 && items.every(details => details.open);
+        toggleBtn.setAttribute('aria-expanded', String(allOpen));
+    };
+
+    const handleToggleAll = () => {
+        if (!toggleBtn) return;
+        const expand = toggleBtn.getAttribute('aria-expanded') !== 'true';
+        getItems().forEach(details => {
+            details.open = expand;
+        });
+        syncToggleButtonState();
+    };
+
+    if (typeof HTMLButtonElement !== 'undefined' && Object.hasOwn(HTMLButtonElement.prototype, 'commandForElement')) {
+        list.addEventListener('command', (event) => {
+            if (event.command !== '--toggle-all') return;
+            handleToggleAll();
+        });
+    } else if (toggleBtn) {
+        toggleBtn.addEventListener('click', handleToggleAll);
+    }
+
+    list.addEventListener('toggle', (event) => {
+        if (!event.target || !event.target.matches('#case-studies-list > details')) return;
+        syncToggleButtonState();
+    }, { capture: true });
+
+    syncToggleButtonState();
+}
+
+// =================================================================
 // Runtime Core Execution Mount
 // =================================================================
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
-        try {
-            const revealEngine = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        revealEngine.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.05 });
-            document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
-        } catch {
+        const supportsViewTimeline = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('(animation-timeline: view()) and (animation-range: entry)');
+        if (!supportsViewTimeline) {
+            try {
+                const revealEngine = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            revealEngine.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.05 });
+                document.querySelectorAll('.reveal-element').forEach(el => revealEngine.observe(el));
+            } catch {
+                document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('visible'));
+            }
+        } else {
             document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('visible'));
         }
 
@@ -959,6 +1007,7 @@ if (typeof document !== 'undefined') {
         initHeroCommandDeck();
         initCopyButtons();
         initNodeInspector();
+        initCaseStudyAccordion();
 
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
@@ -1073,6 +1122,7 @@ if (typeof module !== 'undefined' && module.exports) {
         initDynamicTelemetry,
         NODE_ORDER,
         NODE_TELEMETRY_CATALOG,
-        initNodeInspector
+        initNodeInspector,
+        initCaseStudyAccordion
     };
 }

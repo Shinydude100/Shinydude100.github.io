@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const {
     initParallaxArchitecture,
-    initDynamicTelemetry
+    initDynamicTelemetry,
+    initCaseStudyAccordion
 } = require('../script.js');
 
 describe('UI Interactions', () => {
@@ -146,5 +147,58 @@ describe('UI Interactions', () => {
             expect(html).toContain('/fonts/jetbrains-mono-latin-wght-normal.woff2');
         });
     });
+
+    describe('Phase 2 Bento Hierarchy & Case Studies Accordion', () => {
+        it('renders asymmetric bento grids, workstation standards, and accessible <details> case studies', () => {
+            const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+            const parsed = new DOMParser().parseFromString(html, 'text/html');
+
+            expect(parsed.querySelector('.bento-services')).not.toBeNull();
+            expect(parsed.querySelector('.bento-span-7[class*="matrix-cell"] [data-node-id="node-01"]')).not.toBeNull();
+            expect(parsed.querySelector('.bento-span-5 [data-node-id="node-03"]')).not.toBeNull();
+            expect(parsed.querySelector('.bento-span-12 [data-node-id="node-02"]')).not.toBeNull();
+            expect(parsed.querySelector('.workstation-standard-bar')).not.toBeNull();
+
+            const list = parsed.getElementById('case-studies-list');
+            expect(list).not.toBeNull();
+            const items = list.querySelectorAll(':scope > details');
+            expect(items).toHaveLength(3);
+            expect(items[0].hasAttribute('open')).toBe(true);
+
+            // Screen readers drop heading navigation inside <summary>
+            items.forEach((details) => {
+                expect(details.hasAttribute('name')).toBe(false);
+                const summary = details.querySelector(':scope > summary');
+                expect(summary).not.toBeNull();
+                expect(summary.querySelector('h1, h2, h3, h4, h5, h6')).toBeNull();
+            });
+
+            expect(fs.existsSync(path.join(__dirname, '..', 'assets/chevron-down.svg'))).toBe(true);
+        });
+
+        it('toggles all case studies and synchronizes aria-expanded on expand/collapse control', () => {
+            const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+            const parsed = new DOMParser().parseFromString(html, 'text/html');
+            const section = parsed.getElementById('case-studies');
+            document.body.replaceChildren(section);
+
+            initCaseStudyAccordion();
+
+            const btn = document.getElementById('case-studies-toggle-all');
+            const items = Array.from(document.querySelectorAll('#case-studies-list > details'));
+
+            expect(btn.getAttribute('aria-expanded')).toBe('false');
+            expect(items.filter(d => d.open)).toHaveLength(1);
+
+            btn.click();
+            expect(items.every(d => d.open)).toBe(true);
+            expect(btn.getAttribute('aria-expanded')).toBe('true');
+
+            btn.click();
+            expect(items.every(d => !d.open)).toBe(true);
+            expect(btn.getAttribute('aria-expanded')).toBe('false');
+        });
+    });
 });
+
 
