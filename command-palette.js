@@ -14,7 +14,8 @@
       return false;
     }
     const probe = document.createElement('div');
-    probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+    probe.style.setProperty('transition', 'display 1s allow-discrete', 'important');
+    probe.style.display = 'block';
     document.body.appendChild(probe);
     getComputedStyle(probe).display;
     probe.style.display = 'none';
@@ -60,10 +61,10 @@
         { group: 'ON THIS PAGE', label: 'Run Live Edge Telemetry Ping', hint: './ping_edge_telemetry.sh', action: () => { const b = document.getElementById('hud-ping-btn'); if (b) b.click(); } },
         { group: 'ON THIS PAGE', label: 'Copy MCP Discovery cURL', hint: 'clipboard', action: async () => { try { await navigator.clipboard?.writeText('curl -s https://daca.me/.well-known/mcp.json'); } catch {} } },
         { group: 'ON THIS PAGE', label: 'Jump to Core Expertise', hint: '#services', href: '#services' },
-        { group: 'ON THIS PAGE', label: 'Jump to Bespoke Compute', hint: '#pc-builds', href: '#pc-builds' },
+        { group: 'ON THIS PAGE', label: 'Jump to Workstations', hint: '#pc-builds', href: '#pc-builds' },
         { group: 'ON THIS PAGE', label: 'Jump to System Automation (win_maintenance_routine.ps1)', hint: '#tools', href: '#tools' },
-        { group: 'ON THIS PAGE', label: 'Jump to Track Record & Dossier', hint: '#about', href: '#about' },
-        { group: 'ON THIS PAGE', label: 'Jump to Command Dispatch & Contact', hint: '#contact', href: '#contact' }
+        { group: 'ON THIS PAGE', label: 'Jump to Track Record', hint: '#about', href: '#about' },
+        { group: 'ON THIS PAGE', label: 'Jump to Contact & Dispatch', hint: '#contact', href: '#contact' }
       );
     } else if (isSupport) {
       commands.push(
@@ -110,7 +111,7 @@
     const title = document.createElement('h2');
     title.id = 'cmd-palette-title';
     title.className = 'cmd-palette-title';
-    title.textContent = 'COMMAND_PALETTE // DACA-OS';
+    title.textContent = 'daca.me // Command Palette';
 
     const closeBtn = document.createElement('button');
     closeBtn.type = 'button';

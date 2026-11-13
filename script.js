@@ -16,169 +16,6 @@ window.sysPrefersReducedMotion = (typeof window !== 'undefined' && window.matchM
     : false;
 
 // =================================================================
-// Fluid GPU-bound Interpolated Vector Pointer Engine
-// =================================================================
-function initCompositeCursor() {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    document.documentElement.classList.add('sys-cursor-active');
-
-    const dot = document.querySelector("[data-cursor-pointer]");
-    const aura = document.querySelector("[data-cursor-aura]");
-
-    let tX = 0, tY = 0, dX = 0, dY = 0, aX = 0, aY = 0;
-    let isRunning = false;
-
-    const startCycle = () => {
-        if (!isRunning) {
-            isRunning = true;
-            requestAnimationFrame(cycle);
-        }
-    };
-
-    window.addEventListener('mousemove', e => {
-        tX = e.clientX;
-        tY = e.clientY;
-        startCycle();
-    });
-
-    function cycle() {
-        const distDot = Math.abs(tX - dX) + Math.abs(tY - dY);
-        const distAura = Math.abs(tX - aX) + Math.abs(tY - aY);
-
-        if (distDot < 0.1 && distAura < 0.1) {
-            dX = tX; dY = tY;
-            aX = tX; aY = tY;
-            if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
-            if (aura) aura.style.transform = `translate3d(${aX}px, ${aY}px, 0)`;
-            isRunning = false;
-            return;
-        }
-
-        dX += (tX - dX) * 0.35; dY += (tY - dY) * 0.35;
-        aX += (tX - aX) * 0.16; aY += (tY - aY) * 0.16;
-
-        if (dot) dot.style.transform = `translate3d(${dX}px, ${dY}px, 0)`;
-        if (aura) aura.style.transform = `translate3d(${aX}px, ${aY}px, 0)`;
-
-        if (isRunning) {
-            requestAnimationFrame(cycle);
-        }
-    }
-    startCycle();
-
-    document.querySelectorAll("a, button, #mobile-toggle").forEach(el => {
-        el.addEventListener('mouseenter', () => { if (aura) aura.classList.add('interacting'); startCycle(); });
-        el.addEventListener('mouseleave', () => { if (aura) aura.classList.remove('interacting'); startCycle(); });
-    });
-}
-
-// =================================================================
-// Core Console Logging Typing Framework
-// =================================================================
-function initConsoleTyping() {
-    const descEl = document.querySelector('.hero-desc');
-    if (!descEl) return;
-
-    const logStreams = [
-        "> initializing secure environment telemetry monitoring platforms...",
-        "> assessing deployment base metrics for 170+ enterprise network nodes... [OK]",
-        "> zero-trust authentication policies enforced and structural auditing active. [OK]"
-    ];
-
-    descEl.textContent = '';
-    let streamIdx = 0;
-    let characterIdx = 0;
-
-    function printLogLine() {
-        if (streamIdx < logStreams.length) {
-            if (characterIdx === 0) {
-                const lineNode = document.createElement('div');
-                lineNode.className = 'console-line';
-                descEl.appendChild(lineNode);
-            }
-            const dynamicTargetNode = descEl.lastChild;
-            if (dynamicTargetNode) {
-                dynamicTargetNode.textContent = logStreams[streamIdx].substring(0, characterIdx + 1);
-            }
-            characterIdx++;
-
-            if (characterIdx >= logStreams[streamIdx].length) {
-                streamIdx++;
-                characterIdx = 0;
-                setTimeout(printLogLine, 350);
-            } else {
-                setTimeout(printLogLine, window.sysPrefersReducedMotion ? 0 : 12);
-            }
-        }
-    }
-    printLogLine();
-}
-
-// =================================================================
-// First Interaction Primary Call Action Text Mutation Glitch
-// =================================================================
-function initCallGlitchText() {
-    const targetedCta = document.querySelector('[data-glitch-btn]');
-    if (!targetedCta) return;
-
-    targetedCta.addEventListener('mouseenter', () => {
-        targetedCta.textContent = 'exec: hugo.luna.sec@gmail.com';
-    });
-    targetedCta.addEventListener('mouseleave', () => {
-        targetedCta.textContent = targetedCta.getAttribute('data-glitch-btn');
-    });
-}
-
-// =================================================================
-// Text Matrix Decryption Engine
-// =================================================================
-function initTextDecryption() {
-    if (window.sysPrefersReducedMotion) {
-        document.querySelectorAll('.decrypt-trigger').forEach(el => el.style.visibility = 'visible');
-        return;
-    }
-
-    const chars = '01X_//&%#?*@!+$';
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const finalTxt = target.textContent.trim();
-                let count = 0;
-                target.style.visibility = 'visible';
-
-                const txtLength = finalTxt.length;
-                const charsLength = chars.length;
-                const textArray = new Array(txtLength);
-                for (let i = 0; i < txtLength; i++) textArray[i] = finalTxt[i] === " " ? " " : "";
-
-                const routine = setInterval(() => {
-                    for (let i = count; i < txtLength; i++) {
-                        if (finalTxt[i] !== " ") {
-                            textArray[i] = chars[Math.floor(getSecureRandom() * charsLength)];
-                        }
-                    }
-                    if (count > 0 && count <= txtLength && finalTxt[count - 1] !== " ") {
-                        textArray[count - 1] = finalTxt[count - 1];
-                    }
-
-                    target.textContent = textArray.join('');
-
-                    if (count >= txtLength) {
-                        clearInterval(routine);
-                        target.textContent = finalTxt;
-                    }
-                    count += 1;
-                }, 25);
-                observer.unobserve(target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.decrypt-trigger').forEach(el => observer.observe(el));
-}
-
-// =================================================================
 // Inertial Matrix Card Parallax
 // =================================================================
 function initParallaxArchitecture() {
@@ -434,36 +271,6 @@ function initDynamicTelemetry() {
         .finally(() => {
             clearTimeout(telemetryTimeoutId);
         });
-
-    const nodeCards = document.querySelectorAll('.interactive-card, .node-card');
-    nodeCards.forEach((card, index) => {
-        const loadEl = card.querySelector('.node-load, [data-node-load]');
-        const uptimeEl = card.querySelector('.node-uptime, [data-node-uptime]');
-        const memEl = card.querySelector('.node-mem, [data-node-mem]');
-
-        if (loadEl) {
-            const dynamicLoad = (0.28 + (index * 0.12) + (getSecureRandom() * 0.06)).toFixed(2);
-            loadEl.textContent = dynamicLoad;
-        }
-
-        if (uptimeEl && index > 0) {
-            const dynamicUptime = (99.981 + (getSecureRandom() * 0.017)).toFixed(3);
-            if (uptimeEl.firstChild && uptimeEl.firstChild.nodeType === 3 && uptimeEl.children.length > 0) {
-                uptimeEl.firstChild.nodeValue = dynamicUptime;
-            } else {
-                uptimeEl.textContent = `${dynamicUptime}%`;
-            }
-        }
-
-        if (memEl) {
-            const dynamicMem = (38 + (index * 7) + (getSecureRandom() * 4)).toFixed(1);
-            if (memEl.firstChild && memEl.firstChild.nodeType === 3 && memEl.children.length > 0) {
-                memEl.firstChild.nodeValue = dynamicMem;
-            } else {
-                memEl.textContent = `${dynamicMem}%`;
-            }
-        }
-    });
 }
 
 // =================================================================
@@ -858,7 +665,8 @@ function initNodeInspector() {
             return false;
         }
         const probe = document.createElement('div');
-        probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+        probe.style.setProperty('transition', 'display 1s allow-discrete', 'important');
+        probe.style.display = 'block';
         document.body.appendChild(probe);
         getComputedStyle(probe).display;
         probe.style.display = 'none';
@@ -1142,21 +950,6 @@ if (typeof document !== 'undefined') {
             document.querySelectorAll('.reveal-element').forEach(el => el.classList.add('visible'));
         }
 
-        const fontLink = document.getElementById('google-fonts-link');
-        if (fontLink) fontLink.media = 'all';
-
-        try {
-            if (typeof MemoryBackplane !== 'undefined') {
-                new MemoryBackplane();
-            }
-        } catch (e) {
-            console.warn('MemoryBackplane initialization bypassed:', e);
-        }
-
-        initCompositeCursor();
-        initConsoleTyping();
-        initCallGlitchText();
-        initTextDecryption();
         initParallaxArchitecture();
         initRescueVisualizer();
         runPipelineTelemetry();
@@ -1274,11 +1067,10 @@ if (typeof document !== 'undefined') {
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        initTextDecryption,
         initParallaxArchitecture,
-        initCompositeCursor,
         initHeroCommandDeck,
         initCopyButtons,
+        initDynamicTelemetry,
         NODE_ORDER,
         NODE_TELEMETRY_CATALOG,
         initNodeInspector

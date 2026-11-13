@@ -1,344 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-route="admin">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin CRM | Irving Computer & Tech Support</title>
+  <title>Admin CRM | Irving Computer &amp; Tech Support</title>
   <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
-  <style>
-    @font-face {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400 800;
-      font-display: swap;
-      src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2');
-    }
-    @font-face {
-      font-family: 'JetBrains Mono';
-      font-style: normal;
-      font-weight: 400 800;
-      font-display: swap;
-      src: url('../fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2');
-    }
-
-    :root {
-      --bg: #0B0F17;
-      --card-bg: #131B26;
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #00E5FF;
-      --green: #00E676;
-      --orange: #FFB300;
-      --red: #F87171;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
-      --font-mono: 'JetBrains Mono', monospace, ui-monospace, Consolas, monospace;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: #080c14;
-      background-image:
-        radial-gradient(ellipse 70% 45% at 15% 0%, rgba(0, 229, 255, 0.08), transparent 60%),
-        radial-gradient(ellipse 65% 40% at 85% 15%, rgba(0, 230, 118, 0.05), transparent 55%),
-        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
-      color: var(--text);
-      font-family: var(--font-sans);
-      padding: 24px 20px 48px;
-      line-height: 1.5;
-    }
-
-    #scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--green));
-      transform-origin: 0 50%;
-      transform: scaleX(0);
-      z-index: 200;
-      pointer-events: none;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      @supports (animation-timeline: scroll()) {
-        @keyframes grow-progress {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
-        }
-        #scroll-progress {
-          animation: grow-progress linear both;
-          animation-timeline: scroll(root block);
-        }
-      }
-    }
-
-    .container { max-width: 1120px; margin: 0 auto; }
-
-    /* Accessible Status Banner */
-    .admin-banner {
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-    }
-    .admin-banner.success {
-      background: rgba(0, 230, 118, 0.12);
-      border: 1px solid var(--green);
-      color: var(--green);
-    }
-    .admin-banner.error {
-      background: rgba(248, 113, 113, 0.12);
-      border: 1px solid var(--red);
-      color: var(--red);
-    }
-
-    /* Header */
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.25);
-      padding-bottom: 16px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .brand { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; }
-    .brand span { color: var(--accent); }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .refresh-btn {
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid rgba(0, 229, 255, 0.35);
-      color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      padding: 7px 14px;
-      min-height: 36px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .refresh-btn:hover { background: var(--accent); color: #080c14; }
-    .refresh-btn:disabled { opacity: 0.55; cursor: wait; }
-
-    /* Immigration Tracker Card */
-    .tracker-card {
-      background: linear-gradient(145deg, rgba(17, 24, 39, 0.85) 0%, rgba(8, 12, 20, 0.92) 100%);
-      border: 1px solid rgba(0, 229, 255, 0.32);
-      border-radius: 10px;
-      padding: 24px;
-      margin-bottom: 24px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-    }
-    .tracker-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .tracker-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); }
-    .tracker-amount { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; color: var(--green); }
-    
-    .progress-bar-bg {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      height: 14px;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-    .progress-bar-fill {
-      background: linear-gradient(90deg, var(--accent) 0%, var(--green) 100%);
-      height: 100%;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    .tracker-sub { font-size: 0.8rem; color: var(--text-muted); }
-
-    /* Summary Stats */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .stat-card {
-      background: rgba(17, 24, 39, 0.72);
-      border: 1px solid rgba(0, 229, 255, 0.22);
-      border-radius: 8px;
-      padding: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); }
-    .stat-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); }
-
-    /* CRM Filter & Search Toolbar */
-    .crm-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      background: rgba(17, 24, 39, 0.72);
-      border: 1px solid rgba(0, 229, 255, 0.22);
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-    }
-    .filter-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .filter-pill {
-      background: rgba(8, 12, 20, 0.85);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      padding: 7px 12px;
-      min-height: 36px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .filter-pill:hover { border-color: var(--accent); color: var(--text); }
-    .filter-pill[aria-pressed="true"] {
-      background: rgba(0, 229, 255, 0.16);
-      border-color: var(--accent);
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .search-input {
-      background: #080c14;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      padding: 8px 12px;
-      min-height: 38px;
-      min-width: 240px;
-      border-radius: 6px;
-    }
-    .search-input:focus { border-color: var(--accent); outline: none; }
-
-    /* Ticket Grid / Table */
-    .section-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
-    
-    .ticket-card {
-      background: rgba(17, 24, 39, 0.74);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1.5fr 1fr;
-      gap: 20px;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: border-color 0.2s ease;
-    }
-    .ticket-card:hover { border-color: rgba(0, 229, 255, 0.4); }
-
-    .ticket-id { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 1.1rem; }
-    .ticket-time { font-family: var(--font-mono); font-size: 0.85rem; color: var(--green); margin-top: 4px; }
-    
-    .client-info strong { display: block; font-size: 1.05rem; }
-    .client-contacts { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
-    .client-contacts a {
-      font-size: 0.8rem;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid rgba(0, 229, 255, 0.4);
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    .issue-text { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
-
-    /* Actions */
-    .ticket-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: right;
-    }
-    .status-select, .paid-input {
-      background: #080c14;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: max(1rem, 1em);
-      min-height: 44px;
-    }
-    .save-btn {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 10px 12px;
-      min-height: 44px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .save-btn:hover { background: var(--green); }
-    .save-btn:focus-visible, .status-select:focus-visible, .paid-input:focus-visible, .filter-pill:focus-visible, .search-input:focus-visible, .refresh-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    @media (max-width: 768px) {
-      .ticket-card { grid-template-columns: 1fr; gap: 14px; }
-      .ticket-actions { text-align: left; }
-      .search-input { width: 100%; min-width: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/core.css">
+  <link rel="stylesheet" href="/assets/admin.css">
 </head>
 <body>
   <div id="scroll-progress" aria-hidden="true"></div>
 
   <main class="container">
-    <!-- Header -->
     <header class="admin-header">
       <div class="brand">
         <span>IRVING TECH SUPPORT</span> // ADMIN CRM
       </div>
       <div class="header-actions">
         <button type="button" id="refresh-crm-btn" class="refresh-btn">↻ Sync D1</button>
-        <a href="/support/" style="color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none;">View Storefront →</a>
+        <a href="/support/" class="admin-storefront-link">View Storefront →</a>
       </div>
     </header>
 
     <div id="admin-status-banner" class="admin-banner" role="status" aria-live="polite" hidden></div>
 
-    <!-- Live Legal Fund Tracker -->
     <div class="tracker-card">
       <div class="tracker-header">
-        <div class="tracker-title">// 245(i) & ADJUSTMENT OF STATUS LEGAL FUND</div>
+        <div class="tracker-title">// 245(i) &amp; ADJUSTMENT OF STATUS LEGAL FUND</div>
         <div class="tracker-amount" id="revenue-display">$0.00 / $4,000.00</div>
       </div>
       <div class="progress-bar-bg">
@@ -347,7 +39,6 @@
       <div class="tracker-sub" id="progress-percent">0% of filing fees funded</div>
     </div>
 
-    <!-- Stats Grid -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">Total Jobs</div>
@@ -355,15 +46,14 @@
       </div>
       <div class="stat-card">
         <div class="stat-label">Scheduled</div>
-        <div class="stat-val" id="stat-scheduled" style="color: var(--orange);">0</div>
+        <div class="stat-val stat-val--warn" id="stat-scheduled">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Completed</div>
-        <div class="stat-val" id="stat-completed" style="color: var(--green);">0</div>
+        <div class="stat-val stat-val--ok" id="stat-completed">0</div>
       </div>
     </div>
 
-    <!-- Tickets Container -->
     <div class="section-title">// CLIENT TICKETS &amp; DISPATCH ROSTER</div>
     <div class="crm-toolbar" role="region" aria-label="Ticket Filter and Search Controls">
       <div class="filter-pills" role="group" aria-label="Filter by Ticket Status">
@@ -376,7 +66,7 @@
       <input type="search" id="ticket-search" class="search-input" placeholder="Search client, phone, ticket, device..." aria-label="Search tickets by client name, phone, ticket ID, or device">
     </div>
     <div id="tickets-container" aria-live="polite">
-      <div style="font-family: var(--font-mono); color: var(--accent); padding: 20px;">Loading live database records from Cloudflare D1...</div>
+      <div class="tickets-loading">Loading live database records from Cloudflare D1...</div>
     </div>
   </main>
 
