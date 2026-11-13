@@ -202,15 +202,29 @@ test('Phase 2 Bento layout hierarchy, single-row header, and Case Studies accord
   expect(node02Box.width).toBeGreaterThan(node01Box.width);
   expect(node02Box.y).toBeGreaterThan(node01Box.y + 50);
 
-  // Case Studies Accordion Expand/Collapse All + individual toggle
+  // Case Studies Accordion Expand/Collapse All + individual toggle + CSS checks
   const toggleAllBtn = page.locator('#case-studies-toggle-all');
   const detailsItems = page.locator('#case-studies-list > details');
   await expect(detailsItems).toHaveCount(3);
   await expect(detailsItems.nth(0)).toHaveAttribute('open', '');
   await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggleAllBtn.locator('.expand')).toBeVisible();
+  await expect(toggleAllBtn.locator('.collapse')).toBeHidden();
+
+  await page.locator('#case-studies-list').scrollIntoViewIfNeeded();
+  await expect(page.locator('#case-studies-list')).toHaveCSS('opacity', '1');
+
+  const firstTriageBlocks = detailsItems.nth(0).locator('.cs-triage-grid > .cs-block');
+  const blk0 = await firstTriageBlocks.nth(0).boundingBox();
+  const blk1 = await firstTriageBlocks.nth(1).boundingBox();
+  const blk2 = await firstTriageBlocks.nth(2).boundingBox();
+  expect(Math.abs(blk0.y - blk1.y)).toBeLessThan(5);
+  expect(Math.abs(blk1.y - blk2.y)).toBeLessThan(5);
 
   await toggleAllBtn.click();
   await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'true');
+  await expect(toggleAllBtn.locator('.expand')).toBeHidden();
+  await expect(toggleAllBtn.locator('.collapse')).toBeVisible();
   for (let i = 0; i < 3; i++) {
     await expect(detailsItems.nth(i)).toHaveAttribute('open', '');
   }
