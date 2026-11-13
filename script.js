@@ -688,6 +688,442 @@ function initCopyButtons() {
 }
 
 // =================================================================
+// Clickable Infrastructure Node Inspector (<dialog> + Invoker Commands)
+// =================================================================
+const NODE_ORDER = ['node-01', 'node-02', 'node-03', 'node-rx1', 'node-rx2'];
+
+const NODE_TELEMETRY_CATALOG = {
+    'node-01': {
+        code: 'NODE-01 // CLUSTER_HA',
+        status: 'BGP_ACTIVE',
+        title: 'High-Availability Systems Infrastructure',
+        summary: 'Multi-node distributed physical core across 174 fleet hosts with dual-stacked BGP peering, redundant L3 core switches, and automated multi-WAN health failover across DFW campus sites.',
+        kpis: [
+            { label: 'SLA UPTIME', value: '99.992%' },
+            { label: 'FLEET HOSTS', value: '174 / 174' },
+            { label: 'TRUNK FABRIC', value: '10GbE LACP' },
+            { label: 'FAILOVER', value: '< 1.2s' }
+        ],
+        specs: [
+            { term: 'Control Plane', value: 'FRRouting BGPv4/v6 + VRRP Keepalived HA pair' },
+            { term: 'Switching Fabric', value: 'Dual 10GbE SFP+ LACP trunking (IEEE 802.3ad)' },
+            { term: 'Segmentation', value: 'Strict 802.1Q trunk isolation (Mgmt / AV / Fleet)' },
+            { term: 'Observability', value: 'Prometheus + Grafana + syslog TLS alerting' }
+        ],
+        tableCaption: '802.1Q VLAN Segmentation & HA Failover Matrix',
+        vlans: [
+            ['VLAN 10 // MGMT_OOB', '10.10.0.0/24 (bond0.10)', 'ENFORCED // SSH+mTLS'],
+            ['VLAN 20 // AV_MEDIA_TX', '10.20.0.0/22 (bond0.20)', 'QoS DSCP EF (Realtime)'],
+            ['VLAN 30 // CORP_FLEET', '10.30.0.0/22 (bond0.30)', 'MULTI-WAN ACTIVE/BACKUP']
+        ],
+        cli: 'vtysh -c "show bgp summary" && ip -br link show && systemctl is-active keepalived',
+        ctaLabel: 'Inspect Remediation Scripts →',
+        ctaHref: '#tools'
+    },
+    'node-02': {
+        code: 'NODE-02 // MIPS_VFPU',
+        status: '60.0_FPS',
+        title: 'Hardware Synthesis & Low-Level Optimization',
+        summary: 'Bare-metal MIPS Allegrex R4000 dynarec JIT and Sony PSP Graphical Unit (GU) microcode translation layer developed for DaedalusX64. Maps 2-cycle N64 RDP combiners into fixed-function PSP passes inside a strict 2MB EDRAM budget.',
+        kpis: [
+            { label: 'FRAME TARGET', value: '16.6ms (60Hz)' },
+            { label: 'VFPU SIMD', value: '98.4% util' },
+            { label: 'GU EDRAM', value: '2.0 MB' },
+            { label: 'CPU ARCH', value: 'MIPS32r2 @ 333MHz' }
+        ],
+        specs: [
+            { term: 'Dynarec Engine', value: 'MIPS-to-MIPS R4000 JIT with register caching' },
+            { term: 'Shader Mapping', value: '64-bit RDP Mux Key -> sceGuTexFunc + ColourAdjuster' },
+            { term: 'Memory Bus', value: 'Aligned 16-byte DMA bursts & texture palette swizzle' },
+            { term: 'Toolchain', value: 'MinPSPw GCC + BlendModes.cpp microcode exhibits' }
+        ],
+        tableCaption: 'PSP GU Memory & HLE Combiner Translation Table',
+        vlans: [
+            ['VRAM_EDRAM // FB0/ZBUF', '0x04000000-0x04200000 (2MB)', '16-bit Swizzle + Scissor'],
+            ['TEX_ENV // GU_TFX_BLEND', 'sceGuTexEnvColor (Prim/Env)', 'Single-Pass Fixed Function'],
+            ['ALPHA_TCC // SET_A_OPAQUE', 'GU_TCC_RGBA vs GU_TCC_RGB', 'Cf.a * Texel0.a Masked']
+        ],
+        cli: 'psp-objdump -d DaedalusPSP.elf | grep -E "sceGuTexFunc|ColourAdjuster" | head -n 20',
+        ctaLabel: 'Open N64 Combiner Lab →',
+        ctaHref: '/DaedalusX64/#combiner-lab'
+    },
+    'node-03': {
+        code: 'NODE-03 // ZERO_TRUST',
+        status: 'ENFORCED',
+        title: 'Defensive Systems, Endpoint Governance & IR',
+        summary: "Zero-trust logical access boundary enforcing strict Content Security Policies (script-src 'self'), HSTS preloading, CIS Level 2 workstation baselines, and continuous drift remediation across Windows and Debian endpoints.",
+        kpis: [
+            { label: 'CFG DRIFT', value: '0.00%' },
+            { label: 'IR MTTR', value: '4.2 min' },
+            { label: 'THREAT BLOCK', value: '100%' },
+            { label: 'CSP SCRIPT', value: "script-src 'self'" }
+        ],
+        specs: [
+            { term: 'Browser Sandbox', value: 'Strict CSP Level 3, no eval/inline scripts, object-src none' },
+            { term: 'Identity & Keys', value: 'FIDO2 hardware tokens + least-privilege RBAC policies' },
+            { term: 'Endpoint Baseline', value: 'BitLocker TPM 2.0 + WDAC signed-binary enforcement' },
+            { term: 'SIEM / Telemetry', value: 'Real-time Sysmon + Cloudflare Edge header attestation' }
+        ],
+        tableCaption: 'Zero-Trust Policy Enforcement & Isolation Zones',
+        vlans: [
+            ['ZONE 01 // UNTRUSTED_WAN', 'CF-Edge WAF + TLSv1.3', 'Strict HSTS + CSP Locked'],
+            ['ZONE 02 // WORKSTATION_EDR', 'VLAN 35 (Host Isolated)', 'CIS L2 + AppLocker Active'],
+            ['ZONE 03 // SEC_VAULT_IAM', 'Air-Gapped MFA Quorum', 'Zero Lateral Peer Routing']
+        ],
+        cli: 'curl -sI https://daca.me | grep -iE "content-security-policy|strict-transport-security"',
+        ctaLabel: 'Book Security Consultation →',
+        ctaHref: '/support/#book'
+    },
+    'node-rx1': {
+        code: 'NODE-RX1 // STUDIO_PRO',
+        status: 'PCIe_5.0_X16',
+        title: 'Sustained Render Pipelines & Custom CAD Workstations',
+        summary: 'Custom-engineered DFW workstation builds validated under 24-hour thermal soak tests for 8K DaVinci Resolve grading, Unreal Engine bake farms, and sustained dual-NVMe Gen5 scratch throughput without clock throttling.',
+        kpis: [
+            { label: 'SEQ READ', value: '14.2 GB/s' },
+            { label: 'LOAD TEMP', value: '54 °C' },
+            { label: 'GPU COMPUTE', value: '24GB+ CUDA' },
+            { label: 'UPLINK', value: '10GbE SFP+' }
+        ],
+        specs: [
+            { term: 'Storage Subsystem', value: 'Dual PCIe 5.0 NVMe RAID-0 Scratch + ZFS Mirror Archive' },
+            { term: 'Thermal Envelope', value: 'Positive-pressure high-static airflow curve (<= 54°C delta)' },
+            { term: 'Power Delivery', value: '80+ Titanium ATX 3.1 native 12V-2x6 Sense transient buffer' },
+            { term: 'Validation Protocol', value: 'OCCT Power + FurMark + Prime95 AVX2 24h burn-in' }
+        ],
+        tableCaption: 'Workstation I/O Bus & Network Fabric Allocation',
+        vlans: [
+            ['BUS 01 // PCIe_5.0_x16', 'GPU Render Engine (OptiX)', 'Dedicated CPU Direct Lanes'],
+            ['BUS 02 // M2_GEN5_SCRATCH', '14.2 GB/s DirectStorage', 'HW Thermal Shield Active'],
+            ['NIC 01 // VLAN_40_NAS', '10.40.0.0/24 (10GbE Jumbo)', 'MTU 9000 // SMB Multichannel']
+        ],
+        cli: 'nvidia-smi --query-gpu=name,temperature.gpu,power.draw,pcie.link.gen.current --format=csv',
+        ctaLabel: 'Commission Workstation Build →',
+        ctaHref: '/support/#book'
+    },
+    'node-rx2': {
+        code: 'NODE-RX2 // EDGE_KVM',
+        status: 'IOMMU_ISOLATED',
+        title: 'Isolated Runtime Fabrics & Hardened Edge Compute',
+        summary: 'Whisper-quiet DDR5 ECC hypervisor nodes tuned for local quantized LLM inference, VFIO GPU passthrough under Proxmox VE / KVM, and TPM 2.0 LUKS encrypted root volumes with out-of-band BMC management.',
+        kpis: [
+            { label: 'RAND IOPS', value: '1.42 M' },
+            { label: 'ACOUSTIC', value: '21 dBA' },
+            { label: 'ECC MEMORY', value: 'DDR5 REG' },
+            { label: 'PACKET DROP', value: '0.00%' }
+        ],
+        specs: [
+            { term: 'Hypervisor Layer', value: 'Proxmox VE / QEMU-KVM with VFIO-PCI ACS IOMMU groups' },
+            { term: 'Storage Crypto', value: 'TPM 2.0 Auto-Unlock LUKS2 AES-XTS-512 ZFS Pools' },
+            { term: 'Memory Reliability', value: 'Side-band + On-die DDR5 ECC single-bit scrub active' },
+            { term: 'Inference Runtime', value: 'Isolated vLLM / llama.cpp CUDA container sandbox' }
+        ],
+        tableCaption: 'KVM Bridge Topology & IOMMU VFIO Group Mapping',
+        vlans: [
+            ['vmbr0.10 // BMC_IPMI', '10.10.2.0/24 (Dedicated)', 'Out-of-Band mTLS KVM'],
+            ['vmbr1.50 // AI_SANDBOX', '10.50.0.0/24 (EgressDeny)', 'VFIO GPU Passthrough Grp 14'],
+            ['vmbr1.60 // DMZ_EDGE_SVC', '10.60.0.0/24 (CF Tunnel)', 'Zero Inbound Port Forward']
+        ],
+        cli: 'qm list && find /sys/kernel/iommu_groups/ -type l | sort -V | head -n 15',
+        ctaLabel: 'Configure Edge Node →',
+        ctaHref: '/support/#book'
+    }
+};
+
+function initNodeInspector() {
+    const dialog = document.getElementById('node-inspector-dialog');
+    if (!dialog) return null;
+
+    const codeEl = document.getElementById('node-inspector-code');
+    const statusEl = document.getElementById('node-inspector-status');
+    const titleEl = document.getElementById('node-inspector-title');
+    const summaryEl = document.getElementById('node-inspector-summary');
+    const kpisEl = document.getElementById('node-inspector-kpis');
+    const specsEl = document.getElementById('node-inspector-specs');
+    const tableCaptionEl = document.getElementById('node-inspector-table-caption');
+    const vlanBodyEl = document.getElementById('node-inspector-vlan-body');
+    const cliEl = document.getElementById('node-inspector-cli');
+    const indexEl = document.getElementById('node-inspector-index');
+    const prevBtn = document.getElementById('node-inspector-prev');
+    const nextBtn = document.getElementById('node-inspector-next');
+    const ctaEl = document.getElementById('node-inspector-cta');
+    const switchPills = Array.from(dialog.querySelectorAll('.inspector-switch-pill[data-switch-node]'));
+
+    let currentNodeId = NODE_ORDER[0];
+    let supportsDisplayTransition;
+
+    const canTransitionDisplay = () => {
+        if (supportsDisplayTransition !== undefined) return supportsDisplayTransition;
+        if (!window.CSS?.supports?.('transition-behavior', 'allow-discrete') || !document.body) {
+            return false;
+        }
+        const probe = document.createElement('div');
+        probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+        document.body.appendChild(probe);
+        getComputedStyle(probe).display;
+        probe.style.display = 'none';
+        supportsDisplayTransition = getComputedStyle(probe).display === 'block';
+        probe.remove();
+        return supportsDisplayTransition;
+    };
+
+    const supportsTopLayerExit = () => Boolean(window.CSS?.supports?.('overlay', 'auto') && canTransitionDisplay());
+
+    const closeTopLayer = async (targetDialog) => {
+        const isDialogOpen = Boolean(targetDialog && (targetDialog.open || targetDialog.hasAttribute('open')));
+        if (!isDialogOpen) return;
+
+        if (!supportsTopLayerExit()) {
+            targetDialog.setAttribute('data-closing', '');
+            const animations = typeof targetDialog.getAnimations === 'function'
+                ? targetDialog.getAnimations({ subtree: true })
+                : [];
+            if (animations.length > 0) {
+                await Promise.race([
+                    Promise.allSettled(animations.map((a) => a.finished)),
+                    new Promise((r) => setTimeout(r, 400))
+                ]);
+            }
+            if (!targetDialog.hasAttribute('data-closing')) return;
+            targetDialog.removeAttribute('data-closing');
+        }
+
+        if (typeof targetDialog.close === 'function') {
+            targetDialog.close();
+        } else {
+            targetDialog.removeAttribute('open');
+        }
+    };
+
+    const resetCardTilts = () => {
+        document.querySelectorAll('.interactive-card').forEach((card) => {
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+    };
+
+    const resetCliCopyFeedback = () => {
+        const copyBtn = dialog.querySelector('button[commandfor="node-inspector-cli"]');
+        if (copyBtn) {
+            clearTimeout(copyBtn._copyTimer);
+            delete copyBtn.dataset.copied;
+            delete copyBtn.dataset.failed;
+            const tip = copyBtn.parentElement ? copyBtn.parentElement.querySelector('.copy-tip') : null;
+            if (tip) tip.textContent = '';
+        }
+    };
+
+    const populateNode = (requestedId) => {
+        const nodeId = Object.prototype.hasOwnProperty.call(NODE_TELEMETRY_CATALOG, requestedId)
+            ? requestedId
+            : NODE_ORDER[0];
+        const data = NODE_TELEMETRY_CATALOG[nodeId];
+        currentNodeId = nodeId;
+
+        const idx = NODE_ORDER.indexOf(nodeId);
+        if (codeEl) codeEl.textContent = data.code;
+        if (statusEl) statusEl.textContent = data.status;
+        if (titleEl) titleEl.textContent = data.title;
+        if (summaryEl) summaryEl.textContent = data.summary;
+        if (tableCaptionEl) tableCaptionEl.textContent = data.tableCaption;
+        if (cliEl) cliEl.textContent = data.cli;
+        if (indexEl) indexEl.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(NODE_ORDER.length).padStart(2, '0')}`;
+        if (ctaEl) {
+            ctaEl.textContent = data.ctaLabel;
+            ctaEl.setAttribute('href', data.ctaHref);
+        }
+
+        if (kpisEl) {
+            const kpiFrag = document.createDocumentFragment();
+            data.kpis.forEach((kpi) => {
+                const cell = document.createElement('div');
+                cell.className = 'inspector-kpi-cell';
+                const lbl = document.createElement('span');
+                lbl.className = 'inspector-kpi-label';
+                lbl.textContent = kpi.label;
+                const val = document.createElement('span');
+                val.className = 'inspector-kpi-val';
+                val.textContent = kpi.value;
+                cell.appendChild(lbl);
+                cell.appendChild(val);
+                kpiFrag.appendChild(cell);
+            });
+            kpisEl.replaceChildren(kpiFrag);
+        }
+
+        if (specsEl) {
+            const specsFrag = document.createDocumentFragment();
+            data.specs.forEach((spec) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'inspector-spec-card';
+                const dt = document.createElement('dt');
+                dt.textContent = spec.term;
+                const dd = document.createElement('dd');
+                dd.textContent = spec.value;
+                wrap.appendChild(dt);
+                wrap.appendChild(dd);
+                specsFrag.appendChild(wrap);
+            });
+            specsEl.replaceChildren(specsFrag);
+        }
+
+        if (vlanBodyEl) {
+            const rowsFrag = document.createDocumentFragment();
+            data.vlans.forEach((rowCells) => {
+                const tr = document.createElement('tr');
+                rowCells.forEach((cellText, colIdx) => {
+                    const cell = document.createElement(colIdx === 0 ? 'th' : 'td');
+                    if (colIdx === 0) cell.setAttribute('scope', 'row');
+                    cell.textContent = cellText;
+                    tr.appendChild(cell);
+                });
+                rowsFrag.appendChild(tr);
+            });
+            vlanBodyEl.replaceChildren(rowsFrag);
+        }
+
+        switchPills.forEach((pill) => {
+            if (pill.getAttribute('data-switch-node') === nodeId) {
+                pill.setAttribute('aria-current', 'true');
+            } else {
+                pill.removeAttribute('aria-current');
+            }
+        });
+
+        resetCliCopyFeedback();
+        return nodeId;
+    };
+
+    const openNode = (nodeId) => {
+        populateNode(nodeId);
+        resetCardTilts();
+        dialog.removeAttribute('data-closing');
+        const isAlreadyOpen = Boolean(dialog.open || dialog.hasAttribute('open'));
+        if (!isAlreadyOpen) {
+            if (typeof dialog.showModal === 'function') {
+                dialog.showModal();
+            } else {
+                dialog.setAttribute('open', '');
+            }
+        }
+    };
+
+    // Listen directly on <dialog> because native Invoker 'command' events do not bubble
+    dialog.addEventListener('command', (event) => {
+        if (event.command === 'show-modal') {
+            const requestedId = event.source && event.source.getAttribute
+                ? event.source.getAttribute('data-inspect-node')
+                : currentNodeId;
+            populateNode(requestedId);
+            resetCardTilts();
+            dialog.removeAttribute('data-closing');
+        } else if (event.command === 'close' && !supportsTopLayerExit()) {
+            event.preventDefault();
+            closeTopLayer(dialog);
+        }
+    });
+
+    // Progressive enhancement fallback when native Invoker Commands are absent
+    if (typeof HTMLButtonElement === 'undefined' || !('commandForElement' in HTMLButtonElement.prototype)) {
+        document.addEventListener('click', (event) => {
+            const showBtn = event.target && event.target.closest
+                ? event.target.closest('button[command="show-modal"][commandfor="node-inspector-dialog"]')
+                : null;
+            if (showBtn) {
+                openNode(showBtn.getAttribute('data-inspect-node'));
+                return;
+            }
+            const closeBtn = event.target && event.target.closest
+                ? event.target.closest('button[command="close"][commandfor="node-inspector-dialog"]')
+                : null;
+            if (closeBtn) {
+                closeTopLayer(dialog);
+            }
+        });
+    }
+
+    switchPills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+            populateNode(pill.getAttribute('data-switch-node'));
+        });
+    });
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            const idx = NODE_ORDER.indexOf(currentNodeId);
+            const prevIdx = (idx - 1 + NODE_ORDER.length) % NODE_ORDER.length;
+            populateNode(NODE_ORDER[prevIdx]);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const idx = NODE_ORDER.indexOf(currentNodeId);
+            const nextIdx = (idx + 1) % NODE_ORDER.length;
+            populateNode(NODE_ORDER[nextIdx]);
+        });
+    }
+
+    document.querySelectorAll('.interactive-card[data-node-id]').forEach((card) => {
+        card.addEventListener('click', (event) => {
+            if (event.target && event.target.closest && event.target.closest('a, button, input, select, textarea, code, pre')) {
+                return;
+            }
+            const sel = typeof window.getSelection === 'function' ? window.getSelection() : null;
+            if (sel && sel.toString().trim().length > 0) {
+                return;
+            }
+            const inspectBtn = card.querySelector('.node-inspect-btn');
+            if (inspectBtn) {
+                inspectBtn.focus({ preventScroll: true });
+                inspectBtn.click();
+            } else {
+                openNode(card.getAttribute('data-node-id'));
+            }
+        });
+    });
+
+    if (ctaEl) {
+        ctaEl.addEventListener('click', (event) => {
+            const href = ctaEl.getAttribute('href') || '';
+            if (href.startsWith('#')) {
+                event.preventDefault();
+                closeTopLayer(dialog).then(() => {
+                    const target = document.querySelector(href);
+                    if (target && typeof target.scrollIntoView === 'function') {
+                        target.scrollIntoView({ behavior: window.sysPrefersReducedMotion ? 'auto' : 'smooth' });
+                    }
+                });
+            }
+        });
+    }
+
+    dialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeTopLayer(dialog);
+    });
+
+    dialog.addEventListener('close', () => {
+        dialog.returnValue = '';
+        dialog.removeAttribute('data-closing');
+    });
+
+    if (typeof HTMLDialogElement !== 'undefined' && !('closedBy' in HTMLDialogElement.prototype)) {
+        const outside = (e) => {
+            const r = dialog.getBoundingClientRect();
+            return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        };
+        let pressedOutside = false;
+        dialog.addEventListener('pointerdown', (e) => { pressedOutside = outside(e); });
+        dialog.addEventListener('pointerup', (e) => {
+            if (pressedOutside && outside(e)) closeTopLayer(dialog);
+        });
+    }
+
+    populateNode(NODE_ORDER[0]);
+    return { openNode, populateNode, closeTopLayer: () => closeTopLayer(dialog) };
+}
+
+// =================================================================
 // Runtime Core Execution Mount
 // =================================================================
 if (typeof document !== 'undefined') {
@@ -729,6 +1165,7 @@ if (typeof document !== 'undefined') {
         initWebMCP();
         initHeroCommandDeck();
         initCopyButtons();
+        initNodeInspector();
 
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
@@ -841,6 +1278,9 @@ if (typeof module !== 'undefined' && module.exports) {
         initParallaxArchitecture,
         initCompositeCursor,
         initHeroCommandDeck,
-        initCopyButtons
+        initCopyButtons,
+        NODE_ORDER,
+        NODE_TELEMETRY_CATALOG,
+        initNodeInspector
     };
 }
