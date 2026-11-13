@@ -188,7 +188,7 @@
             }
         }
 
-        .exhibit-card, #docs { scroll-margin-top: 84px; }
+        .exhibit-card, #combiner-lab, #docs { scroll-margin-top: 84px; }
         .exhibit-nav {
             display: flex;
             flex-wrap: wrap;
@@ -209,6 +209,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(3, 5, 8, 0.75);
             transition: all 0.15s ease;
+        }
+        .exhibit-nav a.nav-lab-pill {
+            color: var(--accent-green);
+            border-color: rgba(0, 230, 118, 0.35);
+            background: rgba(0, 230, 118, 0.08);
         }
         .exhibit-nav a:hover, .exhibit-nav a:focus-visible {
             color: var(--accent-cyan);
@@ -308,9 +313,10 @@
             margin: 0 auto;
             padding: 0.85rem 1.25rem;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
+            gap: 0.65rem 1rem;
         }
 
         .logo {
@@ -332,7 +338,8 @@
 
         .nav-links {
             display: flex;
-            gap: 1.25rem;
+            flex-wrap: wrap;
+            gap: 0.55rem 1rem;
             align-items: center;
         }
 
@@ -1049,6 +1056,458 @@
         .cmd-item-hint { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; }
         .cmd-palette-empty { padding: 20px; text-align: center; font-family: 'Fira Code', monospace; font-size: 0.82rem; color: var(--text-muted); }
         .cmd-palette-foot { padding: 8px 16px; border-top: 1px solid var(--border-color); font-family: 'Fira Code', monospace; font-size: 0.68rem; color: var(--text-muted); text-align: right; }
+
+        /* ============================================================= */
+        /* N64 RDP -> SONY PSP GU COLOR COMBINER PLAYGROUND              */
+        /* ============================================================= */
+        .combiner-lab-card {
+            margin-bottom: 2.5rem;
+            border-color: rgba(0, 230, 118, 0.32);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.72);
+        }
+        .combiner-preset-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .combiner-preset-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            margin-right: 0.25rem;
+        }
+        .lab-preset-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            padding: 0.45rem 0.75rem;
+            min-block-size: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+        }
+        .lab-preset-btn:hover,
+        .lab-preset-btn:focus-visible {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        .lab-preset-btn[aria-pressed="true"] {
+            background: rgba(0, 230, 118, 0.14);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .combiner-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+        @media (min-width: 960px) {
+            .combiner-grid {
+                grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr);
+            }
+        }
+
+        .lab-panel {
+            background: rgba(15, 20, 34, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .lab-panel h4 {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+        }
+
+        .lab-fieldset {
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 8px;
+            padding: 0.85rem;
+            min-inline-size: 0;
+            max-width: 100%;
+            background: rgba(3, 5, 8, 0.55);
+        }
+        .lab-fieldset legend {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--accent-gold);
+            padding: 0 0.45rem;
+            font-weight: 600;
+        }
+
+        .mux-equation-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-main);
+            background: rgba(0, 240, 255, 0.07);
+            border: 1px solid rgba(0, 240, 255, 0.22);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            margin-bottom: 0.7rem;
+            word-break: break-word;
+        }
+        .mux-row-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+        .mux-select-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 0.65rem;
+        }
+        @media (min-width: 540px) {
+            .mux-select-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+        .lab-field {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            gap: 0.25rem;
+        }
+        .lab-field label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+        .lab-select,
+        .lab-color-input {
+            background: #090d16;
+            color: var(--text-main);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            padding: 0.42rem 0.5rem;
+            min-block-size: 36px;
+            width: 100%;
+            min-width: 0;
+        }
+        .lab-color-input {
+            padding: 0.15rem 0.25rem;
+            cursor: pointer;
+        }
+        .lab-select:focus-visible,
+        .lab-color-input:focus-visible,
+        .lab-checkbox-label input:focus-visible,
+        .lab-preset-btn:focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 2px;
+        }
+
+        .lab-register-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+        @media (min-width: 540px) {
+            .lab-register-row {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+        .lab-slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .lab-slider-row {
+            display: grid;
+            grid-template-columns: minmax(86px, 120px) minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .lab-slider-row label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-main);
+        }
+        .lab-slider-val {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--accent-cyan);
+            min-inline-size: 3.4rem;
+            text-align: right;
+        }
+
+        /* Brand-Consistent Range Sliders (Modern Web Guidance) */
+        .lab-range-slider {
+            --slider-track-size: 0.45rem;
+            --slider-thumb-size: 1.15rem;
+            --slider-track-radius: 999px;
+            --slider-thumb-radius: 50%;
+            --slider-track-color: #1e293b;
+            --slider-fill-color: #00f0ff;
+            --slider-thumb-color: #f8fafc;
+            --slider-direction: to right;
+
+            --attr-min: attr(min type(<number>), 0);
+            --attr-max: attr(max type(<number>), 100);
+            --control-value: attr(value type(<number>), 50);
+            --slider-progress: calc(
+                progress(var(--control-value), var(--attr-min), var(--attr-max)) * 100%
+            );
+
+            appearance: none;
+            inline-size: 100%;
+            block-size: 2.25rem;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+        @supports not (opacity: progress(1, 0, 100)) {
+            .lab-range-slider {
+                --slider-progress: calc(
+                    (var(--control-value) - var(--attr-min)) /
+                    (var(--attr-max) - var(--attr-min)) * 100%
+                );
+            }
+        }
+        .lab-range-slider:dir(rtl) {
+            --slider-direction: to left;
+        }
+        .lab-range-slider::-webkit-slider-runnable-track {
+            block-size: var(--slider-track-size);
+            border: 1px solid #334155;
+            border-radius: var(--slider-track-radius);
+            background: linear-gradient(
+                var(--slider-direction),
+                var(--slider-fill-color) var(--slider-progress),
+                var(--slider-track-color) var(--slider-progress)
+            );
+        }
+        .lab-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            inline-size: var(--slider-thumb-size);
+            block-size: var(--slider-thumb-size);
+            margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2 - 1px);
+            border: 2px solid var(--slider-fill-color);
+            border-radius: var(--slider-thumb-radius);
+            background: var(--slider-thumb-color);
+        }
+        .lab-range-slider::-moz-range-track {
+            block-size: var(--slider-track-size);
+            border: 1px solid #334155;
+            border-radius: var(--slider-track-radius);
+            background: var(--slider-track-color);
+        }
+        .lab-range-slider::-moz-range-progress {
+            block-size: var(--slider-track-size);
+            border-radius: var(--slider-track-radius);
+            background: var(--slider-fill-color);
+        }
+        .lab-range-slider::-moz-range-thumb {
+            inline-size: var(--slider-thumb-size);
+            block-size: var(--slider-thumb-size);
+            border: 2px solid var(--slider-fill-color);
+            border-radius: var(--slider-thumb-radius);
+            background: var(--slider-thumb-color);
+        }
+        .lab-range-slider:focus-visible {
+            outline: 2px solid var(--slider-fill-color);
+            outline-offset: 4px;
+        }
+
+        .lab-toggle-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem 1.25rem;
+            padding-top: 0.25rem;
+        }
+        .lab-checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-main);
+            cursor: pointer;
+            min-block-size: 32px;
+        }
+        .lab-checkbox-label input {
+            inline-size: 1rem;
+            block-size: 1rem;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+        }
+
+        /* Viewport Canvases */
+        .lab-viewport-figure {
+            margin: 0;
+        }
+        .lab-canvas-stage {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+        @media (max-width: 639px) {
+            .lab-canvas-stage {
+                grid-template-columns: 1fr;
+            }
+        }
+        .lab-canvas-card {
+            background: #050811;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+        .lab-canvas-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--accent-cyan);
+        }
+        .lab-canvas-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            overflow: hidden;
+            background-color: #0b1120;
+            background-image:
+                linear-gradient(45deg, rgba(148, 163, 184, 0.14) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(148, 163, 184, 0.14) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.14) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.14) 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+        }
+        .lab-canvas-wrap canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+        .lab-pixel-sample {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.64rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .lab-figcaption {
+            margin-top: 0.65rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Telemetry Parity Readout (Non-Color + Accessible DOM Table/List) */
+        .lab-parity-banner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(3, 5, 8, 0.75);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+        }
+        .lab-parity-banner[data-state="exact"] {
+            border-color: rgba(0, 230, 118, 0.45);
+            color: var(--accent-green);
+        }
+        .lab-parity-banner[data-state="approx"] {
+            border-color: rgba(255, 179, 0, 0.5);
+            color: var(--accent-gold);
+        }
+        .lab-parity-banner[data-state="divergent"] {
+            border-color: rgba(255, 42, 109, 0.55);
+            color: #ff6b98;
+        }
+        .lab-diagnostic-msg {
+            font-size: 0.84rem;
+            color: var(--text-main);
+            line-height: 1.55;
+            background: rgba(15, 23, 42, 0.72);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 0.65rem 0.85rem;
+            border-radius: 0 6px 6px 0;
+        }
+        .lab-telemetry-wrap {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .lab-telemetry-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+        }
+        .lab-telemetry-table caption {
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin-bottom: 0.35rem;
+        }
+        .lab-telemetry-table th,
+        .lab-telemetry-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.38rem 0.55rem;
+            text-align: left;
+        }
+        .lab-telemetry-table th {
+            color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.06);
+        }
+
+        @media (forced-colors: active) {
+            .exhibit-card,
+            .lab-panel,
+            .lab-fieldset,
+            .lab-preset-btn,
+            .lab-select,
+            .lab-parity-banner,
+            .lab-canvas-card,
+            .doc-card {
+                border: 1px solid CanvasText;
+            }
+            .lab-preset-btn[aria-pressed="true"] {
+                border: 2px solid Highlight;
+            }
+            .lab-range-slider::-webkit-slider-runnable-track,
+            .lab-range-slider::-moz-range-track {
+                border: 1px solid ButtonText;
+            }
+            .lab-range-slider::-webkit-slider-thumb,
+            .lab-range-slider::-moz-range-thumb {
+                border: 2px solid Highlight;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1065,6 +1524,7 @@
         <div class="nav-container">
             <a href="https://daca.me" class="logo">daca<span>.me</span></a>
             <div class="nav-links">
+                <a href="#combiner-lab">Combiner Lab</a>
                 <a href="#exhibits">Exhibits</a>
                 <a href="#docs">Docs</a>
                 <a href="/support/">Support</a>
@@ -1135,12 +1595,499 @@
             </h2>
 
             <nav id="exhibit-nav" class="exhibit-nav" aria-label="Exhibit Quick-Jump Navigation">
+                <a href="#combiner-lab" class="nav-lab-pill">00 // Combiner Playground</a>
                 <a href="#exhibit-1">01 // Kokiri Sword (Zelda OOT)</a>
                 <a href="#exhibit-2">02 // Cuccos &amp; Hilt (Zelda OOT)</a>
                 <a href="#exhibit-3">03 // Alpha Blend Exploration</a>
                 <a href="#exhibit-4">04 // Bomb Pulse (Smash Bros)</a>
                 <a href="#docs">05 // Win32 Toolchain Readme</a>
             </nav>
+
+            <!-- INTERACTIVE COLOR COMBINER PLAYGROUND -->
+            <article class="exhibit-card combiner-lab-card" id="combiner-lab" aria-labelledby="combiner-lab-heading">
+                <div class="exhibit-header">
+                    <div class="exhibit-title-group">
+                        <h3 id="combiner-lab-heading">Interactive Lab: N64 RDP → Sony PSP GU Color Combiner</h3>
+                        <div class="exhibit-meta" id="lab-active-key">Active Preset Key: 0x00177e6035fcfd7eLL (Kokiri Sword Blade)</div>
+                    </div>
+                    <span class="tag">SIMULATION // (A - B) * C + D</span>
+                </div>
+                <div class="exhibit-body">
+                    <p class="exhibit-description">
+                        Experiment directly with 2-cycle N64 Reality Display Processor (RDP) combiner equations and see how DaedalusX64 maps them onto fixed-function Sony PSP Graphical Unit (GU) calls (<code>sceGuTexFunc</code>, <code>sceGuTexEnvColor</code>, and <code>details.ColourAdjuster</code>). Notice why <code>GU_TCC_RGBA</code> multiplies texture alpha while <code>SetAOpaque()</code> only overrides vertex alpha!
+                    </p>
+
+                    <div class="combiner-preset-bar" role="group" aria-label="DaedalusX64 Microcode Presets">
+                        <span class="combiner-preset-label">Presets:</span>
+                        <button type="button" class="lab-preset-btn" data-combiner-preset="kokiri" aria-pressed="true">01 // Kokiri Blade</button>
+                        <button type="button" class="lab-preset-btn" data-combiner-preset="cucco" aria-pressed="false">02 // Cucco &amp; Hilt</button>
+                        <button type="button" class="lab-preset-btn" data-combiner-preset="alpha_explore" aria-pressed="false">03 // Alpha Exploration</button>
+                        <button type="button" class="lab-preset-btn" data-combiner-preset="ssb_bomb" aria-pressed="false">04 // SSB Bomb Pulse</button>
+                    </div>
+
+                    <div class="combiner-grid">
+                        <!-- LEFT COLUMN: RDP + REGISTER + PSP GU CONTROLS -->
+                        <div class="lab-panel">
+                            <h4>01 // N64 RDP Combiner &amp; Sony PSP GU Controls</h4>
+
+                            <fieldset class="lab-fieldset">
+                                <legend>Cycle 0 Combiner: (A - B) * C + D</legend>
+                                <div class="mux-equation-badge" id="lab-eq-c0">aRGB0: (Texel0 - Primitive) * PrimLODFrac + Texel0 | aA0: (0 - 0) * 0 + 1</div>
+                                <span class="mux-row-label">aRGB0 Color Channels</span>
+                                <div class="mux-select-grid">
+                                    <div class="lab-field">
+                                        <label for="lab-c0-rgb-a">A</label>
+                                        <select id="lab-c0-rgb-a" class="lab-select" data-mux="c0RgbA">
+                                            <option value="Texel0" selected>Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-rgb-b">B</label>
+                                        <select id="lab-c0-rgb-b" class="lab-select" data-mux="c0RgbB">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive" selected>Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-rgb-c">C</label>
+                                        <select id="lab-c0-rgb-c" class="lab-select" data-mux="c0RgbC">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac" selected>PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-rgb-d">D</label>
+                                        <select id="lab-c0-rgb-d" class="lab-select" data-mux="c0RgbD">
+                                            <option value="Texel0" selected>Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="mux-row-label">aA0 Alpha Channel</span>
+                                <div class="mux-select-grid">
+                                    <div class="lab-field">
+                                        <label for="lab-c0-a-a">A</label>
+                                        <select id="lab-c0-a-a" class="lab-select" data-mux="c0AlphaA">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-a-b">B</label>
+                                        <select id="lab-c0-a-b" class="lab-select" data-mux="c0AlphaB">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-a-c">C</label>
+                                        <select id="lab-c0-a-c" class="lab-select" data-mux="c0AlphaC">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c0-a-d">D</label>
+                                        <select id="lab-c0-a-d" class="lab-select" data-mux="c0AlphaD">
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1" selected>1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="lab-fieldset">
+                                <legend>Cycle 1 Combiner: (A - B) * C + D</legend>
+                                <div class="mux-equation-badge" id="lab-eq-c1">aRGB1: (Primitive - Env) * Combined + Env | aA1: (0 - 0) * 0 + 1</div>
+                                <span class="mux-row-label">aRGB1 Color Channels</span>
+                                <div class="mux-select-grid">
+                                    <div class="lab-field">
+                                        <label for="lab-c1-rgb-a">A</label>
+                                        <select id="lab-c1-rgb-a" class="lab-select" data-mux="c1RgbA">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive" selected>Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-rgb-b">B</label>
+                                        <select id="lab-c1-rgb-b" class="lab-select" data-mux="c1RgbB">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env" selected>Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-rgb-c">C</label>
+                                        <select id="lab-c1-rgb-c" class="lab-select" data-mux="c1RgbC">
+                                            <option value="Combined" selected>Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-rgb-d">D</label>
+                                        <select id="lab-c1-rgb-d" class="lab-select" data-mux="c1RgbD">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env" selected>Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="EnvAlpha">EnvAlpha</option>
+                                            <option value="Texel0Alpha">Texel0Alpha</option>
+                                            <option value="1">1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="mux-row-label">aA1 Alpha Channel</span>
+                                <div class="mux-select-grid">
+                                    <div class="lab-field">
+                                        <label for="lab-c1-a-a">A</label>
+                                        <select id="lab-c1-a-a" class="lab-select" data-mux="c1AlphaA">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-a-b">B</label>
+                                        <select id="lab-c1-a-b" class="lab-select" data-mux="c1AlphaB">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-a-c">C</label>
+                                        <select id="lab-c1-a-c" class="lab-select" data-mux="c1AlphaC">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-c1-a-d">D</label>
+                                        <select id="lab-c1-a-d" class="lab-select" data-mux="c1AlphaD">
+                                            <option value="Combined">Combined</option>
+                                            <option value="Texel0">Texel0</option>
+                                            <option value="Texel1">Texel1</option>
+                                            <option value="Primitive">Primitive</option>
+                                            <option value="Env">Env</option>
+                                            <option value="Shade">Shade</option>
+                                            <option value="PrimLODFrac">PrimLODFrac</option>
+                                            <option value="1" selected>1</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="lab-fieldset">
+                                <legend>RDP Sprite &amp; Color Registers</legend>
+                                <div class="lab-register-row" style="margin-bottom: 0.75rem;">
+                                    <div class="lab-field">
+                                        <label for="lab-sprite">Procedural Texel</label>
+                                        <select id="lab-sprite" class="lab-select">
+                                            <option value="kokiri" selected>Kokiri Blade</option>
+                                            <option value="cucco">Cucco Plumage</option>
+                                            <option value="alpha_fairy">Fairy Alpha Mask</option>
+                                            <option value="ssb_bomb">Smash Bomb</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-prim-color">PrimColour</label>
+                                        <input type="color" id="lab-prim-color" class="lab-color-input" value="#cbd5e1">
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-env-color">EnvColour</label>
+                                        <input type="color" id="lab-env-color" class="lab-color-input" value="#1e40af">
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-shade-color">Shade Tint</label>
+                                        <input type="color" id="lab-shade-color" class="lab-color-input" value="#f8fafc">
+                                    </div>
+                                </div>
+                                <div class="lab-slider-group">
+                                    <div class="lab-slider-row">
+                                        <label for="lab-prim-lod">PrimLODFrac</label>
+                                        <input type="range" id="lab-prim-lod" class="lab-range-slider" min="0" max="100" step="1" value="35" aria-valuetext="0.35">
+                                        <span class="lab-slider-val" id="lab-prim-lod-val">0.35</span>
+                                    </div>
+                                    <div class="lab-slider-row">
+                                        <label for="lab-env-alpha">Env Alpha</label>
+                                        <input type="range" id="lab-env-alpha" class="lab-range-slider" min="0" max="100" step="1" value="85" aria-valuetext="0.85">
+                                        <span class="lab-slider-val" id="lab-env-alpha-val">0.85</span>
+                                    </div>
+                                    <div class="lab-slider-row">
+                                        <label for="lab-prim-alpha">Prim Alpha</label>
+                                        <input type="range" id="lab-prim-alpha" class="lab-range-slider" min="0" max="100" step="1" value="100" aria-valuetext="1.00">
+                                        <span class="lab-slider-val" id="lab-prim-alpha-val">1.00</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="lab-fieldset">
+                                <legend>Sony PSP GU HLE Translation State</legend>
+                                <div class="mux-select-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                                    <div class="lab-field">
+                                        <label for="lab-gu-tfx">sceGuTexFunc Mode</label>
+                                        <select id="lab-gu-tfx" class="lab-select">
+                                            <option value="GU_TFX_BLEND" selected>GU_TFX_BLEND</option>
+                                            <option value="GU_TFX_MODULATE">GU_TFX_MODULATE</option>
+                                            <option value="GU_TFX_DECAL">GU_TFX_DECAL</option>
+                                            <option value="GU_TFX_REPLACE">GU_TFX_REPLACE</option>
+                                            <option value="GU_TFX_ADD">GU_TFX_ADD</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-gu-tcc">Alpha Channel (TCC)</label>
+                                        <select id="lab-gu-tcc" class="lab-select">
+                                            <option value="GU_TCC_RGBA" selected>GU_TCC_RGBA (Vertex * TexA)</option>
+                                            <option value="GU_TCC_RGB">GU_TCC_RGB (Vertex Alpha Only)</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-gu-adjuster">ColourAdjuster</label>
+                                        <select id="lab-gu-adjuster" class="lab-select">
+                                            <option value="set_rgba_env" selected>SetRGBA( EnvColour )</option>
+                                            <option value="set_rgb_env">SetRGB( EnvColour )</option>
+                                            <option value="set_rgba_prim">SetRGBA( PrimColour )</option>
+                                            <option value="set_rgb_prim">SetRGB( PrimColour )</option>
+                                            <option value="passthrough">Passthrough (Shade)</option>
+                                        </select>
+                                    </div>
+                                    <div class="lab-field">
+                                        <label for="lab-gu-env-src">sceGuTexEnvColor</label>
+                                        <select id="lab-gu-env-src" class="lab-select">
+                                            <option value="prim" selected>details.PrimColour</option>
+                                            <option value="env">details.EnvColour</option>
+                                            <option value="none">Default (0xFFFFFFFF)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="lab-toggle-row">
+                                    <label class="lab-checkbox-label">
+                                        <input type="checkbox" id="lab-set-a-opaque">
+                                        <span>SetAOpaque()</span>
+                                    </label>
+                                    <label class="lab-checkbox-label">
+                                        <input type="checkbox" id="lab-first-cycle">
+                                        <span>#ifdef CHECK_FIRST_CYCLE</span>
+                                    </label>
+                                    <label class="lab-checkbox-label">
+                                        <input type="checkbox" id="lab-pulse-anim">
+                                        <span>Animate EnvAlpha Pulse</span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <!-- RIGHT COLUMN: DUAL CANVAS RENDERER + PARITY TELEMETRY + C++ -->
+                        <div class="lab-panel">
+                            <h4>02 // Real-Time Shader Simulation &amp; Hardware Parity</h4>
+
+                            <figure class="lab-viewport-figure">
+                                <div class="lab-canvas-stage">
+                                    <div class="lab-canvas-card">
+                                        <div class="lab-canvas-head">
+                                            <span>N64 RDP (2-CYCLE)</span>
+                                            <span>REF</span>
+                                        </div>
+                                        <div class="lab-canvas-wrap">
+                                            <canvas id="lab-canvas-n64" width="64" height="64" role="img" aria-label="Simulated N64 RDP two-cycle combiner reference render"></canvas>
+                                        </div>
+                                        <div class="lab-pixel-sample" id="lab-sample-n64">Center RGBA: 0, 0, 0, 255</div>
+                                    </div>
+
+                                    <div class="lab-canvas-card">
+                                        <div class="lab-canvas-head">
+                                            <span>SONY PSP GU (HLE)</span>
+                                            <span>SIM</span>
+                                        </div>
+                                        <div class="lab-canvas-wrap">
+                                            <canvas id="lab-canvas-psp" width="64" height="64" role="img" aria-label="Simulated Sony PSP GU fixed-function hardware translation render"></canvas>
+                                        </div>
+                                        <div class="lab-pixel-sample" id="lab-sample-psp">Center RGBA: 0, 0, 0, 255</div>
+                                    </div>
+
+                                    <div class="lab-canvas-card">
+                                        <div class="lab-canvas-head">
+                                            <span>Δ ERROR HEATMAP</span>
+                                            <span>4x DIFF</span>
+                                        </div>
+                                        <div class="lab-canvas-wrap">
+                                            <canvas id="lab-canvas-diff" width="64" height="64" role="img" aria-label="Amplified RGB and alpha difference heatmap between N64 RDP and Sony PSP GU"></canvas>
+                                        </div>
+                                        <div class="lab-pixel-sample" id="lab-sample-diff">Max Δ: 0.0% · RMS: 0.0%</div>
+                                    </div>
+                                </div>
+                                <figcaption class="lab-figcaption">
+                                    Side-by-side 64×64 N64 texel rasterization comparing exact 2-cycle RDP combiner math against Sony PSP GU hardware blend functions. Magenta regions in the Δ heatmap show RGB divergence; cyan tint indicates alpha channel mismatch.
+                                </figcaption>
+                            </figure>
+
+                            <div class="lab-parity-banner" id="lab-parity-banner" data-state="approx">
+                                <span id="lab-parity-verdict">⚠ APPROXIMATE BLEND // PSP HLE APPROXIMATION</span>
+                                <span id="lab-parity-score">PARITY: 92.4%</span>
+                            </div>
+
+                            <p class="lab-diagnostic-msg" id="lab-diagnostic-msg">
+                                Ready: adjust combiner stages, registers, or PSP GU flags to inspect fixed-function translation accuracy.
+                            </p>
+
+                            <div class="lab-telemetry-wrap">
+                            <table class="lab-telemetry-table">
+                                <caption>Live RDP → PSP GU Channel Parity Telemetry</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Pipeline Metric</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Hardware Behavior</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">RGB Parity</th>
+                                        <td id="lab-tbl-rgb">--%</td>
+                                        <td id="lab-tbl-rgb-note">GU_TFX_BLEND</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Alpha Parity</th>
+                                        <td id="lab-tbl-alpha">--%</td>
+                                        <td id="lab-tbl-alpha-note">GU_TCC_RGBA</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Vertex / Env State</th>
+                                        <td id="lab-tbl-cf">Cf: EnvColour</td>
+                                        <td id="lab-tbl-cc">Cc: PrimColour</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+
+                            <div class="code-container" style="margin-top: 0;">
+                                <div class="code-header">
+                                    <span>Generated BlendModes.cpp Patch</span>
+                                    <span class="copy-wrap">
+                                        <button type="button" class="copy-button" command="--copy" commandfor="lab-cpp-output" aria-label="Copy generated BlendModes.cpp code">
+                                            <span aria-hidden="true">⧉</span> Copy C++
+                                        </button>
+                                        <span class="copy-tip" role="status"></span>
+                                    </span>
+                                </div>
+                                <pre><code id="lab-cpp-output">void BlendMode_0x00177e6035fcfd7eLL( BLEND_MODE_ARGS )
+{
+	sceGuTexEnvColor( details.PrimColour.GetColour() );
+	details.ColourAdjuster.SetRGBA( details.EnvColour );
+	sceGuTexFunc( GU_TFX_BLEND, GU_TCC_RGBA );
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
 
             <div class="exhibit-grid">
 
@@ -1333,7 +2280,7 @@
                 </div>
 
                 <!-- EXHIBIT 4 -->
-                <div class="exhibit-card">
+                <div class="exhibit-card" id="exhibit-4">
                     <div class="exhibit-header">
                         <div class="exhibit-title-group">
                             <h3>Exhibit 4: Partial-Flashing Bomb Item (*Super Smash Bros.*)</h3>
