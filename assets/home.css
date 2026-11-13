@@ -11,11 +11,17 @@
   }
 
   #pc-builds,
+  #case-studies,
   #tools,
   #about,
   #contact {
     content-visibility: auto;
     contain-intrinsic-size: auto 700px;
+  }
+
+  .section-surface {
+    background: linear-gradient(180deg var(--in-oklab), rgba(12, 16, 26, 0.94), rgba(9, 13, 21, 0.92));
+    border-block: 1px solid var(--border-subtle);
   }
 
   #app-wrapper {
@@ -727,9 +733,21 @@
     gap: 1.75rem;
   }
 
+  .matrix-grid.bento-services,
+  .matrix-grid.bento-workstations {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  .bento-span-7 { grid-column: span 7; }
+  .bento-span-6 { grid-column: span 6; }
+  .bento-span-5 { grid-column: span 5; }
+  .bento-span-12 { grid-column: span 12; }
+
   .matrix-cell {
     perspective: 1200px;
-    container-type: inline-size;
+    container: card / inline-size;
   }
 
   .reveal-delay-1 { transition-delay: 0.08s; }
@@ -740,7 +758,7 @@
     border: 1px solid var(--border-glow);
     border-radius: var(--radius-md);
     padding: 1.85rem;
-    min-block-size: 380px;
+    min-block-size: 360px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -750,13 +768,41 @@
     position: relative;
     overflow: hidden;
     font-family: var(--font-body);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.35),
+      0 14px 36px rgba(0, 0, 0, 0.38);
+  }
+
+  .interactive-card.bento-flagship-card {
+    border-block-start: 3px solid var(--accent-bright);
+    background: linear-gradient(155deg var(--in-oklab), rgba(17, 24, 39, 0.9), rgba(245, 158, 11, 0.05));
+  }
+
+  .interactive-card.bento-cyan-card {
+    border-block-start: 3px solid var(--accent-cyan);
+    background: linear-gradient(155deg var(--in-oklab), rgba(15, 22, 36, 0.9), rgba(34, 211, 238, 0.04));
+  }
+
+  .interactive-card.bento-showcase-card {
+    min-block-size: auto;
+    border-block-start: 3px solid var(--accent-green);
+    background: linear-gradient(145deg var(--in-oklab), rgba(13, 21, 32, 0.92), rgba(16, 185, 129, 0.05));
   }
 
   .interactive-card:hover {
     border-color: var(--accent-bright);
     background: var(--bg-card-hover);
-    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.48);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 24px 56px rgba(0, 0, 0, 0.52);
+  }
+
+  .interactive-card.bento-cyan-card:hover {
+    border-color: var(--accent-cyan);
+  }
+
+  .interactive-card.bento-showcase-card:hover {
+    border-color: var(--accent-green);
   }
 
   .interactive-card::before {
@@ -822,6 +868,57 @@
     transform: translateZ(16px);
   }
 
+  .bento-split-layout,
+  .bento-showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    align-items: start;
+  }
+
+  @container card (inline-size >= 520px) {
+    .bento-split-layout {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+      gap: 1.35rem;
+    }
+  }
+
+  @container card (inline-size >= 680px) {
+    .bento-showcase-grid {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+      gap: 1.75rem;
+      align-items: center;
+    }
+  }
+
+  .bento-proof-list {
+    list-style: none;
+    background: rgba(7, 9, 14, 0.72);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .bento-proof-list li:not(:last-child) {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-subtle);
+  }
+
+  .bento-proof-list strong {
+    color: var(--accent-bright);
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.12rem;
+  }
+
   .card-index {
     font-family: var(--font-mono);
     font-size: 0.68rem;
@@ -884,6 +981,11 @@
     border-radius: 6px;
   }
 
+  .daedalus-callout--showcase {
+    margin: 0;
+    padding: 1.25rem 1.35rem;
+  }
+
   .daedalus-callout-title {
     font-family: var(--font-mono);
     font-size: 0.7rem;
@@ -891,6 +993,13 @@
     font-weight: 700;
     margin-bottom: 0.45rem;
     letter-spacing: 0.04em;
+  }
+
+  .daedalus-callout-desc {
+    font-size: 0.86rem;
+    color: var(--text-main);
+    line-height: 1.55;
+    margin-bottom: 0.95rem;
   }
 
   .daedalus-callout-btn {
@@ -902,13 +1011,46 @@
     font-weight: 700;
     color: #030712;
     background: var(--accent-green);
-    padding: 0.5rem 0.95rem;
+    padding: 0.55rem 1rem;
+    min-block-size: 40px;
     border-radius: var(--radius-sm);
     text-decoration: none;
   }
 
   .daedalus-callout-btn:hover {
     background: #34d399;
+  }
+
+  /* Workstation Verification Standard Bar */
+  .workstation-standard-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ws-std-item {
+    background: rgba(12, 16, 24, 0.9);
+    border: 1px solid var(--border-subtle);
+    border-inline-start: 3px solid var(--accent-bright);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+  }
+
+  .ws-std-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent-bright);
+    letter-spacing: 0.08em;
+  }
+
+  .ws-std-item strong {
+    color: var(--text-main);
+    font-weight: 600;
   }
 
   /* Verified Hardware & Benchmark Strip inside Cards */
@@ -1919,8 +2061,23 @@
   @media (max-width: 1024px) {
     .hero-grid,
     .dossier-grid,
-    .dispatch-console-grid {
+    .dispatch-console-grid,
+    .workstation-standard-bar,
+    .cs-triage-grid {
       grid-template-columns: 1fr;
+    }
+    .matrix-grid.bento-services,
+    .matrix-grid.bento-workstations {
+      grid-template-columns: 1fr;
+    }
+    .bento-span-7,
+    .bento-span-6,
+    .bento-span-5,
+    .bento-span-12 {
+      grid-column: 1 / -1;
+    }
+    .case-studies-header-actions {
+      align-items: flex-start;
     }
     .section-subtitle { text-align: left; }
     .pipeline-stages { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -1975,6 +2132,8 @@
     .section-padding { padding: 3.5rem 0; }
     .interactive-card { padding: 1.25rem; min-block-size: 300px; }
     .tool-monolith, .dispatch-card { padding: 1.25rem; }
+    .cs-summary { padding: 0.95rem 1rem; }
+    .cs-body { padding: 0 1rem 1rem; }
     .memory-grid { padding: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(18px, 1fr)); }
     .memory-node { height: 18px; font-size: 0.6rem; }
     .terminal-log { font-size: 0.72rem; }
@@ -1988,6 +2147,10 @@
     .hero-hud-panel,
     .dispatch-card,
     .timeline-card,
+    .cs-item,
+    .cs-block,
+    .ws-std-item,
+    .accordion-toggle-all,
     dialog.node-inspector,
     .inspector-spec-card,
     .inspector-vlan-table th,

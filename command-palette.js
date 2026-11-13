@@ -62,6 +62,7 @@
         { group: 'ON THIS PAGE', label: 'Copy MCP Discovery cURL', hint: 'clipboard', action: async () => { try { await navigator.clipboard?.writeText('curl -s https://daca.me/.well-known/mcp.json'); } catch {} } },
         { group: 'ON THIS PAGE', label: 'Jump to Core Expertise', hint: '#services', href: '#services' },
         { group: 'ON THIS PAGE', label: 'Jump to Workstations', hint: '#pc-builds', href: '#pc-builds' },
+        { group: 'ON THIS PAGE', label: 'Jump to Architecture Case Studies', hint: '#case-studies', href: '#case-studies' },
         { group: 'ON THIS PAGE', label: 'Jump to System Automation (win_maintenance_routine.ps1)', hint: '#tools', href: '#tools' },
         { group: 'ON THIS PAGE', label: 'Jump to Track Record', hint: '#about', href: '#about' },
         { group: 'ON THIS PAGE', label: 'Jump to Contact & Dispatch', hint: '#contact', href: '#contact' }

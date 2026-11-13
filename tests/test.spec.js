@@ -173,3 +173,75 @@ test('N64 Color Combiner Playground on /DaedalusX64/ simulates RDP->PSP GU blend
   expect(pageErrors).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });
+
+test('Phase 2 Bento layout hierarchy, single-row header, and Case Studies accordion work cleanly on desktop and mobile', async ({ page }) => {
+  const consoleErrors = [];
+  const pageErrors = [];
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') consoleErrors.push(msg.text());
+  });
+  page.on('pageerror', (err) => pageErrors.push(err.message));
+
+  await page.route('https://api.github.com/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+  await page.route('/api/telemetry', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"colo":"DFW"}' }));
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  // Compact single-row desktop header
+  const headerRect = await page.locator('#site-header').boundingBox();
+  expect(headerRect.height).toBeLessThan(90);
+
+  // Asymmetric 12-column Bento layout geometry in #services
+  const node01Box = await page.locator('[data-node-id="node-01"]').boundingBox();
+  const node03Box = await page.locator('[data-node-id="node-03"]').boundingBox();
+  const node02Box = await page.locator('[data-node-id="node-02"]').boundingBox();
+
+  expect(node01Box.width).toBeGreaterThan(node03Box.width);
+  expect(Math.abs(node01Box.y - node03Box.y)).toBeLessThan(5);
+  expect(node02Box.width).toBeGreaterThan(node01Box.width);
+  expect(node02Box.y).toBeGreaterThan(node01Box.y + 50);
+
+  // Case Studies Accordion Expand/Collapse All + individual toggle
+  const toggleAllBtn = page.locator('#case-studies-toggle-all');
+  const detailsItems = page.locator('#case-studies-list > details');
+  await expect(detailsItems).toHaveCount(3);
+  await expect(detailsItems.nth(0)).toHaveAttribute('open', '');
+  await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'false');
+
+  await toggleAllBtn.click();
+  await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'true');
+  for (let i = 0; i < 3; i++) {
+    await expect(detailsItems.nth(i)).toHaveAttribute('open', '');
+  }
+
+  await toggleAllBtn.click();
+  await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'false');
+  for (let i = 0; i < 3; i++) {
+    await expect(detailsItems.nth(i)).not.toHaveAttribute('open', '');
+  }
+
+  // Open individual Case Study 1 and verify Inspector launch button works
+  await detailsItems.nth(0).locator('summary').click();
+  await expect(detailsItems.nth(0)).toHaveAttribute('open', '');
+  await detailsItems.nth(0).locator('[data-inspect-node="node-01"]').click();
+  await expect(page.locator('#node-inspector-dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#node-inspector-dialog')).toBeHidden();
+
+  const hasDesktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+  expect(hasDesktopOverflow).toBe(false);
+
+  // Mobile stacking & zero horizontal overflow
+  await page.setViewportSize({ width: 375, height: 812 });
+  const mNode01 = await page.locator('[data-node-id="node-01"]').boundingBox();
+  const mNode03 = await page.locator('[data-node-id="node-03"]').boundingBox();
+  expect(mNode03.y).toBeGreaterThan(mNode01.y + 50);
+
+  const hasMobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+  expect(hasMobileOverflow).toBe(false);
+
+  expect(pageErrors).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+});
+
