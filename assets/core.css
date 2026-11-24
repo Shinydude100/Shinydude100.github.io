@@ -44,7 +44,7 @@
   :where(.hero-title, .hero h1) {
     view-transition-name: hero-heading;
   }
-  :where(.hero-hud-panel, .dispatch-hud, .hud-status-bar) {
+  :where(.hero-solutions-panel, .dispatch-hud, .hud-status-bar) {
     view-transition-name: hero-hud;
   }
   ::view-transition-group(site-header),

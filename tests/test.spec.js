@@ -214,12 +214,11 @@ test('Phase 2 Bento layout hierarchy, single-row header, and Case Studies accord
   await page.locator('#case-studies-list').scrollIntoViewIfNeeded();
   await expect(page.locator('#case-studies-list')).toHaveCSS('opacity', '1');
 
-  const firstTriageBlocks = detailsItems.nth(0).locator('.cs-triage-grid > .cs-block');
-  const blk0 = await firstTriageBlocks.nth(0).boundingBox();
-  const blk1 = await firstTriageBlocks.nth(1).boundingBox();
-  const blk2 = await firstTriageBlocks.nth(2).boundingBox();
-  expect(Math.abs(blk0.y - blk1.y)).toBeLessThan(5);
-  expect(Math.abs(blk1.y - blk2.y)).toBeLessThan(5);
+  const triageYDiff = await detailsItems.nth(0).locator('.cs-triage-grid').evaluate((grid) => {
+    const tops = Array.from(grid.querySelectorAll(':scope > .cs-block')).map((el) => el.getBoundingClientRect().top);
+    return Math.max(...tops) - Math.min(...tops);
+  });
+  expect(triageYDiff).toBeLessThan(5);
 
   await toggleAllBtn.click();
   await expect(toggleAllBtn).toHaveAttribute('aria-expanded', 'true');
@@ -258,4 +257,69 @@ test('Phase 2 Bento layout hierarchy, single-row header, and Case Studies accord
   expect(pageErrors).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });
+
+test('Marketing Audit Simplification: hero clarity, 2 CTAs, relocated Command Deck, and responsive navbar across 375/768/1280/1440px', async ({ page }) => {
+  const consoleErrors = [];
+  const pageErrors = [];
+  page.on('console', (msg) => {
+    if (msg.type() === 'error' && !msg.text().includes('speculation rules')) {
+      consoleErrors.push(msg.text());
+    }
+  });
+  page.on('pageerror', (err) => pageErrors.push(err.message));
+
+  await page.route('https://api.github.com/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+  await page.route('/api/telemetry', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"colo":"DFW","httpProtocol":"HTTP/3","tlsVersion":"TLSv1.3","ray":"TEST-RAY"}' }));
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/index.html', { waitUntil: 'networkidle' });
+
+  // Verify Hero has exactly 2 CTA buttons and clean Problems I Solve panel
+  const heroCtas = page.locator('#hero .btn-stack .btn-primitive');
+  await expect(heroCtas).toHaveCount(2);
+  await expect(heroCtas.nth(0)).toHaveText('Contact Hugo');
+  await expect(heroCtas.nth(1)).toHaveText('Explore Architecture');
+  await expect(page.locator('#hero .hero-solutions-panel')).toBeVisible();
+  await expect(page.locator('#hero .hero-console-shell')).toHaveCount(0);
+
+  // Verify DFW Support and Contact in navbar are distinct and non-overlapping on desktop
+  const supportNavBox = await page.locator('#site-header .nav-pill--support a').boundingBox();
+  const contactNavBox = await page.locator('#site-header .nav-pill--cta a').boundingBox();
+  expect(supportNavBox.x + supportNavBox.width).toBeLessThan(contactNavBox.x);
+
+  // Verify Open Terminal link points to relocated #command-deck and tabs + ping work
+  const openTermLink = page.locator('#hero a.hero-terminal-link[href="#command-deck"]');
+  await expect(openTermLink).toBeVisible();
+  await openTermLink.click();
+
+  const commandDeck = page.locator('#command-deck');
+  await expect(commandDeck).toBeVisible();
+  await page.locator('#tab-btn-mcp').click();
+  await expect(page.locator('#panel-mcp')).toBeVisible();
+  await page.locator('#tab-btn-topology').click();
+  await page.locator('#hud-ping-btn').click();
+  await expect(page.locator('#hud-ping-readout')).toContainText('PING_OK');
+
+  // Verify zero horizontal overflow across all required breakpoints (1440px, 1280px, 768px, 375px)
+  for (const [w, h] of [[1440, 900], [1280, 800], [768, 1024], [375, 812]]) {
+    await page.setViewportSize({ width: w, height: h });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(overflow).toBe(false);
+  }
+
+  // Verify mobile/tablet menu toggle opens cleanly at 768px and 375px and closes on Escape
+  await page.setViewportSize({ width: 375, height: 812 });
+  const mobileToggle = page.locator('#mobile-toggle');
+  await expect(mobileToggle).toBeVisible();
+  await mobileToggle.click();
+  await expect(page.locator('#menu-box')).toBeVisible();
+  await expect(page.locator('#menu-box a[href="/support/"]')).toBeVisible();
+  await expect(page.locator('#menu-box a[href="#contact"]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(mobileToggle).toHaveAttribute('aria-expanded', 'false');
+
+  expect(pageErrors).toEqual([]);
+  expect(consoleErrors).toEqual([]);
+});
+
 
