@@ -58,7 +58,20 @@
     if (isRoot) {
       commands.push(
         { group: 'ON THIS PAGE', label: 'Inspect Fleet Node Telemetry (NODE-01 Cluster HA)', hint: 'dialog', action: () => document.querySelector('[data-inspect-node="node-01"]')?.click() },
-        { group: 'ON THIS PAGE', label: 'Run Live Edge Telemetry Ping', hint: './ping_edge_telemetry.sh', action: () => { const b = document.getElementById('hud-ping-btn'); if (b) b.click(); } },
+        { group: 'ON THIS PAGE', label: 'Open Live Edge & MCP Terminal', hint: '#command-deck', href: '#command-deck' },
+        {
+          group: 'ON THIS PAGE',
+          label: 'Run Live Edge Telemetry Ping',
+          hint: './ping_edge_telemetry.sh',
+          action: () => {
+            const deck = document.getElementById('command-deck');
+            if (deck && typeof deck.scrollIntoView === 'function') {
+              deck.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+            }
+            const b = document.getElementById('hud-ping-btn');
+            if (b) b.click();
+          }
+        },
         { group: 'ON THIS PAGE', label: 'Copy MCP Discovery cURL', hint: 'clipboard', action: async () => { try { await navigator.clipboard?.writeText('curl -s https://daca.me/.well-known/mcp.json'); } catch {} } },
         { group: 'ON THIS PAGE', label: 'Jump to Core Expertise', hint: '#services', href: '#services' },
         { group: 'ON THIS PAGE', label: 'Jump to Workstations', hint: '#pc-builds', href: '#pc-builds' },

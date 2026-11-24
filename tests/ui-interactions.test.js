@@ -199,6 +199,59 @@ describe('UI Interactions', () => {
             expect(btn.getAttribute('aria-expanded')).toBe('false');
         });
     });
+
+    describe('Marketing Audit Conversion & Messaging Simplification', () => {
+        it('declutters hero to 2 CTAs + 4 KPIs, relocates COMMAND_DECK to #command-deck, spotlights DaedalusX64, and preserves MCP/SEO', () => {
+            const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+            const parsed = new DOMParser().parseFromString(html, 'text/html');
+
+            // 1. Inline telemetry log box removed from hero; interactive terminal relocated out of hero
+            const hero = parsed.getElementById('hero');
+            expect(hero).not.toBeNull();
+            expect(hero.querySelector('.hero-console-shell')).toBeNull();
+            expect(hero.querySelector('.hero-hud-panel')).toBeNull();
+            expect(hero.querySelector('.hero-solutions-panel')).not.toBeNull();
+            expect(hero.querySelector('a.hero-terminal-link[href="#command-deck"]')).not.toBeNull();
+
+            // Relocated COMMAND_DECK exists in dedicated lower-page #command-deck section
+            const commandDeck = parsed.getElementById('command-deck');
+            expect(commandDeck).not.toBeNull();
+            expect(commandDeck.querySelector('.hero-hud-panel')).not.toBeNull();
+            expect(commandDeck.querySelector('#hud-ping-btn')).not.toBeNull();
+            expect(commandDeck.querySelector('#mcp-curl-snippet')).not.toBeNull();
+
+            // 2. Hero CTAs streamlined to 2 actions max; DFW Support kept exclusively in header nav
+            const heroCtas = Array.from(hero.querySelectorAll('.btn-stack .btn-primitive'));
+            expect(heroCtas).toHaveLength(2);
+            expect(heroCtas[0].getAttribute('href')).toBe('#contact');
+            expect(heroCtas[0].textContent.trim()).toBe('Contact Hugo');
+            expect(heroCtas[1].getAttribute('href')).toBe('#services');
+            expect(heroCtas[1].textContent.trim()).toBe('Explore Architecture');
+            expect(hero.querySelector('.btn-stack a[href="/support/"]')).toBeNull();
+            expect(parsed.querySelector('#site-header a[href="/support/"]')).not.toBeNull();
+            expect(parsed.querySelector('#site-header a[href="#contact"]')).not.toBeNull();
+
+            // 3. 4-metric credibility strip preserved with plain-English labels
+            const kpiCells = Array.from(hero.querySelectorAll('.hero-kpi-strip .kpi-cell'));
+            expect(kpiCells).toHaveLength(4);
+            const kpiText = hero.querySelector('.hero-kpi-strip').textContent;
+            expect(kpiText).toContain('170+');
+            expect(kpiText).toContain('100.0');
+            expect(kpiText).toContain('60 FPS');
+            expect(kpiText).toContain('~15m');
+
+            // 4. DaedalusX64 age-16 hook spotlighted prominently
+            const daedalusCard = parsed.querySelector('[data-node-id="node-02"]');
+            expect(daedalusCard.textContent).toMatch(/Nintendo 64 emulator.*age 16/i);
+
+            // 5. Preserved SEO, MCP discovery, llms.txt, and /support WebMCP form
+            expect(parsed.querySelector('link[rel="mcp"][href="/mcp"]')).not.toBeNull();
+            expect(parsed.querySelector('link[rel="alternate"][href="/schema.jsonld"]')).not.toBeNull();
+            expect(fs.existsSync(path.join(__dirname, '..', 'llms.txt'))).toBe(true);
+            const supportHtml = fs.readFileSync(path.join(__dirname, '..', 'support/index.html'), 'utf8');
+            expect(supportHtml).toContain('toolname="book_support_appointment"');
+        });
+    });
 });
 
 
