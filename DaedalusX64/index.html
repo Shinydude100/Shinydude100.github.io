@@ -80,15 +80,19 @@
 
     <header>
         <div class="nav-container">
-            <a href="https://daca.me" class="logo">daca<span>.me</span></a>
-            <div class="nav-links">
-                <a href="#combiner-lab">Combiner Lab</a>
-                <a href="#exhibits">Exhibits</a>
-                <a href="#docs">Docs</a>
-                <a href="/support/">Support</a>
-                <a href="https://github.com/DaedalusX64/daedalus" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">GitHub</a>
-                <button type="button" class="cmd-palette-trigger" data-open-command-palette aria-label="Open Command Palette (Ctrl+K)" title="Open Command Palette (Ctrl+K)">CMD <kbd>⌘K</kbd></button>
-            </div>
+            <a href="https://daca.me" class="logo" aria-label="daca.me Home" title="daca.me Home">daca<span>.me</span></a>
+            <nav aria-label="Primary">
+                <ul class="nav-links">
+                    <li class="nav-item"><a href="#combiner-lab">Combiner Lab</a></li>
+                    <li class="nav-item"><a href="#exhibits">Exhibits</a></li>
+                    <li class="nav-item"><a href="#docs">Docs</a></li>
+                    <li class="nav-item"><a href="https://github.com/DaedalusX64/daedalus" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="DaedalusX64 on GitHub (opens in a new tab)" title="DaedalusX64 on GitHub (opens in a new tab)">GitHub</a></li>
+                    <li class="nav-sep" aria-hidden="true"></li>
+                    <li class="nav-item nav-pill nav-pill--support"><a href="/support/">DFW Support</a></li>
+                    <li class="nav-item nav-pill nav-pill--cta"><a href="/#contact">Contact</a></li>
+                    <li class="nav-cmd-item"><button type="button" class="cmd-palette-trigger" data-open-command-palette aria-label="Open Command Palette (Ctrl+K)" title="Open Command Palette (Ctrl+K)"><kbd>⌘K</kbd></button></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -96,6 +100,13 @@
         
         <!-- HERO SECTION -->
         <section class="hero" id="hero">
+            <!-- EXECUTIVE CONTEXT (plain-English bridge for non-technical visitors) -->
+            <p class="exec-context" id="exec-context">
+                <strong class="exec-context-label">In plain English:</strong>
+                At 16, Hugo helped rebuild a Nintendo&nbsp;64 emulator so classic games run at full speed on Sony's PSP handheld—the same bare-metal troubleshooting he now brings to business networks and custom workstations.
+                <a href="/#contact" class="exec-context-link">Work with Hugo&nbsp;→</a>
+            </p>
+
             <div class="badge-hero">
                 <span>⚡ N64 HLE MICROCODE EXHIBIT</span>
                 <span>// PSP GU PIPELINE</span>
