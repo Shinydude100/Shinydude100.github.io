@@ -3,8 +3,15 @@ main = "worker/index.ts"
 compatibility_date = "2026-07-01"
 
 routes = [
+  { pattern = "daca.me/api/contact*", script = "daca-mcp-server" },
   { pattern = "daca.me/messages*", script = "daca-mcp-server" },
   { pattern = "daca.me/.well-known/mcp.json", script = "daca-mcp-server" },
   { pattern = "daca.me/llms.txt", script = "daca-mcp-server" },
   { pattern = "daca.me/schema.jsonld", script = "daca-mcp-server" }
 ]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "daca-inquiries-db"
+database_id = "00000000-0000-0000-0000-000000000000" # Replace with live D1 database UUID via `wrangler d1 list` before `wrangler deploy`
+migrations_dir = "worker/migrations"

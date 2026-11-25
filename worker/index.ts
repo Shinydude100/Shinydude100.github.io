@@ -3,7 +3,22 @@
  * Cloudflare Worker Runtime (Free Tier Compatible)
  */
 
-export interface Env {}
+import { handleContactRequest } from "./contact.js";
+
+export interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  run<T = unknown>(): Promise<T>;
+  all<T = unknown>(): Promise<T>;
+  first<T = unknown>(colName?: string): Promise<T | null>;
+}
+
+export interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+}
+
+export interface Env {
+  DB?: D1Database;
+}
 
 const JSON_LD_SCHEMA = {
   "@context": "https://schema.org",
@@ -70,12 +85,16 @@ daca.me is a reference implementation of Cloudflare Radar Level 5 AI Agentic Rea
 ## Public References
 - GitHub: https://github.com/Shinydude100
 - MCP Discovery Endpoint: https://daca.me/.well-known/mcp.json
-\`;
+`;
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
+
+    if (path === "/api/contact" || path === "/api/contact/") {
+      return handleContactRequest(request, env);
+    }
 
     const headers = new Headers({
       "Access-Control-Allow-Origin": "*",
