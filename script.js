@@ -975,6 +975,465 @@ function initCaseStudyAccordion() {
 }
 
 // =================================================================
+// Declarative WebMCP Inline B2B Contact Form (toolname="contactForm")
+// =================================================================
+const CONTACT_TOPIC_LABELS = {
+    enterprise_network: 'Enterprise Network & Zero-Trust',
+    workstation_ai_build: 'Custom Workstation / Local AI Build',
+    cloudflare_mcp: 'Cloudflare Edge & MCP Transformation',
+    leadership_hiring: 'Systems / Security Leadership & Hiring',
+    general_consulting: 'General Infrastructure Consulting'
+};
+
+const CONTACT_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const CONTACT_FALLBACK_EMAIL = 'hugo.luna.sec@gmail.com';
+
+function initContactForm() {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm || contactForm.dataset.contactBound === 'true') return;
+    contactForm.dataset.contactBound = 'true';
+
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const feedbackBox = document.getElementById('contact-feedback');
+    const feedbackText = document.getElementById('contact-feedback-text');
+    const fallbackActions = document.getElementById('contact-fallback-actions');
+    const mailtoLink = document.getElementById('contact-mailto-fallback');
+    const successBox = document.getElementById('contact-success');
+    const successTicket = document.getElementById('contact-success-ticket');
+    const resetBtn = document.getElementById('contact-reset-btn');
+    const announcer = document.getElementById('contact-field-announcer');
+
+    const supportsUserInvalid = (() => {
+        try {
+            if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('selector(:user-invalid)')) {
+                const probe = document.createElement('input');
+                probe.matches(':user-invalid');
+                return true;
+            }
+        } catch {
+            // Fallback for JSDOM or engines without :user-invalid selector support
+        }
+        return false;
+    })();
+
+    const dirtyState = new WeakMap();
+    const flagged = new WeakSet();
+    const announced = new WeakSet();
+    let announceTimer = null;
+    let announcedField = null;
+
+    const getFormControls = () =>
+        Array.from(contactForm.querySelectorAll('input:not([name="website"]), select, textarea'));
+
+    const linkFieldError = (el, shown) => {
+        const errorId = el && el.dataset ? el.dataset.error : '';
+        if (!errorId) return;
+        const ids = (el.getAttribute('aria-describedby') || '')
+            .split(/\s+/)
+            .filter((id) => id && id !== errorId);
+        if (shown) ids.push(errorId);
+        if (ids.length > 0) {
+            el.setAttribute('aria-describedby', ids.join(' '));
+        } else {
+            el.removeAttribute('aria-describedby');
+        }
+    };
+
+    const spokenText = (node) => {
+        if (!node) return '';
+        const copy = node.cloneNode(true);
+        copy.querySelectorAll('[aria-hidden="true"]').forEach((n) => n.remove());
+        copy.querySelectorAll('[role="img"][aria-label]').forEach((n) => {
+            n.replaceWith(`${n.getAttribute('aria-label')}: `);
+        });
+        return (copy.textContent || '').replace(/\s+/g, ' ').trim();
+    };
+
+    const announceFieldError = (el) => {
+        if (!announcer || !el || !el.dataset || !el.dataset.error) return;
+        const errorNode = document.getElementById(el.dataset.error);
+        if (!errorNode) return;
+        const labelNode = el.labels && el.labels[0] ? el.labels[0] : contactForm.querySelector(`label[for="${el.id}"]`);
+        const prefix = labelNode ? `${spokenText(labelNode)}: ` : '';
+        clearTimeout(announceTimer);
+        announcer.textContent = '';
+        announcedField = el;
+        announceTimer = setTimeout(() => {
+            announcer.textContent = prefix + spokenText(errorNode);
+        }, 500);
+    };
+
+    const evaluateControlValidity = (el) => {
+        if (!el || !el.name) return true;
+        const raw = typeof el.value === 'string' ? el.value : '';
+        const trimmed = raw.trim();
+
+        let customMsg = '';
+        let domainValid = true;
+
+        if (el.name === 'name') {
+            domainValid = trimmed.length >= 2 && trimmed.length <= 120;
+            if (raw.length > 0 && !domainValid) {
+                customMsg = 'Enter your name (2–120 characters).';
+            }
+        } else if (el.name === 'email') {
+            domainValid = trimmed.length > 0 && trimmed.length <= 254 && CONTACT_EMAIL_PATTERN.test(trimmed);
+            if (raw.length > 0 && !domainValid) {
+                customMsg = 'Enter a valid email address in the format name@company.com.';
+            }
+        } else if (el.name === 'organization') {
+            domainValid = trimmed.length <= 160;
+            if (!domainValid) {
+                customMsg = 'Keep organization name under 160 characters.';
+            }
+        } else if (el.name === 'inquiry_type') {
+            domainValid = Object.prototype.hasOwnProperty.call(CONTACT_TOPIC_LABELS, trimmed);
+            if (raw.length > 0 && !domainValid) {
+                customMsg = 'Please select an inquiry topic.';
+            }
+        } else if (el.name === 'message') {
+            domainValid = trimmed.length >= 10 && trimmed.length <= 4000;
+            if (raw.length > 0 && !domainValid) {
+                customMsg = 'Enter at least 10 characters describing your inquiry (max 4,000).';
+            }
+        }
+
+        if (typeof el.setCustomValidity === 'function') {
+            el.setCustomValidity(customMsg);
+        }
+
+        const nativeValid = el.validity ? el.validity.valid : true;
+        return domainValid && nativeValid;
+    };
+
+    const applyFieldState = (el, isInvalid, shouldAnnounce = false) => {
+        if (!el || !el.matches || !el.matches('input:not([name="website"]), select, textarea')) return;
+        if (isInvalid) {
+            if (shouldAnnounce && !announced.has(el)) {
+                announceFieldError(el);
+                announced.add(el);
+            }
+            el.classList.add('user-invalid-fallback');
+            el.setAttribute('aria-invalid', 'true');
+            linkFieldError(el, true);
+            flagged.add(el);
+        } else {
+            el.classList.remove('user-invalid-fallback');
+            el.setAttribute('aria-invalid', 'false');
+            linkFieldError(el, false);
+            flagged.delete(el);
+            announced.delete(el);
+            if (announcedField === el && announcer) {
+                clearTimeout(announceTimer);
+                announcer.textContent = '';
+            }
+        }
+    };
+
+    const syncControlAfterInteraction = (el, shouldAnnounce = false) => {
+        if (!el || !el.matches || !el.matches('input:not([name="website"]), select, textarea')) return;
+        const valid = evaluateControlValidity(el);
+        const state = dirtyState.get(el) || { touched: false, blurred: false };
+        const matchedNative = supportsUserInvalid ? el.matches(':user-invalid') : false;
+        const interactedInvalid = state.touched && state.blurred && !valid;
+        applyFieldState(el, matchedNative || interactedInvalid, shouldAnnounce);
+    };
+
+    const hideFeedback = () => {
+        if (feedbackBox) {
+            feedbackBox.hidden = true;
+            feedbackBox.className = 'contact-feedback form-group--full';
+        }
+        if (feedbackText) feedbackText.textContent = '';
+        if (fallbackActions) fallbackActions.hidden = true;
+        if (mailtoLink) {
+            mailtoLink.hidden = true;
+            mailtoLink.setAttribute('href', `mailto:${CONTACT_FALLBACK_EMAIL}`);
+        }
+    };
+
+    const showValidationFeedback = (message) => {
+        if (!feedbackBox || !feedbackText) return;
+        if (fallbackActions) fallbackActions.hidden = true;
+        if (mailtoLink) mailtoLink.hidden = true;
+        feedbackText.textContent = message;
+        feedbackBox.className = 'contact-feedback form-group--full is-error';
+        feedbackBox.hidden = false;
+    };
+
+    const buildMailtoFallbackHref = (payload) => {
+        const topicLabel = CONTACT_TOPIC_LABELS[payload.inquiry_type] || payload.inquiry_type || 'Consulting Inquiry';
+        const orgSuffix = payload.organization ? ` (${payload.organization})` : '';
+        const subject = `[Consulting Inquiry] ${topicLabel} — ${payload.name}${orgSuffix}`;
+        const lines = [
+            `Name: ${payload.name}`,
+            `Email: ${payload.email}`
+        ];
+        if (payload.organization) {
+            lines.push(`Organization: ${payload.organization}`);
+        }
+        lines.push(`Topic: ${topicLabel}`);
+        lines.push('');
+        lines.push(payload.message);
+        const body = lines.join('\n');
+        return `mailto:${CONTACT_FALLBACK_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const showMailtoFallback = (payload, errorReason) => {
+        if (!feedbackBox || !feedbackText) return;
+        const href = buildMailtoFallbackHref(payload);
+        if (mailtoLink) {
+            mailtoLink.setAttribute('href', href);
+            mailtoLink.hidden = false;
+        }
+        if (fallbackActions) {
+            fallbackActions.hidden = false;
+        }
+        feedbackText.textContent =
+            `Direct edge intake is temporarily unreachable (${errorReason}). Your inquiry details are ready—send via pre-filled email below or copy ${CONTACT_FALLBACK_EMAIL}.`;
+        feedbackBox.className = 'contact-feedback form-group--full is-fallback';
+        feedbackBox.hidden = false;
+    };
+
+    getFormControls().forEach((el) => {
+        el.setAttribute('aria-invalid', 'false');
+        linkFieldError(el, false);
+        el.classList.remove('user-invalid-fallback');
+    });
+
+    contactForm.addEventListener('input', (event) => {
+        const target = event.target;
+        if (!target || !target.matches || !target.matches('input:not([name="website"]), select, textarea')) return;
+        const state = dirtyState.get(target) || { touched: false, blurred: false };
+        state.touched = true;
+        dirtyState.set(target, state);
+
+        const valid = evaluateControlValidity(target);
+        if (valid && (flagged.has(target) || target.getAttribute('aria-invalid') === 'true')) {
+            applyFieldState(target, false, false);
+        }
+    });
+
+    contactForm.addEventListener('blur', (event) => {
+        const target = event.target;
+        if (!target || !target.matches || !target.matches('input:not([name="website"]), select, textarea')) return;
+        const state = dirtyState.get(target) || { touched: false, blurred: false };
+        state.blurred = true;
+        dirtyState.set(target, state);
+        syncControlAfterInteraction(target, true);
+    }, true);
+
+    contactForm.addEventListener('change', (event) => {
+        const target = event.target;
+        if (!target || !target.matches || !target.matches('input:not([name="website"]), select, textarea')) return;
+        dirtyState.set(target, { touched: true, blurred: true });
+        syncControlAfterInteraction(target, true);
+    }, true);
+
+    contactForm.addEventListener('invalid', (event) => {
+        const target = event.target;
+        if (!target || !target.matches || !target.matches('input:not([name="website"]), select, textarea')) return;
+        dirtyState.set(target, { touched: true, blurred: true });
+        announced.add(target);
+        applyFieldState(target, true, false);
+    }, true);
+
+    contactForm.addEventListener('reset', () => {
+        clearTimeout(announceTimer);
+        if (announcer) announcer.textContent = '';
+        hideFeedback();
+        if (successBox) successBox.hidden = true;
+        contactForm.hidden = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Consulting Inquiry';
+        }
+        setTimeout(() => {
+            getFormControls().forEach((el) => {
+                dirtyState.delete(el);
+                if (typeof el.setCustomValidity === 'function') el.setCustomValidity('');
+                applyFieldState(el, false, false);
+            });
+        }, 0);
+    });
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            contactForm.reset();
+            const nameInput = document.getElementById('contact-name');
+            if (nameInput) nameInput.focus();
+        });
+    }
+
+    contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        hideFeedback();
+
+        const controls = getFormControls();
+        const invalidControls = [];
+        const invalidFields = [];
+
+        controls.forEach((ctrl) => {
+            const valid = evaluateControlValidity(ctrl);
+            if (!valid) {
+                dirtyState.set(ctrl, { touched: true, blurred: true });
+                announced.add(ctrl);
+                applyFieldState(ctrl, true, false);
+                invalidControls.push(ctrl);
+                invalidFields.push(ctrl.name);
+            } else {
+                applyFieldState(ctrl, false, false);
+            }
+        });
+
+        if (invalidControls.length > 0) {
+            const errMsg = `Please complete or correct required fields: ${invalidFields.join(', ')}.`;
+            showValidationFeedback(errMsg);
+            invalidControls[0].focus();
+            if (event.agentInvoked && typeof event.respondWith === 'function') {
+                event.respondWith(Promise.resolve({
+                    status: 'validation_error',
+                    error: errMsg,
+                    fields: invalidFields
+                }));
+            }
+            return;
+        }
+
+        const payload = {
+            name: (document.getElementById('contact-name')?.value || '').trim(),
+            email: (document.getElementById('contact-email')?.value || '').trim(),
+            organization: (document.getElementById('contact-organization')?.value || '').trim(),
+            inquiry_type: (document.getElementById('contact-inquiry-type')?.value || '').trim(),
+            message: (document.getElementById('contact-message')?.value || '').trim(),
+            website: document.getElementById('contact-website')?.value || ''
+        };
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending Inquiry...';
+        }
+
+        const inquiryOperation = (async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+            try {
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+
+                let result = null;
+                try {
+                    result = await res.json();
+                } catch {
+                    result = null;
+                }
+
+                if (
+                    (res.status === 200 || res.status === 201) &&
+                    result &&
+                    typeof result === 'object' &&
+                    result.success === true &&
+                    typeof result.ticket === 'string' &&
+                    result.ticket.length > 0
+                ) {
+                    contactForm.hidden = true;
+                    hideFeedback();
+                    if (successTicket) {
+                        successTicket.textContent = `Ticket ID: ${result.ticket}`;
+                    }
+                    if (successBox) {
+                        successBox.hidden = false;
+                        successBox.focus();
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send Consulting Inquiry';
+                    }
+                    return {
+                        status: 'confirmed',
+                        ticket: result.ticket,
+                        inquiry_type: payload.inquiry_type
+                    };
+                }
+
+                if (res.status === 400 && result && typeof result === 'object') {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send Consulting Inquiry';
+                    }
+                    const serverFields = Array.isArray(result.fields) ? result.fields : [];
+                    let firstFlagged = null;
+                    serverFields.forEach((fieldName) => {
+                        const fieldEl = contactForm.elements && contactForm.elements.namedItem
+                            ? contactForm.elements.namedItem(fieldName)
+                            : contactForm.querySelector(`[name="${fieldName}"]`);
+                        if (fieldEl && fieldEl.matches && fieldEl.matches('input, select, textarea')) {
+                            dirtyState.set(fieldEl, { touched: true, blurred: true });
+                            applyFieldState(fieldEl, true, false);
+                            if (!firstFlagged) firstFlagged = fieldEl;
+                        }
+                    });
+                    const valErr = typeof result.error === 'string' && result.error
+                        ? result.error
+                        : 'Please check your inquiry fields and try again.';
+                    showValidationFeedback(valErr);
+                    if (firstFlagged) firstFlagged.focus();
+                    return {
+                        status: 'validation_error',
+                        error: valErr,
+                        fields: serverFields
+                    };
+                }
+
+                const httpReason =
+                    result && typeof result === 'object' && typeof result.error === 'string' && res.status !== 404
+                        ? result.error
+                        : `HTTP ${res.status}`;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Consulting Inquiry';
+                }
+                showMailtoFallback(payload, httpReason);
+                return {
+                    status: 'fallback_required',
+                    error: httpReason,
+                    fallback_email: CONTACT_FALLBACK_EMAIL
+                };
+            } catch (err) {
+                const netReason =
+                    err && err.name === 'AbortError'
+                        ? 'Request timed out after 10s'
+                        : (err && typeof err.message === 'string' && err.message ? err.message : 'Network error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Consulting Inquiry';
+                }
+                showMailtoFallback(payload, netReason);
+                return {
+                    status: 'fallback_required',
+                    error: netReason,
+                    fallback_email: CONTACT_FALLBACK_EMAIL
+                };
+            } finally {
+                clearTimeout(timeoutId);
+            }
+        })();
+
+        if (event.agentInvoked && typeof event.respondWith === 'function') {
+            event.respondWith(inquiryOperation);
+        }
+    });
+}
+
+// =================================================================
 // Runtime Core Execution Mount
 // =================================================================
 if (typeof document !== 'undefined') {
@@ -1008,6 +1467,7 @@ if (typeof document !== 'undefined') {
         initCopyButtons();
         initNodeInspector();
         initCaseStudyAccordion();
+        initContactForm();
 
         const yEl = document.getElementById('year');
         if (yEl) yEl.textContent = Math.max(2026, new Date().getFullYear());
@@ -1120,9 +1580,11 @@ if (typeof module !== 'undefined' && module.exports) {
         initHeroCommandDeck,
         initCopyButtons,
         initDynamicTelemetry,
+        initWebMCP,
         NODE_ORDER,
         NODE_TELEMETRY_CATALOG,
         initNodeInspector,
-        initCaseStudyAccordion
+        initCaseStudyAccordion,
+        initContactForm
     };
 }
