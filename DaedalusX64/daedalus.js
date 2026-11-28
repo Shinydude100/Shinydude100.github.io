@@ -978,7 +978,147 @@ function initCombinerPlayground() {
   return { applyPreset, renderSimulation };
 }
 
+let cleanupDaedalusNavListeners = null;
+
+function initDaedalusNav() {
+  if (typeof cleanupDaedalusNavListeners === 'function') {
+    cleanupDaedalusNavListeners();
+    cleanupDaedalusNavListeners = null;
+  }
+
+  const header = document.getElementById('site-header');
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const menuBox = document.getElementById('daedalus-menu-box');
+
+  const closeMobileMenu = (restoreFocus = false) => {
+    if (!menuBox || !menuBox.classList.contains('active')) return;
+    menuBox.classList.remove('active');
+    if (mobileToggle) {
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      const svgPath = mobileToggle.querySelector('svg path');
+      if (svgPath) svgPath.setAttribute('d', 'M3 12h18M3 6h18M3 18h18');
+      if (restoreFocus && typeof mobileToggle.focus === 'function') {
+        mobileToggle.focus();
+      }
+    }
+  };
+
+  const onMobileToggleClick = () => {
+    if (!menuBox || !mobileToggle) return;
+    const isActive = menuBox.classList.toggle('active');
+    mobileToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    const svgPath = mobileToggle.querySelector('svg path');
+    if (svgPath) {
+      svgPath.setAttribute('d', isActive ? 'M18 6L6 18M6 6l12 12' : 'M3 12h18M3 6h18M3 18h18');
+    }
+  };
+
+  const onMenuItemClick = () => closeMobileMenu(false);
+  const menuItems = menuBox ? [...menuBox.querySelectorAll('a, [data-open-command-palette]')] : [];
+
+  if (mobileToggle && menuBox) {
+    mobileToggle.addEventListener('click', onMobileToggleClick);
+    menuItems.forEach((item) => {
+      item.addEventListener('click', onMenuItemClick);
+    });
+  }
+
+  const onDocumentClick = (e) => {
+    if (
+      menuBox &&
+      mobileToggle &&
+      menuBox.classList.contains('active') &&
+      !menuBox.contains(e.target) &&
+      !mobileToggle.contains(e.target)
+    ) {
+      closeMobileMenu(false);
+    }
+  };
+
+  const onWindowKeydown = (e) => {
+    if (e.key !== 'Escape') return;
+    const cmdPalette = document.getElementById('cmd-palette');
+    if (cmdPalette && (cmdPalette.open || cmdPalette.hasAttribute('open'))) return;
+    if (menuBox && menuBox.classList.contains('active')) {
+      closeMobileMenu(true);
+    }
+  };
+
+  const onWindowScroll = () => {
+    if (header && typeof window !== 'undefined') {
+      header.classList.toggle('scrolled', window.scrollY > 18);
+    }
+  };
+
+  document.addEventListener('click', onDocumentClick);
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', onWindowKeydown);
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
+  }
+
+  let spyObserver = null;
+  if (menuBox && typeof IntersectionObserver === 'function') {
+    const navLinksMap = new Map();
+    menuBox.querySelectorAll('.nav-item:not(.nav-pill)').forEach((item) => {
+      const link = item.querySelector('a[href^="#"]');
+      if (link) {
+        navLinksMap.set(link.getAttribute('href'), { item, link });
+      }
+    });
+
+    let currentActiveObj = null;
+    spyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const targetObj = navLinksMap.get(`#${entry.target.id}`);
+          if (targetObj && currentActiveObj !== targetObj) {
+            if (currentActiveObj) {
+              currentActiveObj.item.classList.remove('active');
+              currentActiveObj.link.removeAttribute('aria-current');
+            } else {
+              navLinksMap.forEach((obj) => {
+                obj.item.classList.remove('active');
+                obj.link.removeAttribute('aria-current');
+              });
+            }
+            targetObj.item.classList.add('active');
+            targetObj.link.setAttribute('aria-current', 'page');
+            currentActiveObj = targetObj;
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -65% 0px' }
+    );
+
+    ['combiner-lab', 'exhibits', 'docs'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) spyObserver.observe(el);
+    });
+  }
+
+  cleanupDaedalusNavListeners = () => {
+    if (mobileToggle) {
+      mobileToggle.removeEventListener('click', onMobileToggleClick);
+    }
+    menuItems.forEach((item) => {
+      item.removeEventListener('click', onMenuItemClick);
+    });
+    document.removeEventListener('click', onDocumentClick);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', onWindowKeydown);
+      window.removeEventListener('scroll', onWindowScroll);
+    }
+    if (spyObserver) spyObserver.disconnect();
+  };
+
+  return { closeMobileMenu };
+}
+
 function initDaedalusExhibits() {
+  // Initialize semantic primary navigation & mobile menu focus management
+  initDaedalusNav();
+
   // Global Security Delegation for external links
   document.addEventListener('click', (e) => {
     if (!e.target || typeof e.target.closest !== 'function') return;
@@ -1107,6 +1247,7 @@ if (typeof module !== 'undefined' && module.exports) {
     updateComparisonSlider,
     setComparisonPreset,
     initCombinerPlayground,
+    initDaedalusNav,
     initDaedalusExhibits,
   };
 }

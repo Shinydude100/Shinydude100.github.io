@@ -87,11 +87,12 @@ describe('PR #2 — Inline B2B Contact Form (toolname="contactForm") & Worker /a
       // Line 8 (index 7): frozen blank separator line for zero-conflict merge with PR #3
       expect(lines[7]).toBe('');
 
-      // Lines 9-12 (indices 8-11): preserved baseline SEO & MCP discovery tags
-      expect(lines[8]).toBe('<title>Hugo Luna // Systems Infrastructure Lead & Security Architect</title>');
-      expect(lines[9]).toBe('<meta name="description" content="High-availability network environments, low-level system engineering, and enterprise endpoint security architecture.">');
-      expect(lines[10]).toBe('<link rel="alternate" type="application/ld+json" href="/schema.jsonld">');
-      expect(lines[11]).toBe('<link rel="mcp" href="/mcp">');
+      // Lines 9-20 (indices 8-19): preserved post-PR-#105 SERP SEO, canonical/OG & MCP discovery tags
+      expect(lines[8]).toBe('<title>Hugo Luna | Systems &amp; Security Architect · Irving &amp; DFW, TX</title>');
+      expect(lines[9]).toBe('<meta name="description" content="Eliminate network downtime and hardware bottlenecks. Zero-downtime business networks, 24h stress-tested custom workstations, and Irving/DFW IT consulting.">');
+      expect(lines[10]).toBe('<link rel="canonical" href="https://daca.me/">');
+      expect(lines[18]).toBe('<link rel="alternate" type="application/ld+json" href="/schema.jsonld">');
+      expect(lines[19]).toBe('<link rel="mcp" href="/mcp">');
 
       // Zero inline styles or inline event handlers
       expect(html).not.toMatch(/<style\b/i);
@@ -148,7 +149,7 @@ describe('PR #2 — Inline B2B Contact Form (toolname="contactForm") & Worker /a
       // Preserved Direct Channels, Channel 02 DFW Support & 2 Hero CTAs
       expect(document.getElementById('contact-email-code').textContent).toBe('hugo.luna.sec@gmail.com');
       expect(document.querySelector('button[command="--copy"][commandfor="contact-email-code"]')).not.toBeNull();
-      expect(document.querySelector('#contact a[href="./HL Resume 2026.pdf"]')).not.toBeNull();
+      expect(document.querySelector('#contact a[href="./Hugo Luna Resume 2027.pdf"]')).not.toBeNull();
       expect(document.querySelector('#contact a[href*="linkedin.com/in/hugoaluna"]')).not.toBeNull();
       expect(document.querySelector('#contact .support-channel a[href="/support/#book"]')).not.toBeNull();
       expect(parsed.querySelectorAll('#hero .btn-stack .btn-primitive')).toHaveLength(2);
