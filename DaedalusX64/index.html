@@ -78,16 +78,22 @@
     <div id="scroll-progress" aria-hidden="true"></div>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header>
-        <div class="nav-container">
-            <a href="https://daca.me" class="logo" aria-label="daca.me Home" title="daca.me Home">daca<span>.me</span></a>
+    <header id="site-header" class="sys-header">
+        <div class="nav-container nav-inner">
+            <a href="/" class="sys-logo logo" aria-label="Hugo Luna Main Portfolio Home" title="Hugo Luna Main Portfolio Home">
+                HUGO LUNA <span>// DAEDALUSX64</span>
+            </a>
             <nav aria-label="Primary">
-                <ul class="nav-links">
+                <button id="mobile-toggle" type="button" aria-label="Menu Toggle" title="Menu Toggle" aria-expanded="false" aria-controls="daedalus-menu-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
+                <ul id="daedalus-menu-box" class="nav-links">
                     <li class="nav-item"><a href="#combiner-lab">Combiner Lab</a></li>
                     <li class="nav-item"><a href="#exhibits">Exhibits</a></li>
                     <li class="nav-item"><a href="#docs">Docs</a></li>
                     <li class="nav-item"><a href="https://github.com/DaedalusX64/daedalus" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="DaedalusX64 on GitHub (opens in a new tab)" title="DaedalusX64 on GitHub (opens in a new tab)">GitHub</a></li>
                     <li class="nav-sep" aria-hidden="true"></li>
+                    <li class="nav-item"><a href="/"><span aria-hidden="true">←</span> Portfolio</a></li>
                     <li class="nav-item nav-pill nav-pill--support"><a href="/support/">DFW Support</a></li>
                     <li class="nav-item nav-pill nav-pill--cta"><a href="/#contact">Contact</a></li>
                     <li class="nav-cmd-item"><button type="button" class="cmd-palette-trigger" data-open-command-palette aria-label="Open Command Palette (Ctrl+K)" title="Open Command Palette (Ctrl+K)"><kbd>⌘K</kbd></button></li>
@@ -108,7 +114,7 @@
             </p>
 
             <div class="badge-hero">
-                <span>⚡ N64 HLE MICROCODE EXHIBIT</span>
+                <span><span aria-hidden="true">⚡</span> N64 HLE MICROCODE EXHIBIT</span>
                 <span>// PSP GU PIPELINE</span>
             </div>
             <h1>DaedalusX64: Reverse Engineering N64 Emulation</h1>
@@ -120,7 +126,7 @@
             <div class="hud-status-bar">
                 <div class="hud-item">
                     <span class="hud-label">Emulator Core</span>
-                    <span class="hud-value green"><span class="agent-badge-dot"></span> DaedalusX64</span>
+                    <span class="hud-value green"><span class="agent-badge-dot" aria-hidden="true"></span> DaedalusX64</span>
                 </div>
                 <div class="hud-item">
                     <span class="hud-label">Target Hardware</span>
@@ -140,26 +146,26 @@
             <div class="origin-story-banner">
                 <h2>The Origin Story</h2>
                 <p>
-                    When StrmnNrmn paused development on the original Daedalus PSP emulator after leaving for college, the community rallied on DCEmu UK to form <strong>DaedalusX64</strong>. Jumping directly into C++ with zero prior programming experience, I worked alongside team members Kreationz, Salvy, and Wally to reverse-engineer N64 color combiner equations and translate them into native PSP Graphical Unit (GU) instructions.
+                    When StrmnNrmn paused development on the original Daedalus PSP emulator after leaving for college, the community rallied on DCEmu UK to form <strong>DaedalusX64</strong>. Starting at age 16 and jumping directly into C++ with zero prior programming experience, I worked alongside team members Kreationz, Salvy, and Wally to reverse-engineer N64 color combiner equations and translate them into native PSP Graphical Unit (GU) instructions.
                 </p>
                 <div class="history-links">
-                    <a href="https://strmnnrmn.blogspot.com/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
-                        📄 StrmnNrmn's Original Blog (2006)
+                    <a href="https://strmnnrmn.blogspot.com/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card" aria-label="StrmnNrmn's Original Blog (2006) (opens in a new tab)" title="StrmnNrmn's Original Blog (2006) (opens in a new tab)">
+                        <span aria-hidden="true">📄</span> StrmnNrmn's Original Blog (2006)
                     </a>
-                    <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
-                        📰 DCEmu UK Announcement
+                    <a href="http://psp-news.dcemu.co.uk/daedalusx64-new-n64-emulator-for-psp-announcement-167092.html" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card" aria-label="DCEmu UK Announcement (opens in a new tab)" title="DCEmu UK Announcement (opens in a new tab)">
+                        <span aria-hidden="true">📰</span> DCEmu UK Announcement
                     </a>
-                    <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card">
-                        🏆 Repository Credits (Shinydude100)
+                    <a href="https://github.com/DaedalusX64/daedalus/blob/master/README.md" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" class="history-link-card" aria-label="Repository Credits (Shinydude100) (opens in a new tab)" title="Repository Credits (Shinydude100) (opens in a new tab)">
+                        <span aria-hidden="true">🏆</span> Repository Credits (Shinydude100)
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- SOURCE CODE EXHIBITS -->
-        <section id="exhibits">
+        <section id="exhibits" tabindex="-1">
             <h2 class="section-title">
-                <span>🕹️</span>
+                <span aria-hidden="true">🕹️</span>
                 <span>Interactive Microcode Exhibits &amp; Render Comparison</span>
             </h2>
 
@@ -173,7 +179,7 @@
             </nav>
 
             <!-- INTERACTIVE COLOR COMBINER PLAYGROUND -->
-            <article class="exhibit-card combiner-lab-card" id="combiner-lab" aria-labelledby="combiner-lab-heading">
+            <article class="exhibit-card combiner-lab-card" id="combiner-lab" tabindex="-1" aria-labelledby="combiner-lab-heading">
                 <div class="exhibit-header">
                     <div class="exhibit-title-group">
                         <h3 id="combiner-lab-heading">Interactive Lab: N64 RDP → Sony PSP GU Color Combiner</h3>
@@ -680,7 +686,7 @@
                             <div class="psp-screen-viewport">
                                 <div class="psp-screen-header-bar">
                                     <div class="psp-screen-title">
-                                        <span class="psp-live-dot"></span>
+                                        <span class="psp-live-dot" aria-hidden="true"></span>
                                         <span>PSP GU ENGINE // ZELDA: OOT</span>
                                     </div>
                                     <span>60 FPS</span>
@@ -690,7 +696,7 @@
                                 <div class="comparison-slider-box" id="slider-ex1">
                                     <!-- Unpatched Layer (Left) -->
                                     <div class="slider-layer layer-unpatched">
-                                        <div class="glitch-scanlines"></div>
+                                        <div class="glitch-scanlines" aria-hidden="true"></div>
                                         <div class="slider-visual-content">
                                             <picture>
                                                 <source srcset="assets/kokiri_sword.webp" type="image/webp">
@@ -702,7 +708,7 @@
 
                                     <!-- Patched Layer (Right) -->
                                     <div class="slider-layer layer-patched layer-patched--half" id="layer-patched-ex1">
-                                        <div class="patched-glow-bg"></div>
+                                        <div class="patched-glow-bg" aria-hidden="true"></div>
                                         <div class="slider-visual-content">
                                             <picture>
                                                 <source srcset="assets/kokiri_sword.webp" type="image/webp">
@@ -713,9 +719,9 @@
                                     </div>
 
                                     <!-- Divider Line & Drag Handle -->
-                                    <div class="slider-divider-line slider-divider-line--half" id="divider-ex1">
+                                    <div class="slider-divider-line slider-divider-line--half" id="divider-ex1" aria-hidden="true">
                                         <div class="slider-handle-knob">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
                                         </div>
                                     </div>
 
@@ -868,7 +874,7 @@
                             <div class="psp-screen-viewport">
                                 <div class="psp-screen-header-bar">
                                     <div class="psp-screen-title">
-                                        <span class="psp-live-dot"></span>
+                                        <span class="psp-live-dot" aria-hidden="true"></span>
                                         <span>PSP GU ENGINE // SUPER SMASH BROS</span>
                                     </div>
                                     <span>60 FPS</span>
@@ -878,7 +884,7 @@
                                 <div class="comparison-slider-box" id="slider-ex4">
                                     <!-- Unpatched Layer (Left) -->
                                     <div class="slider-layer layer-unpatched">
-                                        <div class="glitch-scanlines"></div>
+                                        <div class="glitch-scanlines" aria-hidden="true"></div>
                                         <div class="slider-visual-content">
                                             <picture>
                                                 <source srcset="assets/ssb_bomb.webp" type="image/webp">
@@ -890,7 +896,7 @@
 
                                     <!-- Patched Layer (Right) -->
                                     <div class="slider-layer layer-patched layer-patched--half" id="layer-patched-ex4">
-                                        <div class="patched-glow-bg patched-glow-bg--red"></div>
+                                        <div class="patched-glow-bg patched-glow-bg--red" aria-hidden="true"></div>
                                         <div class="slider-visual-content">
                                             <picture>
                                                 <source srcset="assets/ssb_bomb.webp" type="image/webp">
@@ -901,9 +907,9 @@
                                     </div>
 
                                     <!-- Divider Line & Drag Handle -->
-                                    <div class="slider-divider-line slider-divider-line--half" id="divider-ex4">
+                                    <div class="slider-divider-line slider-divider-line--half" id="divider-ex4" aria-hidden="true">
                                         <div class="slider-handle-knob">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
                                         </div>
                                     </div>
 
@@ -959,10 +965,10 @@
         </section>
 
         <!-- DOCUMENTATION SECTION -->
-        <section id="docs">
+        <section id="docs" tabindex="-1">
             <div class="doc-card">
                 <h2 class="section-title">
-                    <span>🛠️</span>
+                    <span aria-hidden="true">🛠️</span>
                     <span>Developer Toolchain & Documentation</span>
                 </h2>
                 <p class="doc-lead">
@@ -1028,8 +1034,8 @@ Windows XP/Vista Readme by: Shinydude100/Kreationz</code></pre>
     <footer>
         <div class="container footer-container">
             <p>
-                Hosted on <a href="https://github.com/Shinydude100/Shinydude100.github.io" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">GitHub Pages</a> | 
-                Domain: <a href="https://daca.me" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">daca.me</a>
+                Hosted on <a href="https://github.com/Shinydude100/Shinydude100.github.io" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="GitHub Pages — Shinydude100.github.io Repository (opens in a new tab)" title="GitHub Pages — Shinydude100.github.io Repository (opens in a new tab)">GitHub Pages</a> | 
+                Domain: <a href="https://daca.me" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="daca.me Main Portfolio (opens in a new tab)" title="daca.me Main Portfolio (opens in a new tab)">daca.me</a>
             </p>
             <p class="footer-subnote">
                 DaedalusX64 is an open-source Nintendo 64 emulator for portable devices. Developed by Hugo Luna (Shinydude100) & Community.
